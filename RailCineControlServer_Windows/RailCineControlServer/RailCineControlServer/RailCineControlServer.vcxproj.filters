@@ -1,0 +1,158 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>qml;cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>qrc;rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Form Files">
+      <UniqueIdentifier>{99349809-55BA-4b9d-BF79-8FDBB0286EB3}</UniqueIdentifier>
+      <Extensions>ui</Extensions>
+    </Filter>
+    <Filter Include="Translation Files">
+      <UniqueIdentifier>{639EADAA-A684-42e4-A9AD-28FC9BCB8F7C}</UniqueIdentifier>
+      <Extensions>ts</Extensions>
+    </Filter>
+    <Filter Include="Header Files\Thread">
+      <UniqueIdentifier>{77d8401b-3a74-4628-acc4-b3e9763fcc92}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\DB">
+      <UniqueIdentifier>{30933bee-3eab-4c6f-9976-1d4b84ffc238}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Thread">
+      <UniqueIdentifier>{d7eb6211-abe3-4ae2-8622-351650af5af2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\DB">
+      <UniqueIdentifier>{d5b7f7d0-0529-423d-ae8c-6e92d67355cf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Global.h">
+      <UniqueIdentifier>{61f23d0f-1845-419d-997d-b4b3d6f2588d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Pb">
+      <UniqueIdentifier>{2d80b7f0-b4f8-4e59-ae36-a3a833bcb98e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Proto">
+      <UniqueIdentifier>{ef5ff4c8-c68e-42e6-8568-57a8a6597fe3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Pb">
+      <UniqueIdentifier>{b7788f55-e0aa-4d96-adb2-47a08dc6669a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\TCP">
+      <UniqueIdentifier>{d8a4d72b-af06-4749-8814-274a01b823c5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\TCP">
+      <UniqueIdentifier>{c944c90e-8769-41b2-91d2-0a78d1f14b2c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Log">
+      <UniqueIdentifier>{b9d7e76e-1a6d-454d-8cda-1bfbc2459e5b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Log">
+      <UniqueIdentifier>{7968fd10-fa91-4afb-93f7-f0503058aee7}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <QtRcc Include="ControlHubServer.qrc">
+      <Filter>Resource Files</Filter>
+    </QtRcc>
+    <QtUic Include="MainWindow.ui">
+      <Filter>Form Files</Filter>
+    </QtUic>
+    <QtMoc Include="MainWindow.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <ClCompile Include="MainWindow.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ThreadPool.cpp">
+      <Filter>Source Files\Thread</Filter>
+    </ClCompile>
+    <ClCompile Include="WorkerThread.cpp">
+      <Filter>Source Files\Thread</Filter>
+    </ClCompile>
+    <ClCompile Include="ConnectionPool.cpp">
+      <Filter>Source Files\DB</Filter>
+    </ClCompile>
+    <ClCompile Include="SqlExec.cpp">
+      <Filter>Source Files\DB</Filter>
+    </ClCompile>
+    <ClCompile Include="common.pb.cc">
+      <Filter>Source Files\Pb</Filter>
+    </ClCompile>
+    <ClCompile Include="server_msg.pb.cc">
+      <Filter>Source Files\Pb</Filter>
+    </ClCompile>
+    <ClCompile Include="ClientSession.cpp">
+      <Filter>Header Files\TCP</Filter>
+    </ClCompile>
+    <ClCompile Include="ClientSession.cpp">
+      <Filter>Source Files\TCP</Filter>
+    </ClCompile>
+    <ClCompile Include="TcpServer.cpp">
+      <Filter>Header Files\TCP</Filter>
+    </ClCompile>
+    <ClCompile Include="TcpServer.cpp">
+      <Filter>Source Files\TCP</Filter>
+    </ClCompile>
+    <ClCompile Include="LogRecord.cpp">
+      <Filter>Source Files\Log</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <QtMoc Include="WorkerThread.h">
+      <Filter>Header Files\Thread</Filter>
+    </QtMoc>
+    <QtMoc Include="ThreadPool.h">
+      <Filter>Header Files\Thread</Filter>
+    </QtMoc>
+    <QtMoc Include="SqlExec.h">
+      <Filter>Header Files\DB</Filter>
+    </QtMoc>
+    <QtMoc Include="ConnectionPool.h">
+      <Filter>Header Files\DB</Filter>
+    </QtMoc>
+    <QtMoc Include="ClientSession.h">
+      <Filter>Header Files\TCP</Filter>
+    </QtMoc>
+    <QtMoc Include="TcpServer.h">
+      <Filter>Header Files\TCP</Filter>
+    </QtMoc>
+    <QtMoc Include="LogRecord.h">
+      <Filter>Header Files\Log</Filter>
+    </QtMoc>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Global.h">
+      <Filter>Header Files\Global.h</Filter>
+    </ClInclude>
+    <ClInclude Include="singletion.h">
+      <Filter>Header Files\Global.h</Filter>
+    </ClInclude>
+    <ClInclude Include="common.pb.h">
+      <Filter>Header Files\Pb</Filter>
+    </ClInclude>
+    <ClInclude Include="server_msg.pb.h">
+      <Filter>Header Files\Pb</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="common.proto">
+      <Filter>Proto</Filter>
+    </None>
+    <None Include="server_msg.proto">
+      <Filter>Proto</Filter>
+    </None>
+  </ItemGroup>
+</Project>

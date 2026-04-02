@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ImportGroup Label="PropertySheets" />
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <IncludePath>D:\YJJ\vcpkg\installed\x64-windows\include;C:\Program Files\MySQL\MySQL Connector C++ 9.4\include;$(IncludePath)</IncludePath>
+    <LibraryPath>D:\YJJ\vcpkg\installed\x64-windows\lib;C:\Program Files\MySQL\MySQL Connector C++ 9.4\lib64\vs14;$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
+  <ItemDefinitionGroup>
+    <Link>
+      <AdditionalDependencies>libprotobuf.lib;libcrypto.lib;libssl.lib;mysqlcppconn-static.lib;mysqlcppconn.lib;mysqlcppconnx.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+    <ClCompile>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemGroup />
+</Project>

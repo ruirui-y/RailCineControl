@@ -1,0 +1,301 @@
+﻿/* =========================================================================================
+   💡 核心样式表 (stylesheet.qss)
+   规范：使用“父类名”或“对象名(#)”进行作用域隔离，坚决防止不同界面的控件样式互相污染！
+   ========================================================================================= */
+
+/* ==========================================================
+   [全局设定]：科幻风垂直滚动条 (干掉原生丑陋白边)
+   ========================================================== */
+
+/* 1. 滚动条整体轨道 */
+QScrollBar:vertical {
+    background: rgba(10, 25, 45, 100);  /* 轨道背景：极暗的透明深蓝色 */
+    width: 8px;                         /* 滚动条整体宽度，瘦身变得更精致 */
+    border-radius: 4px;                 /* 轨道圆角 */
+    margin: 0px 0px 0px 0px;            /* 消除原生的外边距 */
+}
+
+/* 2. 滚动条的滑块 (可拖拽的那部分) */
+QScrollBar::handle:vertical {
+    background: rgba(0, 229, 255, 120); /* 默认状态：半透明的科幻青色 */
+    border-radius: 4px;                 /* 胶囊圆角 */
+    min-height: 30px;                   /* 滑块最小高度，防止内容太多时滑块变成一条线连点都点不到 */
+}
+
+/* 3. 鼠标悬浮在滑块上的发光态 */
+QScrollBar::handle:vertical:hover {
+    background: rgba(0, 229, 255, 255); /* 鼠标悬浮时：全亮的青色荧光 */
+}
+
+/* 4. 隐藏顶部和底部的上下箭头按钮 (现代 UI 标配操作) */
+QScrollBar::add-line:vertical,
+QScrollBar::sub-line:vertical {
+    height: 0px;                        /* 高度设为0直接抹杀 */
+    background: none;
+    border: none;
+}
+
+/* 5. 点击轨道空白处时，消除原生的丑陋灰色背景 */
+QScrollBar::add-page:vertical,
+QScrollBar::sub-page:vertical {
+    background: none;
+}
+
+
+/* ==========================================================
+   [模块 1]：GameWidget - 顶部导航栏专属样式
+   ========================================================== */
+
+/* 1.1 标题特例 (通过 objectName 精确绑定) */
+QToolButton#nameBtn {
+    font-size: 20px;
+}
+
+/* 1.2 导航按钮基础态 (限定在 GameWidget 内部) */
+GameWidget QToolButton {
+    color: #BBBBBB;
+    background: transparent;
+    border: none;
+    padding: 6px 12px;
+    border-bottom: 2px solid transparent;    /* 预留2px高度，未选中时看不见，避免切换时布局跳动 */
+    outline: 0;
+}
+
+/* 1.3 导航按钮悬浮态 */
+GameWidget QToolButton:hover {
+    background: rgba(255, 255, 255, 0.06);
+    border-bottom-color: transparent;        /* 悬浮也不显示下划线 */
+}
+
+/* 1.4 导航按钮选中态 */
+GameWidget QToolButton:checked {
+    color: #FFFFFF;
+    border-bottom-color: #FFFFFF;            /* 只有选中有白色下划线 */
+}
+
+/* 1.5 导航按钮按下态 */
+GameWidget QToolButton:pressed {
+    background: rgba(255, 255, 255, 0.10);
+}
+
+
+/* ==========================================================
+   [模块 2]：LoginWidget - 迷你世界图片按钮样式
+   ========================================================== */
+
+/* 2.1 按钮通用基础态 */
+LoginWidget QPushButton {
+    color: #905900; 
+    font-weight: 400; 
+    font-size: 20px;
+    border: none; 
+    border-radius: 10px;
+    background-position: center; 
+    background-repeat: no-repeat;
+    background-image: url(:/MiNi/Images/MiNiWorld/Login/NormalBtn.png);
+}
+
+/* 2.2 悬浮态 */
+LoginWidget QPushButton:hover {
+    background-image: url(:/MiNi/Images/MiNiWorld/Login/HoverBtn.png);
+}
+
+/* 2.3 按下态 */
+LoginWidget QPushButton:pressed {
+    background-image: url(:/MiNi/Images/MiNiWorld/Login/PressBtn.png);
+    margin-top: 2px;                         /* 整个按钮向下“压”2px */
+    margin-bottom: 0px;
+}
+
+
+/* ==========================================================
+   [模块 3]：AccountInfoWidget - 账户信息面板
+   ========================================================== */
+
+/* 3.1 面板主容器 */
+AccountInfoWidget QWidget#accountPanel {
+    background-color: rgba(20, 40, 70, 200);   /* 科技深蓝底色 */
+    border: 2px solid rgba(0, 180, 220, 150);  /* 外部发光边框 */
+    border-radius: 4px;
+}
+
+/* 3.2 顶部标题栏 */
+AccountInfoWidget QLabel#accountTitle {
+    background-color: rgba(0, 150, 220, 100);  /* 标题栏稍微高亮 */
+    color: #ffffff;
+    font-size: 16px;
+    font-weight: bold;
+    font-family: "Microsoft YaHei";
+    border-bottom: 2px solid #00e5ff;          /* 标题底部的青色粗线 */
+}
+
+/* 3.3 每一行的行容器 (添加下划线分割) */
+AccountInfoWidget QWidget#accountRow {
+    background: transparent;
+    border-bottom: 1px solid rgba(0, 229, 255, 50); /* 微弱的青色分割线 */
+}
+
+/* 3.4 基础文字与图标 */
+AccountInfoWidget QLabel#accountText {
+    color: #ffffff;
+    font-size: 14px;
+    font-family: "Microsoft YaHei";
+}
+AccountInfoWidget QLabel#accountIcon {
+    color: #00e5ff;
+    font-size: 16px;
+    padding-right: 5px;
+}
+
+/* 3.5 下拉框 */
+AccountInfoWidget QComboBox#accountCombo {
+    background-color: rgba(0, 100, 200, 150);
+    color: #ffffff;
+    border: 1px solid #00e5ff;
+    padding-left: 10px;
+    font-weight: bold;
+}
+AccountInfoWidget QComboBox#accountCombo::drop-down {
+    border: none;
+    width: 25px;
+    background-color: rgba(0, 150, 220, 100);
+}
+AccountInfoWidget QComboBox#accountCombo::down-arrow {
+    image: none;                               /* 如果有切图可以换成箭头图标 */
+}
+
+/* 3.6 操作按钮 (退出 / 确定) */
+AccountInfoWidget QPushButton#accountBtn {
+    background-color: rgba(10, 30, 50, 200);
+    border: 1px solid #00e5ff;
+    color: #00e5ff;
+    font-weight: bold;
+    font-size: 14px;
+    border-radius: 2px;
+}
+AccountInfoWidget QPushButton#accountBtn:hover {
+    background-color: rgba(0, 150, 220, 100);
+    color: #ffffff;
+}
+AccountInfoWidget QPushButton#accountBtn:pressed {
+    background-color: rgba(0, 229, 255, 150);
+}
+
+/* 3.7 电量输入框 */
+AccountInfoWidget QLineEdit#accountInput {
+    background-color: rgba(10, 30, 50, 200);
+    border: 1px solid #00e5ff;
+    color: #ffffff;
+    padding: 2px;
+    font-weight: bold;
+    text-align: center;
+}
+AccountInfoWidget QLineEdit#accountInput:focus {
+    background-color: rgba(30, 60, 100, 255);
+}
+
+/* 3.8 底部翻页箭头 */
+AccountInfoWidget QPushButton#accountArrowBtn {
+    background: transparent;
+    color: #00e5ff;
+    border: none;
+    font-size: 18px;
+    font-weight: bold;
+}
+AccountInfoWidget QPushButton#accountArrowBtn:hover {
+    color: #ffffff;
+}
+
+
+/* ==========================================================
+   [模块 4]：GameLauncher - 游戏平台主窗口样式表
+   ========================================================== */
+
+/* 4.1 主窗口背景 (深邃暗色渐变感) */
+QWidget#ControlHubWindow {
+    background-color: #161621;
+}
+
+/* 4.2 顶部标题栏 */
+QLabel#logoLabel {
+    color: #FFFFFF;
+    font-size: 22px;
+    font-weight: bold;
+    font-family: "Segoe UI", "Microsoft YaHei";
+}
+
+/* 4.3 核心：QListWidget (加入父类限制，隐藏默认滚动条和边框) */
+GameLauncher QListWidget {
+    background-color: transparent;
+    border: none;
+    outline: none;
+}
+/* 列表项的默认状态和选中状态 (用于给卡片流出一点光晕空间) */
+GameLauncher QListWidget::item {
+    background-color: transparent;
+}
+GameLauncher QListWidget::item:selected {
+    background-color: transparent;
+}
+
+/* 4.4 游戏卡片本体 (默认状态) */
+QFrame#gameCard {
+    background-color: #262635;
+    border-radius: 12px;
+    border: 1px solid #333345;
+}
+/* 卡片悬浮状态 */
+QFrame#gameCard:hover {
+    background-color: #303040;
+}
+/* 卡片选中状态 (图里的高亮蓝光边框) */
+QFrame#gameCard[selected="true"] {
+    border: 2px solid #00E5FF;
+    background-color: #203545;
+}
+
+/* 4.5 卡片内部文字 */
+QLabel#cardTitle {
+    color: #FFFFFF;
+    font-size: 15px;
+    font-weight: bold;
+}
+QLabel#cardSub {
+    color: #888899;
+    font-size: 12px;
+}
+QLabel#cardCover {
+    background-color: #1A1A24;
+    border-radius: 8px;
+}
+
+/* 4.6 右下角全局圆形大按钮 */
+QPushButton#btnPlay {
+    background-color: #33D36F;
+    border-radius: 35px;                       /* 高度70的一半变圆形 */
+    color: white;
+    font-size: 28px;
+    font-weight: bold;
+}
+QPushButton#btnPlay:hover {
+    background-color: #45E581;
+}
+QPushButton#btnPlay:disabled {
+    background-color: #1E5A35;
+    color: #888888;
+}
+
+QPushButton#btnStop {
+    background-color: #FF4757;
+    border-radius: 35px;
+    color: white;
+    font-size: 28px;
+    font-weight: bold;
+}
+QPushButton#btnStop:hover {
+    background-color: #FF6775;
+}
+QPushButton#btnStop:disabled {
+    background-color: #6A1A23;
+    color: #888888;
+}

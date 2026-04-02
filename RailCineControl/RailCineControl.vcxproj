@@ -1,0 +1,205 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{574DA05C-D87A-485A-9F07-025AE51D5E44}</ProjectGuid>
+    <Keyword>QtVS_v304</Keyword>
+    <WindowsTargetPlatformVersion Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">10.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">10.0</WindowsTargetPlatformVersion>
+    <QtMsBuild Condition="'$(QtMsBuild)'=='' OR !Exists('$(QtMsBuild)\qt.targets')">$(MSBuildProjectDirectory)\QtMsBuild</QtMsBuild>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <PlatformToolset>v143</PlatformToolset>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <PlatformToolset>v143</PlatformToolset>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Condition="Exists('$(QtMsBuild)\qt_defaults.props')">
+    <Import Project="$(QtMsBuild)\qt_defaults.props" />
+  </ImportGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'" Label="QtSettings">
+    <QtInstall>QT5.14.2</QtInstall>
+    <QtModules>core;network;gui;multimedia;widgets;multimediawidgets</QtModules>
+    <QtBuildConfig>debug</QtBuildConfig>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'" Label="QtSettings">
+    <QtInstall>QT5.14.2</QtInstall>
+    <QtModules>core;network;gui;widgets</QtModules>
+    <QtBuildConfig>release</QtBuildConfig>
+  </PropertyGroup>
+  <Target Name="QtMsBuildNotFound" BeforeTargets="CustomBuild;ClCompile" Condition="!Exists('$(QtMsBuild)\qt.targets') or !Exists('$(QtMsBuild)\qt.props')">
+    <Message Importance="High" Text="QtMsBuild: could not locate qt.targets, qt.props; project may not build correctly." />
+  </Target>
+  <ImportGroup Label="ExtensionSettings" />
+  <ImportGroup Label="Shared" />
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="$(QtMsBuild)\Qt.props" />
+    <Import Project="..\Props\RailCineControl_Debug.props" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="$(QtMsBuild)\Qt.props" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'" Label="Configuration">
+    <ClCompile>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <WarningLevel>Level3</WarningLevel>
+      <SDLCheck>true</SDLCheck>
+      <ConformanceMode>true</ConformanceMode>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'" Label="Configuration">
+    <ClCompile>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <WarningLevel>Level3</WarningLevel>
+      <SDLCheck>true</SDLCheck>
+      <ConformanceMode>true</ConformanceMode>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>false</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="AccountInfoWidget.cpp" />
+    <ClCompile Include="AccountWidget.cpp" />
+    <ClCompile Include="ClickedLabel.cpp" />
+    <ClCompile Include="CMDTools.cpp" />
+    <ClCompile Include="common.pb.cc" />
+    <ClCompile Include="DeveloperOptionWidget.cpp" />
+    <ClCompile Include="DeviceRowWidget.cpp" />
+    <ClCompile Include="GameCenterWidget.cpp" />
+    <ClCompile Include="GameItem.cpp" />
+    <ClCompile Include="GameWidget.cpp" />
+    <ClCompile Include="Global.cpp" />
+    <ClCompile Include="ControlHubWindow.cpp" />
+    <ClCompile Include="ImageBgButton.cpp" />
+    <ClCompile Include="JsonTool.cpp" />
+    <ClCompile Include="LoginWidget.cpp" />
+    <ClCompile Include="ParamSettingWidget.cpp" />
+    <ClCompile Include="server_msg.pb.cc" />
+    <ClCompile Include="SettingWidget.cpp" />
+    <ClCompile Include="SignalSend.cpp" />
+    <ClCompile Include="StateLabel.cpp" />
+    <ClCompile Include="StateWidget.cpp" />
+    <ClCompile Include="TCPMgr.cpp" />
+    <ClCompile Include="ThreadPool.cpp" />
+    <ClCompile Include="TipWidget.cpp" />
+    <ClCompile Include="TitleBar.cpp" />
+    <ClCompile Include="UdpManager.cpp" />
+    <ClCompile Include="UserMgr.cpp" />
+    <ClCompile Include="WorkerThread.cpp" />
+    <QtUic Include="HeroZoneWindow.ui" />
+    <QtUic Include="LoginWidget.ui" />
+    <QtUic Include="mainWindow.ui" />
+    <QtMoc Include="mainWindow.h" />
+    <ClCompile Include="CustomizeEdit.cpp" />
+    <ClCompile Include="CustomizeTextEdit.cpp" />
+    <ClCompile Include="LogRecord.cpp" />
+    <ClCompile Include="mainWindow.cpp" />
+    <ClCompile Include="main.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <QtMoc Include="UdpManager.h" />
+    <QtMoc Include="WorkerThread.h" />
+    <QtMoc Include="ThreadPool.h" />
+    <QtMoc Include="UserMgr.h" />
+    <QtMoc Include="TipWidget.h" />
+    <QtMoc Include="TitleBar.h" />
+    <QtMoc Include="ClickedLabel.h" />
+    <QtMoc Include="CMDTools.h" />
+    <QtMoc Include="AccountWidget.h" />
+    <QtMoc Include="DeveloperOptionWidget.h" />
+    <QtMoc Include="DeviceRowWidget.h" />
+    <QtMoc Include="AccountInfoWidget.h" />
+    <ClInclude Include="common.pb.h" />
+    <ClInclude Include="Enum.h" />
+    <QtMoc Include="LoginWidget.h" />
+    <QtMoc Include="GameItem.h" />
+    <QtMoc Include="GameCenterWidget.h" />
+    <QtMoc Include="GameWidget.h" />
+    <ClInclude Include="Global.h" />
+    <QtMoc Include="ControlHubWindow.h" />
+    <QtMoc Include="JsonTool.h" />
+    <QtMoc Include="ImageBgButton.h" />
+    <ClInclude Include="Macro.h" />
+    <QtMoc Include="StateLabel.h" />
+    <QtMoc Include="StateWidget.h" />
+    <QtMoc Include="SignalSend.h" />
+    <QtMoc Include="ParamSettingWidget.h" />
+    <ClInclude Include="ProtocolDef.h" />
+    <ClInclude Include="resource.h" />
+    <ClInclude Include="resource1.h" />
+    <QtMoc Include="SettingWidget.h" />
+    <ClInclude Include="server_msg.pb.h" />
+    <ClInclude Include="Struct.h" />
+    <QtMoc Include="TCPMgr.h" />
+    <QtMoc Include="LogRecord.h" />
+    <QtMoc Include="CustomizeTextEdit.h" />
+    <QtMoc Include="CustomizeEdit.h" />
+    <ClInclude Include="singletion.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <QtRcc Include="demand.qrc" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="common.proto" />
+    <None Include="server_msg.proto" />
+    <None Include="StyleSheet\stylesheet.qss" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="demand.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="Images\Demand.ico" />
+    <Image Include="images\icon1.ico" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Condition="Exists('$(QtMsBuild)\qt.targets')">
+    <Import Project="$(QtMsBuild)\qt.targets" />
+  </ImportGroup>
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>
