@@ -37,6 +37,19 @@ void RegisterMetaTypes()
 
 int main(int argc, char *argv[])
 {
+    // =================================================================
+    // 强心剂 1：强制抛弃 DirectShow，使用 Windows 现代媒体引擎 (WMF)
+    // 这会让 Qt 使用和 Windows 自带播放器一模一样的底层解码和渲染管线！
+    // =================================================================
+    qputenv("QT_MULTIMEDIA_PREFERRED_PLUGINS", "windowsmediafoundation");
+
+    // =================================================================
+    // 强心剂 2：开启 Qt 的全局高分屏与抗锯齿缩放支持
+    // 防止 Windows 系统级的野蛮拉伸导致像素狗牙
+    // =================================================================
+    QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
+    QCoreApplication::setAttribute(Qt::AA_UseHighDpiPixmaps);
+
     RegisterMetaTypes();
     QApplication app(argc, argv);
 

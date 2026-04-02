@@ -38,4 +38,10 @@ QString ClientConfigPath = QDir(QCoreApplication::applicationDirPath()).filePath
 // 登录配置文件路径
 QString LoginConfigPath = QDir(QCoreApplication::applicationDirPath()).filePath("ClientInstall/Configs/login.json");
 
+// 影片配置文件路径
+QString MovieConfigPath = QDir(QCoreApplication::applicationDirPath()).filePath("Config/movies.json");
+
+// 影片播放记录配置文件路径
+QString MovieRecordPath = QDir(QCoreApplication::applicationDirPath()).filePath("Config/movieRecord.json");
+
 const int tipOffset = 5;

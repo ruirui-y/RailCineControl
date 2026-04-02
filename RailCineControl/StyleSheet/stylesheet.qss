@@ -299,3 +299,91 @@ QPushButton#btnStop:disabled {
     background-color: #6A1A23;
     color: #888888;
 }
+
+/* ==========================================================
+   [模块 5]：MovieWidget - 影片播放与记录模块
+   ========================================================== */
+
+/* 5.1 顶部模块切换按钮 (播放台 / 记录台) */
+MovieWidget QToolButton#navBtn {
+    color: #888899;
+    font-size: 16px;
+    font-weight: bold;
+    background: transparent;
+    border: none;
+    padding: 8px 16px;
+    border-bottom: 2px solid transparent;
+}
+MovieWidget QToolButton#navBtn:hover {
+    color: #FFFFFF;
+}
+MovieWidget QToolButton#navBtn:checked {
+    color: #00E5FF;
+    border-bottom: 2px solid #00E5FF; /* 选中时底部亮起青色霓虹线 */
+}
+
+/* 5.2 底部播控面板的按钮 (播放、暂停、快进等) */
+MovieWidget QPushButton#controlBtn {
+    background-color: rgba(38, 38, 53, 200);
+    border: 1px solid #333345;
+    border-radius: 8px;
+    color: #FFFFFF;
+    font-size: 14px;
+    font-weight: bold;
+}
+MovieWidget QPushButton#controlBtn:hover {
+    background-color: #303040;
+    border-color: #00E5FF;
+    color: #00E5FF;
+}
+MovieWidget QPushButton#controlBtn:pressed {
+    background-color: rgba(0, 229, 255, 50);
+}
+
+/* 5.3 倒计时 / 状态文本 */
+MovieWidget QLabel#statusLcd {
+    color: #00E5FF;
+    font-size: 24px;
+    font-weight: bold;
+    font-family: "Consolas", "Courier New";
+    background-color: #1A1A24;
+    border-radius: 6px;
+    padding: 4px 12px;
+    border: 1px solid #333345;
+}
+
+/* 5.4 播放记录的表格控件 (极简暗黑风) */
+MovieWidget QTableWidget {
+    background-color: #161621;
+    alternate-background-color: #1A1A24; /* 交替行颜色 */
+    color: #BBBBBB;
+    border: 1px solid #333345;
+    border-radius: 8px;
+    gridline-color: #262635; /* 网格线颜色 */
+    outline: none;
+}
+MovieWidget QTableWidget::item:selected {
+    background-color: rgba(0, 229, 255, 40);
+    color: #FFFFFF;
+}
+/* 表头样式 */
+MovieWidget QHeaderView::section {
+    background-color: #262635;
+    color: #FFFFFF;
+    font-weight: bold;
+    border: none;
+    border-bottom: 2px solid #333345;
+    padding: 8px;
+}
+
+/* 5.5 日期选择器 */
+MovieWidget QDateEdit {
+    background-color: #1A1A24;
+    color: #FFFFFF;
+    border: 1px solid #333345;
+    border-radius: 4px;
+    padding: 4px 8px;
+}
+MovieWidget QDateEdit::drop-down {
+    border: none;
+}

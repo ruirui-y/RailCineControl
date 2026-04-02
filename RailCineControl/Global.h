@@ -27,6 +27,12 @@ extern QSettings* ConfigSettings;						                                         
 extern QString ClientConfigPath;                                                                                // 客户端配置文件路径
 extern QString LoginConfigPath;                                                                                 // 登录配置文件路径
 
+// 影片配置文件路径
+extern QString MovieConfigPath;
+
+// 影片播放记录配置文件路径
+extern QString MovieRecordPath;
+
 extern const int tipOffset;								                                                        // 提示框偏移量
 
 using DeferFunc = std::function<void()>;

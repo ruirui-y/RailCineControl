@@ -8,7 +8,11 @@ Saved/
 .vs/
 RailCineControl/x64
 RailCineControl/Packs
+RailCineControl/*.csv
+RailCineControl/Movies
 ./x64
+./x64/Debug
+./x64/Release
 *.xcworkspace
 *.v12.suo
 *.v11.suo

@@ -110,7 +110,6 @@
     <ClCompile Include="common.pb.cc" />
     <ClCompile Include="DeveloperOptionWidget.cpp" />
     <ClCompile Include="DeviceRowWidget.cpp" />
-    <ClCompile Include="GameCenterWidget.cpp" />
     <ClCompile Include="GameItem.cpp" />
     <ClCompile Include="GameWidget.cpp" />
     <ClCompile Include="Global.cpp" />
@@ -118,7 +117,10 @@
     <ClCompile Include="ImageBgButton.cpp" />
     <ClCompile Include="JsonTool.cpp" />
     <ClCompile Include="LoginWidget.cpp" />
+    <ClCompile Include="MovieWidget.cpp" />
     <ClCompile Include="ParamSettingWidget.cpp" />
+    <ClCompile Include="PlaybackPage.cpp" />
+    <ClCompile Include="RecordPage.cpp" />
     <ClCompile Include="server_msg.pb.cc" />
     <ClCompile Include="SettingWidget.cpp" />
     <ClCompile Include="SignalSend.cpp" />
@@ -158,7 +160,6 @@
     <ClInclude Include="Enum.h" />
     <QtMoc Include="LoginWidget.h" />
     <QtMoc Include="GameItem.h" />
-    <QtMoc Include="GameCenterWidget.h" />
     <QtMoc Include="GameWidget.h" />
     <ClInclude Include="Global.h" />
     <QtMoc Include="ControlHubWindow.h" />
@@ -169,7 +170,10 @@
     <QtMoc Include="StateWidget.h" />
     <QtMoc Include="SignalSend.h" />
     <QtMoc Include="ParamSettingWidget.h" />
+    <QtMoc Include="MovieWidget.h" />
+    <QtMoc Include="PlaybackPage.h" />
     <ClInclude Include="ProtocolDef.h" />
+    <QtMoc Include="RecordPage.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="resource1.h" />
     <QtMoc Include="SettingWidget.h" />

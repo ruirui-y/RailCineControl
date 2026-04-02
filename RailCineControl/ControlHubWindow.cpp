@@ -8,7 +8,7 @@
 #include <QListWidget>
 #include <QButtonGroup>
 #include "GameItem.h"
-#include "GameCenterWidget.h"
+#include "MovieWidget.h"
 #include "GameWidget.h"
 #include "SettingWidget.h"
 
@@ -91,9 +91,9 @@ ControlHubWindow::ControlHubWindow(QWidget* parent) : QWidget(parent)
     m_stack->setContentsMargins(0, 0, 0, 0);
     m_stack->setSpacing(0);
 
-    // Index 0: 宣传视频控制台 (原 GameCenterWidget)
-    GameCenterWidget* videoCenter = new GameCenterWidget(center);
-    m_stack->addWidget(videoCenter);
+    // Index 0: 影片播放窗口
+    MovieWidget* movie_widget = new MovieWidget(center);
+    m_stack->addWidget(movie_widget);
 
     // Index 1: 对战控制大厅 (原 GameWidget，里面包含了设备、玩法、对战等)
     GameWidget* gameControl = new GameWidget(center);

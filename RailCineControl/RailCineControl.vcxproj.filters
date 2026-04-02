@@ -60,12 +60,6 @@
     <Filter Include="Source Files\SELF_UI\StackPage">
       <UniqueIdentifier>{83c1026c-4fc5-4158-9af3-a23fb258c849}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\SELF_UI\StackPage\GameCenter">
-      <UniqueIdentifier>{7cba6c66-3081-49ff-8b48-47c4d52aecd1}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\SELF_UI\StackPage\GameCenter">
-      <UniqueIdentifier>{7ea37931-dfe7-4e64-a780-4188c29e515e}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\SELF_UI\GameList">
       <UniqueIdentifier>{42995295-f463-4617-b6d0-30b5733ec3cd}</UniqueIdentifier>
     </Filter>
@@ -101,6 +95,12 @@
     </Filter>
     <Filter Include="Source Files\Pb">
       <UniqueIdentifier>{418192f4-27ba-4b8e-9ae8-864e560c3d21}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\SELF_UI\StackPage\PlayMovie">
+      <UniqueIdentifier>{7ea37931-dfe7-4e64-a780-4188c29e515e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\SELF_UI\StackPage\PlayMovie">
+      <UniqueIdentifier>{7cba6c66-3081-49ff-8b48-47c4d52aecd1}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -169,9 +169,6 @@
     <ClCompile Include="CMDTools.cpp">
       <Filter>Source Files\Global</Filter>
     </ClCompile>
-    <ClCompile Include="GameCenterWidget.cpp">
-      <Filter>Source Files\SELF_UI\StackPage\GameCenter</Filter>
-    </ClCompile>
     <ClCompile Include="GameItem.cpp">
       <Filter>Source Files\SELF_UI\GameList</Filter>
     </ClCompile>
@@ -199,9 +196,6 @@
     <ClCompile Include="ThreadPool.cpp">
       <Filter>Source Files\ThreadPool</Filter>
     </ClCompile>
-    <ClCompile Include="GameModeWidget.cpp">
-      <Filter>Header Files\SELF_UI\StackPage\GameWidget</Filter>
-    </ClCompile>
     <ClCompile Include="ParamSettingWidget.cpp">
       <Filter>Source Files\SELF_UI\StackPage\Setting</Filter>
     </ClCompile>
@@ -220,18 +214,6 @@
     <ClCompile Include="UdpManager.cpp">
       <Filter>Source Files\UDP</Filter>
     </ClCompile>
-    <ClCompile Include="BattleWidget.cpp">
-      <Filter>Source Files\SELF_UI\StackPage\GameWidget</Filter>
-    </ClCompile>
-    <ClCompile Include="DeviceListWidget.cpp">
-      <Filter>Source Files\SELF_UI\StackPage\GameWidget</Filter>
-    </ClCompile>
-    <ClCompile Include="GameModeCard.cpp">
-      <Filter>Source Files\SELF_UI\StackPage\GameWidget</Filter>
-    </ClCompile>
-    <ClCompile Include="RankWidget.cpp">
-      <Filter>Source Files\SELF_UI\StackPage\GameWidget</Filter>
-    </ClCompile>
     <ClCompile Include="ParamSettingWidget.cpp">
       <Filter>Source Files\SELF_UI\StackPage\Setting</Filter>
     </ClCompile>
@@ -243,6 +225,21 @@
     </ClCompile>
     <ClCompile Include="AccountInfoWidget.cpp">
       <Filter>Source Files\SELF_UI\StackPage\Setting</Filter>
+    </ClCompile>
+    <ClCompile Include="MovieWidget.cpp">
+      <Filter>Source Files\SELF_UI\StackPage\PlayMovie</Filter>
+    </ClCompile>
+    <ClCompile Include="RecordPage.cpp">
+      <Filter>Header Files\SELF_UI\StackPage\PlayMovie</Filter>
+    </ClCompile>
+    <ClCompile Include="PlaybackPage.cpp">
+      <Filter>Header Files\SELF_UI\StackPage\PlayMovie</Filter>
+    </ClCompile>
+    <ClCompile Include="PlaybackPage.cpp">
+      <Filter>Source Files\SELF_UI\StackPage\PlayMovie</Filter>
+    </ClCompile>
+    <ClCompile Include="RecordPage.cpp">
+      <Filter>Source Files\SELF_UI\StackPage\PlayMovie</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -323,12 +320,6 @@
     <QtMoc Include="GameItem.h">
       <Filter>Header Files\SELF_UI\GameList</Filter>
     </QtMoc>
-    <QtMoc Include="GameCenterWidget.h">
-      <Filter>Header Files\SELF_UI\StackPage\GameCenter</Filter>
-    </QtMoc>
-    <QtMoc Include="GameCenterWidget.h">
-      <Filter>Header Files\SELF_UI\StackPage\GameCenter</Filter>
-    </QtMoc>
     <QtMoc Include="GameWidget.h">
       <Filter>Header Files\SELF_UI\StackPage\GameWidget</Filter>
     </QtMoc>
@@ -373,6 +364,18 @@
     </QtMoc>
     <QtMoc Include="AccountInfoWidget.h">
       <Filter>Header Files\SELF_UI\StackPage\Setting</Filter>
+    </QtMoc>
+    <QtMoc Include="MovieWidget.h">
+      <Filter>Header Files\SELF_UI\StackPage\PlayMovie</Filter>
+    </QtMoc>
+    <QtMoc Include="MovieWidget.h">
+      <Filter>Header Files\SELF_UI\StackPage\PlayMovie</Filter>
+    </QtMoc>
+    <QtMoc Include="RecordPage.h">
+      <Filter>Header Files\SELF_UI\StackPage\PlayMovie</Filter>
+    </QtMoc>
+    <QtMoc Include="PlaybackPage.h">
+      <Filter>Header Files\SELF_UI\StackPage\PlayMovie</Filter>
     </QtMoc>
   </ItemGroup>
   <ItemGroup>
