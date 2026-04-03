@@ -63,13 +63,11 @@ void RecordPage::BuildUI()
         u8"播放日期", u8"影片名称", u8"开始时间", u8"结束时间", u8"操作员", u8"结束类型"
         });
 
-    m_recordTable->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
-    m_recordTable->setAlternatingRowColors(true);
-    m_recordTable->setEditTriggers(QAbstractItemView::NoEditTriggers);
-    m_recordTable->setSelectionBehavior(QAbstractItemView::SelectRows);
-
-    // 👑 修复 UI 对齐的终极绝招：隐藏最左侧自带的行号表头！
-    m_recordTable->verticalHeader()->setVisible(false);
+    m_recordTable->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);                                      // 均匀分配宽度
+    m_recordTable->setAlternatingRowColors(true);                                                                       // 启用隔行变色
+    m_recordTable->setEditTriggers(QAbstractItemView::NoEditTriggers);                                                  // 禁止用户编辑表格内容
+    m_recordTable->setSelectionBehavior(QAbstractItemView::SelectRows);                                                 // 选择整行
+    m_recordTable->verticalHeader()->setVisible(false);                                                                 // 隐藏最左侧自带的行号表头
 
     layout->addLayout(filterLayout);
     layout->addWidget(m_recordTable, 1);
@@ -126,12 +124,20 @@ void RecordPage::AddRecordRow(const QString& date, const QString& name, const QS
 
 void RecordPage::InsertRowToUI(const QString& date, const QString& name, const QString& startTime, const QString& endTime, const QString& operatorName, const QString& endType) {
     m_recordTable->insertRow(0);
-    m_recordTable->setItem(0, 0, new QTableWidgetItem(date));
-    m_recordTable->setItem(0, 1, new QTableWidgetItem(name));
-    m_recordTable->setItem(0, 2, new QTableWidgetItem(startTime));
-    m_recordTable->setItem(0, 3, new QTableWidgetItem(endTime));
-    m_recordTable->setItem(0, 4, new QTableWidgetItem(operatorName));
-    QTableWidgetItem* typeItem = new QTableWidgetItem(endType);
+    
+    // 创建居中Item
+    auto createCenteredItem = [](const QString& text) -> QTableWidgetItem* {
+        QTableWidgetItem* item = new QTableWidgetItem(text);
+        item->setTextAlignment(Qt::AlignCenter);                                    // 强制文本水平垂直居中
+        return item;
+        };
+
+    m_recordTable->setItem(0, 0, createCenteredItem(date));
+    m_recordTable->setItem(0, 1, createCenteredItem(name));
+    m_recordTable->setItem(0, 2, createCenteredItem(startTime));
+    m_recordTable->setItem(0, 3, createCenteredItem(endTime));
+    m_recordTable->setItem(0, 4, createCenteredItem(operatorName));
+    QTableWidgetItem* typeItem = createCenteredItem(endType);
     if (endType == u8"强制结束") typeItem->setForeground(QColor("#FF4757"));
     m_recordTable->setItem(0, 5, typeItem);
 }

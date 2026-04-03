@@ -209,9 +209,6 @@
       <Filter>Source Files\ThreadPool</Filter>
     </ClCompile>
     <ClCompile Include="UdpManager.cpp">
-      <Filter>Header Files\UDP</Filter>
-    </ClCompile>
-    <ClCompile Include="UdpManager.cpp">
       <Filter>Source Files\UDP</Filter>
     </ClCompile>
     <ClCompile Include="ParamSettingWidget.cpp">
@@ -229,11 +226,14 @@
     <ClCompile Include="MovieWidget.cpp">
       <Filter>Source Files\SELF_UI\StackPage\PlayMovie</Filter>
     </ClCompile>
-    <ClCompile Include="RecordPage.cpp">
-      <Filter>Header Files\SELF_UI\StackPage\PlayMovie</Filter>
-    </ClCompile>
     <ClCompile Include="PlaybackPage.cpp">
-      <Filter>Header Files\SELF_UI\StackPage\PlayMovie</Filter>
+      <Filter>Source Files\SELF_UI\StackPage\PlayMovie</Filter>
+    </ClCompile>
+    <ClCompile Include="RecordPage.cpp">
+      <Filter>Source Files\SELF_UI\StackPage\PlayMovie</Filter>
+    </ClCompile>
+    <ClCompile Include="UdpManager.cpp">
+      <Filter>Source Files\UDP</Filter>
     </ClCompile>
     <ClCompile Include="PlaybackPage.cpp">
       <Filter>Source Files\SELF_UI\StackPage\PlayMovie</Filter>
