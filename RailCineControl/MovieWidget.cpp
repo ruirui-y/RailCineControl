@@ -51,6 +51,7 @@ void MovieWidget::BuildUI()
 
     m_stackedWidget->addWidget(m_playbackPage);
     m_stackedWidget->addWidget(m_recordPage);
+    m_stackedWidget->addWidget(m_uploadPage);
 
     rootLayout->addLayout(navLayout);
     rootLayout->addWidget(m_stackedWidget, 1);

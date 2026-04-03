@@ -6,6 +6,7 @@
 #include <QMessageBox>
 #include <QTimer>
 #include <QDebug>
+#include "TCPMgr.h"
 
 UploadPage::UploadPage(QWidget* parent) : QWidget(parent)
 {
@@ -175,14 +176,19 @@ void UploadPage::onUploadClicked()
     m_currentProgress = 0;
     m_progressBar->setValue(0);
 
-    // 💡 核心业务逻辑占位：
-    // 在这里，你应该开启一个 QThread 或者调用你封装的 HTTP 工具类：
-    // 1. 计算 m_videoPathEdit 文件的 MD5。
-    // 2. 检查秒传。如果无法秒传，则将物理文件 POST 上传至云盘 OSS。
-    // 3. 将表单数据 (m_nameEdit, desc, md5, OSS路径等) 组合成 JSON，发送给后端的 INSERT 接口。
+    // 3.上传
+    // 1. 组装 Protobuf 请求包
+    ServerApi::UploadMovieReq req;
+    req.set_movie_name(m_nameEdit->text().toStdString());
+    req.set_cover_url(m_coverPathEdit->text().toStdString());   // 实际中这里可能是上传到 OSS 后的网络 URL
+    req.set_video_url(m_videoPathEdit->text().toStdString());
+    req.set_description(m_descEdit->toPlainText().toStdString());
 
-    // 这里启动一个定时器模拟网络上传过程...
-    m_mockTimer->start(30);
+    TCPMgr::Instance()->SendProtoMsg(ServerApi::MsgId::ID_UPLOAD_MOVIE_REQ, req);
+
+    // 3. 锁定 UI，显示进度条...
+    m_btnUpload->setEnabled(false);
+    m_btnUpload->setText(u8"正在同步至服务器...");
 }
 
 void UploadPage::onSimulateProgress()
