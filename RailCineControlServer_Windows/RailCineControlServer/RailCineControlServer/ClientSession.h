@@ -48,6 +48,7 @@ private:
     QMap<ServerApi::MsgId, MsgHandler> m_router;                                // O(1) 极速路由分发映射表
 
     // --- 会话专属的业务数据 ---
+    int m_accountId;                                                            // 记录该会话绑定的客户账号 ID
     bool m_isLogined = false;                                                   // 标记该客户端是否已经通过账号验证
     QString m_username;                                                         // 记录该会话绑定的客户账号名称
 

@@ -57,9 +57,6 @@
     <Filter Include="Source Files\Log">
       <UniqueIdentifier>{7968fd10-fa91-4afb-93f7-f0503058aee7}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\Http">
-      <UniqueIdentifier>{dbbd5e19-a31d-46bc-af02-d1ca5314f896}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <QtRcc Include="ControlHubServer.qrc">
@@ -111,12 +108,6 @@
     </ClCompile>
     <ClCompile Include="TcpServer.cpp">
       <Filter>Source Files\TCP</Filter>
-    </ClCompile>
-    <ClCompile Include="HttpServer.cpp">
-      <Filter>Header Files\Http</Filter>
-    </ClCompile>
-    <ClCompile Include="HttpSession.cpp">
-      <Filter>Header Files\Http</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

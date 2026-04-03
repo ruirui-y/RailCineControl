@@ -4,6 +4,8 @@
 #include <QDebug>
 #include <QThread>
 #include <QTimer>
+#include <QDir>
+#include <QFile>
 #include "ThreadPool.h"
 
 #define CHECK_TIMEOUT                                                           10000
@@ -131,7 +133,7 @@ void ClientSession::InitHandlers()
 
             // 提取数据库里的数据
             const QVariantMap& row = results.first();
-            int accountId = row["id"].toInt();                                                                                      // 账号id
+            strongSelf->m_accountId = row["id"].toInt();                                                                            // 账号id
             QString dbPwd = row["password"].toString();                                                                             // 密码
             QString shopName = row["shop_name"].toString();                                                                         // 门店名
             QDateTime expireTime = row["expire_time"].toDateTime();                                                                 // 过期时间
@@ -178,7 +180,7 @@ void ClientSession::InitHandlers()
             // 4. 异步更新设备为“在线”状态，并刷新最后登录时间
             QString updateSql = "UPDATE sys_account SET is_online = 1, last_login_time = NOW() WHERE id = ?";
             QList<QVariant> updateParams;
-            updateParams << accountId;
+            updateParams << strongSelf->m_accountId;
 
             ThreadPool::Instance()->PostUpdateTask(updateSql, [](bool) {}, true, updateParams);
 
@@ -215,6 +217,195 @@ void ClientSession::InitHandlers()
 
                 // qDebug() << u8"[ClientSession] 已将账号活跃状态同步至数据库:" << m_username;
             }
+        };
+
+    // ------------------------------------------------------------------
+    // 处理客户端发来的 [分片上传请求]
+    // ------------------------------------------------------------------
+    m_router[ServerApi::ID_UPLOAD_CHUNK_REQ] = [this](const ServerApi::PacketHeader& header, const QByteArray& bodyData)
+        {
+            // 1. 解析请求 (使用智能指针包装，方便跨线程捕获)
+            auto req = std::make_shared<ServerApi::UploadChunkReq>();
+            if (!req->ParseFromArray(bodyData.data(), bodyData.size())) return;
+
+            uint64_t seq_id = header.seq_id();
+            QString fileMd5 = QString::fromStdString(req->file_md5());
+            std::weak_ptr<ClientSession> weakSelf = weak_from_this();
+
+            // 💡 定义一个通用的分片落盘 Lambda 函数，用于复用
+            auto saveChunkToDisk = [weakSelf](std::shared_ptr<ServerApi::UploadChunkReq> req, uint64_t seq_id) {
+                auto strongSelf = weakSelf.lock();
+                if (!strongSelf) return;
+
+                QString fileMd5 = QString::fromStdString(req->file_md5());
+                QString dirPath = "./UploadedAssets";
+                QDir().mkpath(dirPath);
+                QString filePath = dirPath + "/" + fileMd5 + ".mp4";
+
+                QFile file(filePath);
+                if (!file.open(QIODevice::ReadWrite)) {
+                    ServerApi::UploadChunkRsp emptyRsp;
+                    strongSelf->SendProtoMsg(ServerApi::ID_UPLOAD_CHUNK_RSP, emptyRsp, seq_id,
+                        ServerApi::ERR_FILE_IO_FAILED, u8"服务器磁盘写入失败");
+                    return;
+                }
+
+                file.seek(req->chunk_offset());
+                file.write(req->chunk_data().data(), req->chunk_data().size());
+                file.close();
+
+                // 回复确认
+                ServerApi::UploadChunkRsp rsp;
+                rsp.set_file_md5(req->file_md5());
+                rsp.set_chunk_index(req->chunk_index());
+                rsp.set_is_complete(req->is_last());
+                strongSelf->SendProtoMsg(ServerApi::ID_UPLOAD_CHUNK_RSP, rsp, seq_id);
+
+                if (req->is_last()) {
+                    qDebug() << u8"[ClientSession] 视频文件接收完毕，MD5:" << fileMd5;
+                }
+                };
+
+            // ==========================================================
+            // 👑 核心逻辑：如果是第一块分片，先查数据库判定“秒传”
+            // ==========================================================
+            if (req->chunk_index() == 0) {
+                QString sql = "SELECT id FROM t_movie_resource WHERE file_md5 = ?";
+                QList<QVariant> params;
+                params << fileMd5;
+
+                ThreadPool::Instance()->PostQueryTask(sql, [weakSelf, req, seq_id, saveChunkToDisk](const QList<QVariantMap>& results) {
+                    auto strongSelf = weakSelf.lock();
+                    if (!strongSelf) return;
+
+                    // A. 命中指纹库：数据库里已经有这个 MD5 了
+                    if (!results.isEmpty()) {
+                        qDebug() << u8"[ClientSession] 触发秒传机制，拦截上传，MD5:" << QString::fromStdString(req->file_md5());
+
+                        ServerApi::UploadChunkRsp rsp;
+                        rsp.set_file_md5(req->file_md5());
+                        rsp.set_is_complete(true); // 强行标记为已完成
+
+                        // 按照你的要求：返回错误码 ERR_MOVIE_EXISTS，并在 err_msg 填入提示
+                        // 客户端收到此错误后会停止 QTimer 抽水泵并进入下一管线
+                        strongSelf->SendProtoMsg(ServerApi::ID_UPLOAD_CHUNK_RSP, rsp, seq_id,
+                            ServerApi::ERR_MOVIE_EXISTS, u8"秒传成功：服务器已存在该资源。");
+                        return;
+                    }
+
+                    // B. 未命中：正常执行第一块的物理写入
+                    saveChunkToDisk(req, seq_id);
+
+                    }, true, params);
+            }
+            else {
+                // 非首块分片，直接落盘
+                saveChunkToDisk(req, seq_id);
+            }
+        };
+    // ------------------------------------------------------------------
+    // 处理客户端发来的 [影片元数据录入请求]
+    // ------------------------------------------------------------------
+    m_router[ServerApi::ID_UPLOAD_MOVIE_REQ] = [this](const ServerApi::PacketHeader& header, const QByteArray& bodyData)
+        {
+            uint64_t seq_id = header.seq_id();
+            ServerApi::UploadMovieReq req;
+            if (!req.ParseFromArray(bodyData.data(), bodyData.size())) return;
+
+            QString movieName = QString::fromStdString(req.movie_name());
+            QString desc = QString::fromStdString(req.description());
+            QString videoMd5 = QString::fromStdString(req.video_md5());
+            QString suffix = QString::fromStdString(req.cover_suffix());
+
+            QString dirPath = "./UploadedAssets";
+            QDir().mkpath(dirPath);
+
+            // 1. 海报图片直接落盘
+            QString coverPath = dirPath + "/" + videoMd5 + "_cover" + suffix;
+            QFile coverFile(coverPath);
+            if (coverFile.open(QIODevice::WriteOnly)) {
+                coverFile.write(req.cover_data().data(), req.cover_data().size());
+                coverFile.close();
+            }
+
+            QString videoPath = dirPath + "/" + videoMd5 + ".mp4";
+            qint64 fileSize = QFile(videoPath).size();
+
+            qDebug() << u8"[ClientSession] 准备录入影片配置:" << movieName << u8"文件大小:" << fileSize;
+
+            std::weak_ptr<ClientSession> weakSelf = weak_from_this();
+
+            // =========================================================================
+            // 🌊 异步瀑布流 Step 1：将物理信息插入全局资源池 (兼容秒传)
+            // =========================================================================
+            // 💡 使用 INSERT IGNORE：如果 MD5 已存在（触发 uk_file_md5 唯一约束），不会报错，而是平稳度过
+            QString sqlStep1 = "INSERT IGNORE INTO t_movie_resource "
+                "(file_md5, original_name, cover_url, video_url, description, file_size, duration_sec, upload_by, create_time) "
+                "VALUES (?, ?, ?, ?, ?, ?, 0, ?, NOW())";
+
+            QList<QVariant> paramsStep1;
+            paramsStep1 << videoMd5 << movieName << coverPath << videoPath << desc << fileSize << m_accountId;
+
+            ThreadPool::Instance()->PostUpdateTask(sqlStep1, [weakSelf, seq_id, movieName, videoMd5](bool success1) {
+                auto strongSelf1 = weakSelf.lock();
+                if (!strongSelf1) return;
+
+                if (!success1) {
+                    strongSelf1->SendProtoMsg(ServerApi::ID_UPLOAD_MOVIE_RSP, ServerApi::UploadMovieRsp(), seq_id, ServerApi::ERR_SERVER_INTERNAL, u8"全局资源池录入异常");
+                    return;
+                }
+
+                // =========================================================================
+                // 🌊 异步瀑布流 Step 2：查询刚才操作的影片在全局库中的 MovieID
+                // =========================================================================
+                QString sqlStep2 = "SELECT id FROM t_movie_resource WHERE file_md5 = ?";
+                QList<QVariant> paramsStep2;
+                paramsStep2 << videoMd5;
+
+                ThreadPool::Instance()->PostQueryTask(sqlStep2, [weakSelf, seq_id, movieName](const QList<QVariantMap>& results) {
+                    auto strongSelf2 = weakSelf.lock();
+                    if (!strongSelf2) return;
+
+                    if (results.isEmpty()) {
+                        strongSelf2->SendProtoMsg(ServerApi::ID_UPLOAD_MOVIE_RSP, ServerApi::UploadMovieRsp(), seq_id, ServerApi::ERR_SERVER_INTERNAL, u8"无法获取全局影片ID");
+                        return;
+                    }
+
+                    // 拿到真正的全局影片主键 ID！
+                    uint64_t movieId = results.first()["id"].toULongLong();
+
+                    // =========================================================================
+                    // 🌊 异步瀑布流 Step 3：将影片授权给当前用户 (存入 t_user_movie_rel)
+                    // =========================================================================
+                    // 💡 神级优化：使用 ON DUPLICATE KEY UPDATE。
+                    // 假设同一个用户上传了两次同一个视频，但第二次改了名，它会自动更新别名，而不报重复错误！
+                    QString sqlStep3 = "INSERT INTO t_user_movie_rel "
+                        "(user_id, movie_id, custom_name, play_status, sort_order, auth_status, create_time) "
+                        "VALUES (?, ?, ?, 0, 0, 1, NOW()) "
+                        "ON DUPLICATE KEY UPDATE custom_name = VALUES(custom_name)";
+
+                    QList<QVariant> paramsStep3;
+                    paramsStep3 << strongSelf2->m_accountId << movieId << movieName;
+
+                    ThreadPool::Instance()->PostUpdateTask(sqlStep3, [weakSelf, seq_id, movieName](bool success3) {
+                        auto strongSelf3 = weakSelf.lock();
+                        if (!strongSelf3) return;
+
+                        ServerApi::UploadMovieRsp rsp;
+                        if (success3) {
+                            qDebug() << u8"[ClientSession] 影片入库及私人库授权全部成功:" << movieName;
+                            strongSelf3->SendProtoMsg(ServerApi::ID_UPLOAD_MOVIE_RSP, rsp, seq_id);
+                        }
+                        else {
+                            qDebug() << u8"[ClientSession] 影片私人库授权失败:" << movieName;
+                            strongSelf3->SendProtoMsg(ServerApi::ID_UPLOAD_MOVIE_RSP, rsp, seq_id, ServerApi::ERR_SERVER_INTERNAL, u8"影片私人库授权绑定失败");
+                        }
+
+                        }, true, paramsStep3); // 结束 Step 3
+
+                    }, true, paramsStep2); // 结束 Step 2
+
+                }, true, paramsStep1); // 结束 Step 1
         };
 }
 

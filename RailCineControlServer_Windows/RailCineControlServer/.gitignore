@@ -7,6 +7,7 @@ Saved/
 .vscode/
 .vs/
 RailCineControlServer/x64
+RailCineControlServer/UploadedAssets
 ./x64
 *.xcworkspace
 *.v12.suo
