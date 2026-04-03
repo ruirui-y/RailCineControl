@@ -48,7 +48,7 @@ void MovieWidget::BuildUI()
 
     m_playbackPage = new PlaybackPage(this);                                // 实例化播控台
     m_recordPage = new RecordPage(this);                                    // 实例化记录台
-    m_uploadPage = new UploadPage(this);                        // 实例化影片上传窗口
+    m_uploadPage = new UploadPage(this);                                    // 实例化影片上传窗口
 
     m_stackedWidget->addWidget(m_playbackPage);
     m_stackedWidget->addWidget(m_recordPage);
@@ -81,7 +81,6 @@ void MovieWidget::BuildUI()
 
         // 3. 弹窗提示，并切回播放页面
         QMessageBox::information(this, u8"成功", u8"影片已成功录入云端！");
-        m_stackedWidget->setCurrentIndex(0);
         });
 
     // 监听底层的上传失败信号
@@ -90,7 +89,6 @@ void MovieWidget::BuildUI()
         m_uploadPage->UnlockUI();
         QMessageBox::critical(this, u8"上传失败", errMsg);
         });
-
 }
 
 void MovieWidget::onNavButtonClicked(int index)

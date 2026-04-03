@@ -242,7 +242,7 @@
       <Filter>Source Files\SELF_UI\StackPage\PlayMovie</Filter>
     </ClCompile>
     <ClCompile Include="UploadPage.cpp">
-      <Filter>Header Files\SELF_UI\StackPage\PlayMovie</Filter>
+      <Filter>Source Files\SELF_UI\StackPage\PlayMovie</Filter>
     </ClCompile>
     <ClCompile Include="UploadPage.cpp">
       <Filter>Source Files\SELF_UI\StackPage\PlayMovie</Filter>

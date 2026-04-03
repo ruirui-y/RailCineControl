@@ -7,6 +7,10 @@
 #include <QUuid>
 #include <QFileInfo>
 #include <QDebug>
+#include <QCoreApplication>
+#include <QPointer>
+#include <QCryptographicHash>
+#include "ThreadPool.h"
 #include "TCPMgr.h"
 
 UploadPage::UploadPage(QWidget* parent) : QWidget(parent)
@@ -17,6 +21,11 @@ UploadPage::UploadPage(QWidget* parent) : QWidget(parent)
 
     // 绑定抽水泵动作：每次定时器触发，就切一块发给 TCP
     connect(m_chunkPumpTimer, &QTimer::timeout, this, &UploadPage::pumpNextChunk);
+
+    // 收到服务器的安全回执后，才真正提交海报与文字表单！
+    connect(TCPMgr::Instance().get(), &TCPMgr::SigAllChunksAcked, this, [this]() {
+        submitMetadataToTcp();
+        });
 
     BuildUI();
 }
@@ -225,26 +234,76 @@ void UploadPage::onUploadClicked()
 // =========================================================================
 void UploadPage::startTcpChunkUpload()
 {
-    m_videoFile->setFileName(m_videoPathEdit->text());
-    if (!m_videoFile->open(QIODevice::ReadOnly))
-    {
-        UnlockUI();
-        QMessageBox::critical(this, u8"错误", u8"无法读取视频文件！");
-        return;
-    }
+    QString videoPath = m_videoPathEdit->text();
+    if (videoPath.isEmpty()) return;
 
-    // 1. 初始化切片状态
-    m_totalFileSize = m_videoFile->size();
-    m_currentOffset = 0;
-    m_chunkIndex = 0;
+    m_btnUpload->setText(u8"正在计算文件指纹，请稍候...");
 
-    // 💡 实战技巧：为了不卡死 UI，用 UUID 代替全量计算 MD5 来作为文件的唯一标识
-    m_currentFileMd5 = QUuid::createUuid().toString().remove("{").remove("}").remove("-");
+    // 🛡️ 防弹装甲：使用 QPointer 弱引用保护 UI 对象
+    // 如果算 MD5 的中途用户关掉了界面 (UploadPage 被析构)，QPointer 会自动变 nullptr，防止野指针崩溃！
+    QPointer<UploadPage> safeThis(this);
 
-    // 2. 开启抽水泵！(间隔 10 毫秒抽一次，配合下面的 1MB 块，理论最高速度约 100MB/s)
-    m_chunkPumpTimer->start(10);
+    // 🚀 核心跳跃：把 MD5 计算丢进你的泛型分发引擎 (丢入子线程)
+    ThreadPool::Instance()->DispatchToWorker([safeThis, videoPath]() 
+        {
+            // =================================================================
+            // [此时在子线程]：自己建个临时的 QFile 去读，绝不碰主线程的 m_videoFile
+            // =================================================================
+            QFile tempFile(videoPath);
+            QString md5Result;
+            bool calcSuccess = false;
+
+            if (tempFile.open(QIODevice::ReadOnly)) {
+                QCryptographicHash hash(QCryptographicHash::Md5);
+                if (hash.addData(&tempFile)) {
+                    md5Result = hash.result().toHex();
+                    calcSuccess = true;
+                }
+                tempFile.close();
+            }
+
+            // =================================================================
+            // [切回主线程]：算完之后，带着结果跳回主线程操作 UI 和启动定时器
+            // =================================================================
+            QMetaObject::invokeMethod(safeThis.data(), [safeThis, calcSuccess, md5Result, videoPath]() {
+                // 第一时间检查 UI 是否还活着
+                if (!safeThis) {
+                    qDebug() << u8"[UploadPage] 界面已销毁，放弃 MD5 后续动作。";
+                    return;
+                }
+
+                // A. 计算失败的情况
+                if (!calcSuccess) {
+                    safeThis->UnlockUI();
+                    QMessageBox::critical(safeThis, u8"错误", u8"文件指纹计算失败！文件可能被占用。");
+                    return;
+                }
+
+                // B. 计算成功，准备正式起飞！
+                safeThis->m_currentFileMd5 = md5Result;
+                qDebug() << u8"[UploadPage] 极速 MD5 计算完成:" << md5Result;
+
+                // 回到主线程了，安全地打开主线程专属的 m_videoFile
+                safeThis->m_videoFile->setFileName(videoPath);
+                if (!safeThis->m_videoFile->open(QIODevice::ReadOnly)) {
+                    safeThis->UnlockUI();
+                    QMessageBox::critical(safeThis, u8"错误", u8"无法读取视频文件！");
+                    return;
+                }
+
+                // 1. 初始化切片状态
+                safeThis->m_totalFileSize = safeThis->m_videoFile->size();
+                safeThis->m_currentOffset = 0;
+                safeThis->m_chunkIndex = 0;
+
+                safeThis->m_btnUpload->setText(u8"正在进行视频切片与上传 [1/2]...");
+
+                // 2. 轰鸣吧，抽水泵！
+                safeThis->m_chunkPumpTimer->start(10);
+
+                }, Qt::QueuedConnection);
+        });
 }
-
 // =========================================================================
 // ⚙️ 核心：抽水泵动作 (每次触发，切一块发送)
 // =========================================================================
@@ -281,8 +340,7 @@ void UploadPage::pumpNextChunk()
     if (isLast) {
         m_chunkPumpTimer->stop();
         m_videoFile->close();
-
-        submitMetadataToTcp();
+        m_btnUpload->setText(u8"视频数据已发送，等待服务器校验...");
     }
 }
 

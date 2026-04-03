@@ -112,26 +112,45 @@ void TCPMgr::InitHandlers()
         };
 
     // ------------------------------------------------------------------
-    // 💡 新增：注册 [上传影片响应] 的处理逻辑
+    // 注册 [分片上传响应 (ACK)] 的处理逻辑
     // ------------------------------------------------------------------
-    m_router[ServerApi::ID_UPLOAD_MOVIE_RSP] = [this](const ServerApi::PacketHeader& header, const QByteArray& bodyData) {
+    m_router[ServerApi::ID_UPLOAD_CHUNK_RSP] = [this](const ServerApi::PacketHeader& header, const QByteArray& bodyData) {
 
-        // 1. 检查有没有业务报错 (比如名称重复、权限不足等)
-        if (header.error_code() != ServerApi::ErrorCode::ERR_SUCCESS) 
-        {
-            qDebug() << u8"[TCPMgr] 上传失败:" << header.error_msg().c_str();
-            // 抛出失败信号，带上错误信息
+        // 1. 如果中间某块落盘失败（比如磁盘满了），直接终止上传流程
+        if (header.error_code() != ServerApi::ErrorCode::ERR_SUCCESS) {
+            qDebug() << u8"[TCPMgr] 分片上传致命错误:" << header.error_msg().c_str();
             emit SigUploadFailed(QString::fromStdString(header.error_msg()));
             return;
         }
 
-        // 2. 如果成功，解析服务端返回的 Body (可能包含新生成的影片库 ID)
-        ServerApi::UploadMovieRsp rsp;
-        if (rsp.ParseFromArray(bodyData.data(), bodyData.size()))
-        {
-            qDebug() << u8"[TCPMgr] 服务器成功记录影片! 新分配的 MovieID:" << rsp.new_movie_id();
+        // 2. 解析确认包
+        ServerApi::UploadChunkRsp rsp;
+        if (rsp.ParseFromArray(bodyData.data(), bodyData.size())) {
 
-            // 抛出成功信号
+            // 3. 👑 核心：服务端确认全部收到，通知 UI 开启最终录入管线！
+            if (rsp.is_complete()) {
+                qDebug() << u8"[TCPMgr] 收到服务端最终分片确认 (is_complete=true)";
+                emit SigAllChunksAcked();
+            }
+        }
+        };
+
+    // ------------------------------------------------------------------
+    // 注册 [影片元数据录入响应] 的处理逻辑
+    // ------------------------------------------------------------------
+    m_router[ServerApi::ID_UPLOAD_MOVIE_RSP] = [this](const ServerApi::PacketHeader& header, const QByteArray& bodyData) {
+
+        // 1. 检查有没有业务报错 (比如 MD5 重复)
+        if (header.error_code() != ServerApi::ErrorCode::ERR_SUCCESS) {
+            qDebug() << u8"[TCPMgr] 影片录入失败:" << header.error_msg().c_str();
+            emit SigUploadFailed(QString::fromStdString(header.error_msg()));
+            return;
+        }
+
+        // 2. 解析成功数据
+        ServerApi::UploadMovieRsp rsp;
+        if (rsp.ParseFromArray(bodyData.data(), bodyData.size())) {
+            qDebug() << u8"[TCPMgr] 影片完美录入云端! 数据库分配 ID:" << rsp.new_movie_id();
             emit SigUploadSuccess();
         }
         };
