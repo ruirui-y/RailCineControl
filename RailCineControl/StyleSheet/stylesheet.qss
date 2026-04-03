@@ -299,12 +299,11 @@ QPushButton#btnStop:disabled {
     background-color: #6A1A23;
     color: #888888;
 }
-
 /* ==========================================================
-   [模块 5]：MovieWidget - 影片播放与记录模块
+   [模块 5]：MovieWidget - 影片库与播控中心 (包含播放、记录、上传)
    ========================================================== */
 
-/* 5.1 顶部模块切换按钮 (播放台 / 记录台) */
+/* ---------------- 5.1 顶部导航栏 ---------------- */
 MovieWidget QToolButton#navBtn {
     color: #888899;
     font-size: 16px;
@@ -322,8 +321,9 @@ MovieWidget QToolButton#navBtn:checked {
     border-bottom: 2px solid #00E5FF; /* 选中时底部亮起青色霓虹线 */
 }
 
-/* 5.2 底部播控面板的按钮 (播放、暂停、快进等) */
-MovieWidget QPushButton#controlBtn {
+/* ---------------- 5.2 通用播控与操作按钮 ---------------- */
+/* 标准按钮 (播放、暂停、查询、导出等) */
+QPushButton#controlBtn {
     background-color: rgba(38, 38, 53, 200);
     border: 1px solid #333345;
     border-radius: 8px;
@@ -331,17 +331,36 @@ MovieWidget QPushButton#controlBtn {
     font-size: 14px;
     font-weight: bold;
 }
-MovieWidget QPushButton#controlBtn:hover {
+QPushButton#controlBtn:hover {
     background-color: #303040;
     border-color: #00E5FF;
     color: #00E5FF;
 }
-MovieWidget QPushButton#controlBtn:pressed {
+QPushButton#controlBtn:pressed {
     background-color: rgba(0, 229, 255, 50);
 }
 
-/* 5.3 倒计时 / 状态文本 */
-MovieWidget QLabel#statusLcd {
+/* 危险操作按钮 (专属：删除按钮) */
+QPushButton#btnDeleteDanger {
+    background-color: rgba(38, 38, 53, 200);
+    border: 1px solid #333345;
+    border-radius: 8px;
+    color: #FFFFFF;
+    font-size: 14px;
+    font-weight: bold;
+}
+QPushButton#btnDeleteDanger:hover {
+    background-color: #303040;
+    border-color: #FF4757; /* 悬浮时变红警告 */
+    color: #FF4757;
+}
+QPushButton#btnDeleteDanger:pressed {
+    background-color: rgba(255, 71, 87, 50);
+}
+
+/* ---------------- 5.3 播放台专属 (PlaybackPage) ---------------- */
+/* 倒计时 / 状态文本 */
+QLabel#statusLcd {
     color: #00E5FF;
     font-size: 24px;
     font-weight: bold;
@@ -352,22 +371,28 @@ MovieWidget QLabel#statusLcd {
     border: 1px solid #333345;
 }
 
-/* 5.4 播放记录的表格控件 (极简暗黑风) */
-MovieWidget QTableWidget {
+/* ---------------- 5.4 记录台专属 (RecordPage) ---------------- */
+/* 筛选区文本 */
+QLabel#recordFilterLabel {
+    color: #BBBBBB; 
+    font-weight: bold;
+}
+
+/* 播放记录的数据表格 */
+RecordPage QTableWidget {
     background-color: #161621;
-    alternate-background-color: #1A1A24; /* 交替行颜色 */
+    alternate-background-color: #1A1A24;
     color: #BBBBBB;
     border: 1px solid #333345;
     border-radius: 8px;
-    gridline-color: #262635; /* 网格线颜色 */
+    gridline-color: #262635;
     outline: none;
 }
-MovieWidget QTableWidget::item:selected {
+RecordPage QTableWidget::item:selected {
     background-color: rgba(0, 229, 255, 40);
     color: #FFFFFF;
 }
-/* 表头样式 */
-MovieWidget QHeaderView::section {
+RecordPage QHeaderView::section {
     background-color: #262635;
     color: #FFFFFF;
     font-weight: bold;
@@ -375,15 +400,86 @@ MovieWidget QHeaderView::section {
     border-bottom: 2px solid #333345;
     padding: 8px;
 }
-
-/* 5.5 日期选择器 */
-MovieWidget QDateEdit {
+RecordPage QDateEdit {
     background-color: #1A1A24;
     color: #FFFFFF;
     border: 1px solid #333345;
     border-radius: 4px;
     padding: 4px 8px;
 }
-MovieWidget QDateEdit::drop-down {
+RecordPage QDateEdit::drop-down {
     border: none;
+}
+
+/* ---------------- 5.5 上传台专属 (UploadPage) ---------------- */
+/* 海报预览框 */
+QLabel#coverPreviewArea {
+    background-color: #1A1A24; 
+    border: 2px dashed #333345; 
+    border-radius: 8px; 
+    color: #555566;
+}
+
+/* 表单标题 Label */
+QLabel#uploadLabelHighlight {
+    color: #00E5FF; 
+    font-weight: bold;
+}
+QLabel#uploadLabelNormal {
+    color: #BBBBBB; 
+    font-weight: bold;
+}
+
+/* 输入框通用 (单行与多行) */
+QLineEdit#uploadInput, QTextEdit#uploadDescInput {
+    background-color: #1A1A24; 
+    color: #FFFFFF; 
+    border: 1px solid #333345; 
+    border-radius: 4px;
+}
+QLineEdit#uploadInput {
+    padding-left: 8px;
+}
+QTextEdit#uploadDescInput {
+    padding: 8px;
+}
+
+/* 浏览文件小按钮 */
+QPushButton#browseBtn {
+    background-color: #262635; 
+    color: #FFFFFF; 
+    border: 1px solid #00E5FF; 
+    border-radius: 4px;
+}
+QPushButton#browseBtn:hover {
+    background-color: rgba(0, 229, 255, 30);
+}
+
+/* 巨型提交按钮 */
+QPushButton#uploadSubmitBtn {
+    background-color: rgba(0, 229, 255, 30); 
+    color: #00E5FF; 
+    border: 1px solid #00E5FF; 
+    border-radius: 8px; 
+    font-size: 16px; 
+    font-weight: bold;
+}
+QPushButton#uploadSubmitBtn:hover {
+    background-color: rgba(0, 229, 255, 60);
+}
+QPushButton#uploadSubmitBtn:disabled {
+    background-color: #262635;
+    color: #888899;
+    border-color: #333345;
+}
+
+/* 上传进度条 */
+QProgressBar#uploadProgress {
+    background-color: #1A1A24; 
+    border: 1px solid #333345; 
+    border-radius: 7px;
+}
+QProgressBar#uploadProgress::chunk {
+    background-color: #00E5FF; 
+    border-radius: 6px;
 }
