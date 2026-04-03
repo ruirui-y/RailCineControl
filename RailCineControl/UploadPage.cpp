@@ -4,15 +4,19 @@
 #include <QFormLayout>
 #include <QFileDialog>
 #include <QMessageBox>
-#include <QTimer>
+#include <QUuid>
+#include <QFileInfo>
 #include <QDebug>
 #include "TCPMgr.h"
 
 UploadPage::UploadPage(QWidget* parent) : QWidget(parent)
 {
-    m_currentProgress = 0;
-    m_mockTimer = new QTimer(this);
-    connect(m_mockTimer, &QTimer::timeout, this, &UploadPage::onSimulateProgress);
+    // 初始化抽水泵和文件指针
+    m_videoFile = new QFile(this);
+    m_chunkPumpTimer = new QTimer(this);
+
+    // 绑定抽水泵动作：每次定时器触发，就切一块发给 TCP
+    connect(m_chunkPumpTimer, &QTimer::timeout, this, &UploadPage::pumpNextChunk);
 
     BuildUI();
 }
@@ -166,9 +170,13 @@ void UploadPage::ResetUI()
 // -------------------------------------------------------------------------
 void UploadPage::UnlockUI()
 {
-    m_progressBar->setValue(0);                                                     // 进度条清零
-    m_btnUpload->setEnabled(true);                                                  // 按钮重新可用
-    m_btnUpload->setText(u8"🚀 开始上传并入库");                                     // 恢复按钮文字
+    m_progressBar->setValue(0);                                                             // 进度条清零
+    m_btnUpload->setEnabled(true);                                                          // 按钮重新可用
+    m_btnUpload->setText(u8"🚀 开始上传并入库");                                              // 恢复按钮文字
+    
+    // 如果失败了，记得关掉抽水泵和文件
+    m_chunkPumpTimer->stop();
+    if (m_videoFile->isOpen()) m_videoFile->close();
 }
 
 void UploadPage::onSelectVideo()
@@ -195,54 +203,114 @@ void UploadPage::onSelectCover()
     }
 }
 
+// =========================================================================
+// 🚀 点击上传：校验并启动切片管线
+// =========================================================================
 void UploadPage::onUploadClicked()
 {
-    // 1. 表单预校验
     if (m_videoPathEdit->text().isEmpty() || m_coverPathEdit->text().isEmpty() || m_nameEdit->text().isEmpty()) {
-        QMessageBox::warning(this, u8"提示", u8"请填写完整的影片信息（带 * 为必填项）！");
+        QMessageBox::warning(this, u8"提示", u8"请填写完整的影片信息！");
         return;
     }
 
-    // 2. 组装 Protobuf 请求包
-    ServerApi::UploadMovieReq req;
-    req.set_movie_name(m_nameEdit->text().toStdString());
-    req.set_cover_url(m_coverPathEdit->text().toStdString());   // 实际中这里可能是上传到 OSS 后的网络 URL
-    req.set_video_url(m_videoPathEdit->text().toStdString());
-    req.set_description(m_descEdit->toPlainText().toStdString());
-
-    // 3. 发送真实的 TCP 请求
-    TCPMgr::Instance()->SendProtoMsg(ServerApi::MsgId::ID_UPLOAD_MOVIE_REQ, req);
-
-    // 4. 锁定 UI，防止用户手抖连点
     m_btnUpload->setEnabled(false);
-    m_btnUpload->setText(u8"正在同步至服务器...");
+    m_btnUpload->setText(u8"正在进行视频切片与上传 [1/2]...");
+    m_progressBar->setValue(0);
 
-    // 进度条可以设为 50 或者跑个来回动画，这里暂时设为 50 代表请求已发出
-    m_progressBar->setValue(50);
-
-    // ⚠️ 注意：不要在这里弹窗或者 emit uploadFinished() 了！
-    // 成功或失败的处理，已经全权交给了 MovieWidget 里的 TCP 信号去触发 ResetUI() 和 UnlockUI()。
+    startTcpChunkUpload();
 }
 
-void UploadPage::onSimulateProgress()
+// =========================================================================
+// 📦 管线 1：启动切片引擎
+// =========================================================================
+void UploadPage::startTcpChunkUpload()
 {
-    m_currentProgress += 2;
-    m_progressBar->setValue(m_currentProgress);
-
-    if (m_currentProgress >= 100) {
-        m_mockTimer->stop();
-        m_btnUpload->setEnabled(true);
-        m_btnUpload->setText(u8"🚀 开始上传并入库");
-
-        QMessageBox::information(this, u8"成功", u8"影片已成功上传并同步至云端数据库！");
-
-        // 可选：清空表单准备下一次录入
-        m_videoPathEdit->clear();
-        m_coverPathEdit->clear();
-        m_nameEdit->clear();
-        m_descEdit->clear();
-        m_coverPreview->clear();
-        m_coverPreview->setText(u8"点击右侧选择图片");
-        m_progressBar->setValue(0);
+    m_videoFile->setFileName(m_videoPathEdit->text());
+    if (!m_videoFile->open(QIODevice::ReadOnly))
+    {
+        UnlockUI();
+        QMessageBox::critical(this, u8"错误", u8"无法读取视频文件！");
+        return;
     }
+
+    // 1. 初始化切片状态
+    m_totalFileSize = m_videoFile->size();
+    m_currentOffset = 0;
+    m_chunkIndex = 0;
+
+    // 💡 实战技巧：为了不卡死 UI，用 UUID 代替全量计算 MD5 来作为文件的唯一标识
+    m_currentFileMd5 = QUuid::createUuid().toString().remove("{").remove("}").remove("-");
+
+    // 2. 开启抽水泵！(间隔 10 毫秒抽一次，配合下面的 1MB 块，理论最高速度约 100MB/s)
+    m_chunkPumpTimer->start(10);
+}
+
+// =========================================================================
+// ⚙️ 核心：抽水泵动作 (每次触发，切一块发送)
+// =========================================================================
+void UploadPage::pumpNextChunk()
+{
+    if (!m_videoFile->isOpen() || m_videoFile->atEnd()) {
+        m_chunkPumpTimer->stop();
+        return;
+    }
+
+    // 1. 每次切取 1MB 数据 (1024 * 1024)
+    const int CHUNK_SIZE = 1034 * 1024;
+    QByteArray chunkData = m_videoFile->read(CHUNK_SIZE);
+
+    bool isLast = m_videoFile->atEnd();
+
+    // 2. 组装 Protobuf 切片请求
+    ServerApi::UploadChunkReq req;
+    req.set_file_md5(m_currentFileMd5.toStdString());
+    req.set_chunk_index(m_chunkIndex++);
+    req.set_chunk_offset(m_currentOffset);
+    req.set_chunk_data(chunkData.data(), chunkData.size());
+    req.set_is_last(isLast);
+
+    // 3. 扔给底层发送
+    TCPMgr::Instance()->SendProtoMsg(ServerApi::MsgId::ID_UPLOAD_CHUNK_REQ, req);
+
+    // 4. 更新进度与指针
+    m_currentOffset += chunkData.size();
+    int progress = (m_currentOffset * 100) / m_totalFileSize;
+    m_progressBar->setValue(progress);
+
+    // 5. 如果是最后一块，关闭文件，进入管线 2：发送海报和元数据
+    if (isLast) {
+        m_chunkPumpTimer->stop();
+        m_videoFile->close();
+
+        submitMetadataToTcp();
+    }
+}
+
+// =========================================================================
+// 📦 管线 2：视频传完后，一次性提交海报图片和表单信息
+// =========================================================================
+void UploadPage::submitMetadataToTcp()
+{
+    m_btnUpload->setText(u8"正在注册影片资源及海报 [2/2]...");
+    m_progressBar->setValue(100);
+
+    ServerApi::UploadMovieReq req;
+    req.set_movie_name(m_nameEdit->text().toStdString());
+    req.set_description(m_descEdit->toPlainText().toStdString());
+
+    // 把刚才上传视频的专属 ID 传过去，让服务器去关联硬盘上的文件
+    req.set_video_md5(m_currentFileMd5.toStdString());
+
+    // 👑 绝杀：直接读取海报图片的二进制数据！
+    QFileInfo coverInfo(m_coverPathEdit->text());
+    QFile coverFile(coverInfo.absoluteFilePath());
+    if (coverFile.open(QIODevice::ReadOnly)) {
+        QByteArray coverData = coverFile.readAll();                                             // 图片通常才几百KB，一口气读完没问题
+        req.set_cover_data(coverData.data(), coverData.size());
+        req.set_cover_suffix(coverInfo.suffix().prepend(".").toStdString());                    // 比如 ".jpg"
+        coverFile.close();
+    }
+
+    // 最终一击：把配置表单扔给服务器
+    TCPMgr::Instance()->SendProtoMsg(ServerApi::MsgId::ID_UPLOAD_MOVIE_REQ, req);
 }
