@@ -131,6 +131,7 @@
     <ClCompile Include="TipWidget.cpp" />
     <ClCompile Include="TitleBar.cpp" />
     <ClCompile Include="UdpManager.cpp" />
+    <ClCompile Include="UploadPage.cpp" />
     <ClCompile Include="UserMgr.cpp" />
     <ClCompile Include="WorkerThread.cpp" />
     <QtUic Include="HeroZoneWindow.ui" />
@@ -144,6 +145,7 @@
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <QtMoc Include="UploadPage.h" />
     <QtMoc Include="UdpManager.h" />
     <QtMoc Include="WorkerThread.h" />
     <QtMoc Include="ThreadPool.h" />

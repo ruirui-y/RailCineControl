@@ -241,6 +241,12 @@
     <ClCompile Include="RecordPage.cpp">
       <Filter>Source Files\SELF_UI\StackPage\PlayMovie</Filter>
     </ClCompile>
+    <ClCompile Include="UploadPage.cpp">
+      <Filter>Header Files\SELF_UI\StackPage\PlayMovie</Filter>
+    </ClCompile>
+    <ClCompile Include="UploadPage.cpp">
+      <Filter>Source Files\SELF_UI\StackPage\PlayMovie</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Enum.h">
@@ -375,6 +381,9 @@
       <Filter>Header Files\SELF_UI\StackPage\PlayMovie</Filter>
     </QtMoc>
     <QtMoc Include="PlaybackPage.h">
+      <Filter>Header Files\SELF_UI\StackPage\PlayMovie</Filter>
+    </QtMoc>
+    <QtMoc Include="UploadPage.h">
       <Filter>Header Files\SELF_UI\StackPage\PlayMovie</Filter>
     </QtMoc>
   </ItemGroup>

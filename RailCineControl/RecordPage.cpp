@@ -29,22 +29,21 @@ void RecordPage::BuildUI()
 
     // ================= 1. 筛选操作栏 =================
     QHBoxLayout* filterLayout = new QHBoxLayout();
-    filterLayout->setSpacing(15);                                                   // 💡 修复：增加全局间距，防止按钮挤压重叠
+    filterLayout->setSpacing(15);                                               // 💡 全局间距
 
     QLabel* dateLabel = new QLabel(u8"查询日期:", this);
-    dateLabel->setStyleSheet("color: #BBBBBB; font-weight: bold;");
+    dateLabel->setObjectName("recordFilterLabel");                              // 👑 绑定 QSS
 
     m_dateEdit = new QDateEdit(QDate::currentDate(), this);
     m_dateEdit->setCalendarPopup(true);
 
     QPushButton* btnSearch = new QPushButton(u8"🔍 查询", this);
     btnSearch->setObjectName("controlBtn");
-    btnSearch->setMinimumSize(90, 35);                                              // 💡 修复：改用 MinimumSize 让系统有弹性
+    btnSearch->setMinimumSize(90, 35);
 
     QPushButton* btnDelete = new QPushButton(u8"🗑️ 删除", this);
-    btnDelete->setObjectName("controlBtn");
+    btnDelete->setObjectName("btnDeleteDanger");                                // 👑 绑定专属危险红色 QSS
     btnDelete->setMinimumSize(90, 35);
-    btnDelete->setStyleSheet("QPushButton#controlBtn:hover { border-color: #FF4757; color: #FF4757; }");
 
     QPushButton* btnExport = new QPushButton(u8"📊 导出 Excel", this);
     btnExport->setObjectName("controlBtn");
@@ -63,11 +62,12 @@ void RecordPage::BuildUI()
         u8"播放日期", u8"影片名称", u8"开始时间", u8"结束时间", u8"操作员", u8"结束类型"
         });
 
-    m_recordTable->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);                                      // 均匀分配宽度
-    m_recordTable->setAlternatingRowColors(true);                                                                       // 启用隔行变色
-    m_recordTable->setEditTriggers(QAbstractItemView::NoEditTriggers);                                                  // 禁止用户编辑表格内容
-    m_recordTable->setSelectionBehavior(QAbstractItemView::SelectRows);                                                 // 选择整行
-    m_recordTable->verticalHeader()->setVisible(false);                                                                 // 隐藏最左侧自带的行号表头
+    m_recordTable->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
+    m_recordTable->setAlternatingRowColors(true);
+    m_recordTable->setEditTriggers(QAbstractItemView::NoEditTriggers);
+    m_recordTable->setSelectionBehavior(QAbstractItemView::SelectRows);
+    m_recordTable->verticalHeader()->setVisible(false);
+    m_recordTable->setFocusPolicy(Qt::NoFocus);                                 // 消除焦点虚线框
 
     layout->addLayout(filterLayout);
     layout->addWidget(m_recordTable, 1);
@@ -76,7 +76,6 @@ void RecordPage::BuildUI()
     connect(btnDelete, &QPushButton::clicked, this, &RecordPage::onDeleteClicked);
     connect(btnExport, &QPushButton::clicked, this, &RecordPage::onExportClicked);
 }
-
 // -------------------------------------------------------------------------
 // 核心加载引擎：支持按日期精准过滤
 // -------------------------------------------------------------------------
