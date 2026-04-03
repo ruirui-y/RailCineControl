@@ -138,6 +138,39 @@ void UploadPage::BuildUI()
     connect(m_btnUpload, &QPushButton::clicked, this, &UploadPage::onUploadClicked);
 }
 
+// -------------------------------------------------------------------------
+// 复位整个页面（上传成功后调用）
+// -------------------------------------------------------------------------
+void UploadPage::ResetUI()
+{
+    // 清空表单数据
+    m_videoPathEdit->clear();
+    m_coverPathEdit->clear();
+    m_nameEdit->clear();
+    m_descEdit->clear();
+
+    // 恢复海报预览区
+    m_coverPreview->clear();
+    m_coverPreview->setText(u8"点击右侧选择图片");
+
+    // 进度条归零
+    m_progressBar->setValue(0);
+
+    // 恢复按钮状态
+    m_btnUpload->setEnabled(true);
+    m_btnUpload->setText(u8"🚀 开始上传并入库");
+}
+
+// -------------------------------------------------------------------------
+// 仅解除锁定，保留用户填写的数据（上传失败后调用）
+// -------------------------------------------------------------------------
+void UploadPage::UnlockUI()
+{
+    m_progressBar->setValue(0);                                                     // 进度条清零
+    m_btnUpload->setEnabled(true);                                                  // 按钮重新可用
+    m_btnUpload->setText(u8"🚀 开始上传并入库");                                     // 恢复按钮文字
+}
+
 void UploadPage::onSelectVideo()
 {
     QString path = QFileDialog::getOpenFileName(this, u8"选择影片资源", "", u8"视频文件 (*.mp4 *.mkv *.avi)");
@@ -170,25 +203,25 @@ void UploadPage::onUploadClicked()
         return;
     }
 
-    // 2. 锁定 UI
-    m_btnUpload->setEnabled(false);
-    m_btnUpload->setText(u8"上传中，请稍候...");
-    m_currentProgress = 0;
-    m_progressBar->setValue(0);
-
-    // 3.上传
-    // 1. 组装 Protobuf 请求包
+    // 2. 组装 Protobuf 请求包
     ServerApi::UploadMovieReq req;
     req.set_movie_name(m_nameEdit->text().toStdString());
     req.set_cover_url(m_coverPathEdit->text().toStdString());   // 实际中这里可能是上传到 OSS 后的网络 URL
     req.set_video_url(m_videoPathEdit->text().toStdString());
     req.set_description(m_descEdit->toPlainText().toStdString());
 
+    // 3. 发送真实的 TCP 请求
     TCPMgr::Instance()->SendProtoMsg(ServerApi::MsgId::ID_UPLOAD_MOVIE_REQ, req);
 
-    // 3. 锁定 UI，显示进度条...
+    // 4. 锁定 UI，防止用户手抖连点
     m_btnUpload->setEnabled(false);
     m_btnUpload->setText(u8"正在同步至服务器...");
+
+    // 进度条可以设为 50 或者跑个来回动画，这里暂时设为 50 代表请求已发出
+    m_progressBar->setValue(50);
+
+    // ⚠️ 注意：不要在这里弹窗或者 emit uploadFinished() 了！
+    // 成功或失败的处理，已经全权交给了 MovieWidget 里的 TCP 信号去触发 ResetUI() 和 UnlockUI()。
 }
 
 void UploadPage::onSimulateProgress()
@@ -202,9 +235,6 @@ void UploadPage::onSimulateProgress()
         m_btnUpload->setText(u8"🚀 开始上传并入库");
 
         QMessageBox::information(this, u8"成功", u8"影片已成功上传并同步至云端数据库！");
-
-        // 👑 极其重要：发射信号，让外部大管家去通知 PlaybackPage 刷新列表
-        emit uploadFinished();
 
         // 可选：清空表单准备下一次录入
         m_videoPathEdit->clear();

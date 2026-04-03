@@ -5,6 +5,7 @@
 #include <QStackedWidget>
 #include "PlaybackPage.h"
 #include "RecordPage.h"
+#include "UploadPage.h"
 
 class MovieWidget : public QWidget
 {
@@ -22,6 +23,7 @@ private:
     QStackedWidget* m_stackedWidget;                                        // 堆栈容器
     PlaybackPage* m_playbackPage;                                           // 视频播控子模块
     RecordPage* m_recordPage;                                               // 数据记录子模块
+    UploadPage* m_uploadPage;                                               // 影片上传模块
 };
 
 #endif // MOVIEWIDGET_H

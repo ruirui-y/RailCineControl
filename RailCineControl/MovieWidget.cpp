@@ -3,8 +3,9 @@
 #include <QHBoxLayout>
 #include <QToolButton>
 #include <QButtonGroup>
+#include <QMessageBox>
 #include "UserMgr.h"
-#include "UploadPage.h"
+#include "TCPMgr.h"
 
 MovieWidget::MovieWidget(QWidget* parent) : QWidget(parent)
 {
@@ -47,7 +48,7 @@ void MovieWidget::BuildUI()
 
     m_playbackPage = new PlaybackPage(this);                                // 实例化播控台
     m_recordPage = new RecordPage(this);                                    // 实例化记录台
-    UploadPage* m_uploadPage = new UploadPage(this);                        // 实例化影片上传窗口
+    m_uploadPage = new UploadPage(this);                        // 实例化影片上传窗口
 
     m_stackedWidget->addWidget(m_playbackPage);
     m_stackedWidget->addWidget(m_recordPage);
@@ -69,14 +70,27 @@ void MovieWidget::BuildUI()
             m_recordPage->AddRecordRow(date, name, start, end, UserMgr::Instance()->getUserInfo().UserName, type);
         });
 
-    // =========================================================================
-    // 👑 核心数据桥梁 2：上传成功 -> 播放台刷新资源列表
-    // =========================================================================
-    connect(m_uploadPage, &UploadPage::uploadFinished,
-        this, [this]() {
-            m_playbackPage->RefreshMovies();                                    // 通知播放台重新拉取库数据
-            m_stackedWidget->setCurrentIndex(0);                                // 可选体验优化：上传完自动跳回播放页面查看成果
+    // 监听底层的上传成功信号
+    connect(TCPMgr::Instance().get(), &TCPMgr::SigUploadSuccess, this, [this]()
+        {
+        // 1. 通知 UploadPage 恢复按钮状态，清空输入框
+        m_uploadPage->ResetUI();                                                
+
+        // 2. 通知 PlaybackPage 重新去服务器拉取最新的影片列表
+        m_playbackPage->RefreshMovies();
+
+        // 3. 弹窗提示，并切回播放页面
+        QMessageBox::information(this, u8"成功", u8"影片已成功录入云端！");
+        m_stackedWidget->setCurrentIndex(0);
         });
+
+    // 监听底层的上传失败信号
+    connect(TCPMgr::Instance().get(), &TCPMgr::SigUploadFailed, this, [this](QString errMsg) {
+        // 恢复上传页面的按钮
+        m_uploadPage->UnlockUI();
+        QMessageBox::critical(this, u8"上传失败", errMsg);
+        });
+
 }
 
 void MovieWidget::onNavButtonClicked(int index)

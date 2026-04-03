@@ -111,7 +111,30 @@ void TCPMgr::InitHandlers()
         // qDebug() << "[TCPMgr] 收到服务器心跳回应";
         };
 
-    // 💡 以后增加新协议，只需在这里无脑加 m_router[ServerApi::新ID] = ... 即可！
+    // ------------------------------------------------------------------
+    // 💡 新增：注册 [上传影片响应] 的处理逻辑
+    // ------------------------------------------------------------------
+    m_router[ServerApi::ID_UPLOAD_MOVIE_RSP] = [this](const ServerApi::PacketHeader& header, const QByteArray& bodyData) {
+
+        // 1. 检查有没有业务报错 (比如名称重复、权限不足等)
+        if (header.error_code() != ServerApi::ErrorCode::ERR_SUCCESS) 
+        {
+            qDebug() << u8"[TCPMgr] 上传失败:" << header.error_msg().c_str();
+            // 抛出失败信号，带上错误信息
+            emit SigUploadFailed(QString::fromStdString(header.error_msg()));
+            return;
+        }
+
+        // 2. 如果成功，解析服务端返回的 Body (可能包含新生成的影片库 ID)
+        ServerApi::UploadMovieRsp rsp;
+        if (rsp.ParseFromArray(bodyData.data(), bodyData.size()))
+        {
+            qDebug() << u8"[TCPMgr] 服务器成功记录影片! 新分配的 MovieID:" << rsp.new_movie_id();
+
+            // 抛出成功信号
+            emit SigUploadSuccess();
+        }
+        };
 }
 
 // =========================================================================================

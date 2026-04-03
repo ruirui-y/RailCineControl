@@ -15,8 +15,9 @@ class UploadPage : public QWidget
 public:
     explicit UploadPage(QWidget* parent = nullptr);                                 // 构造函数
 
-signals:
-    void uploadFinished();                                                          // 核心信号：上传成功后抛出，通知播放台刷新
+public:
+    void ResetUI();                                                                 // 恢复初始状态并清空表单（用于上传成功）
+    void UnlockUI();
 
 private slots:
     void onSelectVideo();                                                           // 选择视频文件

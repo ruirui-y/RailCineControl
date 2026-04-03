@@ -45,9 +45,13 @@ signals:
     void SigConnectSuccess(bool bSuccess);                                                          // 连接成功，触发登录请求
     void SigConnectClose();                                                                         // 连接断开
 
-    // 登录与业务信号 (注意：移除了 JSON 参数，现在根据业务需要传具体的强类型)
+    // 登录与业务信号
     void SigLoginSuccess();                                                                         // 登陆成功
     void SigLoginFailed(int errorCode, QString msg);                                                // 登陆失败 (带上 Protobuf 传回来的错误码和提示)
+
+    // 影片上传业务
+    void SigUploadFailed(QString msg);
+    void SigUploadSuccess();
 
 private:
     TCPMgr(QObject* parent = nullptr);
