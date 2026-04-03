@@ -52,6 +52,12 @@ struct TableStruct_server_5fmsg_2eproto {
 extern const ::google::protobuf::internal::DescriptorTable
     descriptor_table_server_5fmsg_2eproto;
 namespace ServerApi {
+class GetMovieListReq;
+struct GetMovieListReqDefaultTypeInternal;
+extern GetMovieListReqDefaultTypeInternal _GetMovieListReq_default_instance_;
+class GetMovieListRsp;
+struct GetMovieListRspDefaultTypeInternal;
+extern GetMovieListRspDefaultTypeInternal _GetMovieListRsp_default_instance_;
 class Heartbeat;
 struct HeartbeatDefaultTypeInternal;
 extern HeartbeatDefaultTypeInternal _Heartbeat_default_instance_;
@@ -61,6 +67,15 @@ extern LoginReqDefaultTypeInternal _LoginReq_default_instance_;
 class LoginRsp;
 struct LoginRspDefaultTypeInternal;
 extern LoginRspDefaultTypeInternal _LoginRsp_default_instance_;
+class MovieInfo;
+struct MovieInfoDefaultTypeInternal;
+extern MovieInfoDefaultTypeInternal _MovieInfo_default_instance_;
+class UploadMovieReq;
+struct UploadMovieReqDefaultTypeInternal;
+extern UploadMovieReqDefaultTypeInternal _UploadMovieReq_default_instance_;
+class UploadMovieRsp;
+struct UploadMovieRspDefaultTypeInternal;
+extern UploadMovieRspDefaultTypeInternal _UploadMovieRsp_default_instance_;
 }  // namespace ServerApi
 namespace google {
 namespace protobuf {
@@ -72,6 +87,720 @@ namespace ServerApi {
 // ===================================================================
 
 
+// -------------------------------------------------------------------
+
+class UploadMovieRsp final : public ::google::protobuf::Message
+/* @@protoc_insertion_point(class_definition:ServerApi.UploadMovieRsp) */ {
+ public:
+  inline UploadMovieRsp() : UploadMovieRsp(nullptr) {}
+  ~UploadMovieRsp() PROTOBUF_FINAL;
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+  void operator delete(UploadMovieRsp* msg, std::destroying_delete_t) {
+    SharedDtor(*msg);
+    ::google::protobuf::internal::SizedDelete(msg, sizeof(UploadMovieRsp));
+  }
+#endif
+
+  template <typename = void>
+  explicit PROTOBUF_CONSTEXPR UploadMovieRsp(
+      ::google::protobuf::internal::ConstantInitialized);
+
+  inline UploadMovieRsp(const UploadMovieRsp& from) : UploadMovieRsp(nullptr, from) {}
+  inline UploadMovieRsp(UploadMovieRsp&& from) noexcept
+      : UploadMovieRsp(nullptr, std::move(from)) {}
+  inline UploadMovieRsp& operator=(const UploadMovieRsp& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline UploadMovieRsp& operator=(UploadMovieRsp&& from) noexcept {
+    if (this == &from) return *this;
+    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields()
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::google::protobuf::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::google::protobuf::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const UploadMovieRsp& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const UploadMovieRsp* internal_default_instance() {
+    return reinterpret_cast<const UploadMovieRsp*>(
+        &_UploadMovieRsp_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages = 4;
+  friend void swap(UploadMovieRsp& a, UploadMovieRsp& b) { a.Swap(&b); }
+  inline void Swap(UploadMovieRsp* other) {
+    if (other == this) return;
+    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(UploadMovieRsp* other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  UploadMovieRsp* New(::google::protobuf::Arena* arena = nullptr) const {
+    return ::google::protobuf::Message::DefaultConstruct<UploadMovieRsp>(arena);
+  }
+  using ::google::protobuf::Message::CopyFrom;
+  void CopyFrom(const UploadMovieRsp& from);
+  using ::google::protobuf::Message::MergeFrom;
+  void MergeFrom(const UploadMovieRsp& from) { UploadMovieRsp::MergeImpl(*this, from); }
+
+  private:
+  static void MergeImpl(
+      ::google::protobuf::MessageLite& to_msg,
+      const ::google::protobuf::MessageLite& from_msg);
+
+  public:
+  bool IsInitialized() const {
+    return true;
+  }
+  ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
+  #if defined(PROTOBUF_CUSTOM_VTABLE)
+  private:
+  static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
+  static ::uint8_t* _InternalSerialize(
+      const MessageLite& msg, ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream);
+
+  public:
+  ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+    return _InternalSerialize(*this, target, stream);
+  }
+  #else   // PROTOBUF_CUSTOM_VTABLE
+  ::size_t ByteSizeLong() const final;
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const final;
+  #endif  // PROTOBUF_CUSTOM_VTABLE
+  int GetCachedSize() const { return _impl_._cached_size_.Get(); }
+
+  private:
+  void SharedCtor(::google::protobuf::Arena* arena);
+  static void SharedDtor(MessageLite& self);
+  void InternalSwap(UploadMovieRsp* other);
+ private:
+  template <typename T>
+  friend ::absl::string_view(
+      ::google::protobuf::internal::GetAnyMessageName)();
+  static ::absl::string_view FullMessageName() { return "ServerApi.UploadMovieRsp"; }
+
+ protected:
+  explicit UploadMovieRsp(::google::protobuf::Arena* arena);
+  UploadMovieRsp(::google::protobuf::Arena* arena, const UploadMovieRsp& from);
+  UploadMovieRsp(::google::protobuf::Arena* arena, UploadMovieRsp&& from) noexcept
+      : UploadMovieRsp(arena) {
+    *this = ::std::move(from);
+  }
+  const ::google::protobuf::internal::ClassData* GetClassData() const PROTOBUF_FINAL;
+  static void* PlacementNew_(const void*, void* mem,
+                             ::google::protobuf::Arena* arena);
+  static constexpr auto InternalNewImpl_();
+  static const ::google::protobuf::internal::ClassDataFull _class_data_;
+
+ public:
+  ::google::protobuf::Metadata GetMetadata() const;
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+  enum : int {
+    kNewMovieIdFieldNumber = 1,
+  };
+  // uint64 new_movie_id = 1;
+  void clear_new_movie_id() ;
+  ::uint64_t new_movie_id() const;
+  void set_new_movie_id(::uint64_t value);
+
+  private:
+  ::uint64_t _internal_new_movie_id() const;
+  void _internal_set_new_movie_id(::uint64_t value);
+
+  public:
+  // @@protoc_insertion_point(class_scope:ServerApi.UploadMovieRsp)
+ private:
+  class _Internal;
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<
+      0, 1, 0,
+      0, 2>
+      _table_;
+
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+    inline explicit constexpr Impl_(
+        ::google::protobuf::internal::ConstantInitialized) noexcept;
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena);
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena, const Impl_& from,
+                          const UploadMovieRsp& from_msg);
+    ::uint64_t new_movie_id_;
+    ::google::protobuf::internal::CachedSize _cached_size_;
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_server_5fmsg_2eproto;
+};
+// -------------------------------------------------------------------
+
+class UploadMovieReq final : public ::google::protobuf::Message
+/* @@protoc_insertion_point(class_definition:ServerApi.UploadMovieReq) */ {
+ public:
+  inline UploadMovieReq() : UploadMovieReq(nullptr) {}
+  ~UploadMovieReq() PROTOBUF_FINAL;
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+  void operator delete(UploadMovieReq* msg, std::destroying_delete_t) {
+    SharedDtor(*msg);
+    ::google::protobuf::internal::SizedDelete(msg, sizeof(UploadMovieReq));
+  }
+#endif
+
+  template <typename = void>
+  explicit PROTOBUF_CONSTEXPR UploadMovieReq(
+      ::google::protobuf::internal::ConstantInitialized);
+
+  inline UploadMovieReq(const UploadMovieReq& from) : UploadMovieReq(nullptr, from) {}
+  inline UploadMovieReq(UploadMovieReq&& from) noexcept
+      : UploadMovieReq(nullptr, std::move(from)) {}
+  inline UploadMovieReq& operator=(const UploadMovieReq& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline UploadMovieReq& operator=(UploadMovieReq&& from) noexcept {
+    if (this == &from) return *this;
+    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields()
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::google::protobuf::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::google::protobuf::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const UploadMovieReq& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const UploadMovieReq* internal_default_instance() {
+    return reinterpret_cast<const UploadMovieReq*>(
+        &_UploadMovieReq_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages = 3;
+  friend void swap(UploadMovieReq& a, UploadMovieReq& b) { a.Swap(&b); }
+  inline void Swap(UploadMovieReq* other) {
+    if (other == this) return;
+    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(UploadMovieReq* other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  UploadMovieReq* New(::google::protobuf::Arena* arena = nullptr) const {
+    return ::google::protobuf::Message::DefaultConstruct<UploadMovieReq>(arena);
+  }
+  using ::google::protobuf::Message::CopyFrom;
+  void CopyFrom(const UploadMovieReq& from);
+  using ::google::protobuf::Message::MergeFrom;
+  void MergeFrom(const UploadMovieReq& from) { UploadMovieReq::MergeImpl(*this, from); }
+
+  private:
+  static void MergeImpl(
+      ::google::protobuf::MessageLite& to_msg,
+      const ::google::protobuf::MessageLite& from_msg);
+
+  public:
+  bool IsInitialized() const {
+    return true;
+  }
+  ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
+  #if defined(PROTOBUF_CUSTOM_VTABLE)
+  private:
+  static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
+  static ::uint8_t* _InternalSerialize(
+      const MessageLite& msg, ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream);
+
+  public:
+  ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+    return _InternalSerialize(*this, target, stream);
+  }
+  #else   // PROTOBUF_CUSTOM_VTABLE
+  ::size_t ByteSizeLong() const final;
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const final;
+  #endif  // PROTOBUF_CUSTOM_VTABLE
+  int GetCachedSize() const { return _impl_._cached_size_.Get(); }
+
+  private:
+  void SharedCtor(::google::protobuf::Arena* arena);
+  static void SharedDtor(MessageLite& self);
+  void InternalSwap(UploadMovieReq* other);
+ private:
+  template <typename T>
+  friend ::absl::string_view(
+      ::google::protobuf::internal::GetAnyMessageName)();
+  static ::absl::string_view FullMessageName() { return "ServerApi.UploadMovieReq"; }
+
+ protected:
+  explicit UploadMovieReq(::google::protobuf::Arena* arena);
+  UploadMovieReq(::google::protobuf::Arena* arena, const UploadMovieReq& from);
+  UploadMovieReq(::google::protobuf::Arena* arena, UploadMovieReq&& from) noexcept
+      : UploadMovieReq(arena) {
+    *this = ::std::move(from);
+  }
+  const ::google::protobuf::internal::ClassData* GetClassData() const PROTOBUF_FINAL;
+  static void* PlacementNew_(const void*, void* mem,
+                             ::google::protobuf::Arena* arena);
+  static constexpr auto InternalNewImpl_();
+  static const ::google::protobuf::internal::ClassDataFull _class_data_;
+
+ public:
+  ::google::protobuf::Metadata GetMetadata() const;
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+  enum : int {
+    kMovieNameFieldNumber = 1,
+    kCoverUrlFieldNumber = 2,
+    kVideoUrlFieldNumber = 3,
+    kDescriptionFieldNumber = 4,
+    kFileMd5FieldNumber = 5,
+  };
+  // string movie_name = 1;
+  void clear_movie_name() ;
+  const std::string& movie_name() const;
+  template <typename Arg_ = const std::string&, typename... Args_>
+  void set_movie_name(Arg_&& arg, Args_... args);
+  std::string* mutable_movie_name();
+  PROTOBUF_NODISCARD std::string* release_movie_name();
+  void set_allocated_movie_name(std::string* value);
+
+  private:
+  const std::string& _internal_movie_name() const;
+  inline PROTOBUF_ALWAYS_INLINE void _internal_set_movie_name(
+      const std::string& value);
+  std::string* _internal_mutable_movie_name();
+
+  public:
+  // string cover_url = 2;
+  void clear_cover_url() ;
+  const std::string& cover_url() const;
+  template <typename Arg_ = const std::string&, typename... Args_>
+  void set_cover_url(Arg_&& arg, Args_... args);
+  std::string* mutable_cover_url();
+  PROTOBUF_NODISCARD std::string* release_cover_url();
+  void set_allocated_cover_url(std::string* value);
+
+  private:
+  const std::string& _internal_cover_url() const;
+  inline PROTOBUF_ALWAYS_INLINE void _internal_set_cover_url(
+      const std::string& value);
+  std::string* _internal_mutable_cover_url();
+
+  public:
+  // string video_url = 3;
+  void clear_video_url() ;
+  const std::string& video_url() const;
+  template <typename Arg_ = const std::string&, typename... Args_>
+  void set_video_url(Arg_&& arg, Args_... args);
+  std::string* mutable_video_url();
+  PROTOBUF_NODISCARD std::string* release_video_url();
+  void set_allocated_video_url(std::string* value);
+
+  private:
+  const std::string& _internal_video_url() const;
+  inline PROTOBUF_ALWAYS_INLINE void _internal_set_video_url(
+      const std::string& value);
+  std::string* _internal_mutable_video_url();
+
+  public:
+  // string description = 4;
+  void clear_description() ;
+  const std::string& description() const;
+  template <typename Arg_ = const std::string&, typename... Args_>
+  void set_description(Arg_&& arg, Args_... args);
+  std::string* mutable_description();
+  PROTOBUF_NODISCARD std::string* release_description();
+  void set_allocated_description(std::string* value);
+
+  private:
+  const std::string& _internal_description() const;
+  inline PROTOBUF_ALWAYS_INLINE void _internal_set_description(
+      const std::string& value);
+  std::string* _internal_mutable_description();
+
+  public:
+  // string file_md5 = 5;
+  void clear_file_md5() ;
+  const std::string& file_md5() const;
+  template <typename Arg_ = const std::string&, typename... Args_>
+  void set_file_md5(Arg_&& arg, Args_... args);
+  std::string* mutable_file_md5();
+  PROTOBUF_NODISCARD std::string* release_file_md5();
+  void set_allocated_file_md5(std::string* value);
+
+  private:
+  const std::string& _internal_file_md5() const;
+  inline PROTOBUF_ALWAYS_INLINE void _internal_set_file_md5(
+      const std::string& value);
+  std::string* _internal_mutable_file_md5();
+
+  public:
+  // @@protoc_insertion_point(class_scope:ServerApi.UploadMovieReq)
+ private:
+  class _Internal;
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<
+      3, 5, 0,
+      80, 2>
+      _table_;
+
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+    inline explicit constexpr Impl_(
+        ::google::protobuf::internal::ConstantInitialized) noexcept;
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena);
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena, const Impl_& from,
+                          const UploadMovieReq& from_msg);
+    ::google::protobuf::internal::ArenaStringPtr movie_name_;
+    ::google::protobuf::internal::ArenaStringPtr cover_url_;
+    ::google::protobuf::internal::ArenaStringPtr video_url_;
+    ::google::protobuf::internal::ArenaStringPtr description_;
+    ::google::protobuf::internal::ArenaStringPtr file_md5_;
+    ::google::protobuf::internal::CachedSize _cached_size_;
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_server_5fmsg_2eproto;
+};
+// -------------------------------------------------------------------
+
+class MovieInfo final : public ::google::protobuf::Message
+/* @@protoc_insertion_point(class_definition:ServerApi.MovieInfo) */ {
+ public:
+  inline MovieInfo() : MovieInfo(nullptr) {}
+  ~MovieInfo() PROTOBUF_FINAL;
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+  void operator delete(MovieInfo* msg, std::destroying_delete_t) {
+    SharedDtor(*msg);
+    ::google::protobuf::internal::SizedDelete(msg, sizeof(MovieInfo));
+  }
+#endif
+
+  template <typename = void>
+  explicit PROTOBUF_CONSTEXPR MovieInfo(
+      ::google::protobuf::internal::ConstantInitialized);
+
+  inline MovieInfo(const MovieInfo& from) : MovieInfo(nullptr, from) {}
+  inline MovieInfo(MovieInfo&& from) noexcept
+      : MovieInfo(nullptr, std::move(from)) {}
+  inline MovieInfo& operator=(const MovieInfo& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline MovieInfo& operator=(MovieInfo&& from) noexcept {
+    if (this == &from) return *this;
+    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields()
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::google::protobuf::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::google::protobuf::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const MovieInfo& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const MovieInfo* internal_default_instance() {
+    return reinterpret_cast<const MovieInfo*>(
+        &_MovieInfo_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages = 5;
+  friend void swap(MovieInfo& a, MovieInfo& b) { a.Swap(&b); }
+  inline void Swap(MovieInfo* other) {
+    if (other == this) return;
+    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(MovieInfo* other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  MovieInfo* New(::google::protobuf::Arena* arena = nullptr) const {
+    return ::google::protobuf::Message::DefaultConstruct<MovieInfo>(arena);
+  }
+  using ::google::protobuf::Message::CopyFrom;
+  void CopyFrom(const MovieInfo& from);
+  using ::google::protobuf::Message::MergeFrom;
+  void MergeFrom(const MovieInfo& from) { MovieInfo::MergeImpl(*this, from); }
+
+  private:
+  static void MergeImpl(
+      ::google::protobuf::MessageLite& to_msg,
+      const ::google::protobuf::MessageLite& from_msg);
+
+  public:
+  bool IsInitialized() const {
+    return true;
+  }
+  ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
+  #if defined(PROTOBUF_CUSTOM_VTABLE)
+  private:
+  static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
+  static ::uint8_t* _InternalSerialize(
+      const MessageLite& msg, ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream);
+
+  public:
+  ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+    return _InternalSerialize(*this, target, stream);
+  }
+  #else   // PROTOBUF_CUSTOM_VTABLE
+  ::size_t ByteSizeLong() const final;
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const final;
+  #endif  // PROTOBUF_CUSTOM_VTABLE
+  int GetCachedSize() const { return _impl_._cached_size_.Get(); }
+
+  private:
+  void SharedCtor(::google::protobuf::Arena* arena);
+  static void SharedDtor(MessageLite& self);
+  void InternalSwap(MovieInfo* other);
+ private:
+  template <typename T>
+  friend ::absl::string_view(
+      ::google::protobuf::internal::GetAnyMessageName)();
+  static ::absl::string_view FullMessageName() { return "ServerApi.MovieInfo"; }
+
+ protected:
+  explicit MovieInfo(::google::protobuf::Arena* arena);
+  MovieInfo(::google::protobuf::Arena* arena, const MovieInfo& from);
+  MovieInfo(::google::protobuf::Arena* arena, MovieInfo&& from) noexcept
+      : MovieInfo(arena) {
+    *this = ::std::move(from);
+  }
+  const ::google::protobuf::internal::ClassData* GetClassData() const PROTOBUF_FINAL;
+  static void* PlacementNew_(const void*, void* mem,
+                             ::google::protobuf::Arena* arena);
+  static constexpr auto InternalNewImpl_();
+  static const ::google::protobuf::internal::ClassDataFull _class_data_;
+
+ public:
+  ::google::protobuf::Metadata GetMetadata() const;
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+  enum : int {
+    kMovieNameFieldNumber = 2,
+    kCoverUrlFieldNumber = 3,
+    kVideoUrlFieldNumber = 4,
+    kMovieIdFieldNumber = 1,
+    kPlayStatusFieldNumber = 5,
+  };
+  // string movie_name = 2;
+  void clear_movie_name() ;
+  const std::string& movie_name() const;
+  template <typename Arg_ = const std::string&, typename... Args_>
+  void set_movie_name(Arg_&& arg, Args_... args);
+  std::string* mutable_movie_name();
+  PROTOBUF_NODISCARD std::string* release_movie_name();
+  void set_allocated_movie_name(std::string* value);
+
+  private:
+  const std::string& _internal_movie_name() const;
+  inline PROTOBUF_ALWAYS_INLINE void _internal_set_movie_name(
+      const std::string& value);
+  std::string* _internal_mutable_movie_name();
+
+  public:
+  // string cover_url = 3;
+  void clear_cover_url() ;
+  const std::string& cover_url() const;
+  template <typename Arg_ = const std::string&, typename... Args_>
+  void set_cover_url(Arg_&& arg, Args_... args);
+  std::string* mutable_cover_url();
+  PROTOBUF_NODISCARD std::string* release_cover_url();
+  void set_allocated_cover_url(std::string* value);
+
+  private:
+  const std::string& _internal_cover_url() const;
+  inline PROTOBUF_ALWAYS_INLINE void _internal_set_cover_url(
+      const std::string& value);
+  std::string* _internal_mutable_cover_url();
+
+  public:
+  // string video_url = 4;
+  void clear_video_url() ;
+  const std::string& video_url() const;
+  template <typename Arg_ = const std::string&, typename... Args_>
+  void set_video_url(Arg_&& arg, Args_... args);
+  std::string* mutable_video_url();
+  PROTOBUF_NODISCARD std::string* release_video_url();
+  void set_allocated_video_url(std::string* value);
+
+  private:
+  const std::string& _internal_video_url() const;
+  inline PROTOBUF_ALWAYS_INLINE void _internal_set_video_url(
+      const std::string& value);
+  std::string* _internal_mutable_video_url();
+
+  public:
+  // uint64 movie_id = 1;
+  void clear_movie_id() ;
+  ::uint64_t movie_id() const;
+  void set_movie_id(::uint64_t value);
+
+  private:
+  ::uint64_t _internal_movie_id() const;
+  void _internal_set_movie_id(::uint64_t value);
+
+  public:
+  // int32 play_status = 5;
+  void clear_play_status() ;
+  ::int32_t play_status() const;
+  void set_play_status(::int32_t value);
+
+  private:
+  ::int32_t _internal_play_status() const;
+  void _internal_set_play_status(::int32_t value);
+
+  public:
+  // @@protoc_insertion_point(class_scope:ServerApi.MovieInfo)
+ private:
+  class _Internal;
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<
+      3, 5, 0,
+      56, 2>
+      _table_;
+
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+    inline explicit constexpr Impl_(
+        ::google::protobuf::internal::ConstantInitialized) noexcept;
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena);
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena, const Impl_& from,
+                          const MovieInfo& from_msg);
+    ::google::protobuf::internal::ArenaStringPtr movie_name_;
+    ::google::protobuf::internal::ArenaStringPtr cover_url_;
+    ::google::protobuf::internal::ArenaStringPtr video_url_;
+    ::uint64_t movie_id_;
+    ::int32_t play_status_;
+    ::google::protobuf::internal::CachedSize _cached_size_;
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_server_5fmsg_2eproto;
+};
 // -------------------------------------------------------------------
 
 class LoginRsp final : public ::google::protobuf::Message
@@ -684,6 +1413,405 @@ class Heartbeat final : public ::google::protobuf::Message
   union { Impl_ _impl_; };
   friend struct ::TableStruct_server_5fmsg_2eproto;
 };
+// -------------------------------------------------------------------
+
+class GetMovieListReq final : public ::google::protobuf::Message
+/* @@protoc_insertion_point(class_definition:ServerApi.GetMovieListReq) */ {
+ public:
+  inline GetMovieListReq() : GetMovieListReq(nullptr) {}
+  ~GetMovieListReq() PROTOBUF_FINAL;
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+  void operator delete(GetMovieListReq* msg, std::destroying_delete_t) {
+    SharedDtor(*msg);
+    ::google::protobuf::internal::SizedDelete(msg, sizeof(GetMovieListReq));
+  }
+#endif
+
+  template <typename = void>
+  explicit PROTOBUF_CONSTEXPR GetMovieListReq(
+      ::google::protobuf::internal::ConstantInitialized);
+
+  inline GetMovieListReq(const GetMovieListReq& from) : GetMovieListReq(nullptr, from) {}
+  inline GetMovieListReq(GetMovieListReq&& from) noexcept
+      : GetMovieListReq(nullptr, std::move(from)) {}
+  inline GetMovieListReq& operator=(const GetMovieListReq& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline GetMovieListReq& operator=(GetMovieListReq&& from) noexcept {
+    if (this == &from) return *this;
+    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields()
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::google::protobuf::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::google::protobuf::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const GetMovieListReq& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const GetMovieListReq* internal_default_instance() {
+    return reinterpret_cast<const GetMovieListReq*>(
+        &_GetMovieListReq_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages = 6;
+  friend void swap(GetMovieListReq& a, GetMovieListReq& b) { a.Swap(&b); }
+  inline void Swap(GetMovieListReq* other) {
+    if (other == this) return;
+    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(GetMovieListReq* other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  GetMovieListReq* New(::google::protobuf::Arena* arena = nullptr) const {
+    return ::google::protobuf::Message::DefaultConstruct<GetMovieListReq>(arena);
+  }
+  using ::google::protobuf::Message::CopyFrom;
+  void CopyFrom(const GetMovieListReq& from);
+  using ::google::protobuf::Message::MergeFrom;
+  void MergeFrom(const GetMovieListReq& from) { GetMovieListReq::MergeImpl(*this, from); }
+
+  private:
+  static void MergeImpl(
+      ::google::protobuf::MessageLite& to_msg,
+      const ::google::protobuf::MessageLite& from_msg);
+
+  public:
+  bool IsInitialized() const {
+    return true;
+  }
+  ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
+  #if defined(PROTOBUF_CUSTOM_VTABLE)
+  private:
+  static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
+  static ::uint8_t* _InternalSerialize(
+      const MessageLite& msg, ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream);
+
+  public:
+  ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+    return _InternalSerialize(*this, target, stream);
+  }
+  #else   // PROTOBUF_CUSTOM_VTABLE
+  ::size_t ByteSizeLong() const final;
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const final;
+  #endif  // PROTOBUF_CUSTOM_VTABLE
+  int GetCachedSize() const { return _impl_._cached_size_.Get(); }
+
+  private:
+  void SharedCtor(::google::protobuf::Arena* arena);
+  static void SharedDtor(MessageLite& self);
+  void InternalSwap(GetMovieListReq* other);
+ private:
+  template <typename T>
+  friend ::absl::string_view(
+      ::google::protobuf::internal::GetAnyMessageName)();
+  static ::absl::string_view FullMessageName() { return "ServerApi.GetMovieListReq"; }
+
+ protected:
+  explicit GetMovieListReq(::google::protobuf::Arena* arena);
+  GetMovieListReq(::google::protobuf::Arena* arena, const GetMovieListReq& from);
+  GetMovieListReq(::google::protobuf::Arena* arena, GetMovieListReq&& from) noexcept
+      : GetMovieListReq(arena) {
+    *this = ::std::move(from);
+  }
+  const ::google::protobuf::internal::ClassData* GetClassData() const PROTOBUF_FINAL;
+  static void* PlacementNew_(const void*, void* mem,
+                             ::google::protobuf::Arena* arena);
+  static constexpr auto InternalNewImpl_();
+  static const ::google::protobuf::internal::ClassDataFull _class_data_;
+
+ public:
+  ::google::protobuf::Metadata GetMetadata() const;
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+  enum : int {
+    kPageIndexFieldNumber = 1,
+    kPageSizeFieldNumber = 2,
+  };
+  // uint32 page_index = 1;
+  void clear_page_index() ;
+  ::uint32_t page_index() const;
+  void set_page_index(::uint32_t value);
+
+  private:
+  ::uint32_t _internal_page_index() const;
+  void _internal_set_page_index(::uint32_t value);
+
+  public:
+  // uint32 page_size = 2;
+  void clear_page_size() ;
+  ::uint32_t page_size() const;
+  void set_page_size(::uint32_t value);
+
+  private:
+  ::uint32_t _internal_page_size() const;
+  void _internal_set_page_size(::uint32_t value);
+
+  public:
+  // @@protoc_insertion_point(class_scope:ServerApi.GetMovieListReq)
+ private:
+  class _Internal;
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<
+      1, 2, 0,
+      0, 2>
+      _table_;
+
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+    inline explicit constexpr Impl_(
+        ::google::protobuf::internal::ConstantInitialized) noexcept;
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena);
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena, const Impl_& from,
+                          const GetMovieListReq& from_msg);
+    ::uint32_t page_index_;
+    ::uint32_t page_size_;
+    ::google::protobuf::internal::CachedSize _cached_size_;
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_server_5fmsg_2eproto;
+};
+// -------------------------------------------------------------------
+
+class GetMovieListRsp final : public ::google::protobuf::Message
+/* @@protoc_insertion_point(class_definition:ServerApi.GetMovieListRsp) */ {
+ public:
+  inline GetMovieListRsp() : GetMovieListRsp(nullptr) {}
+  ~GetMovieListRsp() PROTOBUF_FINAL;
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+  void operator delete(GetMovieListRsp* msg, std::destroying_delete_t) {
+    SharedDtor(*msg);
+    ::google::protobuf::internal::SizedDelete(msg, sizeof(GetMovieListRsp));
+  }
+#endif
+
+  template <typename = void>
+  explicit PROTOBUF_CONSTEXPR GetMovieListRsp(
+      ::google::protobuf::internal::ConstantInitialized);
+
+  inline GetMovieListRsp(const GetMovieListRsp& from) : GetMovieListRsp(nullptr, from) {}
+  inline GetMovieListRsp(GetMovieListRsp&& from) noexcept
+      : GetMovieListRsp(nullptr, std::move(from)) {}
+  inline GetMovieListRsp& operator=(const GetMovieListRsp& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline GetMovieListRsp& operator=(GetMovieListRsp&& from) noexcept {
+    if (this == &from) return *this;
+    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields()
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::google::protobuf::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::google::protobuf::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const GetMovieListRsp& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const GetMovieListRsp* internal_default_instance() {
+    return reinterpret_cast<const GetMovieListRsp*>(
+        &_GetMovieListRsp_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages = 7;
+  friend void swap(GetMovieListRsp& a, GetMovieListRsp& b) { a.Swap(&b); }
+  inline void Swap(GetMovieListRsp* other) {
+    if (other == this) return;
+    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(GetMovieListRsp* other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  GetMovieListRsp* New(::google::protobuf::Arena* arena = nullptr) const {
+    return ::google::protobuf::Message::DefaultConstruct<GetMovieListRsp>(arena);
+  }
+  using ::google::protobuf::Message::CopyFrom;
+  void CopyFrom(const GetMovieListRsp& from);
+  using ::google::protobuf::Message::MergeFrom;
+  void MergeFrom(const GetMovieListRsp& from) { GetMovieListRsp::MergeImpl(*this, from); }
+
+  private:
+  static void MergeImpl(
+      ::google::protobuf::MessageLite& to_msg,
+      const ::google::protobuf::MessageLite& from_msg);
+
+  public:
+  bool IsInitialized() const {
+    return true;
+  }
+  ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
+  #if defined(PROTOBUF_CUSTOM_VTABLE)
+  private:
+  static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
+  static ::uint8_t* _InternalSerialize(
+      const MessageLite& msg, ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream);
+
+  public:
+  ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+    return _InternalSerialize(*this, target, stream);
+  }
+  #else   // PROTOBUF_CUSTOM_VTABLE
+  ::size_t ByteSizeLong() const final;
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const final;
+  #endif  // PROTOBUF_CUSTOM_VTABLE
+  int GetCachedSize() const { return _impl_._cached_size_.Get(); }
+
+  private:
+  void SharedCtor(::google::protobuf::Arena* arena);
+  static void SharedDtor(MessageLite& self);
+  void InternalSwap(GetMovieListRsp* other);
+ private:
+  template <typename T>
+  friend ::absl::string_view(
+      ::google::protobuf::internal::GetAnyMessageName)();
+  static ::absl::string_view FullMessageName() { return "ServerApi.GetMovieListRsp"; }
+
+ protected:
+  explicit GetMovieListRsp(::google::protobuf::Arena* arena);
+  GetMovieListRsp(::google::protobuf::Arena* arena, const GetMovieListRsp& from);
+  GetMovieListRsp(::google::protobuf::Arena* arena, GetMovieListRsp&& from) noexcept
+      : GetMovieListRsp(arena) {
+    *this = ::std::move(from);
+  }
+  const ::google::protobuf::internal::ClassData* GetClassData() const PROTOBUF_FINAL;
+  static void* PlacementNew_(const void*, void* mem,
+                             ::google::protobuf::Arena* arena);
+  static constexpr auto InternalNewImpl_();
+  static const ::google::protobuf::internal::ClassDataFull _class_data_;
+
+ public:
+  ::google::protobuf::Metadata GetMetadata() const;
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+  enum : int {
+    kMoviesFieldNumber = 1,
+  };
+  // repeated .ServerApi.MovieInfo movies = 1;
+  int movies_size() const;
+  private:
+  int _internal_movies_size() const;
+
+  public:
+  void clear_movies() ;
+  ::ServerApi::MovieInfo* mutable_movies(int index);
+  ::google::protobuf::RepeatedPtrField<::ServerApi::MovieInfo>* mutable_movies();
+
+  private:
+  const ::google::protobuf::RepeatedPtrField<::ServerApi::MovieInfo>& _internal_movies() const;
+  ::google::protobuf::RepeatedPtrField<::ServerApi::MovieInfo>* _internal_mutable_movies();
+  public:
+  const ::ServerApi::MovieInfo& movies(int index) const;
+  ::ServerApi::MovieInfo* add_movies();
+  const ::google::protobuf::RepeatedPtrField<::ServerApi::MovieInfo>& movies() const;
+  // @@protoc_insertion_point(class_scope:ServerApi.GetMovieListRsp)
+ private:
+  class _Internal;
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<
+      0, 1, 1,
+      0, 2>
+      _table_;
+
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+    inline explicit constexpr Impl_(
+        ::google::protobuf::internal::ConstantInitialized) noexcept;
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena);
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena, const Impl_& from,
+                          const GetMovieListRsp& from_msg);
+    ::google::protobuf::RepeatedPtrField< ::ServerApi::MovieInfo > movies_;
+    ::google::protobuf::internal::CachedSize _cached_size_;
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_server_5fmsg_2eproto;
+};
 
 // ===================================================================
 
@@ -895,6 +2023,569 @@ inline ::int64_t Heartbeat::_internal_timestamp() const {
 inline void Heartbeat::_internal_set_timestamp(::int64_t value) {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.timestamp_ = value;
+}
+
+// -------------------------------------------------------------------
+
+// UploadMovieReq
+
+// string movie_name = 1;
+inline void UploadMovieReq::clear_movie_name() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.movie_name_.ClearToEmpty();
+}
+inline const std::string& UploadMovieReq::movie_name() const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:ServerApi.UploadMovieReq.movie_name)
+  return _internal_movie_name();
+}
+template <typename Arg_, typename... Args_>
+inline PROTOBUF_ALWAYS_INLINE void UploadMovieReq::set_movie_name(Arg_&& arg,
+                                                     Args_... args) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.movie_name_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
+  // @@protoc_insertion_point(field_set:ServerApi.UploadMovieReq.movie_name)
+}
+inline std::string* UploadMovieReq::mutable_movie_name() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  std::string* _s = _internal_mutable_movie_name();
+  // @@protoc_insertion_point(field_mutable:ServerApi.UploadMovieReq.movie_name)
+  return _s;
+}
+inline const std::string& UploadMovieReq::_internal_movie_name() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.movie_name_.Get();
+}
+inline void UploadMovieReq::_internal_set_movie_name(const std::string& value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.movie_name_.Set(value, GetArena());
+}
+inline std::string* UploadMovieReq::_internal_mutable_movie_name() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  return _impl_.movie_name_.Mutable( GetArena());
+}
+inline std::string* UploadMovieReq::release_movie_name() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:ServerApi.UploadMovieReq.movie_name)
+  return _impl_.movie_name_.Release();
+}
+inline void UploadMovieReq::set_allocated_movie_name(std::string* value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.movie_name_.SetAllocated(value, GetArena());
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() && _impl_.movie_name_.IsDefault()) {
+    _impl_.movie_name_.Set("", GetArena());
+  }
+  // @@protoc_insertion_point(field_set_allocated:ServerApi.UploadMovieReq.movie_name)
+}
+
+// string cover_url = 2;
+inline void UploadMovieReq::clear_cover_url() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.cover_url_.ClearToEmpty();
+}
+inline const std::string& UploadMovieReq::cover_url() const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:ServerApi.UploadMovieReq.cover_url)
+  return _internal_cover_url();
+}
+template <typename Arg_, typename... Args_>
+inline PROTOBUF_ALWAYS_INLINE void UploadMovieReq::set_cover_url(Arg_&& arg,
+                                                     Args_... args) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.cover_url_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
+  // @@protoc_insertion_point(field_set:ServerApi.UploadMovieReq.cover_url)
+}
+inline std::string* UploadMovieReq::mutable_cover_url() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  std::string* _s = _internal_mutable_cover_url();
+  // @@protoc_insertion_point(field_mutable:ServerApi.UploadMovieReq.cover_url)
+  return _s;
+}
+inline const std::string& UploadMovieReq::_internal_cover_url() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.cover_url_.Get();
+}
+inline void UploadMovieReq::_internal_set_cover_url(const std::string& value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.cover_url_.Set(value, GetArena());
+}
+inline std::string* UploadMovieReq::_internal_mutable_cover_url() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  return _impl_.cover_url_.Mutable( GetArena());
+}
+inline std::string* UploadMovieReq::release_cover_url() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:ServerApi.UploadMovieReq.cover_url)
+  return _impl_.cover_url_.Release();
+}
+inline void UploadMovieReq::set_allocated_cover_url(std::string* value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.cover_url_.SetAllocated(value, GetArena());
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() && _impl_.cover_url_.IsDefault()) {
+    _impl_.cover_url_.Set("", GetArena());
+  }
+  // @@protoc_insertion_point(field_set_allocated:ServerApi.UploadMovieReq.cover_url)
+}
+
+// string video_url = 3;
+inline void UploadMovieReq::clear_video_url() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.video_url_.ClearToEmpty();
+}
+inline const std::string& UploadMovieReq::video_url() const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:ServerApi.UploadMovieReq.video_url)
+  return _internal_video_url();
+}
+template <typename Arg_, typename... Args_>
+inline PROTOBUF_ALWAYS_INLINE void UploadMovieReq::set_video_url(Arg_&& arg,
+                                                     Args_... args) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.video_url_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
+  // @@protoc_insertion_point(field_set:ServerApi.UploadMovieReq.video_url)
+}
+inline std::string* UploadMovieReq::mutable_video_url() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  std::string* _s = _internal_mutable_video_url();
+  // @@protoc_insertion_point(field_mutable:ServerApi.UploadMovieReq.video_url)
+  return _s;
+}
+inline const std::string& UploadMovieReq::_internal_video_url() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.video_url_.Get();
+}
+inline void UploadMovieReq::_internal_set_video_url(const std::string& value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.video_url_.Set(value, GetArena());
+}
+inline std::string* UploadMovieReq::_internal_mutable_video_url() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  return _impl_.video_url_.Mutable( GetArena());
+}
+inline std::string* UploadMovieReq::release_video_url() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:ServerApi.UploadMovieReq.video_url)
+  return _impl_.video_url_.Release();
+}
+inline void UploadMovieReq::set_allocated_video_url(std::string* value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.video_url_.SetAllocated(value, GetArena());
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() && _impl_.video_url_.IsDefault()) {
+    _impl_.video_url_.Set("", GetArena());
+  }
+  // @@protoc_insertion_point(field_set_allocated:ServerApi.UploadMovieReq.video_url)
+}
+
+// string description = 4;
+inline void UploadMovieReq::clear_description() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.description_.ClearToEmpty();
+}
+inline const std::string& UploadMovieReq::description() const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:ServerApi.UploadMovieReq.description)
+  return _internal_description();
+}
+template <typename Arg_, typename... Args_>
+inline PROTOBUF_ALWAYS_INLINE void UploadMovieReq::set_description(Arg_&& arg,
+                                                     Args_... args) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.description_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
+  // @@protoc_insertion_point(field_set:ServerApi.UploadMovieReq.description)
+}
+inline std::string* UploadMovieReq::mutable_description() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  std::string* _s = _internal_mutable_description();
+  // @@protoc_insertion_point(field_mutable:ServerApi.UploadMovieReq.description)
+  return _s;
+}
+inline const std::string& UploadMovieReq::_internal_description() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.description_.Get();
+}
+inline void UploadMovieReq::_internal_set_description(const std::string& value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.description_.Set(value, GetArena());
+}
+inline std::string* UploadMovieReq::_internal_mutable_description() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  return _impl_.description_.Mutable( GetArena());
+}
+inline std::string* UploadMovieReq::release_description() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:ServerApi.UploadMovieReq.description)
+  return _impl_.description_.Release();
+}
+inline void UploadMovieReq::set_allocated_description(std::string* value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.description_.SetAllocated(value, GetArena());
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() && _impl_.description_.IsDefault()) {
+    _impl_.description_.Set("", GetArena());
+  }
+  // @@protoc_insertion_point(field_set_allocated:ServerApi.UploadMovieReq.description)
+}
+
+// string file_md5 = 5;
+inline void UploadMovieReq::clear_file_md5() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.file_md5_.ClearToEmpty();
+}
+inline const std::string& UploadMovieReq::file_md5() const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:ServerApi.UploadMovieReq.file_md5)
+  return _internal_file_md5();
+}
+template <typename Arg_, typename... Args_>
+inline PROTOBUF_ALWAYS_INLINE void UploadMovieReq::set_file_md5(Arg_&& arg,
+                                                     Args_... args) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.file_md5_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
+  // @@protoc_insertion_point(field_set:ServerApi.UploadMovieReq.file_md5)
+}
+inline std::string* UploadMovieReq::mutable_file_md5() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  std::string* _s = _internal_mutable_file_md5();
+  // @@protoc_insertion_point(field_mutable:ServerApi.UploadMovieReq.file_md5)
+  return _s;
+}
+inline const std::string& UploadMovieReq::_internal_file_md5() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.file_md5_.Get();
+}
+inline void UploadMovieReq::_internal_set_file_md5(const std::string& value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.file_md5_.Set(value, GetArena());
+}
+inline std::string* UploadMovieReq::_internal_mutable_file_md5() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  return _impl_.file_md5_.Mutable( GetArena());
+}
+inline std::string* UploadMovieReq::release_file_md5() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:ServerApi.UploadMovieReq.file_md5)
+  return _impl_.file_md5_.Release();
+}
+inline void UploadMovieReq::set_allocated_file_md5(std::string* value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.file_md5_.SetAllocated(value, GetArena());
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() && _impl_.file_md5_.IsDefault()) {
+    _impl_.file_md5_.Set("", GetArena());
+  }
+  // @@protoc_insertion_point(field_set_allocated:ServerApi.UploadMovieReq.file_md5)
+}
+
+// -------------------------------------------------------------------
+
+// UploadMovieRsp
+
+// uint64 new_movie_id = 1;
+inline void UploadMovieRsp::clear_new_movie_id() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.new_movie_id_ = ::uint64_t{0u};
+}
+inline ::uint64_t UploadMovieRsp::new_movie_id() const {
+  // @@protoc_insertion_point(field_get:ServerApi.UploadMovieRsp.new_movie_id)
+  return _internal_new_movie_id();
+}
+inline void UploadMovieRsp::set_new_movie_id(::uint64_t value) {
+  _internal_set_new_movie_id(value);
+  // @@protoc_insertion_point(field_set:ServerApi.UploadMovieRsp.new_movie_id)
+}
+inline ::uint64_t UploadMovieRsp::_internal_new_movie_id() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.new_movie_id_;
+}
+inline void UploadMovieRsp::_internal_set_new_movie_id(::uint64_t value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.new_movie_id_ = value;
+}
+
+// -------------------------------------------------------------------
+
+// MovieInfo
+
+// uint64 movie_id = 1;
+inline void MovieInfo::clear_movie_id() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.movie_id_ = ::uint64_t{0u};
+}
+inline ::uint64_t MovieInfo::movie_id() const {
+  // @@protoc_insertion_point(field_get:ServerApi.MovieInfo.movie_id)
+  return _internal_movie_id();
+}
+inline void MovieInfo::set_movie_id(::uint64_t value) {
+  _internal_set_movie_id(value);
+  // @@protoc_insertion_point(field_set:ServerApi.MovieInfo.movie_id)
+}
+inline ::uint64_t MovieInfo::_internal_movie_id() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.movie_id_;
+}
+inline void MovieInfo::_internal_set_movie_id(::uint64_t value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.movie_id_ = value;
+}
+
+// string movie_name = 2;
+inline void MovieInfo::clear_movie_name() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.movie_name_.ClearToEmpty();
+}
+inline const std::string& MovieInfo::movie_name() const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:ServerApi.MovieInfo.movie_name)
+  return _internal_movie_name();
+}
+template <typename Arg_, typename... Args_>
+inline PROTOBUF_ALWAYS_INLINE void MovieInfo::set_movie_name(Arg_&& arg,
+                                                     Args_... args) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.movie_name_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
+  // @@protoc_insertion_point(field_set:ServerApi.MovieInfo.movie_name)
+}
+inline std::string* MovieInfo::mutable_movie_name() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  std::string* _s = _internal_mutable_movie_name();
+  // @@protoc_insertion_point(field_mutable:ServerApi.MovieInfo.movie_name)
+  return _s;
+}
+inline const std::string& MovieInfo::_internal_movie_name() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.movie_name_.Get();
+}
+inline void MovieInfo::_internal_set_movie_name(const std::string& value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.movie_name_.Set(value, GetArena());
+}
+inline std::string* MovieInfo::_internal_mutable_movie_name() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  return _impl_.movie_name_.Mutable( GetArena());
+}
+inline std::string* MovieInfo::release_movie_name() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:ServerApi.MovieInfo.movie_name)
+  return _impl_.movie_name_.Release();
+}
+inline void MovieInfo::set_allocated_movie_name(std::string* value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.movie_name_.SetAllocated(value, GetArena());
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() && _impl_.movie_name_.IsDefault()) {
+    _impl_.movie_name_.Set("", GetArena());
+  }
+  // @@protoc_insertion_point(field_set_allocated:ServerApi.MovieInfo.movie_name)
+}
+
+// string cover_url = 3;
+inline void MovieInfo::clear_cover_url() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.cover_url_.ClearToEmpty();
+}
+inline const std::string& MovieInfo::cover_url() const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:ServerApi.MovieInfo.cover_url)
+  return _internal_cover_url();
+}
+template <typename Arg_, typename... Args_>
+inline PROTOBUF_ALWAYS_INLINE void MovieInfo::set_cover_url(Arg_&& arg,
+                                                     Args_... args) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.cover_url_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
+  // @@protoc_insertion_point(field_set:ServerApi.MovieInfo.cover_url)
+}
+inline std::string* MovieInfo::mutable_cover_url() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  std::string* _s = _internal_mutable_cover_url();
+  // @@protoc_insertion_point(field_mutable:ServerApi.MovieInfo.cover_url)
+  return _s;
+}
+inline const std::string& MovieInfo::_internal_cover_url() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.cover_url_.Get();
+}
+inline void MovieInfo::_internal_set_cover_url(const std::string& value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.cover_url_.Set(value, GetArena());
+}
+inline std::string* MovieInfo::_internal_mutable_cover_url() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  return _impl_.cover_url_.Mutable( GetArena());
+}
+inline std::string* MovieInfo::release_cover_url() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:ServerApi.MovieInfo.cover_url)
+  return _impl_.cover_url_.Release();
+}
+inline void MovieInfo::set_allocated_cover_url(std::string* value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.cover_url_.SetAllocated(value, GetArena());
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() && _impl_.cover_url_.IsDefault()) {
+    _impl_.cover_url_.Set("", GetArena());
+  }
+  // @@protoc_insertion_point(field_set_allocated:ServerApi.MovieInfo.cover_url)
+}
+
+// string video_url = 4;
+inline void MovieInfo::clear_video_url() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.video_url_.ClearToEmpty();
+}
+inline const std::string& MovieInfo::video_url() const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:ServerApi.MovieInfo.video_url)
+  return _internal_video_url();
+}
+template <typename Arg_, typename... Args_>
+inline PROTOBUF_ALWAYS_INLINE void MovieInfo::set_video_url(Arg_&& arg,
+                                                     Args_... args) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.video_url_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
+  // @@protoc_insertion_point(field_set:ServerApi.MovieInfo.video_url)
+}
+inline std::string* MovieInfo::mutable_video_url() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  std::string* _s = _internal_mutable_video_url();
+  // @@protoc_insertion_point(field_mutable:ServerApi.MovieInfo.video_url)
+  return _s;
+}
+inline const std::string& MovieInfo::_internal_video_url() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.video_url_.Get();
+}
+inline void MovieInfo::_internal_set_video_url(const std::string& value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.video_url_.Set(value, GetArena());
+}
+inline std::string* MovieInfo::_internal_mutable_video_url() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  return _impl_.video_url_.Mutable( GetArena());
+}
+inline std::string* MovieInfo::release_video_url() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:ServerApi.MovieInfo.video_url)
+  return _impl_.video_url_.Release();
+}
+inline void MovieInfo::set_allocated_video_url(std::string* value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.video_url_.SetAllocated(value, GetArena());
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() && _impl_.video_url_.IsDefault()) {
+    _impl_.video_url_.Set("", GetArena());
+  }
+  // @@protoc_insertion_point(field_set_allocated:ServerApi.MovieInfo.video_url)
+}
+
+// int32 play_status = 5;
+inline void MovieInfo::clear_play_status() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.play_status_ = 0;
+}
+inline ::int32_t MovieInfo::play_status() const {
+  // @@protoc_insertion_point(field_get:ServerApi.MovieInfo.play_status)
+  return _internal_play_status();
+}
+inline void MovieInfo::set_play_status(::int32_t value) {
+  _internal_set_play_status(value);
+  // @@protoc_insertion_point(field_set:ServerApi.MovieInfo.play_status)
+}
+inline ::int32_t MovieInfo::_internal_play_status() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.play_status_;
+}
+inline void MovieInfo::_internal_set_play_status(::int32_t value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.play_status_ = value;
+}
+
+// -------------------------------------------------------------------
+
+// GetMovieListReq
+
+// uint32 page_index = 1;
+inline void GetMovieListReq::clear_page_index() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.page_index_ = 0u;
+}
+inline ::uint32_t GetMovieListReq::page_index() const {
+  // @@protoc_insertion_point(field_get:ServerApi.GetMovieListReq.page_index)
+  return _internal_page_index();
+}
+inline void GetMovieListReq::set_page_index(::uint32_t value) {
+  _internal_set_page_index(value);
+  // @@protoc_insertion_point(field_set:ServerApi.GetMovieListReq.page_index)
+}
+inline ::uint32_t GetMovieListReq::_internal_page_index() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.page_index_;
+}
+inline void GetMovieListReq::_internal_set_page_index(::uint32_t value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.page_index_ = value;
+}
+
+// uint32 page_size = 2;
+inline void GetMovieListReq::clear_page_size() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.page_size_ = 0u;
+}
+inline ::uint32_t GetMovieListReq::page_size() const {
+  // @@protoc_insertion_point(field_get:ServerApi.GetMovieListReq.page_size)
+  return _internal_page_size();
+}
+inline void GetMovieListReq::set_page_size(::uint32_t value) {
+  _internal_set_page_size(value);
+  // @@protoc_insertion_point(field_set:ServerApi.GetMovieListReq.page_size)
+}
+inline ::uint32_t GetMovieListReq::_internal_page_size() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.page_size_;
+}
+inline void GetMovieListReq::_internal_set_page_size(::uint32_t value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.page_size_ = value;
+}
+
+// -------------------------------------------------------------------
+
+// GetMovieListRsp
+
+// repeated .ServerApi.MovieInfo movies = 1;
+inline int GetMovieListRsp::_internal_movies_size() const {
+  return _internal_movies().size();
+}
+inline int GetMovieListRsp::movies_size() const {
+  return _internal_movies_size();
+}
+inline void GetMovieListRsp::clear_movies() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.movies_.Clear();
+}
+inline ::ServerApi::MovieInfo* GetMovieListRsp::mutable_movies(int index)
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_mutable:ServerApi.GetMovieListRsp.movies)
+  return _internal_mutable_movies()->Mutable(index);
+}
+inline ::google::protobuf::RepeatedPtrField<::ServerApi::MovieInfo>* GetMovieListRsp::mutable_movies()
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_mutable_list:ServerApi.GetMovieListRsp.movies)
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  return _internal_mutable_movies();
+}
+inline const ::ServerApi::MovieInfo& GetMovieListRsp::movies(int index) const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:ServerApi.GetMovieListRsp.movies)
+  return _internal_movies().Get(index);
+}
+inline ::ServerApi::MovieInfo* GetMovieListRsp::add_movies() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  ::ServerApi::MovieInfo* _add = _internal_mutable_movies()->Add();
+  // @@protoc_insertion_point(field_add:ServerApi.GetMovieListRsp.movies)
+  return _add;
+}
+inline const ::google::protobuf::RepeatedPtrField<::ServerApi::MovieInfo>& GetMovieListRsp::movies() const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_list:ServerApi.GetMovieListRsp.movies)
+  return _internal_movies();
+}
+inline const ::google::protobuf::RepeatedPtrField<::ServerApi::MovieInfo>&
+GetMovieListRsp::_internal_movies() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.movies_;
+}
+inline ::google::protobuf::RepeatedPtrField<::ServerApi::MovieInfo>*
+GetMovieListRsp::_internal_mutable_movies() {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return &_impl_.movies_;
 }
 
 #ifdef __GNUC__

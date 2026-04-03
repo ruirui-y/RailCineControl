@@ -12,10 +12,19 @@ package ServerApi;
 
 // 定义消息ID
 enum MsgId {
-    ID_NONE        = 0;
-    ID_LOGIN_REQ   = 1001;                                                      // 登录请求
-    ID_LOGIN_RSP   = 1002;                                                      // 登录响应
-    ID_HEARTBEAT   = 1003;                                                      // 心跳包
+    ID_UNKNOWN            = 0;
+    
+    // 基础心跳与登录
+    ID_HEARTBEAT          = 1;
+    ID_LOGIN_REQ          = 1001;                                               // 登录请求
+    ID_LOGIN_RSP          = 1002;                                               // 登录响应
+    
+    // 影片业务
+    ID_UPLOAD_MOVIE_REQ   = 2001;                                               // 影片上传/录入请求
+    ID_UPLOAD_MOVIE_RSP   = 2002;                                               // 影片上传响应
+    
+    ID_GET_MOVIE_LIST_REQ = 2003;                                               // 获取影片列表请求
+    ID_GET_MOVIE_LIST_RSP = 2004;                                               // 获取影片列表响应
 }
 
 // 定义全局错误码
@@ -25,6 +34,7 @@ enum ErrorCode {
     ERR_WRONG_PWD       = 2;                                                    // 账号不存在或密码错误
     ERR_ACCOUNT_IN_USE  = 3;                                                    // 账号已在其他机器登录 (防多开)
     ERR_ACCOUNT_EXPIRED = 4;                                                    // 账号授权已过期
+    ERR_MOVIE_EXISTS    = 5;                                                    // 影片已存在 (防重)
 }
 
 // =========================================================================================

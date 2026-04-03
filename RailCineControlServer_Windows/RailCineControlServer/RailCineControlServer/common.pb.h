@@ -64,10 +64,14 @@ namespace protobuf {
 
 namespace ServerApi {
 enum MsgId : int {
-  ID_NONE = 0,
+  ID_UNKNOWN = 0,
+  ID_HEARTBEAT = 1,
   ID_LOGIN_REQ = 1001,
   ID_LOGIN_RSP = 1002,
-  ID_HEARTBEAT = 1003,
+  ID_UPLOAD_MOVIE_REQ = 2001,
+  ID_UPLOAD_MOVIE_RSP = 2002,
+  ID_GET_MOVIE_LIST_REQ = 2003,
+  ID_GET_MOVIE_LIST_RSP = 2004,
   MsgId_INT_MIN_SENTINEL_DO_NOT_USE_ =
       std::numeric_limits<::int32_t>::min(),
   MsgId_INT_MAX_SENTINEL_DO_NOT_USE_ =
@@ -77,8 +81,8 @@ enum MsgId : int {
 bool MsgId_IsValid(int value);
 extern const uint32_t MsgId_internal_data_[];
 constexpr MsgId MsgId_MIN = static_cast<MsgId>(0);
-constexpr MsgId MsgId_MAX = static_cast<MsgId>(1003);
-constexpr int MsgId_ARRAYSIZE = 1003 + 1;
+constexpr MsgId MsgId_MAX = static_cast<MsgId>(2004);
+constexpr int MsgId_ARRAYSIZE = 2004 + 1;
 const ::google::protobuf::EnumDescriptor*
 MsgId_descriptor();
 template <typename T>
@@ -98,6 +102,7 @@ enum ErrorCode : int {
   ERR_WRONG_PWD = 2,
   ERR_ACCOUNT_IN_USE = 3,
   ERR_ACCOUNT_EXPIRED = 4,
+  ERR_MOVIE_EXISTS = 5,
   ErrorCode_INT_MIN_SENTINEL_DO_NOT_USE_ =
       std::numeric_limits<::int32_t>::min(),
   ErrorCode_INT_MAX_SENTINEL_DO_NOT_USE_ =
@@ -107,8 +112,8 @@ enum ErrorCode : int {
 bool ErrorCode_IsValid(int value);
 extern const uint32_t ErrorCode_internal_data_[];
 constexpr ErrorCode ErrorCode_MIN = static_cast<ErrorCode>(0);
-constexpr ErrorCode ErrorCode_MAX = static_cast<ErrorCode>(4);
-constexpr int ErrorCode_ARRAYSIZE = 4 + 1;
+constexpr ErrorCode ErrorCode_MAX = static_cast<ErrorCode>(5);
+constexpr int ErrorCode_ARRAYSIZE = 5 + 1;
 const ::google::protobuf::EnumDescriptor*
 ErrorCode_descriptor();
 template <typename T>
@@ -121,7 +126,7 @@ const std::string& ErrorCode_Name(T value) {
 template <>
 inline const std::string& ErrorCode_Name(ErrorCode value) {
   return ::google::protobuf::internal::NameOfDenseEnum<ErrorCode_descriptor,
-                                                 0, 4>(
+                                                 0, 5>(
       static_cast<int>(value));
 }
 inline bool ErrorCode_Parse(absl::string_view name, ErrorCode* value) {
