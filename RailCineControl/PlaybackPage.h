@@ -22,6 +22,9 @@ signals:
         const QString& startTime, const QString& endTime,
         const QString& endType);
 
+public slots:
+    void RefreshMovies();                                                       // 将原本的 LoadMovies 封装一下
+
 private slots:
     void onMovieSelected(QListWidgetItem* current, QListWidgetItem* prev);  // 卡片选中事件
 
@@ -35,6 +38,7 @@ private slots:
 private:
     void BuildUI();                                                         // 构建播放台UI
     void LoadMoviesFromJson();                                              // 加载视频配置文件
+    void LoadMoviesFromServer();                                            // 从服务器获取视频列表
     void AddMovieCard(const QString& name, const QString& status, const QString& path); // 发牌机
 
 private:

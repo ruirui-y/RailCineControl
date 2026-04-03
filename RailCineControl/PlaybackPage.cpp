@@ -120,6 +120,17 @@ void PlaybackPage::LoadMoviesFromJson()
     }
 }
 
+void PlaybackPage::LoadMoviesFromServer()
+{
+
+}
+
+void PlaybackPage::RefreshMovies()
+{
+    m_movieList->clear();                                                       // 刷新前先清空旧的卡片
+    LoadMoviesFromServer();                                                       // 重新走一遍拉取和渲染流程
+}
+
 void PlaybackPage::AddMovieCard(const QString& name, const QString& status, const QString& path)
 {
     QFrame* card = new QFrame();

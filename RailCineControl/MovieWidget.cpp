@@ -4,6 +4,7 @@
 #include <QToolButton>
 #include <QButtonGroup>
 #include "UserMgr.h"
+#include "UploadPage.h"
 
 MovieWidget::MovieWidget(QWidget* parent) : QWidget(parent)
 {
@@ -33,10 +34,12 @@ void MovieWidget::BuildUI()
 
     QToolButton* playPageBtn = createNavBtn(u8"影片播放", 0);
     QToolButton* recordPageBtn = createNavBtn(u8"播放记录", 1);
+    QToolButton* uploadPageBtn = createNavBtn(u8"资源上传", 2);
     playPageBtn->setChecked(true);
 
     navLayout->addWidget(playPageBtn);
     navLayout->addWidget(recordPageBtn);
+    navLayout->addWidget(uploadPageBtn);
     navLayout->addStretch();
 
     // ================= 2. 堆栈装配与信号跨接 =================
@@ -44,6 +47,7 @@ void MovieWidget::BuildUI()
 
     m_playbackPage = new PlaybackPage(this);                                // 实例化播控台
     m_recordPage = new RecordPage(this);                                    // 实例化记录台
+    UploadPage* m_uploadPage = new UploadPage(this);                        // 实例化影片上传窗口
 
     m_stackedWidget->addWidget(m_playbackPage);
     m_stackedWidget->addWidget(m_recordPage);
@@ -62,6 +66,15 @@ void MovieWidget::BuildUI()
         this, [this](QString date, QString name, QString start, QString end, QString type) 
         {
             m_recordPage->AddRecordRow(date, name, start, end, UserMgr::Instance()->getUserInfo().UserName, type);
+        });
+
+    // =========================================================================
+    // 👑 核心数据桥梁 2：上传成功 -> 播放台刷新资源列表
+    // =========================================================================
+    connect(m_uploadPage, &UploadPage::uploadFinished,
+        this, [this]() {
+            m_playbackPage->RefreshMovies();                                    // 通知播放台重新拉取库数据
+            m_stackedWidget->setCurrentIndex(0);                                // 可选体验优化：上传完自动跳回播放页面查看成果
         });
 }
 
