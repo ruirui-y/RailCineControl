@@ -409,30 +409,30 @@ void ClientSession::InitHandlers()
         };
 
         // ------------------------------------------------------------------
-        // 处理客户端发来的 [获取影片列表请求]
-        // ------------------------------------------------------------------
+    // 处理客户端发来的 [获取影片列表请求]
+    // ------------------------------------------------------------------
         m_router[ServerApi::ID_GET_MOVIE_LIST_REQ] = [this](const ServerApi::PacketHeader& header, const QByteArray& bodyData)
             {
                 uint64_t seq_id = header.seq_id();
                 std::weak_ptr<ClientSession> weakSelf = weak_from_this();
 
-                // 👑 连表查询：用用户的 ID 去匹配他的私人电影库，同时拿到物理海报和视频链接
-                // 注意这里 original_name 和 custom_name 的优先级：优先显示用户自定义的名称
+                // 👑 连表查询：把 MD5 和 file_size 也查出来！
                 QString sql = R"(
-                SELECT 
-                    r.id AS movie_id, 
-                    IFNULL(rel.custom_name, r.original_name) AS display_name,
-                    r.cover_url, 
-                    r.video_url, 
-                    rel.play_status
-                FROM t_user_movie_rel rel
-                INNER JOIN t_movie_resource r ON rel.movie_id = r.id
-                WHERE rel.user_id = ? AND rel.auth_status = 1
-                ORDER BY rel.sort_order ASC, rel.create_time DESC
-            )";
+            SELECT 
+                r.id AS movie_id, 
+                IFNULL(rel.custom_name, r.original_name) AS display_name,
+                r.cover_url, 
+                r.file_md5,     -- 💡 新增：查出物理文件的 MD5
+                r.file_size,    -- 💡 新增：查出文件大小
+                rel.play_status
+            FROM t_user_movie_rel rel
+            INNER JOIN t_movie_resource r ON rel.movie_id = r.id
+            WHERE rel.user_id = ? AND rel.auth_status = 1
+            ORDER BY rel.sort_order ASC, rel.create_time DESC
+        )";
 
                 QList<QVariant> params;
-                params << m_accountId; // 使用该连接绑定的账号主键
+                params << m_accountId;
 
                 ThreadPool::Instance()->PostQueryTask(sql, [weakSelf, seq_id](const QList<QVariantMap>& results) {
                     auto strongSelf = weakSelf.lock();
@@ -441,19 +441,113 @@ void ClientSession::InitHandlers()
                     ServerApi::GetMovieListRsp rsp;
 
                     for (const auto& row : results) {
-                        // C++11 的 add_movies() 会返回一个新创建的指针
                         ServerApi::MovieInfo* movie = rsp.add_movies();
-
                         movie->set_movie_id(row["movie_id"].toULongLong());
                         movie->set_movie_name(row["display_name"].toString().toStdString());
                         movie->set_cover_url(row["cover_url"].toString().toStdString());
-                        movie->set_video_url(row["video_url"].toString().toStdString());
+
+                        // 💡 把最核心的下载凭证赋给 Protobuf 发给客户端
+                        movie->set_file_md5(row["file_md5"].toString().toStdString());
+                        movie->set_file_size(row["file_size"].toULongLong());
+
                         movie->set_play_status(row["play_status"].toInt());
                     }
 
                     strongSelf->SendProtoMsg(ServerApi::ID_GET_MOVIE_LIST_RSP, rsp, seq_id);
-
                     }, true, params);
+            };
+
+        // ------------------------------------------------------------------
+        // 💡 处理客户端发来的 [海报下载请求]
+        // ------------------------------------------------------------------
+        m_router[ServerApi::ID_DOWNLOAD_COVER_REQ] = [this](const ServerApi::PacketHeader& header, const QByteArray& bodyData)
+            {
+                uint64_t seq_id = header.seq_id();
+                ServerApi::DownloadCoverReq req;
+                if (!req.ParseFromArray(bodyData.data(), bodyData.size())) return;
+
+                QString fileMd5 = QString::fromStdString(req.file_md5());
+
+                // 1. 去数据库查一下这张海报的真实存放路径 (因为我们当初存了后缀名 .jpg / .png)
+                QString sql = "SELECT cover_url FROM t_movie_resource WHERE file_md5 = ?";
+                QList<QVariant> params;
+                params << fileMd5;
+
+                std::weak_ptr<ClientSession> weakSelf = weak_from_this();
+                ThreadPool::Instance()->PostQueryTask(sql, [weakSelf, seq_id, fileMd5](const QList<QVariantMap>& results) {
+                    auto strongSelf = weakSelf.lock();
+                    if (!strongSelf) return;
+
+                    if (results.isEmpty()) return; // 没查到就不理它
+
+                    QString coverPath = results.first()["cover_url"].toString();
+
+                    // 2. 直接打开硬盘里的图片，一口气读完！
+                    QFile file(coverPath);
+                    if (file.open(QIODevice::ReadOnly)) {
+                        QByteArray coverData = file.readAll(); // 几百KB，主线程直接吞毫无压力
+                        file.close();
+
+                        ServerApi::DownloadCoverRsp rsp;
+                        rsp.set_file_md5(fileMd5.toStdString());
+                        rsp.set_cover_data(coverData.data(), coverData.size());
+
+                        strongSelf->SendProtoMsg(ServerApi::ID_DOWNLOAD_COVER_RSP, rsp, seq_id);
+                    }
+                    }, true, params);
+            };
+
+        // ------------------------------------------------------------------
+        // 💡 处理客户端发来的 [分片下载请求]
+        // ------------------------------------------------------------------
+        m_router[ServerApi::ID_DOWNLOAD_CHUNK_REQ] = [this](const ServerApi::PacketHeader& header, const QByteArray& bodyData)
+            {
+                uint64_t seq_id = header.seq_id();
+                ServerApi::DownloadChunkReq req;
+                if (!req.ParseFromArray(bodyData.data(), bodyData.size())) return;
+
+                QString fileMd5 = QString::fromStdString(req.file_md5());
+                uint32_t chunkIndex = req.chunk_index();
+
+                // 1. 绝对的 O(1) 物理寻址，直接拼接路径！
+                QString filePath = "./UploadedAssets/" + fileMd5 + ".mp4";
+                QFile file(filePath);
+
+                // 2. 尝试以只读模式打开本地文件
+                if (!file.open(QIODevice::ReadOnly)) {
+                    qDebug() << u8"[ClientSession] 下载失败，找不到物理文件:" << filePath;
+                    ServerApi::DownloadChunkRsp emptyRsp;
+                    SendProtoMsg(ServerApi::ID_DOWNLOAD_CHUNK_RSP, emptyRsp, seq_id, ServerApi::ERR_SERVER_INTERNAL, u8"云端文件丢失");
+                    return;
+                }
+
+                // 3. 计算偏移量并跳转 (假设客户端和服务器约定好了每块 1MB)
+                const int CHUNK_SIZE = 1048576;                                                     // 1MB = 1024 * 1024 字节
+                uint64_t offset = (uint64_t)chunkIndex * CHUNK_SIZE;
+
+                // 如果客户端乱请求，超出了文件大小，直接拦截
+                if (offset >= file.size()) {
+                    file.close();
+                    return;
+                }
+
+                // 👑 核心跳转：直接把硬盘磁头拨到目标位置
+                file.seek(offset);
+
+                // 4. 抽出一块水 (最多读 CHUNK_SIZE，如果到文件末尾了，会自动读剩下的部分)
+                QByteArray chunkData = file.read(CHUNK_SIZE);
+                bool isLast = file.atEnd();                                                         // 判断是不是被榨干了
+
+                file.close();                                                                       // 用完立刻释放句柄
+
+                // 5. 将这块水装进 Protobuf，通过 TCP 扔回给客户端
+                ServerApi::DownloadChunkRsp rsp;
+                rsp.set_file_md5(req.file_md5());
+                rsp.set_chunk_index(chunkIndex);
+                rsp.set_chunk_data(chunkData.data(), chunkData.size());
+                rsp.set_is_last(isLast);
+
+                SendProtoMsg(ServerApi::ID_DOWNLOAD_CHUNK_RSP, rsp, seq_id);
             };
 }
 

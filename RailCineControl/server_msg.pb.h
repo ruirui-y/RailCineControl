@@ -2264,7 +2264,8 @@ class DownloadCoverRsp final : public ::google::protobuf::Message
   // accessors -------------------------------------------------------
   enum : int {
     kFileMd5FieldNumber = 1,
-    kCoverDataFieldNumber = 2,
+    kCoverNameFieldNumber = 2,
+    kCoverDataFieldNumber = 3,
   };
   // string file_md5 = 1;
   void clear_file_md5() ;
@@ -2282,7 +2283,23 @@ class DownloadCoverRsp final : public ::google::protobuf::Message
   std::string* _internal_mutable_file_md5();
 
   public:
-  // bytes cover_data = 2;
+  // string cover_name = 2;
+  void clear_cover_name() ;
+  const std::string& cover_name() const;
+  template <typename Arg_ = const std::string&, typename... Args_>
+  void set_cover_name(Arg_&& arg, Args_... args);
+  std::string* mutable_cover_name();
+  PROTOBUF_NODISCARD std::string* release_cover_name();
+  void set_allocated_cover_name(std::string* value);
+
+  private:
+  const std::string& _internal_cover_name() const;
+  inline PROTOBUF_ALWAYS_INLINE void _internal_set_cover_name(
+      const std::string& value);
+  std::string* _internal_mutable_cover_name();
+
+  public:
+  // bytes cover_data = 3;
   void clear_cover_data() ;
   const std::string& cover_data() const;
   template <typename Arg_ = const std::string&, typename... Args_>
@@ -2303,8 +2320,8 @@ class DownloadCoverRsp final : public ::google::protobuf::Message
   class _Internal;
   friend class ::google::protobuf::internal::TcParser;
   static const ::google::protobuf::internal::TcParseTable<
-      1, 2, 0,
-      43, 2>
+      2, 3, 0,
+      53, 2>
       _table_;
 
   friend class ::google::protobuf::MessageLite;
@@ -2322,6 +2339,7 @@ class DownloadCoverRsp final : public ::google::protobuf::Message
                           ::google::protobuf::Arena* arena, const Impl_& from,
                           const DownloadCoverRsp& from_msg);
     ::google::protobuf::internal::ArenaStringPtr file_md5_;
+    ::google::protobuf::internal::ArenaStringPtr cover_name_;
     ::google::protobuf::internal::ArenaStringPtr cover_data_;
     ::google::protobuf::internal::CachedSize _cached_size_;
     PROTOBUF_TSAN_DECLARE_MEMBER
@@ -4550,7 +4568,55 @@ inline void DownloadCoverRsp::set_allocated_file_md5(std::string* value) {
   // @@protoc_insertion_point(field_set_allocated:ServerApi.DownloadCoverRsp.file_md5)
 }
 
-// bytes cover_data = 2;
+// string cover_name = 2;
+inline void DownloadCoverRsp::clear_cover_name() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.cover_name_.ClearToEmpty();
+}
+inline const std::string& DownloadCoverRsp::cover_name() const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:ServerApi.DownloadCoverRsp.cover_name)
+  return _internal_cover_name();
+}
+template <typename Arg_, typename... Args_>
+inline PROTOBUF_ALWAYS_INLINE void DownloadCoverRsp::set_cover_name(Arg_&& arg,
+                                                     Args_... args) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.cover_name_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
+  // @@protoc_insertion_point(field_set:ServerApi.DownloadCoverRsp.cover_name)
+}
+inline std::string* DownloadCoverRsp::mutable_cover_name() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  std::string* _s = _internal_mutable_cover_name();
+  // @@protoc_insertion_point(field_mutable:ServerApi.DownloadCoverRsp.cover_name)
+  return _s;
+}
+inline const std::string& DownloadCoverRsp::_internal_cover_name() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.cover_name_.Get();
+}
+inline void DownloadCoverRsp::_internal_set_cover_name(const std::string& value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.cover_name_.Set(value, GetArena());
+}
+inline std::string* DownloadCoverRsp::_internal_mutable_cover_name() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  return _impl_.cover_name_.Mutable( GetArena());
+}
+inline std::string* DownloadCoverRsp::release_cover_name() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:ServerApi.DownloadCoverRsp.cover_name)
+  return _impl_.cover_name_.Release();
+}
+inline void DownloadCoverRsp::set_allocated_cover_name(std::string* value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.cover_name_.SetAllocated(value, GetArena());
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() && _impl_.cover_name_.IsDefault()) {
+    _impl_.cover_name_.Set("", GetArena());
+  }
+  // @@protoc_insertion_point(field_set_allocated:ServerApi.DownloadCoverRsp.cover_name)
+}
+
+// bytes cover_data = 3;
 inline void DownloadCoverRsp::clear_cover_data() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.cover_data_.ClearToEmpty();

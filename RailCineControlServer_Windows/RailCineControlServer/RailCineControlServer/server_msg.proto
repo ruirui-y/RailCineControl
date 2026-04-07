@@ -110,5 +110,6 @@ message DownloadCoverReq {
 // 服务端 -> 客户端：海报来了！
 message DownloadCoverRsp {
     string file_md5   = 1;
-    bytes  cover_data = 2;                                                      // 图片的全部二进制数据
+    string cover_name = 2;                                                      // 海报的真实全名 (例如 "a1b2_cover.png")
+    bytes  cover_data = 3;                                                      // 图片的全部二进制数据
 }

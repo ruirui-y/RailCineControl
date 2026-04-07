@@ -302,6 +302,9 @@ inline constexpr DownloadCoverRsp::Impl_::Impl_(
       : file_md5_(
             &::google::protobuf::internal::fixed_address_empty_string,
             ::_pbi::ConstantInitialized()),
+        cover_name_(
+            &::google::protobuf::internal::fixed_address_empty_string,
+            ::_pbi::ConstantInitialized()),
         cover_data_(
             &::google::protobuf::internal::fixed_address_empty_string,
             ::_pbi::ConstantInitialized()),
@@ -594,6 +597,7 @@ const ::uint32_t
         ~0u,  // no _split_
         ~0u,  // no sizeof(Split)
         PROTOBUF_FIELD_OFFSET(::ServerApi::DownloadCoverRsp, _impl_.file_md5_),
+        PROTOBUF_FIELD_OFFSET(::ServerApi::DownloadCoverRsp, _impl_.cover_name_),
         PROTOBUF_FIELD_OFFSET(::ServerApi::DownloadCoverRsp, _impl_.cover_data_),
 };
 
@@ -655,15 +659,15 @@ const char descriptor_table_protodef_server_5fmsg_2eproto[] ABSL_ATTRIBUTE_SECTI
     "chunk_index\030\002 \001(\r\"^\n\020DownloadChunkRsp\022\020\n"
     "\010file_md5\030\001 \001(\t\022\023\n\013chunk_index\030\002 \001(\r\022\022\n\n"
     "chunk_data\030\003 \001(\014\022\017\n\007is_last\030\004 \001(\010\"$\n\020Dow"
-    "nloadCoverReq\022\020\n\010file_md5\030\001 \001(\t\"8\n\020Downl"
-    "oadCoverRsp\022\020\n\010file_md5\030\001 \001(\t\022\022\n\ncover_d"
-    "ata\030\002 \001(\014b\006proto3"
+    "nloadCoverReq\022\020\n\010file_md5\030\001 \001(\t\"L\n\020Downl"
+    "oadCoverRsp\022\020\n\010file_md5\030\001 \001(\t\022\022\n\ncover_n"
+    "ame\030\002 \001(\t\022\022\n\ncover_data\030\003 \001(\014b\006proto3"
 };
 static ::absl::once_flag descriptor_table_server_5fmsg_2eproto_once;
 PROTOBUF_CONSTINIT const ::_pbi::DescriptorTable descriptor_table_server_5fmsg_2eproto = {
     false,
     false,
-    1017,
+    1037,
     descriptor_table_protodef_server_5fmsg_2eproto,
     "server_msg.proto",
     &descriptor_table_server_5fmsg_2eproto_once,
@@ -4277,6 +4281,7 @@ inline PROTOBUF_NDEBUG_INLINE DownloadCoverRsp::Impl_::Impl_(
     ::google::protobuf::internal::InternalVisibility visibility, ::google::protobuf::Arena* arena,
     const Impl_& from, const ::ServerApi::DownloadCoverRsp& from_msg)
       : file_md5_(arena, from.file_md5_),
+        cover_name_(arena, from.cover_name_),
         cover_data_(arena, from.cover_data_),
         _cached_size_{0} {}
 
@@ -4300,6 +4305,7 @@ inline PROTOBUF_NDEBUG_INLINE DownloadCoverRsp::Impl_::Impl_(
     ::google::protobuf::internal::InternalVisibility visibility,
     ::google::protobuf::Arena* arena)
       : file_md5_(arena),
+        cover_name_(arena),
         cover_data_(arena),
         _cached_size_{0} {}
 
@@ -4315,6 +4321,7 @@ inline void DownloadCoverRsp::SharedDtor(MessageLite& self) {
   this_._internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
   ABSL_DCHECK(this_.GetArena() == nullptr);
   this_._impl_.file_md5_.Destroy();
+  this_._impl_.cover_name_.Destroy();
   this_._impl_.cover_data_.Destroy();
   this_._impl_.~Impl_();
 }
@@ -4355,15 +4362,15 @@ const ::google::protobuf::internal::ClassData* DownloadCoverRsp::GetClassData() 
   return _class_data_.base();
 }
 PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
-const ::_pbi::TcParseTable<1, 2, 0, 43, 2> DownloadCoverRsp::_table_ = {
+const ::_pbi::TcParseTable<2, 3, 0, 53, 2> DownloadCoverRsp::_table_ = {
   {
     0,  // no _has_bits_
     0, // no _extensions_
-    2, 8,  // max_field_number, fast_idx_mask
+    3, 24,  // max_field_number, fast_idx_mask
     offsetof(decltype(_table_), field_lookup_table),
-    4294967292,  // skipmap
+    4294967288,  // skipmap
     offsetof(decltype(_table_), field_entries),
-    2,  // num_field_entries
+    3,  // num_field_entries
     0,  // num_aux_entries
     offsetof(decltype(_table_), field_names),  // no aux_entries
     _class_data_.base(),
@@ -4373,27 +4380,35 @@ const ::_pbi::TcParseTable<1, 2, 0, 43, 2> DownloadCoverRsp::_table_ = {
     ::_pbi::TcParser::GetTable<::ServerApi::DownloadCoverRsp>(),  // to_prefetch
     #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
   }, {{
-    // bytes cover_data = 2;
-    {::_pbi::TcParser::FastBS1,
-     {18, 63, 0, PROTOBUF_FIELD_OFFSET(DownloadCoverRsp, _impl_.cover_data_)}},
+    {::_pbi::TcParser::MiniParse, {}},
     // string file_md5 = 1;
     {::_pbi::TcParser::FastUS1,
      {10, 63, 0, PROTOBUF_FIELD_OFFSET(DownloadCoverRsp, _impl_.file_md5_)}},
+    // string cover_name = 2;
+    {::_pbi::TcParser::FastUS1,
+     {18, 63, 0, PROTOBUF_FIELD_OFFSET(DownloadCoverRsp, _impl_.cover_name_)}},
+    // bytes cover_data = 3;
+    {::_pbi::TcParser::FastBS1,
+     {26, 63, 0, PROTOBUF_FIELD_OFFSET(DownloadCoverRsp, _impl_.cover_data_)}},
   }}, {{
     65535, 65535
   }}, {{
     // string file_md5 = 1;
     {PROTOBUF_FIELD_OFFSET(DownloadCoverRsp, _impl_.file_md5_), 0, 0,
     (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
-    // bytes cover_data = 2;
+    // string cover_name = 2;
+    {PROTOBUF_FIELD_OFFSET(DownloadCoverRsp, _impl_.cover_name_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
+    // bytes cover_data = 3;
     {PROTOBUF_FIELD_OFFSET(DownloadCoverRsp, _impl_.cover_data_), 0, 0,
     (0 | ::_fl::kFcSingular | ::_fl::kBytes | ::_fl::kRepAString)},
   }},
   // no aux_entries
   {{
-    "\32\10\0\0\0\0\0\0"
+    "\32\10\12\0\0\0\0\0"
     "ServerApi.DownloadCoverRsp"
     "file_md5"
+    "cover_name"
   }},
 };
 
@@ -4405,6 +4420,7 @@ PROTOBUF_NOINLINE void DownloadCoverRsp::Clear() {
   (void) cached_has_bits;
 
   _impl_.file_md5_.ClearToEmpty();
+  _impl_.cover_name_.ClearToEmpty();
   _impl_.cover_data_.ClearToEmpty();
   _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
 }
@@ -4432,10 +4448,18 @@ PROTOBUF_NOINLINE void DownloadCoverRsp::Clear() {
             target = stream->WriteStringMaybeAliased(1, _s, target);
           }
 
-          // bytes cover_data = 2;
+          // string cover_name = 2;
+          if (!this_._internal_cover_name().empty()) {
+            const std::string& _s = this_._internal_cover_name();
+            ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+                _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "ServerApi.DownloadCoverRsp.cover_name");
+            target = stream->WriteStringMaybeAliased(2, _s, target);
+          }
+
+          // bytes cover_data = 3;
           if (!this_._internal_cover_data().empty()) {
             const std::string& _s = this_._internal_cover_data();
-            target = stream->WriteBytesMaybeAliased(2, _s, target);
+            target = stream->WriteBytesMaybeAliased(3, _s, target);
           }
 
           if (PROTOBUF_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
@@ -4468,7 +4492,12 @@ PROTOBUF_NOINLINE void DownloadCoverRsp::Clear() {
               total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
                                               this_._internal_file_md5());
             }
-            // bytes cover_data = 2;
+            // string cover_name = 2;
+            if (!this_._internal_cover_name().empty()) {
+              total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
+                                              this_._internal_cover_name());
+            }
+            // bytes cover_data = 3;
             if (!this_._internal_cover_data().empty()) {
               total_size += 1 + ::google::protobuf::internal::WireFormatLite::BytesSize(
                                               this_._internal_cover_data());
@@ -4488,6 +4517,9 @@ void DownloadCoverRsp::MergeImpl(::google::protobuf::MessageLite& to_msg, const 
 
   if (!from._internal_file_md5().empty()) {
     _this->_internal_set_file_md5(from._internal_file_md5());
+  }
+  if (!from._internal_cover_name().empty()) {
+    _this->_internal_set_cover_name(from._internal_cover_name());
   }
   if (!from._internal_cover_data().empty()) {
     _this->_internal_set_cover_data(from._internal_cover_data());
@@ -4509,6 +4541,7 @@ void DownloadCoverRsp::InternalSwap(DownloadCoverRsp* PROTOBUF_RESTRICT other) {
   ABSL_DCHECK_EQ(arena, other->GetArena());
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
   ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.file_md5_, &other->_impl_.file_md5_, arena);
+  ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.cover_name_, &other->_impl_.cover_name_, arena);
   ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.cover_data_, &other->_impl_.cover_data_, arena);
 }
 
