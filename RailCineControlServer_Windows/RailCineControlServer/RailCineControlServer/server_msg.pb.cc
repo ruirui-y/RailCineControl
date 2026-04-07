@@ -160,10 +160,11 @@ inline constexpr MovieInfo::Impl_::Impl_(
         cover_url_(
             &::google::protobuf::internal::fixed_address_empty_string,
             ::_pbi::ConstantInitialized()),
-        video_url_(
+        file_md5_(
             &::google::protobuf::internal::fixed_address_empty_string,
             ::_pbi::ConstantInitialized()),
         movie_id_{::uint64_t{0u}},
+        file_size_{::uint64_t{0u}},
         play_status_{0},
         _cached_size_{0} {}
 
@@ -296,6 +297,123 @@ struct GetMovieListReqDefaultTypeInternal {
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
     PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 GetMovieListReqDefaultTypeInternal _GetMovieListReq_default_instance_;
 
+inline constexpr DownloadCoverRsp::Impl_::Impl_(
+    ::_pbi::ConstantInitialized) noexcept
+      : file_md5_(
+            &::google::protobuf::internal::fixed_address_empty_string,
+            ::_pbi::ConstantInitialized()),
+        cover_data_(
+            &::google::protobuf::internal::fixed_address_empty_string,
+            ::_pbi::ConstantInitialized()),
+        _cached_size_{0} {}
+
+template <typename>
+PROTOBUF_CONSTEXPR DownloadCoverRsp::DownloadCoverRsp(::_pbi::ConstantInitialized)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(_class_data_.base()),
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(),
+#endif  // PROTOBUF_CUSTOM_VTABLE
+      _impl_(::_pbi::ConstantInitialized()) {
+}
+struct DownloadCoverRspDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR DownloadCoverRspDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~DownloadCoverRspDefaultTypeInternal() {}
+  union {
+    DownloadCoverRsp _instance;
+  };
+};
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 DownloadCoverRspDefaultTypeInternal _DownloadCoverRsp_default_instance_;
+
+inline constexpr DownloadCoverReq::Impl_::Impl_(
+    ::_pbi::ConstantInitialized) noexcept
+      : file_md5_(
+            &::google::protobuf::internal::fixed_address_empty_string,
+            ::_pbi::ConstantInitialized()),
+        _cached_size_{0} {}
+
+template <typename>
+PROTOBUF_CONSTEXPR DownloadCoverReq::DownloadCoverReq(::_pbi::ConstantInitialized)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(_class_data_.base()),
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(),
+#endif  // PROTOBUF_CUSTOM_VTABLE
+      _impl_(::_pbi::ConstantInitialized()) {
+}
+struct DownloadCoverReqDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR DownloadCoverReqDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~DownloadCoverReqDefaultTypeInternal() {}
+  union {
+    DownloadCoverReq _instance;
+  };
+};
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 DownloadCoverReqDefaultTypeInternal _DownloadCoverReq_default_instance_;
+
+inline constexpr DownloadChunkRsp::Impl_::Impl_(
+    ::_pbi::ConstantInitialized) noexcept
+      : file_md5_(
+            &::google::protobuf::internal::fixed_address_empty_string,
+            ::_pbi::ConstantInitialized()),
+        chunk_data_(
+            &::google::protobuf::internal::fixed_address_empty_string,
+            ::_pbi::ConstantInitialized()),
+        chunk_index_{0u},
+        is_last_{false},
+        _cached_size_{0} {}
+
+template <typename>
+PROTOBUF_CONSTEXPR DownloadChunkRsp::DownloadChunkRsp(::_pbi::ConstantInitialized)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(_class_data_.base()),
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(),
+#endif  // PROTOBUF_CUSTOM_VTABLE
+      _impl_(::_pbi::ConstantInitialized()) {
+}
+struct DownloadChunkRspDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR DownloadChunkRspDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~DownloadChunkRspDefaultTypeInternal() {}
+  union {
+    DownloadChunkRsp _instance;
+  };
+};
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 DownloadChunkRspDefaultTypeInternal _DownloadChunkRsp_default_instance_;
+
+inline constexpr DownloadChunkReq::Impl_::Impl_(
+    ::_pbi::ConstantInitialized) noexcept
+      : file_md5_(
+            &::google::protobuf::internal::fixed_address_empty_string,
+            ::_pbi::ConstantInitialized()),
+        chunk_index_{0u},
+        _cached_size_{0} {}
+
+template <typename>
+PROTOBUF_CONSTEXPR DownloadChunkReq::DownloadChunkReq(::_pbi::ConstantInitialized)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(_class_data_.base()),
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(),
+#endif  // PROTOBUF_CUSTOM_VTABLE
+      _impl_(::_pbi::ConstantInitialized()) {
+}
+struct DownloadChunkReqDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR DownloadChunkReqDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~DownloadChunkReqDefaultTypeInternal() {}
+  union {
+    DownloadChunkReq _instance;
+  };
+};
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 DownloadChunkReqDefaultTypeInternal _DownloadChunkReq_default_instance_;
+
 inline constexpr GetMovieListRsp::Impl_::Impl_(
     ::_pbi::ConstantInitialized) noexcept
       : movies_{},
@@ -414,8 +532,9 @@ const ::uint32_t
         PROTOBUF_FIELD_OFFSET(::ServerApi::MovieInfo, _impl_.movie_id_),
         PROTOBUF_FIELD_OFFSET(::ServerApi::MovieInfo, _impl_.movie_name_),
         PROTOBUF_FIELD_OFFSET(::ServerApi::MovieInfo, _impl_.cover_url_),
-        PROTOBUF_FIELD_OFFSET(::ServerApi::MovieInfo, _impl_.video_url_),
         PROTOBUF_FIELD_OFFSET(::ServerApi::MovieInfo, _impl_.play_status_),
+        PROTOBUF_FIELD_OFFSET(::ServerApi::MovieInfo, _impl_.file_md5_),
+        PROTOBUF_FIELD_OFFSET(::ServerApi::MovieInfo, _impl_.file_size_),
         ~0u,  // no _has_bits_
         PROTOBUF_FIELD_OFFSET(::ServerApi::GetMovieListReq, _internal_metadata_),
         ~0u,  // no _extensions_
@@ -435,6 +554,47 @@ const ::uint32_t
         ~0u,  // no _split_
         ~0u,  // no sizeof(Split)
         PROTOBUF_FIELD_OFFSET(::ServerApi::GetMovieListRsp, _impl_.movies_),
+        ~0u,  // no _has_bits_
+        PROTOBUF_FIELD_OFFSET(::ServerApi::DownloadChunkReq, _internal_metadata_),
+        ~0u,  // no _extensions_
+        ~0u,  // no _oneof_case_
+        ~0u,  // no _weak_field_map_
+        ~0u,  // no _inlined_string_donated_
+        ~0u,  // no _split_
+        ~0u,  // no sizeof(Split)
+        PROTOBUF_FIELD_OFFSET(::ServerApi::DownloadChunkReq, _impl_.file_md5_),
+        PROTOBUF_FIELD_OFFSET(::ServerApi::DownloadChunkReq, _impl_.chunk_index_),
+        ~0u,  // no _has_bits_
+        PROTOBUF_FIELD_OFFSET(::ServerApi::DownloadChunkRsp, _internal_metadata_),
+        ~0u,  // no _extensions_
+        ~0u,  // no _oneof_case_
+        ~0u,  // no _weak_field_map_
+        ~0u,  // no _inlined_string_donated_
+        ~0u,  // no _split_
+        ~0u,  // no sizeof(Split)
+        PROTOBUF_FIELD_OFFSET(::ServerApi::DownloadChunkRsp, _impl_.file_md5_),
+        PROTOBUF_FIELD_OFFSET(::ServerApi::DownloadChunkRsp, _impl_.chunk_index_),
+        PROTOBUF_FIELD_OFFSET(::ServerApi::DownloadChunkRsp, _impl_.chunk_data_),
+        PROTOBUF_FIELD_OFFSET(::ServerApi::DownloadChunkRsp, _impl_.is_last_),
+        ~0u,  // no _has_bits_
+        PROTOBUF_FIELD_OFFSET(::ServerApi::DownloadCoverReq, _internal_metadata_),
+        ~0u,  // no _extensions_
+        ~0u,  // no _oneof_case_
+        ~0u,  // no _weak_field_map_
+        ~0u,  // no _inlined_string_donated_
+        ~0u,  // no _split_
+        ~0u,  // no sizeof(Split)
+        PROTOBUF_FIELD_OFFSET(::ServerApi::DownloadCoverReq, _impl_.file_md5_),
+        ~0u,  // no _has_bits_
+        PROTOBUF_FIELD_OFFSET(::ServerApi::DownloadCoverRsp, _internal_metadata_),
+        ~0u,  // no _extensions_
+        ~0u,  // no _oneof_case_
+        ~0u,  // no _weak_field_map_
+        ~0u,  // no _inlined_string_donated_
+        ~0u,  // no _split_
+        ~0u,  // no sizeof(Split)
+        PROTOBUF_FIELD_OFFSET(::ServerApi::DownloadCoverRsp, _impl_.file_md5_),
+        PROTOBUF_FIELD_OFFSET(::ServerApi::DownloadCoverRsp, _impl_.cover_data_),
 };
 
 static const ::_pbi::MigrationSchema
@@ -447,8 +607,12 @@ static const ::_pbi::MigrationSchema
         {53, -1, -1, sizeof(::ServerApi::UploadMovieReq)},
         {66, -1, -1, sizeof(::ServerApi::UploadMovieRsp)},
         {75, -1, -1, sizeof(::ServerApi::MovieInfo)},
-        {88, -1, -1, sizeof(::ServerApi::GetMovieListReq)},
-        {98, -1, -1, sizeof(::ServerApi::GetMovieListRsp)},
+        {89, -1, -1, sizeof(::ServerApi::GetMovieListReq)},
+        {99, -1, -1, sizeof(::ServerApi::GetMovieListRsp)},
+        {108, -1, -1, sizeof(::ServerApi::DownloadChunkReq)},
+        {118, -1, -1, sizeof(::ServerApi::DownloadChunkRsp)},
+        {130, -1, -1, sizeof(::ServerApi::DownloadCoverReq)},
+        {139, -1, -1, sizeof(::ServerApi::DownloadCoverRsp)},
 };
 static const ::_pb::Message* const file_default_instances[] = {
     &::ServerApi::_LoginReq_default_instance_._instance,
@@ -461,6 +625,10 @@ static const ::_pb::Message* const file_default_instances[] = {
     &::ServerApi::_MovieInfo_default_instance_._instance,
     &::ServerApi::_GetMovieListReq_default_instance_._instance,
     &::ServerApi::_GetMovieListRsp_default_instance_._instance,
+    &::ServerApi::_DownloadChunkReq_default_instance_._instance,
+    &::ServerApi::_DownloadChunkRsp_default_instance_._instance,
+    &::ServerApi::_DownloadCoverReq_default_instance_._instance,
+    &::ServerApi::_DownloadCoverRsp_default_instance_._instance,
 };
 const char descriptor_table_protodef_server_5fmsg_2eproto[] ABSL_ATTRIBUTE_SECTION_VARIABLE(
     protodesc_cold) = {
@@ -476,25 +644,32 @@ const char descriptor_table_protodef_server_5fmsg_2eproto[] ABSL_ATTRIBUTE_SECTI
     "ploadMovieReq\022\022\n\nmovie_name\030\001 \001(\t\022\023\n\013des"
     "cription\030\002 \001(\t\022\022\n\ncover_data\030\003 \001(\014\022\024\n\014co"
     "ver_suffix\030\004 \001(\t\022\021\n\tvideo_md5\030\005 \001(\t\"&\n\016U"
-    "ploadMovieRsp\022\024\n\014new_movie_id\030\001 \001(\004\"l\n\tM"
+    "ploadMovieRsp\022\024\n\014new_movie_id\030\001 \001(\004\"~\n\tM"
     "ovieInfo\022\020\n\010movie_id\030\001 \001(\004\022\022\n\nmovie_name"
-    "\030\002 \001(\t\022\021\n\tcover_url\030\003 \001(\t\022\021\n\tvideo_url\030\004"
-    " \001(\t\022\023\n\013play_status\030\005 \001(\005\"8\n\017GetMovieLis"
-    "tReq\022\022\n\npage_index\030\001 \001(\r\022\021\n\tpage_size\030\002 "
-    "\001(\r\"7\n\017GetMovieListRsp\022$\n\006movies\030\001 \003(\0132\024"
-    ".ServerApi.MovieInfob\006proto3"
+    "\030\002 \001(\t\022\021\n\tcover_url\030\003 \001(\t\022\023\n\013play_status"
+    "\030\004 \001(\005\022\020\n\010file_md5\030\005 \001(\t\022\021\n\tfile_size\030\006 "
+    "\001(\004\"8\n\017GetMovieListReq\022\022\n\npage_index\030\001 \001"
+    "(\r\022\021\n\tpage_size\030\002 \001(\r\"7\n\017GetMovieListRsp"
+    "\022$\n\006movies\030\001 \003(\0132\024.ServerApi.MovieInfo\"9"
+    "\n\020DownloadChunkReq\022\020\n\010file_md5\030\001 \001(\t\022\023\n\013"
+    "chunk_index\030\002 \001(\r\"^\n\020DownloadChunkRsp\022\020\n"
+    "\010file_md5\030\001 \001(\t\022\023\n\013chunk_index\030\002 \001(\r\022\022\n\n"
+    "chunk_data\030\003 \001(\014\022\017\n\007is_last\030\004 \001(\010\"$\n\020Dow"
+    "nloadCoverReq\022\020\n\010file_md5\030\001 \001(\t\"8\n\020Downl"
+    "oadCoverRsp\022\020\n\010file_md5\030\001 \001(\t\022\022\n\ncover_d"
+    "ata\030\002 \001(\014b\006proto3"
 };
 static ::absl::once_flag descriptor_table_server_5fmsg_2eproto_once;
 PROTOBUF_CONSTINIT const ::_pbi::DescriptorTable descriptor_table_server_5fmsg_2eproto = {
     false,
     false,
-    748,
+    1017,
     descriptor_table_protodef_server_5fmsg_2eproto,
     "server_msg.proto",
     &descriptor_table_server_5fmsg_2eproto_once,
     nullptr,
     0,
-    10,
+    14,
     schemas,
     file_default_instances,
     TableStruct_server_5fmsg_2eproto::offsets,
@@ -2437,7 +2612,7 @@ inline PROTOBUF_NDEBUG_INLINE MovieInfo::Impl_::Impl_(
     const Impl_& from, const ::ServerApi::MovieInfo& from_msg)
       : movie_name_(arena, from.movie_name_),
         cover_url_(arena, from.cover_url_),
-        video_url_(arena, from.video_url_),
+        file_md5_(arena, from.file_md5_),
         _cached_size_{0} {}
 
 MovieInfo::MovieInfo(
@@ -2468,7 +2643,7 @@ inline PROTOBUF_NDEBUG_INLINE MovieInfo::Impl_::Impl_(
     ::google::protobuf::Arena* arena)
       : movie_name_(arena),
         cover_url_(arena),
-        video_url_(arena),
+        file_md5_(arena),
         _cached_size_{0} {}
 
 inline void MovieInfo::SharedCtor(::_pb::Arena* arena) {
@@ -2490,7 +2665,7 @@ inline void MovieInfo::SharedDtor(MessageLite& self) {
   ABSL_DCHECK(this_.GetArena() == nullptr);
   this_._impl_.movie_name_.Destroy();
   this_._impl_.cover_url_.Destroy();
-  this_._impl_.video_url_.Destroy();
+  this_._impl_.file_md5_.Destroy();
   this_._impl_.~Impl_();
 }
 
@@ -2530,15 +2705,15 @@ const ::google::protobuf::internal::ClassData* MovieInfo::GetClassData() const {
   return _class_data_.base();
 }
 PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
-const ::_pbi::TcParseTable<3, 5, 0, 56, 2> MovieInfo::_table_ = {
+const ::_pbi::TcParseTable<3, 6, 0, 55, 2> MovieInfo::_table_ = {
   {
     0,  // no _has_bits_
     0, // no _extensions_
-    5, 56,  // max_field_number, fast_idx_mask
+    6, 56,  // max_field_number, fast_idx_mask
     offsetof(decltype(_table_), field_lookup_table),
-    4294967264,  // skipmap
+    4294967232,  // skipmap
     offsetof(decltype(_table_), field_entries),
-    5,  // num_field_entries
+    6,  // num_field_entries
     0,  // num_aux_entries
     offsetof(decltype(_table_), field_names),  // no aux_entries
     _class_data_.base(),
@@ -2558,13 +2733,15 @@ const ::_pbi::TcParseTable<3, 5, 0, 56, 2> MovieInfo::_table_ = {
     // string cover_url = 3;
     {::_pbi::TcParser::FastUS1,
      {26, 63, 0, PROTOBUF_FIELD_OFFSET(MovieInfo, _impl_.cover_url_)}},
-    // string video_url = 4;
-    {::_pbi::TcParser::FastUS1,
-     {34, 63, 0, PROTOBUF_FIELD_OFFSET(MovieInfo, _impl_.video_url_)}},
-    // int32 play_status = 5;
+    // int32 play_status = 4;
     {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(MovieInfo, _impl_.play_status_), 63>(),
-     {40, 63, 0, PROTOBUF_FIELD_OFFSET(MovieInfo, _impl_.play_status_)}},
-    {::_pbi::TcParser::MiniParse, {}},
+     {32, 63, 0, PROTOBUF_FIELD_OFFSET(MovieInfo, _impl_.play_status_)}},
+    // string file_md5 = 5;
+    {::_pbi::TcParser::FastUS1,
+     {42, 63, 0, PROTOBUF_FIELD_OFFSET(MovieInfo, _impl_.file_md5_)}},
+    // uint64 file_size = 6;
+    {::_pbi::TcParser::SingularVarintNoZag1<::uint64_t, offsetof(MovieInfo, _impl_.file_size_), 63>(),
+     {48, 63, 0, PROTOBUF_FIELD_OFFSET(MovieInfo, _impl_.file_size_)}},
     {::_pbi::TcParser::MiniParse, {}},
   }}, {{
     65535, 65535
@@ -2578,20 +2755,23 @@ const ::_pbi::TcParseTable<3, 5, 0, 56, 2> MovieInfo::_table_ = {
     // string cover_url = 3;
     {PROTOBUF_FIELD_OFFSET(MovieInfo, _impl_.cover_url_), 0, 0,
     (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
-    // string video_url = 4;
-    {PROTOBUF_FIELD_OFFSET(MovieInfo, _impl_.video_url_), 0, 0,
-    (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
-    // int32 play_status = 5;
+    // int32 play_status = 4;
     {PROTOBUF_FIELD_OFFSET(MovieInfo, _impl_.play_status_), 0, 0,
     (0 | ::_fl::kFcSingular | ::_fl::kInt32)},
+    // string file_md5 = 5;
+    {PROTOBUF_FIELD_OFFSET(MovieInfo, _impl_.file_md5_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
+    // uint64 file_size = 6;
+    {PROTOBUF_FIELD_OFFSET(MovieInfo, _impl_.file_size_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kUInt64)},
   }},
   // no aux_entries
   {{
-    "\23\0\12\11\11\0\0\0"
+    "\23\0\12\11\0\10\0\0"
     "ServerApi.MovieInfo"
     "movie_name"
     "cover_url"
-    "video_url"
+    "file_md5"
   }},
 };
 
@@ -2604,7 +2784,7 @@ PROTOBUF_NOINLINE void MovieInfo::Clear() {
 
   _impl_.movie_name_.ClearToEmpty();
   _impl_.cover_url_.ClearToEmpty();
-  _impl_.video_url_.ClearToEmpty();
+  _impl_.file_md5_.ClearToEmpty();
   ::memset(&_impl_.movie_id_, 0, static_cast<::size_t>(
       reinterpret_cast<char*>(&_impl_.play_status_) -
       reinterpret_cast<char*>(&_impl_.movie_id_)) + sizeof(_impl_.play_status_));
@@ -2649,19 +2829,26 @@ PROTOBUF_NOINLINE void MovieInfo::Clear() {
             target = stream->WriteStringMaybeAliased(3, _s, target);
           }
 
-          // string video_url = 4;
-          if (!this_._internal_video_url().empty()) {
-            const std::string& _s = this_._internal_video_url();
-            ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-                _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "ServerApi.MovieInfo.video_url");
-            target = stream->WriteStringMaybeAliased(4, _s, target);
-          }
-
-          // int32 play_status = 5;
+          // int32 play_status = 4;
           if (this_._internal_play_status() != 0) {
             target = ::google::protobuf::internal::WireFormatLite::
-                WriteInt32ToArrayWithField<5>(
+                WriteInt32ToArrayWithField<4>(
                     stream, this_._internal_play_status(), target);
+          }
+
+          // string file_md5 = 5;
+          if (!this_._internal_file_md5().empty()) {
+            const std::string& _s = this_._internal_file_md5();
+            ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+                _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "ServerApi.MovieInfo.file_md5");
+            target = stream->WriteStringMaybeAliased(5, _s, target);
+          }
+
+          // uint64 file_size = 6;
+          if (this_._internal_file_size() != 0) {
+            target = stream->EnsureSpace(target);
+            target = ::_pbi::WireFormatLite::WriteUInt64ToArray(
+                6, this_._internal_file_size(), target);
           }
 
           if (PROTOBUF_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
@@ -2699,17 +2886,22 @@ PROTOBUF_NOINLINE void MovieInfo::Clear() {
               total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
                                               this_._internal_cover_url());
             }
-            // string video_url = 4;
-            if (!this_._internal_video_url().empty()) {
+            // string file_md5 = 5;
+            if (!this_._internal_file_md5().empty()) {
               total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
-                                              this_._internal_video_url());
+                                              this_._internal_file_md5());
             }
             // uint64 movie_id = 1;
             if (this_._internal_movie_id() != 0) {
               total_size += ::_pbi::WireFormatLite::UInt64SizePlusOne(
                   this_._internal_movie_id());
             }
-            // int32 play_status = 5;
+            // uint64 file_size = 6;
+            if (this_._internal_file_size() != 0) {
+              total_size += ::_pbi::WireFormatLite::UInt64SizePlusOne(
+                  this_._internal_file_size());
+            }
+            // int32 play_status = 4;
             if (this_._internal_play_status() != 0) {
               total_size += ::_pbi::WireFormatLite::Int32SizePlusOne(
                   this_._internal_play_status());
@@ -2733,11 +2925,14 @@ void MovieInfo::MergeImpl(::google::protobuf::MessageLite& to_msg, const ::googl
   if (!from._internal_cover_url().empty()) {
     _this->_internal_set_cover_url(from._internal_cover_url());
   }
-  if (!from._internal_video_url().empty()) {
-    _this->_internal_set_video_url(from._internal_video_url());
+  if (!from._internal_file_md5().empty()) {
+    _this->_internal_set_file_md5(from._internal_file_md5());
   }
   if (from._internal_movie_id() != 0) {
     _this->_impl_.movie_id_ = from._impl_.movie_id_;
+  }
+  if (from._internal_file_size() != 0) {
+    _this->_impl_.file_size_ = from._impl_.file_size_;
   }
   if (from._internal_play_status() != 0) {
     _this->_impl_.play_status_ = from._impl_.play_status_;
@@ -2760,7 +2955,7 @@ void MovieInfo::InternalSwap(MovieInfo* PROTOBUF_RESTRICT other) {
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
   ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.movie_name_, &other->_impl_.movie_name_, arena);
   ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.cover_url_, &other->_impl_.cover_url_, arena);
-  ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.video_url_, &other->_impl_.video_url_, arena);
+  ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.file_md5_, &other->_impl_.file_md5_, arena);
   ::google::protobuf::internal::memswap<
       PROTOBUF_FIELD_OFFSET(MovieInfo, _impl_.play_status_)
       + sizeof(MovieInfo::_impl_.play_status_)
@@ -3253,6 +3448,1071 @@ void GetMovieListRsp::InternalSwap(GetMovieListRsp* PROTOBUF_RESTRICT other) {
 }
 
 ::google::protobuf::Metadata GetMovieListRsp::GetMetadata() const {
+  return ::google::protobuf::Message::GetMetadataImpl(GetClassData()->full());
+}
+// ===================================================================
+
+class DownloadChunkReq::_Internal {
+ public:
+};
+
+DownloadChunkReq::DownloadChunkReq(::google::protobuf::Arena* arena)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(arena, _class_data_.base()) {
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  SharedCtor(arena);
+  // @@protoc_insertion_point(arena_constructor:ServerApi.DownloadChunkReq)
+}
+inline PROTOBUF_NDEBUG_INLINE DownloadChunkReq::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility, ::google::protobuf::Arena* arena,
+    const Impl_& from, const ::ServerApi::DownloadChunkReq& from_msg)
+      : file_md5_(arena, from.file_md5_),
+        _cached_size_{0} {}
+
+DownloadChunkReq::DownloadChunkReq(
+    ::google::protobuf::Arena* arena,
+    const DownloadChunkReq& from)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(arena, _class_data_.base()) {
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  DownloadChunkReq* const _this = this;
+  (void)_this;
+  _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
+      from._internal_metadata_);
+  new (&_impl_) Impl_(internal_visibility(), arena, from._impl_, from);
+  _impl_.chunk_index_ = from._impl_.chunk_index_;
+
+  // @@protoc_insertion_point(copy_constructor:ServerApi.DownloadChunkReq)
+}
+inline PROTOBUF_NDEBUG_INLINE DownloadChunkReq::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility,
+    ::google::protobuf::Arena* arena)
+      : file_md5_(arena),
+        _cached_size_{0} {}
+
+inline void DownloadChunkReq::SharedCtor(::_pb::Arena* arena) {
+  new (&_impl_) Impl_(internal_visibility(), arena);
+  _impl_.chunk_index_ = {};
+}
+DownloadChunkReq::~DownloadChunkReq() {
+  // @@protoc_insertion_point(destructor:ServerApi.DownloadChunkReq)
+  SharedDtor(*this);
+}
+inline void DownloadChunkReq::SharedDtor(MessageLite& self) {
+  DownloadChunkReq& this_ = static_cast<DownloadChunkReq&>(self);
+  this_._internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
+  ABSL_DCHECK(this_.GetArena() == nullptr);
+  this_._impl_.file_md5_.Destroy();
+  this_._impl_.~Impl_();
+}
+
+inline void* DownloadChunkReq::PlacementNew_(const void*, void* mem,
+                                        ::google::protobuf::Arena* arena) {
+  return ::new (mem) DownloadChunkReq(arena);
+}
+constexpr auto DownloadChunkReq::InternalNewImpl_() {
+  return ::google::protobuf::internal::MessageCreator::CopyInit(sizeof(DownloadChunkReq),
+                                            alignof(DownloadChunkReq));
+}
+PROTOBUF_CONSTINIT
+PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::google::protobuf::internal::ClassDataFull DownloadChunkReq::_class_data_ = {
+    ::google::protobuf::internal::ClassData{
+        &_DownloadChunkReq_default_instance_._instance,
+        &_table_.header,
+        nullptr,  // OnDemandRegisterArenaDtor
+        nullptr,  // IsInitialized
+        &DownloadChunkReq::MergeImpl,
+        ::google::protobuf::Message::GetNewImpl<DownloadChunkReq>(),
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+        &DownloadChunkReq::SharedDtor,
+        ::google::protobuf::Message::GetClearImpl<DownloadChunkReq>(), &DownloadChunkReq::ByteSizeLong,
+            &DownloadChunkReq::_InternalSerialize,
+#endif  // PROTOBUF_CUSTOM_VTABLE
+        PROTOBUF_FIELD_OFFSET(DownloadChunkReq, _impl_._cached_size_),
+        false,
+    },
+    &DownloadChunkReq::kDescriptorMethods,
+    &descriptor_table_server_5fmsg_2eproto,
+    nullptr,  // tracker
+};
+const ::google::protobuf::internal::ClassData* DownloadChunkReq::GetClassData() const {
+  ::google::protobuf::internal::PrefetchToLocalCache(&_class_data_);
+  ::google::protobuf::internal::PrefetchToLocalCache(_class_data_.tc_table);
+  return _class_data_.base();
+}
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::_pbi::TcParseTable<1, 2, 0, 43, 2> DownloadChunkReq::_table_ = {
+  {
+    0,  // no _has_bits_
+    0, // no _extensions_
+    2, 8,  // max_field_number, fast_idx_mask
+    offsetof(decltype(_table_), field_lookup_table),
+    4294967292,  // skipmap
+    offsetof(decltype(_table_), field_entries),
+    2,  // num_field_entries
+    0,  // num_aux_entries
+    offsetof(decltype(_table_), field_names),  // no aux_entries
+    _class_data_.base(),
+    nullptr,  // post_loop_handler
+    ::_pbi::TcParser::GenericFallback,  // fallback
+    #ifdef PROTOBUF_PREFETCH_PARSE_TABLE
+    ::_pbi::TcParser::GetTable<::ServerApi::DownloadChunkReq>(),  // to_prefetch
+    #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
+  }, {{
+    // uint32 chunk_index = 2;
+    {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(DownloadChunkReq, _impl_.chunk_index_), 63>(),
+     {16, 63, 0, PROTOBUF_FIELD_OFFSET(DownloadChunkReq, _impl_.chunk_index_)}},
+    // string file_md5 = 1;
+    {::_pbi::TcParser::FastUS1,
+     {10, 63, 0, PROTOBUF_FIELD_OFFSET(DownloadChunkReq, _impl_.file_md5_)}},
+  }}, {{
+    65535, 65535
+  }}, {{
+    // string file_md5 = 1;
+    {PROTOBUF_FIELD_OFFSET(DownloadChunkReq, _impl_.file_md5_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
+    // uint32 chunk_index = 2;
+    {PROTOBUF_FIELD_OFFSET(DownloadChunkReq, _impl_.chunk_index_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kUInt32)},
+  }},
+  // no aux_entries
+  {{
+    "\32\10\0\0\0\0\0\0"
+    "ServerApi.DownloadChunkReq"
+    "file_md5"
+  }},
+};
+
+PROTOBUF_NOINLINE void DownloadChunkReq::Clear() {
+// @@protoc_insertion_point(message_clear_start:ServerApi.DownloadChunkReq)
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  ::uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  _impl_.file_md5_.ClearToEmpty();
+  _impl_.chunk_index_ = 0u;
+  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
+}
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+        ::uint8_t* DownloadChunkReq::_InternalSerialize(
+            const MessageLite& base, ::uint8_t* target,
+            ::google::protobuf::io::EpsCopyOutputStream* stream) {
+          const DownloadChunkReq& this_ = static_cast<const DownloadChunkReq&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+        ::uint8_t* DownloadChunkReq::_InternalSerialize(
+            ::uint8_t* target,
+            ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+          const DownloadChunkReq& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+          // @@protoc_insertion_point(serialize_to_array_start:ServerApi.DownloadChunkReq)
+          ::uint32_t cached_has_bits = 0;
+          (void)cached_has_bits;
+
+          // string file_md5 = 1;
+          if (!this_._internal_file_md5().empty()) {
+            const std::string& _s = this_._internal_file_md5();
+            ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+                _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "ServerApi.DownloadChunkReq.file_md5");
+            target = stream->WriteStringMaybeAliased(1, _s, target);
+          }
+
+          // uint32 chunk_index = 2;
+          if (this_._internal_chunk_index() != 0) {
+            target = stream->EnsureSpace(target);
+            target = ::_pbi::WireFormatLite::WriteUInt32ToArray(
+                2, this_._internal_chunk_index(), target);
+          }
+
+          if (PROTOBUF_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
+            target =
+                ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+                    this_._internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
+          }
+          // @@protoc_insertion_point(serialize_to_array_end:ServerApi.DownloadChunkReq)
+          return target;
+        }
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+        ::size_t DownloadChunkReq::ByteSizeLong(const MessageLite& base) {
+          const DownloadChunkReq& this_ = static_cast<const DownloadChunkReq&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+        ::size_t DownloadChunkReq::ByteSizeLong() const {
+          const DownloadChunkReq& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+          // @@protoc_insertion_point(message_byte_size_start:ServerApi.DownloadChunkReq)
+          ::size_t total_size = 0;
+
+          ::uint32_t cached_has_bits = 0;
+          // Prevent compiler warnings about cached_has_bits being unused
+          (void)cached_has_bits;
+
+          ::_pbi::Prefetch5LinesFrom7Lines(&this_);
+           {
+            // string file_md5 = 1;
+            if (!this_._internal_file_md5().empty()) {
+              total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
+                                              this_._internal_file_md5());
+            }
+            // uint32 chunk_index = 2;
+            if (this_._internal_chunk_index() != 0) {
+              total_size += ::_pbi::WireFormatLite::UInt32SizePlusOne(
+                  this_._internal_chunk_index());
+            }
+          }
+          return this_.MaybeComputeUnknownFieldsSize(total_size,
+                                                     &this_._impl_._cached_size_);
+        }
+
+void DownloadChunkReq::MergeImpl(::google::protobuf::MessageLite& to_msg, const ::google::protobuf::MessageLite& from_msg) {
+  auto* const _this = static_cast<DownloadChunkReq*>(&to_msg);
+  auto& from = static_cast<const DownloadChunkReq&>(from_msg);
+  // @@protoc_insertion_point(class_specific_merge_from_start:ServerApi.DownloadChunkReq)
+  ABSL_DCHECK_NE(&from, _this);
+  ::uint32_t cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  if (!from._internal_file_md5().empty()) {
+    _this->_internal_set_file_md5(from._internal_file_md5());
+  }
+  if (from._internal_chunk_index() != 0) {
+    _this->_impl_.chunk_index_ = from._impl_.chunk_index_;
+  }
+  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
+}
+
+void DownloadChunkReq::CopyFrom(const DownloadChunkReq& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:ServerApi.DownloadChunkReq)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+
+void DownloadChunkReq::InternalSwap(DownloadChunkReq* PROTOBUF_RESTRICT other) {
+  using std::swap;
+  auto* arena = GetArena();
+  ABSL_DCHECK_EQ(arena, other->GetArena());
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
+  ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.file_md5_, &other->_impl_.file_md5_, arena);
+        swap(_impl_.chunk_index_, other->_impl_.chunk_index_);
+}
+
+::google::protobuf::Metadata DownloadChunkReq::GetMetadata() const {
+  return ::google::protobuf::Message::GetMetadataImpl(GetClassData()->full());
+}
+// ===================================================================
+
+class DownloadChunkRsp::_Internal {
+ public:
+};
+
+DownloadChunkRsp::DownloadChunkRsp(::google::protobuf::Arena* arena)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(arena, _class_data_.base()) {
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  SharedCtor(arena);
+  // @@protoc_insertion_point(arena_constructor:ServerApi.DownloadChunkRsp)
+}
+inline PROTOBUF_NDEBUG_INLINE DownloadChunkRsp::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility, ::google::protobuf::Arena* arena,
+    const Impl_& from, const ::ServerApi::DownloadChunkRsp& from_msg)
+      : file_md5_(arena, from.file_md5_),
+        chunk_data_(arena, from.chunk_data_),
+        _cached_size_{0} {}
+
+DownloadChunkRsp::DownloadChunkRsp(
+    ::google::protobuf::Arena* arena,
+    const DownloadChunkRsp& from)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(arena, _class_data_.base()) {
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  DownloadChunkRsp* const _this = this;
+  (void)_this;
+  _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
+      from._internal_metadata_);
+  new (&_impl_) Impl_(internal_visibility(), arena, from._impl_, from);
+  ::memcpy(reinterpret_cast<char *>(&_impl_) +
+               offsetof(Impl_, chunk_index_),
+           reinterpret_cast<const char *>(&from._impl_) +
+               offsetof(Impl_, chunk_index_),
+           offsetof(Impl_, is_last_) -
+               offsetof(Impl_, chunk_index_) +
+               sizeof(Impl_::is_last_));
+
+  // @@protoc_insertion_point(copy_constructor:ServerApi.DownloadChunkRsp)
+}
+inline PROTOBUF_NDEBUG_INLINE DownloadChunkRsp::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility,
+    ::google::protobuf::Arena* arena)
+      : file_md5_(arena),
+        chunk_data_(arena),
+        _cached_size_{0} {}
+
+inline void DownloadChunkRsp::SharedCtor(::_pb::Arena* arena) {
+  new (&_impl_) Impl_(internal_visibility(), arena);
+  ::memset(reinterpret_cast<char *>(&_impl_) +
+               offsetof(Impl_, chunk_index_),
+           0,
+           offsetof(Impl_, is_last_) -
+               offsetof(Impl_, chunk_index_) +
+               sizeof(Impl_::is_last_));
+}
+DownloadChunkRsp::~DownloadChunkRsp() {
+  // @@protoc_insertion_point(destructor:ServerApi.DownloadChunkRsp)
+  SharedDtor(*this);
+}
+inline void DownloadChunkRsp::SharedDtor(MessageLite& self) {
+  DownloadChunkRsp& this_ = static_cast<DownloadChunkRsp&>(self);
+  this_._internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
+  ABSL_DCHECK(this_.GetArena() == nullptr);
+  this_._impl_.file_md5_.Destroy();
+  this_._impl_.chunk_data_.Destroy();
+  this_._impl_.~Impl_();
+}
+
+inline void* DownloadChunkRsp::PlacementNew_(const void*, void* mem,
+                                        ::google::protobuf::Arena* arena) {
+  return ::new (mem) DownloadChunkRsp(arena);
+}
+constexpr auto DownloadChunkRsp::InternalNewImpl_() {
+  return ::google::protobuf::internal::MessageCreator::CopyInit(sizeof(DownloadChunkRsp),
+                                            alignof(DownloadChunkRsp));
+}
+PROTOBUF_CONSTINIT
+PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::google::protobuf::internal::ClassDataFull DownloadChunkRsp::_class_data_ = {
+    ::google::protobuf::internal::ClassData{
+        &_DownloadChunkRsp_default_instance_._instance,
+        &_table_.header,
+        nullptr,  // OnDemandRegisterArenaDtor
+        nullptr,  // IsInitialized
+        &DownloadChunkRsp::MergeImpl,
+        ::google::protobuf::Message::GetNewImpl<DownloadChunkRsp>(),
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+        &DownloadChunkRsp::SharedDtor,
+        ::google::protobuf::Message::GetClearImpl<DownloadChunkRsp>(), &DownloadChunkRsp::ByteSizeLong,
+            &DownloadChunkRsp::_InternalSerialize,
+#endif  // PROTOBUF_CUSTOM_VTABLE
+        PROTOBUF_FIELD_OFFSET(DownloadChunkRsp, _impl_._cached_size_),
+        false,
+    },
+    &DownloadChunkRsp::kDescriptorMethods,
+    &descriptor_table_server_5fmsg_2eproto,
+    nullptr,  // tracker
+};
+const ::google::protobuf::internal::ClassData* DownloadChunkRsp::GetClassData() const {
+  ::google::protobuf::internal::PrefetchToLocalCache(&_class_data_);
+  ::google::protobuf::internal::PrefetchToLocalCache(_class_data_.tc_table);
+  return _class_data_.base();
+}
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::_pbi::TcParseTable<2, 4, 0, 43, 2> DownloadChunkRsp::_table_ = {
+  {
+    0,  // no _has_bits_
+    0, // no _extensions_
+    4, 24,  // max_field_number, fast_idx_mask
+    offsetof(decltype(_table_), field_lookup_table),
+    4294967280,  // skipmap
+    offsetof(decltype(_table_), field_entries),
+    4,  // num_field_entries
+    0,  // num_aux_entries
+    offsetof(decltype(_table_), field_names),  // no aux_entries
+    _class_data_.base(),
+    nullptr,  // post_loop_handler
+    ::_pbi::TcParser::GenericFallback,  // fallback
+    #ifdef PROTOBUF_PREFETCH_PARSE_TABLE
+    ::_pbi::TcParser::GetTable<::ServerApi::DownloadChunkRsp>(),  // to_prefetch
+    #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
+  }, {{
+    // bool is_last = 4;
+    {::_pbi::TcParser::SingularVarintNoZag1<bool, offsetof(DownloadChunkRsp, _impl_.is_last_), 63>(),
+     {32, 63, 0, PROTOBUF_FIELD_OFFSET(DownloadChunkRsp, _impl_.is_last_)}},
+    // string file_md5 = 1;
+    {::_pbi::TcParser::FastUS1,
+     {10, 63, 0, PROTOBUF_FIELD_OFFSET(DownloadChunkRsp, _impl_.file_md5_)}},
+    // uint32 chunk_index = 2;
+    {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(DownloadChunkRsp, _impl_.chunk_index_), 63>(),
+     {16, 63, 0, PROTOBUF_FIELD_OFFSET(DownloadChunkRsp, _impl_.chunk_index_)}},
+    // bytes chunk_data = 3;
+    {::_pbi::TcParser::FastBS1,
+     {26, 63, 0, PROTOBUF_FIELD_OFFSET(DownloadChunkRsp, _impl_.chunk_data_)}},
+  }}, {{
+    65535, 65535
+  }}, {{
+    // string file_md5 = 1;
+    {PROTOBUF_FIELD_OFFSET(DownloadChunkRsp, _impl_.file_md5_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
+    // uint32 chunk_index = 2;
+    {PROTOBUF_FIELD_OFFSET(DownloadChunkRsp, _impl_.chunk_index_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kUInt32)},
+    // bytes chunk_data = 3;
+    {PROTOBUF_FIELD_OFFSET(DownloadChunkRsp, _impl_.chunk_data_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kBytes | ::_fl::kRepAString)},
+    // bool is_last = 4;
+    {PROTOBUF_FIELD_OFFSET(DownloadChunkRsp, _impl_.is_last_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kBool)},
+  }},
+  // no aux_entries
+  {{
+    "\32\10\0\0\0\0\0\0"
+    "ServerApi.DownloadChunkRsp"
+    "file_md5"
+  }},
+};
+
+PROTOBUF_NOINLINE void DownloadChunkRsp::Clear() {
+// @@protoc_insertion_point(message_clear_start:ServerApi.DownloadChunkRsp)
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  ::uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  _impl_.file_md5_.ClearToEmpty();
+  _impl_.chunk_data_.ClearToEmpty();
+  ::memset(&_impl_.chunk_index_, 0, static_cast<::size_t>(
+      reinterpret_cast<char*>(&_impl_.is_last_) -
+      reinterpret_cast<char*>(&_impl_.chunk_index_)) + sizeof(_impl_.is_last_));
+  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
+}
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+        ::uint8_t* DownloadChunkRsp::_InternalSerialize(
+            const MessageLite& base, ::uint8_t* target,
+            ::google::protobuf::io::EpsCopyOutputStream* stream) {
+          const DownloadChunkRsp& this_ = static_cast<const DownloadChunkRsp&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+        ::uint8_t* DownloadChunkRsp::_InternalSerialize(
+            ::uint8_t* target,
+            ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+          const DownloadChunkRsp& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+          // @@protoc_insertion_point(serialize_to_array_start:ServerApi.DownloadChunkRsp)
+          ::uint32_t cached_has_bits = 0;
+          (void)cached_has_bits;
+
+          // string file_md5 = 1;
+          if (!this_._internal_file_md5().empty()) {
+            const std::string& _s = this_._internal_file_md5();
+            ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+                _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "ServerApi.DownloadChunkRsp.file_md5");
+            target = stream->WriteStringMaybeAliased(1, _s, target);
+          }
+
+          // uint32 chunk_index = 2;
+          if (this_._internal_chunk_index() != 0) {
+            target = stream->EnsureSpace(target);
+            target = ::_pbi::WireFormatLite::WriteUInt32ToArray(
+                2, this_._internal_chunk_index(), target);
+          }
+
+          // bytes chunk_data = 3;
+          if (!this_._internal_chunk_data().empty()) {
+            const std::string& _s = this_._internal_chunk_data();
+            target = stream->WriteBytesMaybeAliased(3, _s, target);
+          }
+
+          // bool is_last = 4;
+          if (this_._internal_is_last() != 0) {
+            target = stream->EnsureSpace(target);
+            target = ::_pbi::WireFormatLite::WriteBoolToArray(
+                4, this_._internal_is_last(), target);
+          }
+
+          if (PROTOBUF_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
+            target =
+                ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+                    this_._internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
+          }
+          // @@protoc_insertion_point(serialize_to_array_end:ServerApi.DownloadChunkRsp)
+          return target;
+        }
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+        ::size_t DownloadChunkRsp::ByteSizeLong(const MessageLite& base) {
+          const DownloadChunkRsp& this_ = static_cast<const DownloadChunkRsp&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+        ::size_t DownloadChunkRsp::ByteSizeLong() const {
+          const DownloadChunkRsp& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+          // @@protoc_insertion_point(message_byte_size_start:ServerApi.DownloadChunkRsp)
+          ::size_t total_size = 0;
+
+          ::uint32_t cached_has_bits = 0;
+          // Prevent compiler warnings about cached_has_bits being unused
+          (void)cached_has_bits;
+
+          ::_pbi::Prefetch5LinesFrom7Lines(&this_);
+           {
+            // string file_md5 = 1;
+            if (!this_._internal_file_md5().empty()) {
+              total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
+                                              this_._internal_file_md5());
+            }
+            // bytes chunk_data = 3;
+            if (!this_._internal_chunk_data().empty()) {
+              total_size += 1 + ::google::protobuf::internal::WireFormatLite::BytesSize(
+                                              this_._internal_chunk_data());
+            }
+            // uint32 chunk_index = 2;
+            if (this_._internal_chunk_index() != 0) {
+              total_size += ::_pbi::WireFormatLite::UInt32SizePlusOne(
+                  this_._internal_chunk_index());
+            }
+            // bool is_last = 4;
+            if (this_._internal_is_last() != 0) {
+              total_size += 2;
+            }
+          }
+          return this_.MaybeComputeUnknownFieldsSize(total_size,
+                                                     &this_._impl_._cached_size_);
+        }
+
+void DownloadChunkRsp::MergeImpl(::google::protobuf::MessageLite& to_msg, const ::google::protobuf::MessageLite& from_msg) {
+  auto* const _this = static_cast<DownloadChunkRsp*>(&to_msg);
+  auto& from = static_cast<const DownloadChunkRsp&>(from_msg);
+  // @@protoc_insertion_point(class_specific_merge_from_start:ServerApi.DownloadChunkRsp)
+  ABSL_DCHECK_NE(&from, _this);
+  ::uint32_t cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  if (!from._internal_file_md5().empty()) {
+    _this->_internal_set_file_md5(from._internal_file_md5());
+  }
+  if (!from._internal_chunk_data().empty()) {
+    _this->_internal_set_chunk_data(from._internal_chunk_data());
+  }
+  if (from._internal_chunk_index() != 0) {
+    _this->_impl_.chunk_index_ = from._impl_.chunk_index_;
+  }
+  if (from._internal_is_last() != 0) {
+    _this->_impl_.is_last_ = from._impl_.is_last_;
+  }
+  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
+}
+
+void DownloadChunkRsp::CopyFrom(const DownloadChunkRsp& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:ServerApi.DownloadChunkRsp)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+
+void DownloadChunkRsp::InternalSwap(DownloadChunkRsp* PROTOBUF_RESTRICT other) {
+  using std::swap;
+  auto* arena = GetArena();
+  ABSL_DCHECK_EQ(arena, other->GetArena());
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
+  ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.file_md5_, &other->_impl_.file_md5_, arena);
+  ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.chunk_data_, &other->_impl_.chunk_data_, arena);
+  ::google::protobuf::internal::memswap<
+      PROTOBUF_FIELD_OFFSET(DownloadChunkRsp, _impl_.is_last_)
+      + sizeof(DownloadChunkRsp::_impl_.is_last_)
+      - PROTOBUF_FIELD_OFFSET(DownloadChunkRsp, _impl_.chunk_index_)>(
+          reinterpret_cast<char*>(&_impl_.chunk_index_),
+          reinterpret_cast<char*>(&other->_impl_.chunk_index_));
+}
+
+::google::protobuf::Metadata DownloadChunkRsp::GetMetadata() const {
+  return ::google::protobuf::Message::GetMetadataImpl(GetClassData()->full());
+}
+// ===================================================================
+
+class DownloadCoverReq::_Internal {
+ public:
+};
+
+DownloadCoverReq::DownloadCoverReq(::google::protobuf::Arena* arena)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(arena, _class_data_.base()) {
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  SharedCtor(arena);
+  // @@protoc_insertion_point(arena_constructor:ServerApi.DownloadCoverReq)
+}
+inline PROTOBUF_NDEBUG_INLINE DownloadCoverReq::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility, ::google::protobuf::Arena* arena,
+    const Impl_& from, const ::ServerApi::DownloadCoverReq& from_msg)
+      : file_md5_(arena, from.file_md5_),
+        _cached_size_{0} {}
+
+DownloadCoverReq::DownloadCoverReq(
+    ::google::protobuf::Arena* arena,
+    const DownloadCoverReq& from)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(arena, _class_data_.base()) {
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  DownloadCoverReq* const _this = this;
+  (void)_this;
+  _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
+      from._internal_metadata_);
+  new (&_impl_) Impl_(internal_visibility(), arena, from._impl_, from);
+
+  // @@protoc_insertion_point(copy_constructor:ServerApi.DownloadCoverReq)
+}
+inline PROTOBUF_NDEBUG_INLINE DownloadCoverReq::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility,
+    ::google::protobuf::Arena* arena)
+      : file_md5_(arena),
+        _cached_size_{0} {}
+
+inline void DownloadCoverReq::SharedCtor(::_pb::Arena* arena) {
+  new (&_impl_) Impl_(internal_visibility(), arena);
+}
+DownloadCoverReq::~DownloadCoverReq() {
+  // @@protoc_insertion_point(destructor:ServerApi.DownloadCoverReq)
+  SharedDtor(*this);
+}
+inline void DownloadCoverReq::SharedDtor(MessageLite& self) {
+  DownloadCoverReq& this_ = static_cast<DownloadCoverReq&>(self);
+  this_._internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
+  ABSL_DCHECK(this_.GetArena() == nullptr);
+  this_._impl_.file_md5_.Destroy();
+  this_._impl_.~Impl_();
+}
+
+inline void* DownloadCoverReq::PlacementNew_(const void*, void* mem,
+                                        ::google::protobuf::Arena* arena) {
+  return ::new (mem) DownloadCoverReq(arena);
+}
+constexpr auto DownloadCoverReq::InternalNewImpl_() {
+  return ::google::protobuf::internal::MessageCreator::CopyInit(sizeof(DownloadCoverReq),
+                                            alignof(DownloadCoverReq));
+}
+PROTOBUF_CONSTINIT
+PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::google::protobuf::internal::ClassDataFull DownloadCoverReq::_class_data_ = {
+    ::google::protobuf::internal::ClassData{
+        &_DownloadCoverReq_default_instance_._instance,
+        &_table_.header,
+        nullptr,  // OnDemandRegisterArenaDtor
+        nullptr,  // IsInitialized
+        &DownloadCoverReq::MergeImpl,
+        ::google::protobuf::Message::GetNewImpl<DownloadCoverReq>(),
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+        &DownloadCoverReq::SharedDtor,
+        ::google::protobuf::Message::GetClearImpl<DownloadCoverReq>(), &DownloadCoverReq::ByteSizeLong,
+            &DownloadCoverReq::_InternalSerialize,
+#endif  // PROTOBUF_CUSTOM_VTABLE
+        PROTOBUF_FIELD_OFFSET(DownloadCoverReq, _impl_._cached_size_),
+        false,
+    },
+    &DownloadCoverReq::kDescriptorMethods,
+    &descriptor_table_server_5fmsg_2eproto,
+    nullptr,  // tracker
+};
+const ::google::protobuf::internal::ClassData* DownloadCoverReq::GetClassData() const {
+  ::google::protobuf::internal::PrefetchToLocalCache(&_class_data_);
+  ::google::protobuf::internal::PrefetchToLocalCache(_class_data_.tc_table);
+  return _class_data_.base();
+}
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::_pbi::TcParseTable<0, 1, 0, 43, 2> DownloadCoverReq::_table_ = {
+  {
+    0,  // no _has_bits_
+    0, // no _extensions_
+    1, 0,  // max_field_number, fast_idx_mask
+    offsetof(decltype(_table_), field_lookup_table),
+    4294967294,  // skipmap
+    offsetof(decltype(_table_), field_entries),
+    1,  // num_field_entries
+    0,  // num_aux_entries
+    offsetof(decltype(_table_), field_names),  // no aux_entries
+    _class_data_.base(),
+    nullptr,  // post_loop_handler
+    ::_pbi::TcParser::GenericFallback,  // fallback
+    #ifdef PROTOBUF_PREFETCH_PARSE_TABLE
+    ::_pbi::TcParser::GetTable<::ServerApi::DownloadCoverReq>(),  // to_prefetch
+    #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
+  }, {{
+    // string file_md5 = 1;
+    {::_pbi::TcParser::FastUS1,
+     {10, 63, 0, PROTOBUF_FIELD_OFFSET(DownloadCoverReq, _impl_.file_md5_)}},
+  }}, {{
+    65535, 65535
+  }}, {{
+    // string file_md5 = 1;
+    {PROTOBUF_FIELD_OFFSET(DownloadCoverReq, _impl_.file_md5_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
+  }},
+  // no aux_entries
+  {{
+    "\32\10\0\0\0\0\0\0"
+    "ServerApi.DownloadCoverReq"
+    "file_md5"
+  }},
+};
+
+PROTOBUF_NOINLINE void DownloadCoverReq::Clear() {
+// @@protoc_insertion_point(message_clear_start:ServerApi.DownloadCoverReq)
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  ::uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  _impl_.file_md5_.ClearToEmpty();
+  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
+}
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+        ::uint8_t* DownloadCoverReq::_InternalSerialize(
+            const MessageLite& base, ::uint8_t* target,
+            ::google::protobuf::io::EpsCopyOutputStream* stream) {
+          const DownloadCoverReq& this_ = static_cast<const DownloadCoverReq&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+        ::uint8_t* DownloadCoverReq::_InternalSerialize(
+            ::uint8_t* target,
+            ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+          const DownloadCoverReq& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+          // @@protoc_insertion_point(serialize_to_array_start:ServerApi.DownloadCoverReq)
+          ::uint32_t cached_has_bits = 0;
+          (void)cached_has_bits;
+
+          // string file_md5 = 1;
+          if (!this_._internal_file_md5().empty()) {
+            const std::string& _s = this_._internal_file_md5();
+            ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+                _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "ServerApi.DownloadCoverReq.file_md5");
+            target = stream->WriteStringMaybeAliased(1, _s, target);
+          }
+
+          if (PROTOBUF_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
+            target =
+                ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+                    this_._internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
+          }
+          // @@protoc_insertion_point(serialize_to_array_end:ServerApi.DownloadCoverReq)
+          return target;
+        }
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+        ::size_t DownloadCoverReq::ByteSizeLong(const MessageLite& base) {
+          const DownloadCoverReq& this_ = static_cast<const DownloadCoverReq&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+        ::size_t DownloadCoverReq::ByteSizeLong() const {
+          const DownloadCoverReq& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+          // @@protoc_insertion_point(message_byte_size_start:ServerApi.DownloadCoverReq)
+          ::size_t total_size = 0;
+
+          ::uint32_t cached_has_bits = 0;
+          // Prevent compiler warnings about cached_has_bits being unused
+          (void)cached_has_bits;
+
+           {
+            // string file_md5 = 1;
+            if (!this_._internal_file_md5().empty()) {
+              total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
+                                              this_._internal_file_md5());
+            }
+          }
+          return this_.MaybeComputeUnknownFieldsSize(total_size,
+                                                     &this_._impl_._cached_size_);
+        }
+
+void DownloadCoverReq::MergeImpl(::google::protobuf::MessageLite& to_msg, const ::google::protobuf::MessageLite& from_msg) {
+  auto* const _this = static_cast<DownloadCoverReq*>(&to_msg);
+  auto& from = static_cast<const DownloadCoverReq&>(from_msg);
+  // @@protoc_insertion_point(class_specific_merge_from_start:ServerApi.DownloadCoverReq)
+  ABSL_DCHECK_NE(&from, _this);
+  ::uint32_t cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  if (!from._internal_file_md5().empty()) {
+    _this->_internal_set_file_md5(from._internal_file_md5());
+  }
+  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
+}
+
+void DownloadCoverReq::CopyFrom(const DownloadCoverReq& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:ServerApi.DownloadCoverReq)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+
+void DownloadCoverReq::InternalSwap(DownloadCoverReq* PROTOBUF_RESTRICT other) {
+  using std::swap;
+  auto* arena = GetArena();
+  ABSL_DCHECK_EQ(arena, other->GetArena());
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
+  ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.file_md5_, &other->_impl_.file_md5_, arena);
+}
+
+::google::protobuf::Metadata DownloadCoverReq::GetMetadata() const {
+  return ::google::protobuf::Message::GetMetadataImpl(GetClassData()->full());
+}
+// ===================================================================
+
+class DownloadCoverRsp::_Internal {
+ public:
+};
+
+DownloadCoverRsp::DownloadCoverRsp(::google::protobuf::Arena* arena)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(arena, _class_data_.base()) {
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  SharedCtor(arena);
+  // @@protoc_insertion_point(arena_constructor:ServerApi.DownloadCoverRsp)
+}
+inline PROTOBUF_NDEBUG_INLINE DownloadCoverRsp::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility, ::google::protobuf::Arena* arena,
+    const Impl_& from, const ::ServerApi::DownloadCoverRsp& from_msg)
+      : file_md5_(arena, from.file_md5_),
+        cover_data_(arena, from.cover_data_),
+        _cached_size_{0} {}
+
+DownloadCoverRsp::DownloadCoverRsp(
+    ::google::protobuf::Arena* arena,
+    const DownloadCoverRsp& from)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(arena, _class_data_.base()) {
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  DownloadCoverRsp* const _this = this;
+  (void)_this;
+  _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
+      from._internal_metadata_);
+  new (&_impl_) Impl_(internal_visibility(), arena, from._impl_, from);
+
+  // @@protoc_insertion_point(copy_constructor:ServerApi.DownloadCoverRsp)
+}
+inline PROTOBUF_NDEBUG_INLINE DownloadCoverRsp::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility,
+    ::google::protobuf::Arena* arena)
+      : file_md5_(arena),
+        cover_data_(arena),
+        _cached_size_{0} {}
+
+inline void DownloadCoverRsp::SharedCtor(::_pb::Arena* arena) {
+  new (&_impl_) Impl_(internal_visibility(), arena);
+}
+DownloadCoverRsp::~DownloadCoverRsp() {
+  // @@protoc_insertion_point(destructor:ServerApi.DownloadCoverRsp)
+  SharedDtor(*this);
+}
+inline void DownloadCoverRsp::SharedDtor(MessageLite& self) {
+  DownloadCoverRsp& this_ = static_cast<DownloadCoverRsp&>(self);
+  this_._internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
+  ABSL_DCHECK(this_.GetArena() == nullptr);
+  this_._impl_.file_md5_.Destroy();
+  this_._impl_.cover_data_.Destroy();
+  this_._impl_.~Impl_();
+}
+
+inline void* DownloadCoverRsp::PlacementNew_(const void*, void* mem,
+                                        ::google::protobuf::Arena* arena) {
+  return ::new (mem) DownloadCoverRsp(arena);
+}
+constexpr auto DownloadCoverRsp::InternalNewImpl_() {
+  return ::google::protobuf::internal::MessageCreator::CopyInit(sizeof(DownloadCoverRsp),
+                                            alignof(DownloadCoverRsp));
+}
+PROTOBUF_CONSTINIT
+PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::google::protobuf::internal::ClassDataFull DownloadCoverRsp::_class_data_ = {
+    ::google::protobuf::internal::ClassData{
+        &_DownloadCoverRsp_default_instance_._instance,
+        &_table_.header,
+        nullptr,  // OnDemandRegisterArenaDtor
+        nullptr,  // IsInitialized
+        &DownloadCoverRsp::MergeImpl,
+        ::google::protobuf::Message::GetNewImpl<DownloadCoverRsp>(),
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+        &DownloadCoverRsp::SharedDtor,
+        ::google::protobuf::Message::GetClearImpl<DownloadCoverRsp>(), &DownloadCoverRsp::ByteSizeLong,
+            &DownloadCoverRsp::_InternalSerialize,
+#endif  // PROTOBUF_CUSTOM_VTABLE
+        PROTOBUF_FIELD_OFFSET(DownloadCoverRsp, _impl_._cached_size_),
+        false,
+    },
+    &DownloadCoverRsp::kDescriptorMethods,
+    &descriptor_table_server_5fmsg_2eproto,
+    nullptr,  // tracker
+};
+const ::google::protobuf::internal::ClassData* DownloadCoverRsp::GetClassData() const {
+  ::google::protobuf::internal::PrefetchToLocalCache(&_class_data_);
+  ::google::protobuf::internal::PrefetchToLocalCache(_class_data_.tc_table);
+  return _class_data_.base();
+}
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::_pbi::TcParseTable<1, 2, 0, 43, 2> DownloadCoverRsp::_table_ = {
+  {
+    0,  // no _has_bits_
+    0, // no _extensions_
+    2, 8,  // max_field_number, fast_idx_mask
+    offsetof(decltype(_table_), field_lookup_table),
+    4294967292,  // skipmap
+    offsetof(decltype(_table_), field_entries),
+    2,  // num_field_entries
+    0,  // num_aux_entries
+    offsetof(decltype(_table_), field_names),  // no aux_entries
+    _class_data_.base(),
+    nullptr,  // post_loop_handler
+    ::_pbi::TcParser::GenericFallback,  // fallback
+    #ifdef PROTOBUF_PREFETCH_PARSE_TABLE
+    ::_pbi::TcParser::GetTable<::ServerApi::DownloadCoverRsp>(),  // to_prefetch
+    #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
+  }, {{
+    // bytes cover_data = 2;
+    {::_pbi::TcParser::FastBS1,
+     {18, 63, 0, PROTOBUF_FIELD_OFFSET(DownloadCoverRsp, _impl_.cover_data_)}},
+    // string file_md5 = 1;
+    {::_pbi::TcParser::FastUS1,
+     {10, 63, 0, PROTOBUF_FIELD_OFFSET(DownloadCoverRsp, _impl_.file_md5_)}},
+  }}, {{
+    65535, 65535
+  }}, {{
+    // string file_md5 = 1;
+    {PROTOBUF_FIELD_OFFSET(DownloadCoverRsp, _impl_.file_md5_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
+    // bytes cover_data = 2;
+    {PROTOBUF_FIELD_OFFSET(DownloadCoverRsp, _impl_.cover_data_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kBytes | ::_fl::kRepAString)},
+  }},
+  // no aux_entries
+  {{
+    "\32\10\0\0\0\0\0\0"
+    "ServerApi.DownloadCoverRsp"
+    "file_md5"
+  }},
+};
+
+PROTOBUF_NOINLINE void DownloadCoverRsp::Clear() {
+// @@protoc_insertion_point(message_clear_start:ServerApi.DownloadCoverRsp)
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  ::uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  _impl_.file_md5_.ClearToEmpty();
+  _impl_.cover_data_.ClearToEmpty();
+  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
+}
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+        ::uint8_t* DownloadCoverRsp::_InternalSerialize(
+            const MessageLite& base, ::uint8_t* target,
+            ::google::protobuf::io::EpsCopyOutputStream* stream) {
+          const DownloadCoverRsp& this_ = static_cast<const DownloadCoverRsp&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+        ::uint8_t* DownloadCoverRsp::_InternalSerialize(
+            ::uint8_t* target,
+            ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+          const DownloadCoverRsp& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+          // @@protoc_insertion_point(serialize_to_array_start:ServerApi.DownloadCoverRsp)
+          ::uint32_t cached_has_bits = 0;
+          (void)cached_has_bits;
+
+          // string file_md5 = 1;
+          if (!this_._internal_file_md5().empty()) {
+            const std::string& _s = this_._internal_file_md5();
+            ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+                _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "ServerApi.DownloadCoverRsp.file_md5");
+            target = stream->WriteStringMaybeAliased(1, _s, target);
+          }
+
+          // bytes cover_data = 2;
+          if (!this_._internal_cover_data().empty()) {
+            const std::string& _s = this_._internal_cover_data();
+            target = stream->WriteBytesMaybeAliased(2, _s, target);
+          }
+
+          if (PROTOBUF_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
+            target =
+                ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+                    this_._internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
+          }
+          // @@protoc_insertion_point(serialize_to_array_end:ServerApi.DownloadCoverRsp)
+          return target;
+        }
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+        ::size_t DownloadCoverRsp::ByteSizeLong(const MessageLite& base) {
+          const DownloadCoverRsp& this_ = static_cast<const DownloadCoverRsp&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+        ::size_t DownloadCoverRsp::ByteSizeLong() const {
+          const DownloadCoverRsp& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+          // @@protoc_insertion_point(message_byte_size_start:ServerApi.DownloadCoverRsp)
+          ::size_t total_size = 0;
+
+          ::uint32_t cached_has_bits = 0;
+          // Prevent compiler warnings about cached_has_bits being unused
+          (void)cached_has_bits;
+
+          ::_pbi::Prefetch5LinesFrom7Lines(&this_);
+           {
+            // string file_md5 = 1;
+            if (!this_._internal_file_md5().empty()) {
+              total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
+                                              this_._internal_file_md5());
+            }
+            // bytes cover_data = 2;
+            if (!this_._internal_cover_data().empty()) {
+              total_size += 1 + ::google::protobuf::internal::WireFormatLite::BytesSize(
+                                              this_._internal_cover_data());
+            }
+          }
+          return this_.MaybeComputeUnknownFieldsSize(total_size,
+                                                     &this_._impl_._cached_size_);
+        }
+
+void DownloadCoverRsp::MergeImpl(::google::protobuf::MessageLite& to_msg, const ::google::protobuf::MessageLite& from_msg) {
+  auto* const _this = static_cast<DownloadCoverRsp*>(&to_msg);
+  auto& from = static_cast<const DownloadCoverRsp&>(from_msg);
+  // @@protoc_insertion_point(class_specific_merge_from_start:ServerApi.DownloadCoverRsp)
+  ABSL_DCHECK_NE(&from, _this);
+  ::uint32_t cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  if (!from._internal_file_md5().empty()) {
+    _this->_internal_set_file_md5(from._internal_file_md5());
+  }
+  if (!from._internal_cover_data().empty()) {
+    _this->_internal_set_cover_data(from._internal_cover_data());
+  }
+  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
+}
+
+void DownloadCoverRsp::CopyFrom(const DownloadCoverRsp& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:ServerApi.DownloadCoverRsp)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+
+void DownloadCoverRsp::InternalSwap(DownloadCoverRsp* PROTOBUF_RESTRICT other) {
+  using std::swap;
+  auto* arena = GetArena();
+  ABSL_DCHECK_EQ(arena, other->GetArena());
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
+  ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.file_md5_, &other->_impl_.file_md5_, arena);
+  ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.cover_data_, &other->_impl_.cover_data_, arena);
+}
+
+::google::protobuf::Metadata DownloadCoverRsp::GetMetadata() const {
   return ::google::protobuf::Message::GetMetadataImpl(GetClassData()->full());
 }
 // @@protoc_insertion_point(namespace_scope)

@@ -52,6 +52,18 @@ struct TableStruct_server_5fmsg_2eproto {
 extern const ::google::protobuf::internal::DescriptorTable
     descriptor_table_server_5fmsg_2eproto;
 namespace ServerApi {
+class DownloadChunkReq;
+struct DownloadChunkReqDefaultTypeInternal;
+extern DownloadChunkReqDefaultTypeInternal _DownloadChunkReq_default_instance_;
+class DownloadChunkRsp;
+struct DownloadChunkRspDefaultTypeInternal;
+extern DownloadChunkRspDefaultTypeInternal _DownloadChunkRsp_default_instance_;
+class DownloadCoverReq;
+struct DownloadCoverReqDefaultTypeInternal;
+extern DownloadCoverReqDefaultTypeInternal _DownloadCoverReq_default_instance_;
+class DownloadCoverRsp;
+struct DownloadCoverRspDefaultTypeInternal;
+extern DownloadCoverRspDefaultTypeInternal _DownloadCoverRsp_default_instance_;
 class GetMovieListReq;
 struct GetMovieListReqDefaultTypeInternal;
 extern GetMovieListReqDefaultTypeInternal _GetMovieListReq_default_instance_;
@@ -1171,9 +1183,10 @@ class MovieInfo final : public ::google::protobuf::Message
   enum : int {
     kMovieNameFieldNumber = 2,
     kCoverUrlFieldNumber = 3,
-    kVideoUrlFieldNumber = 4,
+    kFileMd5FieldNumber = 5,
     kMovieIdFieldNumber = 1,
-    kPlayStatusFieldNumber = 5,
+    kFileSizeFieldNumber = 6,
+    kPlayStatusFieldNumber = 4,
   };
   // string movie_name = 2;
   void clear_movie_name() ;
@@ -1207,20 +1220,20 @@ class MovieInfo final : public ::google::protobuf::Message
   std::string* _internal_mutable_cover_url();
 
   public:
-  // string video_url = 4;
-  void clear_video_url() ;
-  const std::string& video_url() const;
+  // string file_md5 = 5;
+  void clear_file_md5() ;
+  const std::string& file_md5() const;
   template <typename Arg_ = const std::string&, typename... Args_>
-  void set_video_url(Arg_&& arg, Args_... args);
-  std::string* mutable_video_url();
-  PROTOBUF_NODISCARD std::string* release_video_url();
-  void set_allocated_video_url(std::string* value);
+  void set_file_md5(Arg_&& arg, Args_... args);
+  std::string* mutable_file_md5();
+  PROTOBUF_NODISCARD std::string* release_file_md5();
+  void set_allocated_file_md5(std::string* value);
 
   private:
-  const std::string& _internal_video_url() const;
-  inline PROTOBUF_ALWAYS_INLINE void _internal_set_video_url(
+  const std::string& _internal_file_md5() const;
+  inline PROTOBUF_ALWAYS_INLINE void _internal_set_file_md5(
       const std::string& value);
-  std::string* _internal_mutable_video_url();
+  std::string* _internal_mutable_file_md5();
 
   public:
   // uint64 movie_id = 1;
@@ -1233,7 +1246,17 @@ class MovieInfo final : public ::google::protobuf::Message
   void _internal_set_movie_id(::uint64_t value);
 
   public:
-  // int32 play_status = 5;
+  // uint64 file_size = 6;
+  void clear_file_size() ;
+  ::uint64_t file_size() const;
+  void set_file_size(::uint64_t value);
+
+  private:
+  ::uint64_t _internal_file_size() const;
+  void _internal_set_file_size(::uint64_t value);
+
+  public:
+  // int32 play_status = 4;
   void clear_play_status() ;
   ::int32_t play_status() const;
   void set_play_status(::int32_t value);
@@ -1248,8 +1271,8 @@ class MovieInfo final : public ::google::protobuf::Message
   class _Internal;
   friend class ::google::protobuf::internal::TcParser;
   static const ::google::protobuf::internal::TcParseTable<
-      3, 5, 0,
-      56, 2>
+      3, 6, 0,
+      55, 2>
       _table_;
 
   friend class ::google::protobuf::MessageLite;
@@ -1268,8 +1291,9 @@ class MovieInfo final : public ::google::protobuf::Message
                           const MovieInfo& from_msg);
     ::google::protobuf::internal::ArenaStringPtr movie_name_;
     ::google::protobuf::internal::ArenaStringPtr cover_url_;
-    ::google::protobuf::internal::ArenaStringPtr video_url_;
+    ::google::protobuf::internal::ArenaStringPtr file_md5_;
     ::uint64_t movie_id_;
+    ::uint64_t file_size_;
     ::int32_t play_status_;
     ::google::protobuf::internal::CachedSize _cached_size_;
     PROTOBUF_TSAN_DECLARE_MEMBER
@@ -2085,6 +2109,862 @@ class GetMovieListReq final : public ::google::protobuf::Message
                           const GetMovieListReq& from_msg);
     ::uint32_t page_index_;
     ::uint32_t page_size_;
+    ::google::protobuf::internal::CachedSize _cached_size_;
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_server_5fmsg_2eproto;
+};
+// -------------------------------------------------------------------
+
+class DownloadCoverRsp final : public ::google::protobuf::Message
+/* @@protoc_insertion_point(class_definition:ServerApi.DownloadCoverRsp) */ {
+ public:
+  inline DownloadCoverRsp() : DownloadCoverRsp(nullptr) {}
+  ~DownloadCoverRsp() PROTOBUF_FINAL;
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+  void operator delete(DownloadCoverRsp* msg, std::destroying_delete_t) {
+    SharedDtor(*msg);
+    ::google::protobuf::internal::SizedDelete(msg, sizeof(DownloadCoverRsp));
+  }
+#endif
+
+  template <typename = void>
+  explicit PROTOBUF_CONSTEXPR DownloadCoverRsp(
+      ::google::protobuf::internal::ConstantInitialized);
+
+  inline DownloadCoverRsp(const DownloadCoverRsp& from) : DownloadCoverRsp(nullptr, from) {}
+  inline DownloadCoverRsp(DownloadCoverRsp&& from) noexcept
+      : DownloadCoverRsp(nullptr, std::move(from)) {}
+  inline DownloadCoverRsp& operator=(const DownloadCoverRsp& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline DownloadCoverRsp& operator=(DownloadCoverRsp&& from) noexcept {
+    if (this == &from) return *this;
+    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields()
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::google::protobuf::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::google::protobuf::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const DownloadCoverRsp& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const DownloadCoverRsp* internal_default_instance() {
+    return reinterpret_cast<const DownloadCoverRsp*>(
+        &_DownloadCoverRsp_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages = 13;
+  friend void swap(DownloadCoverRsp& a, DownloadCoverRsp& b) { a.Swap(&b); }
+  inline void Swap(DownloadCoverRsp* other) {
+    if (other == this) return;
+    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(DownloadCoverRsp* other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  DownloadCoverRsp* New(::google::protobuf::Arena* arena = nullptr) const {
+    return ::google::protobuf::Message::DefaultConstruct<DownloadCoverRsp>(arena);
+  }
+  using ::google::protobuf::Message::CopyFrom;
+  void CopyFrom(const DownloadCoverRsp& from);
+  using ::google::protobuf::Message::MergeFrom;
+  void MergeFrom(const DownloadCoverRsp& from) { DownloadCoverRsp::MergeImpl(*this, from); }
+
+  private:
+  static void MergeImpl(
+      ::google::protobuf::MessageLite& to_msg,
+      const ::google::protobuf::MessageLite& from_msg);
+
+  public:
+  bool IsInitialized() const {
+    return true;
+  }
+  ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
+  #if defined(PROTOBUF_CUSTOM_VTABLE)
+  private:
+  static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
+  static ::uint8_t* _InternalSerialize(
+      const MessageLite& msg, ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream);
+
+  public:
+  ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+    return _InternalSerialize(*this, target, stream);
+  }
+  #else   // PROTOBUF_CUSTOM_VTABLE
+  ::size_t ByteSizeLong() const final;
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const final;
+  #endif  // PROTOBUF_CUSTOM_VTABLE
+  int GetCachedSize() const { return _impl_._cached_size_.Get(); }
+
+  private:
+  void SharedCtor(::google::protobuf::Arena* arena);
+  static void SharedDtor(MessageLite& self);
+  void InternalSwap(DownloadCoverRsp* other);
+ private:
+  template <typename T>
+  friend ::absl::string_view(
+      ::google::protobuf::internal::GetAnyMessageName)();
+  static ::absl::string_view FullMessageName() { return "ServerApi.DownloadCoverRsp"; }
+
+ protected:
+  explicit DownloadCoverRsp(::google::protobuf::Arena* arena);
+  DownloadCoverRsp(::google::protobuf::Arena* arena, const DownloadCoverRsp& from);
+  DownloadCoverRsp(::google::protobuf::Arena* arena, DownloadCoverRsp&& from) noexcept
+      : DownloadCoverRsp(arena) {
+    *this = ::std::move(from);
+  }
+  const ::google::protobuf::internal::ClassData* GetClassData() const PROTOBUF_FINAL;
+  static void* PlacementNew_(const void*, void* mem,
+                             ::google::protobuf::Arena* arena);
+  static constexpr auto InternalNewImpl_();
+  static const ::google::protobuf::internal::ClassDataFull _class_data_;
+
+ public:
+  ::google::protobuf::Metadata GetMetadata() const;
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+  enum : int {
+    kFileMd5FieldNumber = 1,
+    kCoverDataFieldNumber = 2,
+  };
+  // string file_md5 = 1;
+  void clear_file_md5() ;
+  const std::string& file_md5() const;
+  template <typename Arg_ = const std::string&, typename... Args_>
+  void set_file_md5(Arg_&& arg, Args_... args);
+  std::string* mutable_file_md5();
+  PROTOBUF_NODISCARD std::string* release_file_md5();
+  void set_allocated_file_md5(std::string* value);
+
+  private:
+  const std::string& _internal_file_md5() const;
+  inline PROTOBUF_ALWAYS_INLINE void _internal_set_file_md5(
+      const std::string& value);
+  std::string* _internal_mutable_file_md5();
+
+  public:
+  // bytes cover_data = 2;
+  void clear_cover_data() ;
+  const std::string& cover_data() const;
+  template <typename Arg_ = const std::string&, typename... Args_>
+  void set_cover_data(Arg_&& arg, Args_... args);
+  std::string* mutable_cover_data();
+  PROTOBUF_NODISCARD std::string* release_cover_data();
+  void set_allocated_cover_data(std::string* value);
+
+  private:
+  const std::string& _internal_cover_data() const;
+  inline PROTOBUF_ALWAYS_INLINE void _internal_set_cover_data(
+      const std::string& value);
+  std::string* _internal_mutable_cover_data();
+
+  public:
+  // @@protoc_insertion_point(class_scope:ServerApi.DownloadCoverRsp)
+ private:
+  class _Internal;
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<
+      1, 2, 0,
+      43, 2>
+      _table_;
+
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+    inline explicit constexpr Impl_(
+        ::google::protobuf::internal::ConstantInitialized) noexcept;
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena);
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena, const Impl_& from,
+                          const DownloadCoverRsp& from_msg);
+    ::google::protobuf::internal::ArenaStringPtr file_md5_;
+    ::google::protobuf::internal::ArenaStringPtr cover_data_;
+    ::google::protobuf::internal::CachedSize _cached_size_;
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_server_5fmsg_2eproto;
+};
+// -------------------------------------------------------------------
+
+class DownloadCoverReq final : public ::google::protobuf::Message
+/* @@protoc_insertion_point(class_definition:ServerApi.DownloadCoverReq) */ {
+ public:
+  inline DownloadCoverReq() : DownloadCoverReq(nullptr) {}
+  ~DownloadCoverReq() PROTOBUF_FINAL;
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+  void operator delete(DownloadCoverReq* msg, std::destroying_delete_t) {
+    SharedDtor(*msg);
+    ::google::protobuf::internal::SizedDelete(msg, sizeof(DownloadCoverReq));
+  }
+#endif
+
+  template <typename = void>
+  explicit PROTOBUF_CONSTEXPR DownloadCoverReq(
+      ::google::protobuf::internal::ConstantInitialized);
+
+  inline DownloadCoverReq(const DownloadCoverReq& from) : DownloadCoverReq(nullptr, from) {}
+  inline DownloadCoverReq(DownloadCoverReq&& from) noexcept
+      : DownloadCoverReq(nullptr, std::move(from)) {}
+  inline DownloadCoverReq& operator=(const DownloadCoverReq& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline DownloadCoverReq& operator=(DownloadCoverReq&& from) noexcept {
+    if (this == &from) return *this;
+    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields()
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::google::protobuf::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::google::protobuf::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const DownloadCoverReq& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const DownloadCoverReq* internal_default_instance() {
+    return reinterpret_cast<const DownloadCoverReq*>(
+        &_DownloadCoverReq_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages = 12;
+  friend void swap(DownloadCoverReq& a, DownloadCoverReq& b) { a.Swap(&b); }
+  inline void Swap(DownloadCoverReq* other) {
+    if (other == this) return;
+    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(DownloadCoverReq* other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  DownloadCoverReq* New(::google::protobuf::Arena* arena = nullptr) const {
+    return ::google::protobuf::Message::DefaultConstruct<DownloadCoverReq>(arena);
+  }
+  using ::google::protobuf::Message::CopyFrom;
+  void CopyFrom(const DownloadCoverReq& from);
+  using ::google::protobuf::Message::MergeFrom;
+  void MergeFrom(const DownloadCoverReq& from) { DownloadCoverReq::MergeImpl(*this, from); }
+
+  private:
+  static void MergeImpl(
+      ::google::protobuf::MessageLite& to_msg,
+      const ::google::protobuf::MessageLite& from_msg);
+
+  public:
+  bool IsInitialized() const {
+    return true;
+  }
+  ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
+  #if defined(PROTOBUF_CUSTOM_VTABLE)
+  private:
+  static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
+  static ::uint8_t* _InternalSerialize(
+      const MessageLite& msg, ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream);
+
+  public:
+  ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+    return _InternalSerialize(*this, target, stream);
+  }
+  #else   // PROTOBUF_CUSTOM_VTABLE
+  ::size_t ByteSizeLong() const final;
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const final;
+  #endif  // PROTOBUF_CUSTOM_VTABLE
+  int GetCachedSize() const { return _impl_._cached_size_.Get(); }
+
+  private:
+  void SharedCtor(::google::protobuf::Arena* arena);
+  static void SharedDtor(MessageLite& self);
+  void InternalSwap(DownloadCoverReq* other);
+ private:
+  template <typename T>
+  friend ::absl::string_view(
+      ::google::protobuf::internal::GetAnyMessageName)();
+  static ::absl::string_view FullMessageName() { return "ServerApi.DownloadCoverReq"; }
+
+ protected:
+  explicit DownloadCoverReq(::google::protobuf::Arena* arena);
+  DownloadCoverReq(::google::protobuf::Arena* arena, const DownloadCoverReq& from);
+  DownloadCoverReq(::google::protobuf::Arena* arena, DownloadCoverReq&& from) noexcept
+      : DownloadCoverReq(arena) {
+    *this = ::std::move(from);
+  }
+  const ::google::protobuf::internal::ClassData* GetClassData() const PROTOBUF_FINAL;
+  static void* PlacementNew_(const void*, void* mem,
+                             ::google::protobuf::Arena* arena);
+  static constexpr auto InternalNewImpl_();
+  static const ::google::protobuf::internal::ClassDataFull _class_data_;
+
+ public:
+  ::google::protobuf::Metadata GetMetadata() const;
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+  enum : int {
+    kFileMd5FieldNumber = 1,
+  };
+  // string file_md5 = 1;
+  void clear_file_md5() ;
+  const std::string& file_md5() const;
+  template <typename Arg_ = const std::string&, typename... Args_>
+  void set_file_md5(Arg_&& arg, Args_... args);
+  std::string* mutable_file_md5();
+  PROTOBUF_NODISCARD std::string* release_file_md5();
+  void set_allocated_file_md5(std::string* value);
+
+  private:
+  const std::string& _internal_file_md5() const;
+  inline PROTOBUF_ALWAYS_INLINE void _internal_set_file_md5(
+      const std::string& value);
+  std::string* _internal_mutable_file_md5();
+
+  public:
+  // @@protoc_insertion_point(class_scope:ServerApi.DownloadCoverReq)
+ private:
+  class _Internal;
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<
+      0, 1, 0,
+      43, 2>
+      _table_;
+
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+    inline explicit constexpr Impl_(
+        ::google::protobuf::internal::ConstantInitialized) noexcept;
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena);
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena, const Impl_& from,
+                          const DownloadCoverReq& from_msg);
+    ::google::protobuf::internal::ArenaStringPtr file_md5_;
+    ::google::protobuf::internal::CachedSize _cached_size_;
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_server_5fmsg_2eproto;
+};
+// -------------------------------------------------------------------
+
+class DownloadChunkRsp final : public ::google::protobuf::Message
+/* @@protoc_insertion_point(class_definition:ServerApi.DownloadChunkRsp) */ {
+ public:
+  inline DownloadChunkRsp() : DownloadChunkRsp(nullptr) {}
+  ~DownloadChunkRsp() PROTOBUF_FINAL;
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+  void operator delete(DownloadChunkRsp* msg, std::destroying_delete_t) {
+    SharedDtor(*msg);
+    ::google::protobuf::internal::SizedDelete(msg, sizeof(DownloadChunkRsp));
+  }
+#endif
+
+  template <typename = void>
+  explicit PROTOBUF_CONSTEXPR DownloadChunkRsp(
+      ::google::protobuf::internal::ConstantInitialized);
+
+  inline DownloadChunkRsp(const DownloadChunkRsp& from) : DownloadChunkRsp(nullptr, from) {}
+  inline DownloadChunkRsp(DownloadChunkRsp&& from) noexcept
+      : DownloadChunkRsp(nullptr, std::move(from)) {}
+  inline DownloadChunkRsp& operator=(const DownloadChunkRsp& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline DownloadChunkRsp& operator=(DownloadChunkRsp&& from) noexcept {
+    if (this == &from) return *this;
+    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields()
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::google::protobuf::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::google::protobuf::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const DownloadChunkRsp& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const DownloadChunkRsp* internal_default_instance() {
+    return reinterpret_cast<const DownloadChunkRsp*>(
+        &_DownloadChunkRsp_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages = 11;
+  friend void swap(DownloadChunkRsp& a, DownloadChunkRsp& b) { a.Swap(&b); }
+  inline void Swap(DownloadChunkRsp* other) {
+    if (other == this) return;
+    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(DownloadChunkRsp* other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  DownloadChunkRsp* New(::google::protobuf::Arena* arena = nullptr) const {
+    return ::google::protobuf::Message::DefaultConstruct<DownloadChunkRsp>(arena);
+  }
+  using ::google::protobuf::Message::CopyFrom;
+  void CopyFrom(const DownloadChunkRsp& from);
+  using ::google::protobuf::Message::MergeFrom;
+  void MergeFrom(const DownloadChunkRsp& from) { DownloadChunkRsp::MergeImpl(*this, from); }
+
+  private:
+  static void MergeImpl(
+      ::google::protobuf::MessageLite& to_msg,
+      const ::google::protobuf::MessageLite& from_msg);
+
+  public:
+  bool IsInitialized() const {
+    return true;
+  }
+  ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
+  #if defined(PROTOBUF_CUSTOM_VTABLE)
+  private:
+  static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
+  static ::uint8_t* _InternalSerialize(
+      const MessageLite& msg, ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream);
+
+  public:
+  ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+    return _InternalSerialize(*this, target, stream);
+  }
+  #else   // PROTOBUF_CUSTOM_VTABLE
+  ::size_t ByteSizeLong() const final;
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const final;
+  #endif  // PROTOBUF_CUSTOM_VTABLE
+  int GetCachedSize() const { return _impl_._cached_size_.Get(); }
+
+  private:
+  void SharedCtor(::google::protobuf::Arena* arena);
+  static void SharedDtor(MessageLite& self);
+  void InternalSwap(DownloadChunkRsp* other);
+ private:
+  template <typename T>
+  friend ::absl::string_view(
+      ::google::protobuf::internal::GetAnyMessageName)();
+  static ::absl::string_view FullMessageName() { return "ServerApi.DownloadChunkRsp"; }
+
+ protected:
+  explicit DownloadChunkRsp(::google::protobuf::Arena* arena);
+  DownloadChunkRsp(::google::protobuf::Arena* arena, const DownloadChunkRsp& from);
+  DownloadChunkRsp(::google::protobuf::Arena* arena, DownloadChunkRsp&& from) noexcept
+      : DownloadChunkRsp(arena) {
+    *this = ::std::move(from);
+  }
+  const ::google::protobuf::internal::ClassData* GetClassData() const PROTOBUF_FINAL;
+  static void* PlacementNew_(const void*, void* mem,
+                             ::google::protobuf::Arena* arena);
+  static constexpr auto InternalNewImpl_();
+  static const ::google::protobuf::internal::ClassDataFull _class_data_;
+
+ public:
+  ::google::protobuf::Metadata GetMetadata() const;
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+  enum : int {
+    kFileMd5FieldNumber = 1,
+    kChunkDataFieldNumber = 3,
+    kChunkIndexFieldNumber = 2,
+    kIsLastFieldNumber = 4,
+  };
+  // string file_md5 = 1;
+  void clear_file_md5() ;
+  const std::string& file_md5() const;
+  template <typename Arg_ = const std::string&, typename... Args_>
+  void set_file_md5(Arg_&& arg, Args_... args);
+  std::string* mutable_file_md5();
+  PROTOBUF_NODISCARD std::string* release_file_md5();
+  void set_allocated_file_md5(std::string* value);
+
+  private:
+  const std::string& _internal_file_md5() const;
+  inline PROTOBUF_ALWAYS_INLINE void _internal_set_file_md5(
+      const std::string& value);
+  std::string* _internal_mutable_file_md5();
+
+  public:
+  // bytes chunk_data = 3;
+  void clear_chunk_data() ;
+  const std::string& chunk_data() const;
+  template <typename Arg_ = const std::string&, typename... Args_>
+  void set_chunk_data(Arg_&& arg, Args_... args);
+  std::string* mutable_chunk_data();
+  PROTOBUF_NODISCARD std::string* release_chunk_data();
+  void set_allocated_chunk_data(std::string* value);
+
+  private:
+  const std::string& _internal_chunk_data() const;
+  inline PROTOBUF_ALWAYS_INLINE void _internal_set_chunk_data(
+      const std::string& value);
+  std::string* _internal_mutable_chunk_data();
+
+  public:
+  // uint32 chunk_index = 2;
+  void clear_chunk_index() ;
+  ::uint32_t chunk_index() const;
+  void set_chunk_index(::uint32_t value);
+
+  private:
+  ::uint32_t _internal_chunk_index() const;
+  void _internal_set_chunk_index(::uint32_t value);
+
+  public:
+  // bool is_last = 4;
+  void clear_is_last() ;
+  bool is_last() const;
+  void set_is_last(bool value);
+
+  private:
+  bool _internal_is_last() const;
+  void _internal_set_is_last(bool value);
+
+  public:
+  // @@protoc_insertion_point(class_scope:ServerApi.DownloadChunkRsp)
+ private:
+  class _Internal;
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<
+      2, 4, 0,
+      43, 2>
+      _table_;
+
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+    inline explicit constexpr Impl_(
+        ::google::protobuf::internal::ConstantInitialized) noexcept;
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena);
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena, const Impl_& from,
+                          const DownloadChunkRsp& from_msg);
+    ::google::protobuf::internal::ArenaStringPtr file_md5_;
+    ::google::protobuf::internal::ArenaStringPtr chunk_data_;
+    ::uint32_t chunk_index_;
+    bool is_last_;
+    ::google::protobuf::internal::CachedSize _cached_size_;
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_server_5fmsg_2eproto;
+};
+// -------------------------------------------------------------------
+
+class DownloadChunkReq final : public ::google::protobuf::Message
+/* @@protoc_insertion_point(class_definition:ServerApi.DownloadChunkReq) */ {
+ public:
+  inline DownloadChunkReq() : DownloadChunkReq(nullptr) {}
+  ~DownloadChunkReq() PROTOBUF_FINAL;
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+  void operator delete(DownloadChunkReq* msg, std::destroying_delete_t) {
+    SharedDtor(*msg);
+    ::google::protobuf::internal::SizedDelete(msg, sizeof(DownloadChunkReq));
+  }
+#endif
+
+  template <typename = void>
+  explicit PROTOBUF_CONSTEXPR DownloadChunkReq(
+      ::google::protobuf::internal::ConstantInitialized);
+
+  inline DownloadChunkReq(const DownloadChunkReq& from) : DownloadChunkReq(nullptr, from) {}
+  inline DownloadChunkReq(DownloadChunkReq&& from) noexcept
+      : DownloadChunkReq(nullptr, std::move(from)) {}
+  inline DownloadChunkReq& operator=(const DownloadChunkReq& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline DownloadChunkReq& operator=(DownloadChunkReq&& from) noexcept {
+    if (this == &from) return *this;
+    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields()
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::google::protobuf::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::google::protobuf::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const DownloadChunkReq& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const DownloadChunkReq* internal_default_instance() {
+    return reinterpret_cast<const DownloadChunkReq*>(
+        &_DownloadChunkReq_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages = 10;
+  friend void swap(DownloadChunkReq& a, DownloadChunkReq& b) { a.Swap(&b); }
+  inline void Swap(DownloadChunkReq* other) {
+    if (other == this) return;
+    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(DownloadChunkReq* other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  DownloadChunkReq* New(::google::protobuf::Arena* arena = nullptr) const {
+    return ::google::protobuf::Message::DefaultConstruct<DownloadChunkReq>(arena);
+  }
+  using ::google::protobuf::Message::CopyFrom;
+  void CopyFrom(const DownloadChunkReq& from);
+  using ::google::protobuf::Message::MergeFrom;
+  void MergeFrom(const DownloadChunkReq& from) { DownloadChunkReq::MergeImpl(*this, from); }
+
+  private:
+  static void MergeImpl(
+      ::google::protobuf::MessageLite& to_msg,
+      const ::google::protobuf::MessageLite& from_msg);
+
+  public:
+  bool IsInitialized() const {
+    return true;
+  }
+  ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
+  #if defined(PROTOBUF_CUSTOM_VTABLE)
+  private:
+  static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
+  static ::uint8_t* _InternalSerialize(
+      const MessageLite& msg, ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream);
+
+  public:
+  ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+    return _InternalSerialize(*this, target, stream);
+  }
+  #else   // PROTOBUF_CUSTOM_VTABLE
+  ::size_t ByteSizeLong() const final;
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const final;
+  #endif  // PROTOBUF_CUSTOM_VTABLE
+  int GetCachedSize() const { return _impl_._cached_size_.Get(); }
+
+  private:
+  void SharedCtor(::google::protobuf::Arena* arena);
+  static void SharedDtor(MessageLite& self);
+  void InternalSwap(DownloadChunkReq* other);
+ private:
+  template <typename T>
+  friend ::absl::string_view(
+      ::google::protobuf::internal::GetAnyMessageName)();
+  static ::absl::string_view FullMessageName() { return "ServerApi.DownloadChunkReq"; }
+
+ protected:
+  explicit DownloadChunkReq(::google::protobuf::Arena* arena);
+  DownloadChunkReq(::google::protobuf::Arena* arena, const DownloadChunkReq& from);
+  DownloadChunkReq(::google::protobuf::Arena* arena, DownloadChunkReq&& from) noexcept
+      : DownloadChunkReq(arena) {
+    *this = ::std::move(from);
+  }
+  const ::google::protobuf::internal::ClassData* GetClassData() const PROTOBUF_FINAL;
+  static void* PlacementNew_(const void*, void* mem,
+                             ::google::protobuf::Arena* arena);
+  static constexpr auto InternalNewImpl_();
+  static const ::google::protobuf::internal::ClassDataFull _class_data_;
+
+ public:
+  ::google::protobuf::Metadata GetMetadata() const;
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+  enum : int {
+    kFileMd5FieldNumber = 1,
+    kChunkIndexFieldNumber = 2,
+  };
+  // string file_md5 = 1;
+  void clear_file_md5() ;
+  const std::string& file_md5() const;
+  template <typename Arg_ = const std::string&, typename... Args_>
+  void set_file_md5(Arg_&& arg, Args_... args);
+  std::string* mutable_file_md5();
+  PROTOBUF_NODISCARD std::string* release_file_md5();
+  void set_allocated_file_md5(std::string* value);
+
+  private:
+  const std::string& _internal_file_md5() const;
+  inline PROTOBUF_ALWAYS_INLINE void _internal_set_file_md5(
+      const std::string& value);
+  std::string* _internal_mutable_file_md5();
+
+  public:
+  // uint32 chunk_index = 2;
+  void clear_chunk_index() ;
+  ::uint32_t chunk_index() const;
+  void set_chunk_index(::uint32_t value);
+
+  private:
+  ::uint32_t _internal_chunk_index() const;
+  void _internal_set_chunk_index(::uint32_t value);
+
+  public:
+  // @@protoc_insertion_point(class_scope:ServerApi.DownloadChunkReq)
+ private:
+  class _Internal;
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<
+      1, 2, 0,
+      43, 2>
+      _table_;
+
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+    inline explicit constexpr Impl_(
+        ::google::protobuf::internal::ConstantInitialized) noexcept;
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena);
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena, const Impl_& from,
+                          const DownloadChunkReq& from_msg);
+    ::google::protobuf::internal::ArenaStringPtr file_md5_;
+    ::uint32_t chunk_index_;
     ::google::protobuf::internal::CachedSize _cached_size_;
     PROTOBUF_TSAN_DECLARE_MEMBER
   };
@@ -3155,55 +4035,7 @@ inline void MovieInfo::set_allocated_cover_url(std::string* value) {
   // @@protoc_insertion_point(field_set_allocated:ServerApi.MovieInfo.cover_url)
 }
 
-// string video_url = 4;
-inline void MovieInfo::clear_video_url() {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.video_url_.ClearToEmpty();
-}
-inline const std::string& MovieInfo::video_url() const
-    ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  // @@protoc_insertion_point(field_get:ServerApi.MovieInfo.video_url)
-  return _internal_video_url();
-}
-template <typename Arg_, typename... Args_>
-inline PROTOBUF_ALWAYS_INLINE void MovieInfo::set_video_url(Arg_&& arg,
-                                                     Args_... args) {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.video_url_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
-  // @@protoc_insertion_point(field_set:ServerApi.MovieInfo.video_url)
-}
-inline std::string* MovieInfo::mutable_video_url() ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  std::string* _s = _internal_mutable_video_url();
-  // @@protoc_insertion_point(field_mutable:ServerApi.MovieInfo.video_url)
-  return _s;
-}
-inline const std::string& MovieInfo::_internal_video_url() const {
-  ::google::protobuf::internal::TSanRead(&_impl_);
-  return _impl_.video_url_.Get();
-}
-inline void MovieInfo::_internal_set_video_url(const std::string& value) {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.video_url_.Set(value, GetArena());
-}
-inline std::string* MovieInfo::_internal_mutable_video_url() {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  return _impl_.video_url_.Mutable( GetArena());
-}
-inline std::string* MovieInfo::release_video_url() {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  // @@protoc_insertion_point(field_release:ServerApi.MovieInfo.video_url)
-  return _impl_.video_url_.Release();
-}
-inline void MovieInfo::set_allocated_video_url(std::string* value) {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.video_url_.SetAllocated(value, GetArena());
-  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() && _impl_.video_url_.IsDefault()) {
-    _impl_.video_url_.Set("", GetArena());
-  }
-  // @@protoc_insertion_point(field_set_allocated:ServerApi.MovieInfo.video_url)
-}
-
-// int32 play_status = 5;
+// int32 play_status = 4;
 inline void MovieInfo::clear_play_status() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.play_status_ = 0;
@@ -3223,6 +4055,76 @@ inline ::int32_t MovieInfo::_internal_play_status() const {
 inline void MovieInfo::_internal_set_play_status(::int32_t value) {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.play_status_ = value;
+}
+
+// string file_md5 = 5;
+inline void MovieInfo::clear_file_md5() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.file_md5_.ClearToEmpty();
+}
+inline const std::string& MovieInfo::file_md5() const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:ServerApi.MovieInfo.file_md5)
+  return _internal_file_md5();
+}
+template <typename Arg_, typename... Args_>
+inline PROTOBUF_ALWAYS_INLINE void MovieInfo::set_file_md5(Arg_&& arg,
+                                                     Args_... args) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.file_md5_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
+  // @@protoc_insertion_point(field_set:ServerApi.MovieInfo.file_md5)
+}
+inline std::string* MovieInfo::mutable_file_md5() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  std::string* _s = _internal_mutable_file_md5();
+  // @@protoc_insertion_point(field_mutable:ServerApi.MovieInfo.file_md5)
+  return _s;
+}
+inline const std::string& MovieInfo::_internal_file_md5() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.file_md5_.Get();
+}
+inline void MovieInfo::_internal_set_file_md5(const std::string& value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.file_md5_.Set(value, GetArena());
+}
+inline std::string* MovieInfo::_internal_mutable_file_md5() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  return _impl_.file_md5_.Mutable( GetArena());
+}
+inline std::string* MovieInfo::release_file_md5() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:ServerApi.MovieInfo.file_md5)
+  return _impl_.file_md5_.Release();
+}
+inline void MovieInfo::set_allocated_file_md5(std::string* value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.file_md5_.SetAllocated(value, GetArena());
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() && _impl_.file_md5_.IsDefault()) {
+    _impl_.file_md5_.Set("", GetArena());
+  }
+  // @@protoc_insertion_point(field_set_allocated:ServerApi.MovieInfo.file_md5)
+}
+
+// uint64 file_size = 6;
+inline void MovieInfo::clear_file_size() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.file_size_ = ::uint64_t{0u};
+}
+inline ::uint64_t MovieInfo::file_size() const {
+  // @@protoc_insertion_point(field_get:ServerApi.MovieInfo.file_size)
+  return _internal_file_size();
+}
+inline void MovieInfo::set_file_size(::uint64_t value) {
+  _internal_set_file_size(value);
+  // @@protoc_insertion_point(field_set:ServerApi.MovieInfo.file_size)
+}
+inline ::uint64_t MovieInfo::_internal_file_size() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.file_size_;
+}
+inline void MovieInfo::_internal_set_file_size(::uint64_t value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.file_size_ = value;
 }
 
 // -------------------------------------------------------------------
@@ -3324,6 +4226,376 @@ inline ::google::protobuf::RepeatedPtrField<::ServerApi::MovieInfo>*
 GetMovieListRsp::_internal_mutable_movies() {
   ::google::protobuf::internal::TSanRead(&_impl_);
   return &_impl_.movies_;
+}
+
+// -------------------------------------------------------------------
+
+// DownloadChunkReq
+
+// string file_md5 = 1;
+inline void DownloadChunkReq::clear_file_md5() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.file_md5_.ClearToEmpty();
+}
+inline const std::string& DownloadChunkReq::file_md5() const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:ServerApi.DownloadChunkReq.file_md5)
+  return _internal_file_md5();
+}
+template <typename Arg_, typename... Args_>
+inline PROTOBUF_ALWAYS_INLINE void DownloadChunkReq::set_file_md5(Arg_&& arg,
+                                                     Args_... args) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.file_md5_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
+  // @@protoc_insertion_point(field_set:ServerApi.DownloadChunkReq.file_md5)
+}
+inline std::string* DownloadChunkReq::mutable_file_md5() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  std::string* _s = _internal_mutable_file_md5();
+  // @@protoc_insertion_point(field_mutable:ServerApi.DownloadChunkReq.file_md5)
+  return _s;
+}
+inline const std::string& DownloadChunkReq::_internal_file_md5() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.file_md5_.Get();
+}
+inline void DownloadChunkReq::_internal_set_file_md5(const std::string& value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.file_md5_.Set(value, GetArena());
+}
+inline std::string* DownloadChunkReq::_internal_mutable_file_md5() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  return _impl_.file_md5_.Mutable( GetArena());
+}
+inline std::string* DownloadChunkReq::release_file_md5() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:ServerApi.DownloadChunkReq.file_md5)
+  return _impl_.file_md5_.Release();
+}
+inline void DownloadChunkReq::set_allocated_file_md5(std::string* value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.file_md5_.SetAllocated(value, GetArena());
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() && _impl_.file_md5_.IsDefault()) {
+    _impl_.file_md5_.Set("", GetArena());
+  }
+  // @@protoc_insertion_point(field_set_allocated:ServerApi.DownloadChunkReq.file_md5)
+}
+
+// uint32 chunk_index = 2;
+inline void DownloadChunkReq::clear_chunk_index() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.chunk_index_ = 0u;
+}
+inline ::uint32_t DownloadChunkReq::chunk_index() const {
+  // @@protoc_insertion_point(field_get:ServerApi.DownloadChunkReq.chunk_index)
+  return _internal_chunk_index();
+}
+inline void DownloadChunkReq::set_chunk_index(::uint32_t value) {
+  _internal_set_chunk_index(value);
+  // @@protoc_insertion_point(field_set:ServerApi.DownloadChunkReq.chunk_index)
+}
+inline ::uint32_t DownloadChunkReq::_internal_chunk_index() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.chunk_index_;
+}
+inline void DownloadChunkReq::_internal_set_chunk_index(::uint32_t value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.chunk_index_ = value;
+}
+
+// -------------------------------------------------------------------
+
+// DownloadChunkRsp
+
+// string file_md5 = 1;
+inline void DownloadChunkRsp::clear_file_md5() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.file_md5_.ClearToEmpty();
+}
+inline const std::string& DownloadChunkRsp::file_md5() const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:ServerApi.DownloadChunkRsp.file_md5)
+  return _internal_file_md5();
+}
+template <typename Arg_, typename... Args_>
+inline PROTOBUF_ALWAYS_INLINE void DownloadChunkRsp::set_file_md5(Arg_&& arg,
+                                                     Args_... args) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.file_md5_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
+  // @@protoc_insertion_point(field_set:ServerApi.DownloadChunkRsp.file_md5)
+}
+inline std::string* DownloadChunkRsp::mutable_file_md5() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  std::string* _s = _internal_mutable_file_md5();
+  // @@protoc_insertion_point(field_mutable:ServerApi.DownloadChunkRsp.file_md5)
+  return _s;
+}
+inline const std::string& DownloadChunkRsp::_internal_file_md5() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.file_md5_.Get();
+}
+inline void DownloadChunkRsp::_internal_set_file_md5(const std::string& value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.file_md5_.Set(value, GetArena());
+}
+inline std::string* DownloadChunkRsp::_internal_mutable_file_md5() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  return _impl_.file_md5_.Mutable( GetArena());
+}
+inline std::string* DownloadChunkRsp::release_file_md5() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:ServerApi.DownloadChunkRsp.file_md5)
+  return _impl_.file_md5_.Release();
+}
+inline void DownloadChunkRsp::set_allocated_file_md5(std::string* value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.file_md5_.SetAllocated(value, GetArena());
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() && _impl_.file_md5_.IsDefault()) {
+    _impl_.file_md5_.Set("", GetArena());
+  }
+  // @@protoc_insertion_point(field_set_allocated:ServerApi.DownloadChunkRsp.file_md5)
+}
+
+// uint32 chunk_index = 2;
+inline void DownloadChunkRsp::clear_chunk_index() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.chunk_index_ = 0u;
+}
+inline ::uint32_t DownloadChunkRsp::chunk_index() const {
+  // @@protoc_insertion_point(field_get:ServerApi.DownloadChunkRsp.chunk_index)
+  return _internal_chunk_index();
+}
+inline void DownloadChunkRsp::set_chunk_index(::uint32_t value) {
+  _internal_set_chunk_index(value);
+  // @@protoc_insertion_point(field_set:ServerApi.DownloadChunkRsp.chunk_index)
+}
+inline ::uint32_t DownloadChunkRsp::_internal_chunk_index() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.chunk_index_;
+}
+inline void DownloadChunkRsp::_internal_set_chunk_index(::uint32_t value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.chunk_index_ = value;
+}
+
+// bytes chunk_data = 3;
+inline void DownloadChunkRsp::clear_chunk_data() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.chunk_data_.ClearToEmpty();
+}
+inline const std::string& DownloadChunkRsp::chunk_data() const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:ServerApi.DownloadChunkRsp.chunk_data)
+  return _internal_chunk_data();
+}
+template <typename Arg_, typename... Args_>
+inline PROTOBUF_ALWAYS_INLINE void DownloadChunkRsp::set_chunk_data(Arg_&& arg,
+                                                     Args_... args) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.chunk_data_.SetBytes(static_cast<Arg_&&>(arg), args..., GetArena());
+  // @@protoc_insertion_point(field_set:ServerApi.DownloadChunkRsp.chunk_data)
+}
+inline std::string* DownloadChunkRsp::mutable_chunk_data() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  std::string* _s = _internal_mutable_chunk_data();
+  // @@protoc_insertion_point(field_mutable:ServerApi.DownloadChunkRsp.chunk_data)
+  return _s;
+}
+inline const std::string& DownloadChunkRsp::_internal_chunk_data() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.chunk_data_.Get();
+}
+inline void DownloadChunkRsp::_internal_set_chunk_data(const std::string& value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.chunk_data_.Set(value, GetArena());
+}
+inline std::string* DownloadChunkRsp::_internal_mutable_chunk_data() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  return _impl_.chunk_data_.Mutable( GetArena());
+}
+inline std::string* DownloadChunkRsp::release_chunk_data() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:ServerApi.DownloadChunkRsp.chunk_data)
+  return _impl_.chunk_data_.Release();
+}
+inline void DownloadChunkRsp::set_allocated_chunk_data(std::string* value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.chunk_data_.SetAllocated(value, GetArena());
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() && _impl_.chunk_data_.IsDefault()) {
+    _impl_.chunk_data_.Set("", GetArena());
+  }
+  // @@protoc_insertion_point(field_set_allocated:ServerApi.DownloadChunkRsp.chunk_data)
+}
+
+// bool is_last = 4;
+inline void DownloadChunkRsp::clear_is_last() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.is_last_ = false;
+}
+inline bool DownloadChunkRsp::is_last() const {
+  // @@protoc_insertion_point(field_get:ServerApi.DownloadChunkRsp.is_last)
+  return _internal_is_last();
+}
+inline void DownloadChunkRsp::set_is_last(bool value) {
+  _internal_set_is_last(value);
+  // @@protoc_insertion_point(field_set:ServerApi.DownloadChunkRsp.is_last)
+}
+inline bool DownloadChunkRsp::_internal_is_last() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.is_last_;
+}
+inline void DownloadChunkRsp::_internal_set_is_last(bool value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.is_last_ = value;
+}
+
+// -------------------------------------------------------------------
+
+// DownloadCoverReq
+
+// string file_md5 = 1;
+inline void DownloadCoverReq::clear_file_md5() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.file_md5_.ClearToEmpty();
+}
+inline const std::string& DownloadCoverReq::file_md5() const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:ServerApi.DownloadCoverReq.file_md5)
+  return _internal_file_md5();
+}
+template <typename Arg_, typename... Args_>
+inline PROTOBUF_ALWAYS_INLINE void DownloadCoverReq::set_file_md5(Arg_&& arg,
+                                                     Args_... args) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.file_md5_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
+  // @@protoc_insertion_point(field_set:ServerApi.DownloadCoverReq.file_md5)
+}
+inline std::string* DownloadCoverReq::mutable_file_md5() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  std::string* _s = _internal_mutable_file_md5();
+  // @@protoc_insertion_point(field_mutable:ServerApi.DownloadCoverReq.file_md5)
+  return _s;
+}
+inline const std::string& DownloadCoverReq::_internal_file_md5() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.file_md5_.Get();
+}
+inline void DownloadCoverReq::_internal_set_file_md5(const std::string& value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.file_md5_.Set(value, GetArena());
+}
+inline std::string* DownloadCoverReq::_internal_mutable_file_md5() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  return _impl_.file_md5_.Mutable( GetArena());
+}
+inline std::string* DownloadCoverReq::release_file_md5() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:ServerApi.DownloadCoverReq.file_md5)
+  return _impl_.file_md5_.Release();
+}
+inline void DownloadCoverReq::set_allocated_file_md5(std::string* value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.file_md5_.SetAllocated(value, GetArena());
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() && _impl_.file_md5_.IsDefault()) {
+    _impl_.file_md5_.Set("", GetArena());
+  }
+  // @@protoc_insertion_point(field_set_allocated:ServerApi.DownloadCoverReq.file_md5)
+}
+
+// -------------------------------------------------------------------
+
+// DownloadCoverRsp
+
+// string file_md5 = 1;
+inline void DownloadCoverRsp::clear_file_md5() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.file_md5_.ClearToEmpty();
+}
+inline const std::string& DownloadCoverRsp::file_md5() const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:ServerApi.DownloadCoverRsp.file_md5)
+  return _internal_file_md5();
+}
+template <typename Arg_, typename... Args_>
+inline PROTOBUF_ALWAYS_INLINE void DownloadCoverRsp::set_file_md5(Arg_&& arg,
+                                                     Args_... args) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.file_md5_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
+  // @@protoc_insertion_point(field_set:ServerApi.DownloadCoverRsp.file_md5)
+}
+inline std::string* DownloadCoverRsp::mutable_file_md5() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  std::string* _s = _internal_mutable_file_md5();
+  // @@protoc_insertion_point(field_mutable:ServerApi.DownloadCoverRsp.file_md5)
+  return _s;
+}
+inline const std::string& DownloadCoverRsp::_internal_file_md5() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.file_md5_.Get();
+}
+inline void DownloadCoverRsp::_internal_set_file_md5(const std::string& value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.file_md5_.Set(value, GetArena());
+}
+inline std::string* DownloadCoverRsp::_internal_mutable_file_md5() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  return _impl_.file_md5_.Mutable( GetArena());
+}
+inline std::string* DownloadCoverRsp::release_file_md5() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:ServerApi.DownloadCoverRsp.file_md5)
+  return _impl_.file_md5_.Release();
+}
+inline void DownloadCoverRsp::set_allocated_file_md5(std::string* value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.file_md5_.SetAllocated(value, GetArena());
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() && _impl_.file_md5_.IsDefault()) {
+    _impl_.file_md5_.Set("", GetArena());
+  }
+  // @@protoc_insertion_point(field_set_allocated:ServerApi.DownloadCoverRsp.file_md5)
+}
+
+// bytes cover_data = 2;
+inline void DownloadCoverRsp::clear_cover_data() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.cover_data_.ClearToEmpty();
+}
+inline const std::string& DownloadCoverRsp::cover_data() const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:ServerApi.DownloadCoverRsp.cover_data)
+  return _internal_cover_data();
+}
+template <typename Arg_, typename... Args_>
+inline PROTOBUF_ALWAYS_INLINE void DownloadCoverRsp::set_cover_data(Arg_&& arg,
+                                                     Args_... args) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.cover_data_.SetBytes(static_cast<Arg_&&>(arg), args..., GetArena());
+  // @@protoc_insertion_point(field_set:ServerApi.DownloadCoverRsp.cover_data)
+}
+inline std::string* DownloadCoverRsp::mutable_cover_data() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  std::string* _s = _internal_mutable_cover_data();
+  // @@protoc_insertion_point(field_mutable:ServerApi.DownloadCoverRsp.cover_data)
+  return _s;
+}
+inline const std::string& DownloadCoverRsp::_internal_cover_data() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.cover_data_.Get();
+}
+inline void DownloadCoverRsp::_internal_set_cover_data(const std::string& value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.cover_data_.Set(value, GetArena());
+}
+inline std::string* DownloadCoverRsp::_internal_mutable_cover_data() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  return _impl_.cover_data_.Mutable( GetArena());
+}
+inline std::string* DownloadCoverRsp::release_cover_data() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:ServerApi.DownloadCoverRsp.cover_data)
+  return _impl_.cover_data_.Release();
+}
+inline void DownloadCoverRsp::set_allocated_cover_data(std::string* value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.cover_data_.SetAllocated(value, GetArena());
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() && _impl_.cover_data_.IsDefault()) {
+    _impl_.cover_data_.Set("", GetArena());
+  }
+  // @@protoc_insertion_point(field_set_allocated:ServerApi.DownloadCoverRsp.cover_data)
 }
 
 #ifdef __GNUC__

@@ -407,6 +407,54 @@ void ClientSession::InitHandlers()
 
                 }, true, paramsStep1); // 结束 Step 1
         };
+
+        // ------------------------------------------------------------------
+        // 处理客户端发来的 [获取影片列表请求]
+        // ------------------------------------------------------------------
+        m_router[ServerApi::ID_GET_MOVIE_LIST_REQ] = [this](const ServerApi::PacketHeader& header, const QByteArray& bodyData)
+            {
+                uint64_t seq_id = header.seq_id();
+                std::weak_ptr<ClientSession> weakSelf = weak_from_this();
+
+                // 👑 连表查询：用用户的 ID 去匹配他的私人电影库，同时拿到物理海报和视频链接
+                // 注意这里 original_name 和 custom_name 的优先级：优先显示用户自定义的名称
+                QString sql = R"(
+                SELECT 
+                    r.id AS movie_id, 
+                    IFNULL(rel.custom_name, r.original_name) AS display_name,
+                    r.cover_url, 
+                    r.video_url, 
+                    rel.play_status
+                FROM t_user_movie_rel rel
+                INNER JOIN t_movie_resource r ON rel.movie_id = r.id
+                WHERE rel.user_id = ? AND rel.auth_status = 1
+                ORDER BY rel.sort_order ASC, rel.create_time DESC
+            )";
+
+                QList<QVariant> params;
+                params << m_accountId; // 使用该连接绑定的账号主键
+
+                ThreadPool::Instance()->PostQueryTask(sql, [weakSelf, seq_id](const QList<QVariantMap>& results) {
+                    auto strongSelf = weakSelf.lock();
+                    if (!strongSelf) return;
+
+                    ServerApi::GetMovieListRsp rsp;
+
+                    for (const auto& row : results) {
+                        // C++11 的 add_movies() 会返回一个新创建的指针
+                        ServerApi::MovieInfo* movie = rsp.add_movies();
+
+                        movie->set_movie_id(row["movie_id"].toULongLong());
+                        movie->set_movie_name(row["display_name"].toString().toStdString());
+                        movie->set_cover_url(row["cover_url"].toString().toStdString());
+                        movie->set_video_url(row["video_url"].toString().toStdString());
+                        movie->set_play_status(row["play_status"].toInt());
+                    }
+
+                    strongSelf->SendProtoMsg(ServerApi::ID_GET_MOVIE_LIST_RSP, rsp, seq_id);
+
+                    }, true, params);
+            };
 }
 
 // =========================================================================================
