@@ -8,7 +8,11 @@
 #include <QJsonObject>
 #include <QJsonArray>
 #include <QFileInfo>
+#include <QDir>
+#include <filesystem> 
+#include <QMessageBox>
 #include <QDebug>
+#include "TCPMgr.h"
 #include "Global.h"
 #include "JsonTool.h"
 
@@ -24,7 +28,6 @@ PlaybackPage::PlaybackPage(QWidget* parent) : QWidget(parent)
     m_player->setVideoOutput(m_videoWidget);                                // 引擎绑定幕布
 
     BuildUI();                                                              // 搭建UI
-    LoadMoviesFromJson();                                                   // 加载配置
 
     // 监听进度条
     connect(m_player, &QMediaPlayer::positionChanged, this, [this](qint64 pos) {
@@ -37,6 +40,17 @@ PlaybackPage::PlaybackPage(QWidget* parent) : QWidget(parent)
     
     // 监听播放器状态，捕捉“影片自然播放完毕”的瞬间
     connect(m_player, &QMediaPlayer::mediaStatusChanged, this, &PlaybackPage::onMediaStatusChanged);
+
+    // 跨页/跨层监听数据返回
+    connect(TCPMgr::Instance().get(), &TCPMgr::SigMovieListReceived, this, &PlaybackPage::onMovieListReceived);
+    // 👑 绑定下载引擎的四大核心信号
+    connect(TCPMgr::Instance().get(), &TCPMgr::SigCoverDownloaded, this, &PlaybackPage::onCoverDownloaded);
+    connect(TCPMgr::Instance().get(), &TCPMgr::SigDownloadFailed, this, &PlaybackPage::onDownloadFailed);
+    connect(TCPMgr::Instance().get(), &TCPMgr::SigDownloadProgress, this, &PlaybackPage::onDownloadProgress);
+    connect(TCPMgr::Instance().get(), &TCPMgr::SigDownloadFinished, this, &PlaybackPage::onDownloadFinished);
+
+    // 页面初始化时，自动拉取一次
+    LoadMoviesFromServer();
 }
 
 PlaybackPage::~PlaybackPage() {}
@@ -71,30 +85,54 @@ void PlaybackPage::BuildUI()
         };
 
     m_btnPlay = createCtrlBtn(u8"▶ 播放");
-    m_btnPlay->setEnabled(false);
+    m_btnDownload = createCtrlBtn(u8"📥 下载到本地");
+    m_btnDownload->setFixedSize(150, 45);
+    m_btnPause = createCtrlBtn(u8"⏸ 暂停/继续");
+    m_btnRewind = createCtrlBtn(u8"⏪ 快退");
+    m_btnForward = createCtrlBtn(u8"⏩ 快进");
+    m_btnStop = createCtrlBtn(u8"⏹ 强制结束");
 
-    QPushButton* btnPause = createCtrlBtn(u8"⏸ 暂停/继续");
-    QPushButton* btnRewind = createCtrlBtn(u8"⏪ 快退");
-    QPushButton* btnForward = createCtrlBtn(u8"⏩ 快进");
-    QPushButton* btnStop = createCtrlBtn(u8"⏹ 强制结束");
+    // 💡 初始状态：什么都没选中，全部隐藏！
+    m_btnPlay->hide();
+    m_btnDownload->hide();
+    m_btnPause->hide();
+    m_btnRewind->hide();
+    m_btnForward->hide();
+    m_btnStop->hide();
 
     controlLayout->addWidget(m_countdownLabel);
     controlLayout->addStretch();
-    controlLayout->addWidget(btnRewind);
+    controlLayout->addWidget(m_btnRewind);
     controlLayout->addWidget(m_btnPlay);
-    controlLayout->addWidget(btnPause);
-    controlLayout->addWidget(btnForward);
+    controlLayout->addWidget(m_btnDownload);                                                    // 下载按钮 (和播放按钮互斥显示)
+    controlLayout->addWidget(m_btnPause);
+    controlLayout->addWidget(m_btnForward);
     controlLayout->addSpacing(20);
-    controlLayout->addWidget(btnStop);
+    controlLayout->addWidget(m_btnStop);
 
     layout->addWidget(m_movieList, 1);
     layout->addWidget(controlPanel);
 
     connect(m_btnPlay, &QPushButton::clicked, this, &PlaybackPage::onPlayClicked);
-    connect(btnPause, &QPushButton::clicked, this, &PlaybackPage::onPauseClicked);
-    connect(btnStop, &QPushButton::clicked, this, &PlaybackPage::onStopClicked);
-    connect(btnForward, &QPushButton::clicked, this, &PlaybackPage::onForwardClicked);
-    connect(btnRewind, &QPushButton::clicked, this, &PlaybackPage::onRewindClicked);
+    connect(m_btnDownload, &QPushButton::clicked, this, &PlaybackPage::onDownloadClicked);
+    connect(m_btnPause, &QPushButton::clicked, this, &PlaybackPage::onPauseClicked);
+    connect(m_btnStop, &QPushButton::clicked, this, &PlaybackPage::onStopClicked);
+    connect(m_btnForward, &QPushButton::clicked, this, &PlaybackPage::onForwardClicked);
+    connect(m_btnRewind, &QPushButton::clicked, this, &PlaybackPage::onRewindClicked);
+
+    // ================= 3. 最底部：全局下载进度条 =================
+    m_downloadProgress = new QProgressBar(this);
+    m_downloadProgress->setFixedHeight(15);
+    m_downloadProgress->setRange(0, 100);
+    m_downloadProgress->setValue(0);
+    m_downloadProgress->setTextVisible(false);
+    m_downloadProgress->hide();                                                                 // 默认隐藏，开始下载时显示
+
+    // 组装总 Layout
+    layout->setContentsMargins(0, 0, 0, 0);
+    layout->addWidget(m_movieList, 1);
+    layout->addWidget(controlPanel);
+    layout->addWidget(m_downloadProgress);                                                      // 放在最底下
 }
 
 void PlaybackPage::LoadMoviesFromJson()
@@ -111,7 +149,7 @@ void PlaybackPage::LoadMoviesFromJson()
                 QString name = obj["name"].toString();
                 QString status = obj["status"].toString();
                 QString path = obj["path"].toString();
-                AddMovieCard(name, status, path);                           // 动态生成卡片
+                //AddMovieCard(name, status, path);                           // 动态生成卡片
             }
         }
     }
@@ -122,44 +160,118 @@ void PlaybackPage::LoadMoviesFromJson()
 
 void PlaybackPage::LoadMoviesFromServer()
 {
+    ServerApi::GetMovieListReq req;
+    req.set_page_index(1);                                                                  // 默认拉取第 1 页
+    req.set_page_size(100);                                                                 // 默认拉取 100 条 (够跑满目前绝大多数场景了)
 
+    // 发送拉取请求
+    TCPMgr::Instance()->SendProtoMsg(ServerApi::MsgId::ID_GET_MOVIE_LIST_REQ, req);
 }
 
 void PlaybackPage::RefreshMovies()
 {
-    m_movieList->clear();                                                       // 刷新前先清空旧的卡片
-    LoadMoviesFromServer();                                                       // 重新走一遍拉取和渲染流程
+    m_movieList->clear();                                                                   // 刷新前先清空旧的卡片
+    LoadMoviesFromServer();                                                                 // 重新走一遍拉取和渲染流程
 }
 
-void PlaybackPage::AddMovieCard(const QString& name, const QString& status, const QString& path)
+void PlaybackPage::AddMovieCard(uint64_t id, const QString& name, const QString& coverUrl,
+    const QString& localPath, bool isDownloaded, int playStatus,
+    const QString& fileMd5, uint64_t expectedSize)
 {
     QFrame* card = new QFrame();
     card->setObjectName("gameCard");
     card->setProperty("selected", false);
 
     QVBoxLayout* layout = new QVBoxLayout(card);
+
+    // 1. 海报渲染
     QLabel* cover = new QLabel(card);
     cover->setObjectName("cardCover");
     cover->setFixedSize(160, 220);
+    // (注：这里假设单机同硬盘测试，如果是跨网，海报也需要一套本地校验与异步下载)
+    QPixmap pixmap(coverUrl);
+    if (!pixmap.isNull()) {
+        cover->setPixmap(pixmap.scaled(160, 220, Qt::KeepAspectRatioByExpanding, Qt::SmoothTransformation));
+    }
+    else {
+        cover->setText(u8"海报加载中...");
+        cover->setAlignment(Qt::AlignCenter);
+    }
 
+    // 2. 标题
     QLabel* title = new QLabel(name, card);
     title->setObjectName("cardTitle");
 
-    QLabel* subTitle = new QLabel(status, card);
+    // 3. 状态子标题 (动态组合状态)
+    QString statusText;
+    if (isDownloaded) {
+        statusText = u8"🟢 已下载";
+    }
+    else {
+        statusText = u8"☁️ 未下载";
+    }
+
+    if (playStatus == 1) {
+        statusText += u8" | ▶️ 播放中";
+    }
+
+    QLabel* subTitle = new QLabel(statusText, card);
     subTitle->setObjectName("cardSub");
+
+    // 简单的颜色区分 (建议通过 QSS 配合动态属性设置)
+    if (isDownloaded) {
+        subTitle->setStyleSheet("color: #4CAF50; font-weight: bold;"); // 下载完成显绿色
+    }
+    else 
+    {
+        subTitle->setStyleSheet("color: #9E9E9E;");                     // 未下载显灰色
+    }
 
     layout->addWidget(cover);
     layout->addWidget(title);
     layout->addWidget(subTitle);
 
+    // 4. 将所有隐藏数据绑定到 Item 上
     QListWidgetItem* item = new QListWidgetItem(m_movieList);
     item->setSizeHint(QSize(180, 300));
 
-    item->setData(Qt::UserRole, name);                                      // 隐藏变量1：影片名
-    item->setData(Qt::UserRole + 1, path);                                  // 隐藏变量2：绝对路径
+    // 👑 高级技巧：利用 Qt::UserRole 藏入极度详细的运行上下文
+    item->setData(Qt::UserRole, id);                                    // 影片的唯一 ID
+    item->setData(Qt::UserRole + 1, name);                              // 影片名
+    item->setData(Qt::UserRole + 2, localPath);                         // 不管下没下完，这就是它该在的本地路径
+    item->setData(Qt::UserRole + 3, isDownloaded);                      // 是否已下载
+    item->setData(Qt::UserRole + 4, fileMd5);                           // 下载请求凭证 MD5
+    item->setData(Qt::UserRole + 5, expectedSize);                      // 用于计算进度条
 
     m_movieList->addItem(item);
     m_movieList->setItemWidget(item, card);
+}
+
+void PlaybackPage::SwitchControlPanelState(bool isDownloaded)
+{
+    if (isDownloaded) {
+        // 🟢 状态 A：已下载 (展示所有播控按钮，藏起下载按钮)
+        m_btnDownload->hide();
+
+        m_btnPlay->show();
+        m_btnPlay->setEnabled(true);
+        m_btnPause->show();
+        m_btnRewind->show();
+        m_btnForward->show();
+        m_btnStop->show();
+    }
+    else {
+        // ☁️ 状态 B：未下载 (清空所有播控按钮，只保留一个下载按钮)
+        m_btnPlay->hide();
+        m_btnPause->hide();
+        m_btnRewind->hide();
+        m_btnForward->hide();
+        m_btnStop->hide();
+
+        m_btnDownload->show();
+        m_btnDownload->setEnabled(true);
+        m_btnDownload->setText(u8"📥 下载到本地"); // 确保复位文字
+    }
 }
 
 void PlaybackPage::onMovieSelected(QListWidgetItem* current, QListWidgetItem* previous)
@@ -177,10 +289,15 @@ void PlaybackPage::onMovieSelected(QListWidgetItem* current, QListWidgetItem* pr
         curWidget->style()->unpolish(curWidget);
         curWidget->style()->polish(curWidget);
 
-        m_selectedMovieName = current->data(Qt::UserRole).toString();       // 提取影片名
-        m_selectedMoviePath = current->data(Qt::UserRole + 1).toString();   // 提取影片路径
+        // 提取影片数据
+        m_selectedMovieName = current->data(Qt::UserRole + 1).toString();
+        m_selectedMoviePath = current->data(Qt::UserRole + 2).toString();
+        m_selectedIsDownloaded = current->data(Qt::UserRole + 3).toBool();
+        m_selectedMovieMd5 = current->data(Qt::UserRole + 4).toString();
+        m_selectedMovieSize = current->data(Qt::UserRole + 5).toULongLong();
 
-        m_btnPlay->setEnabled(true);                                        // 解锁播放按钮
+        // 👑 智能显隐：互斥展示 播放/下载 按钮
+        SwitchControlPanelState(m_selectedIsDownloaded);
     }
 }
 
@@ -209,6 +326,38 @@ void PlaybackPage::onPlayClicked()
 
     m_videoWidget->show();
     m_player->play();
+}
+
+void PlaybackPage::onDownloadClicked()
+{
+    // 防御性拦截
+    if (m_selectedMovieMd5.isEmpty()) return;
+
+    // 1. 锁定界面与按钮 (防手贱连点)
+    m_btnDownload->setEnabled(false);
+    m_btnDownload->setText(u8"正在建立传输通道...");
+
+    m_downloadProgress->setValue(0);
+    m_downloadProgress->show();
+
+    // 2. 准备本地文件 (创建或清空旧的残缺文件)
+    // m_selectedMoviePath 里面存的就是 "./LocalAssets/xxxx.mp4"
+    QFile localFile(m_selectedMoviePath);
+    if (!localFile.open(QIODevice::WriteOnly)) {
+        m_btnDownload->setText(u8"本地磁盘错误");
+        return;
+    }
+    localFile.close(); // 清空完毕，马上关闭，等待接收数据时用 Append 模式写入
+
+    // 3. 组装下载请求：给我这个 MD5 视频的第 0 块数据！
+    ServerApi::DownloadChunkReq req;
+    req.set_file_md5(m_selectedMovieMd5.toStdString());
+    req.set_chunk_index(0); // 🚀 泵机启动，抽第一口水
+
+    // 发射给服务器
+    TCPMgr::Instance()->SendProtoMsg(ServerApi::MsgId::ID_DOWNLOAD_CHUNK_REQ, req);
+
+    qDebug() << u8"🚀 发起下载任务，请求 MD5:" << m_selectedMovieMd5 << u8"块索引: 0";
 }
 
 void PlaybackPage::onPauseClicked()
@@ -259,7 +408,6 @@ void PlaybackPage::onStopClicked()
         QString endStr = endTime.toString("HH:mm:ss");
 
         emit playbackFinishedRecord(dateStr, m_selectedMovieName, startStr, endStr, u8"强制结束");
-        qDebug() << "333333333333";
         m_isPlayingRecord = false;                                          // 💡 结算完成，标志位复位
     }
 }
@@ -285,4 +433,165 @@ void PlaybackPage::onMediaStatusChanged(QMediaPlayer::MediaStatus status)
             m_isPlayingRecord = false;                                      // 💡 结算完成，标志位复位
         }
     }
+}
+
+// 视频列表拉取成功
+void PlaybackPage::onMovieListReceived(const ServerApi::GetMovieListRsp& rsp)
+{
+    m_movieList->clear();
+    // 确保海报和视频目录一定存在
+    QDir().mkpath(MovieCoverPath);
+    QDir().mkpath(MovieVideoPath);
+
+    for (int i = 0; i < rsp.movies_size(); ++i) {
+        const ServerApi::MovieInfo& movie = rsp.movies(i);
+
+        uint64_t id = movie.movie_id();
+        QString name = QString::fromStdString(movie.movie_name());
+        QString coverUrl = QString::fromStdString(movie.cover_url());
+        QFileInfo cover_file_info(coverUrl);
+        QString cover_name = cover_file_info.fileName();
+        int status = movie.play_status();
+
+        // 提取纯净的下载要素
+        QString fileMd5 = QString::fromStdString(movie.file_md5());
+        uint64_t expectedSize = movie.file_size();
+
+        // 物理路径推导 (纯粹用 MD5 命名)
+        QString localVideoPath = MovieVideoPath + "/" + fileMd5 + ".mp4";
+        QString localCoverPath = MovieCoverPath + "/" + cover_name;
+
+        // 视频校验：看物理文件在不在，大小对不对
+        bool isVideoDownloaded = false;
+        QFile localVideo(localVideoPath);
+        if (localVideo.exists() && localVideo.size() == expectedSize)
+        {
+            isVideoDownloaded = true;
+        }
+
+        // 海报路径校验
+        QFile localCover(localCoverPath);
+        if (!localCover.exists() || localCover.size() == 0) 
+        {
+            // 💡 如果本地没有海报，直接向服务器发起海报下载请求！
+            ServerApi::DownloadCoverReq coverReq;
+            coverReq.set_file_md5(fileMd5.toStdString());
+            TCPMgr::Instance()->SendProtoMsg(ServerApi::MsgId::ID_DOWNLOAD_COVER_REQ, coverReq);
+
+            // 注意：此时传给 AddMovieCard 的路径可以是个空字符串，
+            // AddMovieCard 里如果发现为空，就显示 "加载中..." 的灰色占位图
+            localCoverPath = "";
+        }
+
+        // 渲染卡片
+        AddMovieCard(id, name, localCoverPath, localVideoPath, isVideoDownloaded, status, fileMd5, expectedSize);
+    }
+}
+
+// =========================================================================================
+// 📥 异步海报渲染逻辑
+// =========================================================================================
+void PlaybackPage::onCoverDownloaded(const QString& fileMd5, const QString& localCoverPath)
+{
+    // 遍历整个列表，找到这个 MD5 对应的卡片，刷新它的封面
+    for (int i = 0; i < m_movieList->count(); ++i)
+    {
+        QListWidgetItem* item = m_movieList->item(i);
+        // 回忆一下：我们在 AddMovieCard 时把 MD5 藏在了 Qt::UserRole + 4
+        if (item->data(Qt::UserRole + 4).toString() == fileMd5)
+        {
+            // 取出这个 item 绑定的自定义 QFrame 卡片
+            QWidget* cardWidget = m_movieList->itemWidget(item);
+            if (cardWidget) {
+                // 找到名叫 "cardCover" 的 QLabel
+                QLabel* coverLabel = cardWidget->findChild<QLabel*>("cardCover");
+                if (coverLabel) {
+                    QPixmap pixmap(localCoverPath);
+                    if (!pixmap.isNull()) {
+                        coverLabel->setPixmap(pixmap.scaled(160, 220, Qt::KeepAspectRatioByExpanding, Qt::SmoothTransformation));
+                    }
+                }
+            }
+            break; // 找到了就退出循环
+        }
+    }
+}
+
+// =========================================================================================
+// ❌ 下载失败逻辑
+// =========================================================================================
+void PlaybackPage::onDownloadFailed(const QString& errMsg)
+{
+    QMessageBox::warning(this, u8"下载失败", errMsg);
+
+    // 恢复 UI 状态，允许用户重试
+    m_downloadProgress->hide();
+    m_btnDownload->setText(u8"📥 下载到本地");
+    m_btnDownload->setEnabled(true);
+    m_movieList->setEnabled(true); // 解锁列表
+}
+
+// =========================================================================================
+// 🔄 下载进度条更新逻辑
+// =========================================================================================
+void PlaybackPage::onDownloadProgress(const QString& fileMd5, qint64 chunkSize)
+{
+    // 确保当前来的数据，就是我们选中的正在下载的电影
+    if (fileMd5 != m_selectedMovieMd5) return;
+
+    // 累加已下载的字节数
+    m_currentDownloadBytes += chunkSize;
+
+    // 计算百分比 (防除0保护)
+    if (m_selectedMovieSize > 0) {
+        int percent = (m_currentDownloadBytes * 100) / m_selectedMovieSize;
+        m_downloadProgress->setValue(percent);
+
+        // 顺便在按钮上显示下进度
+        m_btnDownload->setText(QString(u8"正在下载... %1%").arg(percent));
+    }
+}
+
+// =========================================================================================
+// 🎉 彻底下载完成逻辑
+// =========================================================================================
+void PlaybackPage::onDownloadFinished(const QString& fileMd5)
+{
+    if (fileMd5 != m_selectedMovieMd5) return;
+
+    m_downloadProgress->setValue(100);
+    qDebug() << u8"[PlaybackPage] 界面响应: 视频下载彻底完成!";
+
+    // 1. 恢复底层状态
+    m_currentDownloadBytes = 0;
+    m_downloadProgress->hide();
+    m_movieList->setEnabled(true); // 解锁列表
+
+    // 2. 核心 UI 切换：藏起下载按钮，掏出播放按钮！
+    m_selectedIsDownloaded = true;
+    // 调用状态机，下载按钮瞬间消失，整套播放控制面板“嘭”地一下弹出来！
+    SwitchControlPanelState(true);
+
+    // 3. 更新内存中卡片的隐藏变量，并刷新卡片的副标题 (变绿)
+    for (int i = 0; i < m_movieList->count(); ++i) {
+        QListWidgetItem* item = m_movieList->item(i);
+        if (item->data(Qt::UserRole + 4).toString() == fileMd5) {
+
+            // 更新隐藏变量为已下载
+            item->setData(Qt::UserRole + 3, true);
+
+            // 找到子标题，把灰色未下载改成绿色已下载
+            QWidget* cardWidget = m_movieList->itemWidget(item);
+            if (cardWidget) {
+                QLabel* subTitle = cardWidget->findChild<QLabel*>("cardSub");
+                if (subTitle) {
+                    subTitle->setText(u8"🟢 已下载");
+                    subTitle->setStyleSheet("color: #4CAF50; font-weight: bold;");
+                }
+            }
+            break;
+        }
+    }
+
+    QMessageBox::information(this, u8"下载完成", u8"影片已准备就绪，可以开始播放！");
 }

@@ -468,7 +468,7 @@ void ClientSession::InitHandlers()
 
                 QString fileMd5 = QString::fromStdString(req.file_md5());
 
-                // 1. 去数据库查一下这张海报的真实存放路径 (因为我们当初存了后缀名 .jpg / .png)
+                // 1. 去数据库查一下这张海报的真实存放路径
                 QString sql = "SELECT cover_url FROM t_movie_resource WHERE file_md5 = ?";
                 QList<QVariant> params;
                 params << fileMd5;
@@ -482,14 +482,18 @@ void ClientSession::InitHandlers()
 
                     QString coverPath = results.first()["cover_url"].toString();
 
+                    // 👑 提取真实的文件名 (比如: "70b77e_cover.png")
+                    QString realFileName = QFileInfo(coverPath).fileName();
+
                     // 2. 直接打开硬盘里的图片，一口气读完！
                     QFile file(coverPath);
                     if (file.open(QIODevice::ReadOnly)) {
-                        QByteArray coverData = file.readAll(); // 几百KB，主线程直接吞毫无压力
+                        QByteArray coverData = file.readAll();
                         file.close();
 
                         ServerApi::DownloadCoverRsp rsp;
                         rsp.set_file_md5(fileMd5.toStdString());
+                        rsp.set_cover_name(realFileName.toStdString()); // 传回真实文件名
                         rsp.set_cover_data(coverData.data(), coverData.size());
 
                         strongSelf->SendProtoMsg(ServerApi::ID_DOWNLOAD_COVER_RSP, rsp, seq_id);

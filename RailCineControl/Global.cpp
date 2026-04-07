@@ -41,6 +41,12 @@ QString LoginConfigPath = QDir(QCoreApplication::applicationDirPath()).filePath(
 // 影片配置文件路径
 QString MovieConfigPath = QDir(QCoreApplication::applicationDirPath()).filePath("Config/movies.json");
 
+// 影片海报路径
+QString MovieCoverPath = QDir(QCoreApplication::applicationDirPath()).filePath("Movie/Cover");
+
+// 影片视频路径
+QString MovieVideoPath = QDir(QCoreApplication::applicationDirPath()).filePath("Movie/Video");
+
 // 影片播放记录配置文件路径
 QString MovieRecordPath = QDir(QCoreApplication::applicationDirPath()).filePath("Config/movieRecord.json");
 

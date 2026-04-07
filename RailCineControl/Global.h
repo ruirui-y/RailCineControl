@@ -30,6 +30,12 @@ extern QString LoginConfigPath;                                                 
 // 影片配置文件路径
 extern QString MovieConfigPath;
 
+// 影片海报路径
+extern QString MovieCoverPath;
+
+// 影片视频路径
+extern QString MovieVideoPath;
+
 // 影片播放记录配置文件路径
 extern QString MovieRecordPath;
 

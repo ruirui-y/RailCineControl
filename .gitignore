@@ -10,6 +10,7 @@ RailCineControl/x64
 RailCineControl/Packs
 RailCineControl/*.csv
 RailCineControl/Movies
+RailCineControl/Movie
 ./x64
 ./x64/Debug
 ./x64/Release

@@ -3,7 +3,11 @@
 #include <QDateTime>
 #include <QDebug>
 #include <QThread>
+#include <QDir>
+#include <QFile>
+#include <QFileInfo>
 #include "Macro.h"
+#include "Global.h"
 
 TCPMgr::TCPMgr(QObject* parent) : QObject(parent)
 {
@@ -153,6 +157,109 @@ void TCPMgr::InitHandlers()
             qDebug() << u8"[TCPMgr] 影片完美录入云端! 数据库分配 ID:" << rsp.new_movie_id();
             emit SigUploadSuccess();
         }
+        };
+
+    // ------------------------------------------------------------------
+    // 注册 [获取影片列表响应] 的处理逻辑
+    // ------------------------------------------------------------------
+    m_router[ServerApi::ID_GET_MOVIE_LIST_RSP] = [this](const ServerApi::PacketHeader& header, const QByteArray& bodyData) {
+
+        if (header.error_code() != ServerApi::ErrorCode::ERR_SUCCESS) {
+            qDebug() << u8"[TCPMgr] 拉取影片列表失败:" << header.error_msg().c_str();
+            // 可以抛出一个失败信号让 UI 提示用户
+            return;
+        }
+
+        ServerApi::GetMovieListRsp rsp;
+        if (rsp.ParseFromArray(bodyData.data(), bodyData.size())) {
+            qDebug() << u8"[TCPMgr] 成功拉取影片列表，共" << rsp.movies_size() << u8"部影片";
+
+            // 把携带了所有影片数据的 Proto 对象通过信号抛出去
+            emit SigMovieListReceived(rsp);
+        }
+        };
+
+    // ------------------------------------------------------------------
+    // 处理[海报下载响应]
+    // ------------------------------------------------------------------
+    m_router[ServerApi::ID_DOWNLOAD_COVER_RSP] = [this](const ServerApi::PacketHeader& header, const QByteArray& bodyData)
+        {
+            if (header.error_code() != ServerApi::ErrorCode::ERR_SUCCESS) return;
+
+            ServerApi::DownloadCoverRsp rsp;
+            if (rsp.ParseFromArray(bodyData.data(), bodyData.size())) {
+
+                QString fileMd5 = QString::fromStdString(rsp.file_md5());
+                QString coverName = QString::fromStdString(rsp.cover_name()); // 👑 获取真实文件名
+                QByteArray coverData(rsp.cover_data().data(), rsp.cover_data().size());
+
+                // 拼接真实的海报本地路径
+                QDir().mkpath(MovieCoverPath); // 确保目录存在
+                QString localCoverPath = MovieCoverPath + "/" + coverName;
+
+                // 写入本地
+                QFile file(localCoverPath);
+                if (file.open(QIODevice::WriteOnly)) 
+                {
+                    file.write(coverData);
+                    file.close();
+                    qDebug() << u8"[TCPMgr] 海报异步下载完成，保存至:" << localCoverPath;
+
+                    // 💡 抛出信号，通知 PlaybackPage 刷新这个 MD5 对应的卡片海报
+                    emit SigCoverDownloaded(fileMd5, localCoverPath); 
+                }
+            }
+        };
+
+    // ------------------------------------------------------------------
+    // 处理[视频分片下载响应]
+    // ------------------------------------------------------------------
+    m_router[ServerApi::ID_DOWNLOAD_CHUNK_RSP] = [this](const ServerApi::PacketHeader& header, const QByteArray& bodyData)
+        {
+            if (header.error_code() != ServerApi::ErrorCode::ERR_SUCCESS) {
+                qDebug() << u8"[TCPMgr] 视频下载中断:" << header.error_msg().c_str();
+                emit SigDownloadFailed(QString::fromStdString(header.error_msg()));
+                return;
+            }
+
+            ServerApi::DownloadChunkRsp rsp;
+            if (rsp.ParseFromArray(bodyData.data(), bodyData.size())) {
+
+                QString fileMd5 = QString::fromStdString(rsp.file_md5());
+                uint32_t chunkIndex = rsp.chunk_index();
+                QByteArray chunkData(rsp.chunk_data().data(), rsp.chunk_data().size());
+                bool isLast = rsp.is_last();
+
+                // 1. 追加写入本地文件
+                QString videoPath = MovieVideoPath + "/" + fileMd5 + ".mp4";
+                QFile file(videoPath);
+
+                // 注意：必须用 Append 追加模式！
+                if (file.open(QIODevice::Append)) {
+                    file.write(chunkData);
+                    file.close();
+                }
+                else {
+                    emit SigDownloadFailed(u8"本地磁盘写入失败");
+                    return;
+                }
+
+                // 2. 抛出进度信号给 UI 层更新进度条
+                emit SigDownloadProgress(fileMd5, chunkData.size()); // UI 层累加大小计算百分比
+
+                // 3. 核心：如果没下完，自动找服务器要下一块！(抽水泵循环)
+                if (!isLast) {
+                    ServerApi::DownloadChunkReq nextReq;
+                    nextReq.set_file_md5(fileMd5.toStdString());
+                    nextReq.set_chunk_index(chunkIndex + 1); // 索要下一块
+                    SendProtoMsg(ServerApi::MsgId::ID_DOWNLOAD_CHUNK_REQ, nextReq);
+                }
+                else {
+                    qDebug() << u8"[TCPMgr] 🎉 视频物理文件下载彻底完成! MD5:" << fileMd5;
+                    // 抛出完成信号，UI 层的进度条满 100%，【下载】按钮变成【播放】按钮
+                    emit SigDownloadFinished(fileMd5); 
+                }
+            }
         };
 }
 

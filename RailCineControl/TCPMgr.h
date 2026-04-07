@@ -54,6 +54,13 @@ signals:
     void SigUploadFailed(QString msg);
     void SigUploadSuccess();
 
+    // 拉取影片
+    void SigMovieListReceived(const ServerApi::GetMovieListRsp& rsp);                               // 收到影片列表
+    void SigCoverDownloaded(const QString& fileMd5, const QString& localCoverPath);                 // 海报下载完成 (参数: 影片的MD5, 保存到本地的绝对路径)
+    void SigDownloadFailed(const QString& errMsg);                                                  // 视频分片下载失败 (参数: 错误信息)
+    void SigDownloadProgress(const QString& fileMd5, qint64 chunkSize);                             // 视频分片下载进度 (参数: 影片的MD5, 刚刚收到的这块切片的字节数)
+    void SigDownloadFinished(const QString& fileMd5);                                               // 视频彻底下载完成 (参数: 影片的MD5)
+
 private:
     TCPMgr(QObject* parent = nullptr);
     void InitTcpSocket();                                                                           // 初始化TCP套接字
