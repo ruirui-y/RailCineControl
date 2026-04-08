@@ -553,6 +553,133 @@ void ClientSession::InitHandlers()
 
                 SendProtoMsg(ServerApi::ID_DOWNLOAD_CHUNK_RSP, rsp, seq_id);
             };
+
+        // ------------------------------------------------------------------
+        // 💡 处理客户端发来的 [获取播放记录请求]
+        // ------------------------------------------------------------------
+        m_router[ServerApi::ID_GET_RECORDS_REQ] = [this](const ServerApi::PacketHeader& header, const QByteArray& bodyData)
+            {
+                uint64_t seq_id = header.seq_id();
+                ServerApi::GetRecordsReq req;
+                if (!req.ParseFromArray(bodyData.data(), bodyData.size())) return;
+
+                QString targetDate = QString::fromStdString(req.target_date());
+                std::weak_ptr<ClientSession> weakSelf = weak_from_this();
+
+                // 1. 构建查询 SQL (基于当前会话绑定的账户 m_accountId)
+                QString sql = "SELECT id, movie_name, play_date, start_time, end_time, operator_name, end_type "
+                    "FROM t_movie_record WHERE user_id = ?";
+                QList<QVariant> params;
+                params << m_accountId;
+
+                // 👑 动态条件拼接：如果客户端传了日期，就精准查询；如果不传，就不拼条件（查所有）
+                if (!targetDate.isEmpty()) {
+                    sql += " AND play_date = ?";
+                    params << targetDate;
+                }
+
+                // 按日期和开始时间倒序排列，最新的在最上面
+                sql += " ORDER BY play_date DESC, start_time DESC";
+
+                // 2. 扔给线程池异步执行
+                ThreadPool::Instance()->PostQueryTask(sql, [weakSelf, seq_id](const QList<QVariantMap>& results) {
+                    auto strongSelf = weakSelf.lock();
+                    if (!strongSelf) return;
+
+                    ServerApi::GetRecordsRsp rsp;
+
+                    // 3. 遍历组装 Protobuf 数据
+                    for (const auto& row : results) {
+                        ServerApi::PlayRecord* record = rsp.add_records();
+
+                        record->set_record_id(row["id"].toULongLong());
+                        record->set_movie_name(row["movie_name"].toString().toStdString());
+                        record->set_play_date(row["play_date"].toString().toStdString());
+                        record->set_start_time(row["start_time"].toString().toStdString());
+                        record->set_end_time(row["end_time"].toString().toStdString());
+                        record->set_operator_name(row["operator_name"].toString().toStdString());
+                        record->set_end_type(row["end_type"].toString().toStdString());
+                    }
+
+                    rsp.set_total_count(results.size());
+
+                    strongSelf->SendProtoMsg(ServerApi::ID_GET_RECORDS_RSP, rsp, seq_id);
+                    }, true, params);
+            };
+
+        // ------------------------------------------------------------------
+        // 💡 处理客户端发来的 [添加播放记录请求]
+        // ------------------------------------------------------------------
+        m_router[ServerApi::ID_ADD_RECORD_REQ] = [this](const ServerApi::PacketHeader& header, const QByteArray& bodyData)
+            {
+                uint64_t seq_id = header.seq_id();
+                ServerApi::AddRecordReq req;
+                if (!req.ParseFromArray(bodyData.data(), bodyData.size())) return;
+
+                const ServerApi::PlayRecord& record = req.record();
+                std::weak_ptr<ClientSession> weakSelf = weak_from_this();
+
+                // 1. 构造插入 SQL，关联当前会话账号
+                QString sql = "INSERT INTO t_movie_record "
+                    "(user_id, movie_name, play_date, start_time, end_time, operator_name, end_type, create_time) "
+                    "VALUES (?, ?, ?, ?, ?, ?, ?, NOW())";
+
+                QList<QVariant> params;
+                params << m_accountId
+                    << QString::fromStdString(record.movie_name())
+                    << QString::fromStdString(record.play_date())
+                    << QString::fromStdString(record.start_time())
+                    << QString::fromStdString(record.end_time())
+                    << QString::fromStdString(record.operator_name())
+                    << QString::fromStdString(record.end_type());
+
+                // 2. 扔给线程池异步写库
+                ThreadPool::Instance()->PostUpdateTask(sql, [weakSelf, seq_id](bool success) {
+                    auto strongSelf = weakSelf.lock();
+                    if (!strongSelf) return;
+
+                    ServerApi::AddRecordRsp rsp;
+                    if (success) {
+                        strongSelf->SendProtoMsg(ServerApi::ID_ADD_RECORD_RSP, rsp, seq_id);
+                    }
+                    else {
+                        strongSelf->SendProtoMsg(ServerApi::ID_ADD_RECORD_RSP, rsp, seq_id, ServerApi::ERR_SERVER_INTERNAL, u8"录入历史记录失败");
+                    }
+                    }, true, params);
+            };
+
+        // ------------------------------------------------------------------
+        // 💡 处理客户端发来的 [删除播放记录请求]
+        // ------------------------------------------------------------------
+        m_router[ServerApi::ID_DELETE_RECORD_REQ] = [this](const ServerApi::PacketHeader& header, const QByteArray& bodyData)
+            {
+                uint64_t seq_id = header.seq_id();
+                ServerApi::DeleteRecordReq req;
+                if (!req.ParseFromArray(bodyData.data(), bodyData.size())) return;
+
+                uint64_t recordId = req.record_id();
+                std::weak_ptr<ClientSession> weakSelf = weak_from_this();
+
+                // 👑 核心安全防御：删除时必须带上 user_id = ? 防越权操作 (防止张三发包删掉李四的记录)
+                QString sql = "DELETE FROM t_movie_record WHERE id = ? AND user_id = ?";
+                QList<QVariant> params;
+                params << recordId << m_accountId;
+
+                // 执行删除操作
+                ThreadPool::Instance()->PostUpdateTask(sql, [weakSelf, seq_id, recordId](bool success) {
+                    auto strongSelf = weakSelf.lock();
+                    if (!strongSelf) return;
+
+                    ServerApi::DeleteRecordRsp rsp;
+                    if (success) {
+                        rsp.set_deleted_id(recordId); // 把删掉的 ID 回传给客户端，方便其在 UI 擦除该行
+                        strongSelf->SendProtoMsg(ServerApi::ID_DELETE_RECORD_RSP, rsp, seq_id);
+                    }
+                    else {
+                        strongSelf->SendProtoMsg(ServerApi::ID_DELETE_RECORD_RSP, rsp, seq_id, ServerApi::ERR_SERVER_INTERNAL, u8"删除失败，记录不存在或无权限");
+                    }
+                    }, true, params);
+            };
 }
 
 // =========================================================================================

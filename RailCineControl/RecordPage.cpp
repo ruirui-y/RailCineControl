@@ -4,22 +4,28 @@
 #include <QLabel>
 #include <QPushButton>
 #include <QHeaderView>
-#include <QJsonDocument>
-#include <QJsonArray>
-#include <QJsonObject>
 #include <QMessageBox>
-#include <QFileDialog>                                                              // 💡 导出文件需要
-#include <QTextStream>                                                              // 💡 写入文件需要
+#include <QFileDialog>                                                      // 💡 导出文件需要
+#include <QTextStream>                                                      // 💡 写入文件需要
 #include <QDebug>
+#include <QDateTime>
 
-#include "JsonTool.h"
-extern QString MovieRecordPath;
+// 👑 引入网络通信核心
+#include "TCPMgr.h"
 
 RecordPage::RecordPage(QWidget* parent) : QWidget(parent)
 {
     BuildUI();
-    // 💡 启动时：默认加载当天的播放记录
-    LoadRecordsFromJson(QDate::currentDate().toString("yyyy-MM-dd"));
+
+    // ==========================================================
+    // 👑 绑定网络响应槽函数 (监听服务器返回的增删查结果)
+    // ==========================================================
+    connect(TCPMgr::Instance().get(), &TCPMgr::SigRecordsReceived, this, &RecordPage::onGetRecordsRsp);
+    connect(TCPMgr::Instance().get(), &TCPMgr::SigRecordAdded, this, &RecordPage::onAddRecordRsp);
+    connect(TCPMgr::Instance().get(), &TCPMgr::SigRecordDeleted, this, &RecordPage::onDeleteRecordRsp);
+
+    // 💡 启动时：默认向服务器请求加载当天的播放记录
+    RequestRecordsFromServer(QDate::currentDate().toString("yyyy-MM-dd"));
 }
 
 void RecordPage::BuildUI()
@@ -29,10 +35,10 @@ void RecordPage::BuildUI()
 
     // ================= 1. 筛选操作栏 =================
     QHBoxLayout* filterLayout = new QHBoxLayout();
-    filterLayout->setSpacing(15);                                               // 💡 全局间距
+    filterLayout->setSpacing(15);                                           // 💡 全局间距
 
     QLabel* dateLabel = new QLabel(u8"查询日期:", this);
-    dateLabel->setObjectName("recordFilterLabel");                              // 👑 绑定 QSS
+    dateLabel->setObjectName("recordFilterLabel");                          // 👑 绑定 QSS
 
     m_dateEdit = new QDateEdit(QDate::currentDate(), this);
     m_dateEdit->setCalendarPopup(true);
@@ -42,7 +48,7 @@ void RecordPage::BuildUI()
     btnSearch->setMinimumSize(90, 35);
 
     QPushButton* btnDelete = new QPushButton(u8"🗑️ 删除", this);
-    btnDelete->setObjectName("btnDeleteDanger");                                // 👑 绑定专属危险红色 QSS
+    btnDelete->setObjectName("btnDeleteDanger");                            // 👑 绑定专属危险红色 QSS
     btnDelete->setMinimumSize(90, 35);
 
     QPushButton* btnExport = new QPushButton(u8"📊 导出 Excel", this);
@@ -67,7 +73,7 @@ void RecordPage::BuildUI()
     m_recordTable->setEditTriggers(QAbstractItemView::NoEditTriggers);
     m_recordTable->setSelectionBehavior(QAbstractItemView::SelectRows);
     m_recordTable->verticalHeader()->setVisible(false);
-    m_recordTable->setFocusPolicy(Qt::NoFocus);                                 // 消除焦点虚线框
+    m_recordTable->setFocusPolicy(Qt::NoFocus);                             // 消除焦点虚线框
 
     layout->addLayout(filterLayout);
     layout->addWidget(m_recordTable, 1);
@@ -76,128 +82,149 @@ void RecordPage::BuildUI()
     connect(btnDelete, &QPushButton::clicked, this, &RecordPage::onDeleteClicked);
     connect(btnExport, &QPushButton::clicked, this, &RecordPage::onExportClicked);
 }
+
 // -------------------------------------------------------------------------
-// 核心加载引擎：支持按日期精准过滤
+// 🚀 [查]：向服务器发送查询请求
 // -------------------------------------------------------------------------
-void RecordPage::LoadRecordsFromJson(const QString& targetDate)
+void RecordPage::RequestRecordsFromServer(const QString& targetDate)
 {
-    // 💡 每次加载前，先清空 UI 表格上的旧数据
+    // 💡 每次发请求前，先清空 UI 表格上的旧数据
     m_recordTable->setRowCount(0);
 
-    QFileInfo fileInfo(MovieRecordPath);
-    if (!fileInfo.exists()) {
-        QJsonDocument initialDoc(QJsonArray{});
-        QString createErr;
-        JsonTool::Instance()->writeJsonFile(MovieRecordPath, initialDoc, &createErr);
-        return;
-    }
+    ServerApi::GetRecordsReq req;
+    req.set_target_date(targetDate.toStdString());
+    req.set_page_index(1);
+    req.set_page_size(100);
 
-    QJsonDocument doc;
-    QString errMsg;
-    if (JsonTool::Instance()->readJsonFile(MovieRecordPath, doc, &errMsg) && doc.isArray()) {
-        QJsonArray recordArray = doc.array();
+    TCPMgr::Instance()->SendProtoMsg(ServerApi::MsgId::ID_GET_RECORDS_REQ, req);
+    qDebug() << u8"[RecordPage] 正在向云端查询播放记录，日期:" << targetDate;
+}
 
-        for (int i = 0; i < recordArray.size(); ++i) {
-            QJsonObject obj = recordArray[i].toObject();
-            QString recordDate = obj["date"].toString();
+// 接收服务器的查询响应并渲染
+void RecordPage::onGetRecordsRsp(const ServerApi::GetRecordsRsp& rsp)
+{
+    m_recordTable->setRowCount(0); // 确保表格干净
 
-            // 👑 过滤引擎：如果传了 targetDate，就只加载那一天的记录
-            if (targetDate.isEmpty() || recordDate == targetDate) {
-                InsertRowToUI(
-                    recordDate,
-                    obj["name"].toString(),
-                    obj["startTime"].toString(),
-                    obj["endTime"].toString(),
-                    obj["operatorName"].toString(),
-                    obj["endType"].toString()
-                );
-            }
-        }
+    for (int i = 0; i < rsp.records_size(); ++i) {
+        const ServerApi::PlayRecord& record = rsp.records(i);
+
+        InsertRowToUI(
+            record.record_id(), // 👑 传入服务器分配的真实数据库 ID
+            QString::fromStdString(record.play_date()),
+            QString::fromStdString(record.movie_name()),
+            QString::fromStdString(record.start_time()),
+            QString::fromStdString(record.end_time()),
+            QString::fromStdString(record.operator_name()),
+            QString::fromStdString(record.end_type())
+        );
     }
 }
 
-void RecordPage::AddRecordRow(const QString& date, const QString& name, const QString& startTime, const QString& endTime, const QString& operatorName, const QString& endType) {
-    InsertRowToUI(date, name, startTime, endTime, operatorName, endType);
-    AppendRecordToJson(date, name, startTime, endTime, operatorName, endType);
+// 点击查询按钮触发
+void RecordPage::onSearchClicked()
+{
+    QString targetDate = m_dateEdit->date().toString("yyyy-MM-dd");
+    RequestRecordsFromServer(targetDate);
 }
 
-void RecordPage::InsertRowToUI(const QString& date, const QString& name, const QString& startTime, const QString& endTime, const QString& operatorName, const QString& endType) {
-    m_recordTable->insertRow(0);
-    
-    // 创建居中Item
+// -------------------------------------------------------------------------
+// 🚀 [增]：向服务器发送添加记录请求
+// -------------------------------------------------------------------------
+void RecordPage::RequestAddRecord(const QString& date, const QString& name, const QString& startTime, const QString& endTime, const QString& operatorName, const QString& endType)
+{
+    ServerApi::AddRecordReq req;
+    ServerApi::PlayRecord* record = req.mutable_record();
+
+    // 注意：不需要赋 record_id，服务器的 MySQL 会自动自增生成
+    record->set_play_date(date.toStdString());
+    record->set_movie_name(name.toStdString());
+    record->set_start_time(startTime.toStdString());
+    record->set_end_time(endTime.toStdString());
+    record->set_operator_name(operatorName.toStdString());
+    record->set_end_type(endType.toStdString());
+
+    TCPMgr::Instance()->SendProtoMsg(ServerApi::MsgId::ID_ADD_RECORD_REQ, req);
+}
+
+// 接收服务器的添加确认
+void RecordPage::onAddRecordRsp(const ServerApi::AddRecordRsp& rsp)
+{
+    // 💡 添加成功后，为了拿到准确的 ID 和保持同步，直接按当前筛选日期刷新一波列表
+    QString targetDate = m_dateEdit->date().toString("yyyy-MM-dd");
+    RequestRecordsFromServer(targetDate);
+}
+
+// -------------------------------------------------------------------------
+// 🎨 UI 辅助：纯粹负责渲染，并将云端 ID 隐藏在单元格里
+// -------------------------------------------------------------------------
+void RecordPage::InsertRowToUI(uint64_t recordId, const QString& date, const QString& name, const QString& startTime, const QString& endTime, const QString& operatorName, const QString& endType)
+{
+    m_recordTable->insertRow(0); // 始终插在最顶部
+
+    // 创建居中Item的 Lambda
     auto createCenteredItem = [](const QString& text) -> QTableWidgetItem* {
         QTableWidgetItem* item = new QTableWidgetItem(text);
         item->setTextAlignment(Qt::AlignCenter);                                    // 强制文本水平垂直居中
         return item;
         };
 
-    m_recordTable->setItem(0, 0, createCenteredItem(date));
+    QTableWidgetItem* dateItem = createCenteredItem(date);
+
+    // 👑 核心绝杀：将云端主键 ID 藏在第一列的 UserRole 里，供删除时进行精确制导
+    dateItem->setData(Qt::UserRole, QVariant::fromValue(recordId));
+
+    m_recordTable->setItem(0, 0, dateItem);
     m_recordTable->setItem(0, 1, createCenteredItem(name));
     m_recordTable->setItem(0, 2, createCenteredItem(startTime));
     m_recordTable->setItem(0, 3, createCenteredItem(endTime));
     m_recordTable->setItem(0, 4, createCenteredItem(operatorName));
+
     QTableWidgetItem* typeItem = createCenteredItem(endType);
-    if (endType == u8"强制结束") typeItem->setForeground(QColor("#FF4757"));
+    if (endType == u8"强制结束") {
+        typeItem->setForeground(QColor("#FF4757")); // 强制结束标红提示
+    }
     m_recordTable->setItem(0, 5, typeItem);
 }
 
-void RecordPage::AppendRecordToJson(const QString& date, const QString& name, const QString& startTime, const QString& endTime, const QString& operatorName, const QString& endType) {
-    QJsonDocument doc; QString errMsg;
-    JsonTool::Instance()->readJsonFile(MovieRecordPath, doc, &errMsg);
-    QJsonArray recordArray = doc.isArray() ? doc.array() : QJsonArray();
-    QJsonObject newRecord;
-    newRecord["date"] = date; newRecord["name"] = name; newRecord["startTime"] = startTime;
-    newRecord["endTime"] = endTime; newRecord["operatorName"] = operatorName; newRecord["endType"] = endType;
-    recordArray.append(newRecord);
-    doc.setArray(recordArray);
-    JsonTool::Instance()->writeJsonFile(MovieRecordPath, doc, &errMsg);
+// -------------------------------------------------------------------------
+// 🚀 [删]：向服务器发送精确删除请求
+// -------------------------------------------------------------------------
+void RecordPage::onDeleteClicked()
+{
+    int row = m_recordTable->currentRow();
+    if (row < 0) {
+        QMessageBox::warning(this, u8"提示", u8"请先在表格中选中要删除的记录！");
+        return;
+    }
+    if (QMessageBox::question(this, u8"确认", u8"确定要永久删除这条播放记录吗？(云端将同步删除)") != QMessageBox::Yes) {
+        return;
+    }
+
+    // 提取隐藏的真实数据库主键 ID
+    uint64_t recordId = m_recordTable->item(row, 0)->data(Qt::UserRole).toULongLong();
+
+    ServerApi::DeleteRecordReq req;
+    req.set_record_id(recordId);
+
+    TCPMgr::Instance()->SendProtoMsg(ServerApi::MsgId::ID_DELETE_RECORD_REQ, req);
 }
 
-bool RecordPage::DeleteRecordFromJson(const QString& date, const QString& name, const QString& startTime) {
-    QJsonDocument doc; QString errMsg;
-    if (!JsonTool::Instance()->readJsonFile(MovieRecordPath, doc, &errMsg)) return false;
-    if (!doc.isArray()) return false;
-    QJsonArray recordArray = doc.array();
-    bool found = false;
-    for (int i = 0; i < recordArray.size(); ++i) {
-        QJsonObject obj = recordArray[i].toObject();
-        if (obj["date"].toString() == date && obj["name"].toString() == name && obj["startTime"].toString() == startTime) {
-            recordArray.removeAt(i); found = true; break;
+// 接收服务器的删除确认
+void RecordPage::onDeleteRecordRsp(const ServerApi::DeleteRecordRsp& rsp)
+{
+    uint64_t deletedId = rsp.deleted_id();
+
+    // 遍历当前表格，找到对应 ID 的那一行并在 UI 上动态移出
+    for (int r = 0; r < m_recordTable->rowCount(); ++r) {
+        if (m_recordTable->item(r, 0)->data(Qt::UserRole).toULongLong() == deletedId) {
+            m_recordTable->removeRow(r);
+            break;
         }
     }
-    if (found) {
-        doc.setArray(recordArray);
-        return JsonTool::Instance()->writeJsonFile(MovieRecordPath, doc, &errMsg);
-    }
-    return false;
-}
-
-void RecordPage::onDeleteClicked() {
-    int row = m_recordTable->currentRow();
-    if (row < 0) { QMessageBox::warning(this, u8"提示", u8"请先在表格中选中要删除的记录！"); return; }
-    if (QMessageBox::question(this, u8"确认", u8"确定要永久删除这条播放记录吗？") != QMessageBox::Yes) return;
-    QString date = m_recordTable->item(row, 0)->text();
-    QString name = m_recordTable->item(row, 1)->text();
-    QString startTime = m_recordTable->item(row, 2)->text();
-    if (DeleteRecordFromJson(date, name, startTime)) {
-        m_recordTable->removeRow(row);
-    }
 }
 
 // -------------------------------------------------------------------------
-// 💡 完善：查询功能
-// -------------------------------------------------------------------------
-void RecordPage::onSearchClicked()
-{
-    QString targetDate = m_dateEdit->date().toString("yyyy-MM-dd");
-    qDebug() << u8"执行按日期查询:" << targetDate;
-
-    // 直接复用加载引擎，传入选中的日期重新渲染表格
-    LoadRecordsFromJson(targetDate);
-}
-
-// -------------------------------------------------------------------------
-// 💡 完善：导出 Excel (CSV 格式)
+// 📊 导出 Excel (CSV 格式) —— 纯本地操作，直接读取表格 UI 上的内容即可
 // -------------------------------------------------------------------------
 void RecordPage::onExportClicked()
 {

@@ -61,6 +61,11 @@ signals:
     void SigDownloadProgress(const QString& fileMd5, qint64 chunkSize);                             // 视频分片下载进度 (参数: 影片的MD5, 刚刚收到的这块切片的字节数)
     void SigDownloadFinished(const QString& fileMd5);                                               // 视频彻底下载完成 (参数: 影片的MD5)
 
+    // 影片播放历史记录业务相关信号
+    void SigRecordsReceived(const ServerApi::GetRecordsRsp& rsp);                                   // 接收到服务器下发的播放记录列表 (用于刷新 UI 表格)
+    void SigRecordAdded(const ServerApi::AddRecordRsp& rsp);                                        // 服务器确认新播放记录已成功入库 (对应播放结束后的上报)
+    void SigRecordDeleted(const ServerApi::DeleteRecordRsp& rsp);                                   // 服务器确认播放记录已成功删除 (对应用户手动精确删除)
+
 private:
     TCPMgr(QObject* parent = nullptr);
     void InitTcpSocket();                                                                           // 初始化TCP套接字

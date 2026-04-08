@@ -261,6 +261,64 @@ void TCPMgr::InitHandlers()
                 }
             }
         };
+
+    // ------------------------------------------------------------------
+    // 💡 处理服务器返回的 [获取播放记录响应]
+    // ------------------------------------------------------------------
+    m_router[ServerApi::ID_GET_RECORDS_RSP] = [this](const ServerApi::PacketHeader& header, const QByteArray& bodyData)
+        {
+            if (header.error_code() != ServerApi::ErrorCode::ERR_SUCCESS) {
+                qDebug() << u8"[TCPMgr] 获取播放记录失败:" << header.error_msg().c_str();
+                // 视需求可抛出失败信号给 UI 弹窗
+                return;
+            }
+
+            ServerApi::GetRecordsRsp rsp;
+            if (rsp.ParseFromArray(bodyData.data(), bodyData.size())) {
+                qDebug() << u8"[TCPMgr] 成功拉取云端播放记录，共" << rsp.records_size() << u8"条";
+
+                // 抛出信号给 RecordPage 进行表格渲染
+                emit SigRecordsReceived(rsp);
+            }
+        };
+
+    // ------------------------------------------------------------------
+    // 💡 处理服务器返回的 [添加播放记录响应]
+    // ------------------------------------------------------------------
+    m_router[ServerApi::ID_ADD_RECORD_RSP] = [this](const ServerApi::PacketHeader& header, const QByteArray& bodyData)
+        {
+            if (header.error_code() != ServerApi::ErrorCode::ERR_SUCCESS) {
+                qDebug() << u8"[TCPMgr] 添加播放记录失败:" << header.error_msg().c_str();
+                return;
+            }
+
+            ServerApi::AddRecordRsp rsp;
+            if (rsp.ParseFromArray(bodyData.data(), bodyData.size())) {
+                qDebug() << u8"[TCPMgr] 播放记录云端录入成功!";
+
+                // 抛出信号，通知 RecordPage 刷新当天列表
+                emit SigRecordAdded(rsp);
+            }
+        };
+
+    // ------------------------------------------------------------------
+    // 💡 处理服务器返回的 [删除播放记录响应]
+    // ------------------------------------------------------------------
+    m_router[ServerApi::ID_DELETE_RECORD_RSP] = [this](const ServerApi::PacketHeader& header, const QByteArray& bodyData)
+        {
+            if (header.error_code() != ServerApi::ErrorCode::ERR_SUCCESS) {
+                qDebug() << u8"[TCPMgr] 删除播放记录失败:" << header.error_msg().c_str();
+                return;
+            }
+
+            ServerApi::DeleteRecordRsp rsp;
+            if (rsp.ParseFromArray(bodyData.data(), bodyData.size())) {
+                qDebug() << u8"[TCPMgr] 播放记录云端删除成功! ID:" << rsp.deleted_id();
+
+                // 抛出信号，通知 RecordPage 在 UI 上精确抹除这一行
+                emit SigRecordDeleted(rsp);
+            }
+        };
 }
 
 // =========================================================================================
