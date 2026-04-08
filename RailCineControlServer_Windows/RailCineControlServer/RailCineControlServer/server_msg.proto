@@ -113,3 +113,46 @@ message DownloadCoverRsp {
     string cover_name = 2;                                                      // 海报的真实全名 (例如 "a1b2_cover.png")
     bytes  cover_data = 3;                                                      // 图片的全部二进制数据
 }
+
+
+// =========================================================================================
+// 7. 播放记录业务 (增、删、查)
+// =========================================================================================
+
+// 单条记录的数据结构
+message PlayRecord {
+    uint64 record_id     = 1;                                                   // 数据库主键 ID (删除时必须使用)
+    string movie_name    = 2;                                                   // 影片名称
+    string play_date     = 3;                                                   // 播放日期 (如: "2026-04-08")
+    string start_time    = 4;                                                   // 开始时间 (如: "14:00:00")
+    string end_time      = 5;                                                   // 结束时间 (如: "15:30:00")
+    string operator_name = 6;                                                   // 操作员
+    string end_type      = 7;                                                   // 结束类型 (正常/强制)
+}
+
+// ➕ [增] 添加记录
+message AddRecordReq {
+    PlayRecord record = 1; 
+}
+message AddRecordRsp {
+    uint64 new_record_id = 1;                                                   // 返回服务器生成的 ID
+}
+
+// 🔍 [查] 查询记录
+message GetRecordsReq {
+    string target_date = 1;                                                     // 如果为空则查询所有，如果不为空(如"2026-04-08")则查询当天
+    uint32 page_index  = 2;                                                     // 分页
+    uint32 page_size   = 3;
+}
+message GetRecordsRsp {
+    repeated PlayRecord records = 1;
+    uint32 total_count          = 2;
+}
+
+// 🗑️ [删] 删除记录
+message DeleteRecordReq {
+    uint64 record_id = 1;                                                       // 根据数据库主键精准删除
+}
+message DeleteRecordRsp {
+    uint64 deleted_id = 1;
+}

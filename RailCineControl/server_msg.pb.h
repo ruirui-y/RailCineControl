@@ -52,6 +52,18 @@ struct TableStruct_server_5fmsg_2eproto {
 extern const ::google::protobuf::internal::DescriptorTable
     descriptor_table_server_5fmsg_2eproto;
 namespace ServerApi {
+class AddRecordReq;
+struct AddRecordReqDefaultTypeInternal;
+extern AddRecordReqDefaultTypeInternal _AddRecordReq_default_instance_;
+class AddRecordRsp;
+struct AddRecordRspDefaultTypeInternal;
+extern AddRecordRspDefaultTypeInternal _AddRecordRsp_default_instance_;
+class DeleteRecordReq;
+struct DeleteRecordReqDefaultTypeInternal;
+extern DeleteRecordReqDefaultTypeInternal _DeleteRecordReq_default_instance_;
+class DeleteRecordRsp;
+struct DeleteRecordRspDefaultTypeInternal;
+extern DeleteRecordRspDefaultTypeInternal _DeleteRecordRsp_default_instance_;
 class DownloadChunkReq;
 struct DownloadChunkReqDefaultTypeInternal;
 extern DownloadChunkReqDefaultTypeInternal _DownloadChunkReq_default_instance_;
@@ -70,6 +82,12 @@ extern GetMovieListReqDefaultTypeInternal _GetMovieListReq_default_instance_;
 class GetMovieListRsp;
 struct GetMovieListRspDefaultTypeInternal;
 extern GetMovieListRspDefaultTypeInternal _GetMovieListRsp_default_instance_;
+class GetRecordsReq;
+struct GetRecordsReqDefaultTypeInternal;
+extern GetRecordsReqDefaultTypeInternal _GetRecordsReq_default_instance_;
+class GetRecordsRsp;
+struct GetRecordsRspDefaultTypeInternal;
+extern GetRecordsRspDefaultTypeInternal _GetRecordsRsp_default_instance_;
 class Heartbeat;
 struct HeartbeatDefaultTypeInternal;
 extern HeartbeatDefaultTypeInternal _Heartbeat_default_instance_;
@@ -82,6 +100,9 @@ extern LoginRspDefaultTypeInternal _LoginRsp_default_instance_;
 class MovieInfo;
 struct MovieInfoDefaultTypeInternal;
 extern MovieInfoDefaultTypeInternal _MovieInfo_default_instance_;
+class PlayRecord;
+struct PlayRecordDefaultTypeInternal;
+extern PlayRecordDefaultTypeInternal _PlayRecord_default_instance_;
 class UploadChunkReq;
 struct UploadChunkReqDefaultTypeInternal;
 extern UploadChunkReqDefaultTypeInternal _UploadChunkReq_default_instance_;
@@ -1035,6 +1056,304 @@ class UploadChunkReq final : public ::google::protobuf::Message
 };
 // -------------------------------------------------------------------
 
+class PlayRecord final : public ::google::protobuf::Message
+/* @@protoc_insertion_point(class_definition:ServerApi.PlayRecord) */ {
+ public:
+  inline PlayRecord() : PlayRecord(nullptr) {}
+  ~PlayRecord() PROTOBUF_FINAL;
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+  void operator delete(PlayRecord* msg, std::destroying_delete_t) {
+    SharedDtor(*msg);
+    ::google::protobuf::internal::SizedDelete(msg, sizeof(PlayRecord));
+  }
+#endif
+
+  template <typename = void>
+  explicit PROTOBUF_CONSTEXPR PlayRecord(
+      ::google::protobuf::internal::ConstantInitialized);
+
+  inline PlayRecord(const PlayRecord& from) : PlayRecord(nullptr, from) {}
+  inline PlayRecord(PlayRecord&& from) noexcept
+      : PlayRecord(nullptr, std::move(from)) {}
+  inline PlayRecord& operator=(const PlayRecord& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline PlayRecord& operator=(PlayRecord&& from) noexcept {
+    if (this == &from) return *this;
+    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields()
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::google::protobuf::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::google::protobuf::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const PlayRecord& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const PlayRecord* internal_default_instance() {
+    return reinterpret_cast<const PlayRecord*>(
+        &_PlayRecord_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages = 14;
+  friend void swap(PlayRecord& a, PlayRecord& b) { a.Swap(&b); }
+  inline void Swap(PlayRecord* other) {
+    if (other == this) return;
+    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(PlayRecord* other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  PlayRecord* New(::google::protobuf::Arena* arena = nullptr) const {
+    return ::google::protobuf::Message::DefaultConstruct<PlayRecord>(arena);
+  }
+  using ::google::protobuf::Message::CopyFrom;
+  void CopyFrom(const PlayRecord& from);
+  using ::google::protobuf::Message::MergeFrom;
+  void MergeFrom(const PlayRecord& from) { PlayRecord::MergeImpl(*this, from); }
+
+  private:
+  static void MergeImpl(
+      ::google::protobuf::MessageLite& to_msg,
+      const ::google::protobuf::MessageLite& from_msg);
+
+  public:
+  bool IsInitialized() const {
+    return true;
+  }
+  ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
+  #if defined(PROTOBUF_CUSTOM_VTABLE)
+  private:
+  static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
+  static ::uint8_t* _InternalSerialize(
+      const MessageLite& msg, ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream);
+
+  public:
+  ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+    return _InternalSerialize(*this, target, stream);
+  }
+  #else   // PROTOBUF_CUSTOM_VTABLE
+  ::size_t ByteSizeLong() const final;
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const final;
+  #endif  // PROTOBUF_CUSTOM_VTABLE
+  int GetCachedSize() const { return _impl_._cached_size_.Get(); }
+
+  private:
+  void SharedCtor(::google::protobuf::Arena* arena);
+  static void SharedDtor(MessageLite& self);
+  void InternalSwap(PlayRecord* other);
+ private:
+  template <typename T>
+  friend ::absl::string_view(
+      ::google::protobuf::internal::GetAnyMessageName)();
+  static ::absl::string_view FullMessageName() { return "ServerApi.PlayRecord"; }
+
+ protected:
+  explicit PlayRecord(::google::protobuf::Arena* arena);
+  PlayRecord(::google::protobuf::Arena* arena, const PlayRecord& from);
+  PlayRecord(::google::protobuf::Arena* arena, PlayRecord&& from) noexcept
+      : PlayRecord(arena) {
+    *this = ::std::move(from);
+  }
+  const ::google::protobuf::internal::ClassData* GetClassData() const PROTOBUF_FINAL;
+  static void* PlacementNew_(const void*, void* mem,
+                             ::google::protobuf::Arena* arena);
+  static constexpr auto InternalNewImpl_();
+  static const ::google::protobuf::internal::ClassDataFull _class_data_;
+
+ public:
+  ::google::protobuf::Metadata GetMetadata() const;
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+  enum : int {
+    kMovieNameFieldNumber = 2,
+    kPlayDateFieldNumber = 3,
+    kStartTimeFieldNumber = 4,
+    kEndTimeFieldNumber = 5,
+    kOperatorNameFieldNumber = 6,
+    kEndTypeFieldNumber = 7,
+    kRecordIdFieldNumber = 1,
+  };
+  // string movie_name = 2;
+  void clear_movie_name() ;
+  const std::string& movie_name() const;
+  template <typename Arg_ = const std::string&, typename... Args_>
+  void set_movie_name(Arg_&& arg, Args_... args);
+  std::string* mutable_movie_name();
+  PROTOBUF_NODISCARD std::string* release_movie_name();
+  void set_allocated_movie_name(std::string* value);
+
+  private:
+  const std::string& _internal_movie_name() const;
+  inline PROTOBUF_ALWAYS_INLINE void _internal_set_movie_name(
+      const std::string& value);
+  std::string* _internal_mutable_movie_name();
+
+  public:
+  // string play_date = 3;
+  void clear_play_date() ;
+  const std::string& play_date() const;
+  template <typename Arg_ = const std::string&, typename... Args_>
+  void set_play_date(Arg_&& arg, Args_... args);
+  std::string* mutable_play_date();
+  PROTOBUF_NODISCARD std::string* release_play_date();
+  void set_allocated_play_date(std::string* value);
+
+  private:
+  const std::string& _internal_play_date() const;
+  inline PROTOBUF_ALWAYS_INLINE void _internal_set_play_date(
+      const std::string& value);
+  std::string* _internal_mutable_play_date();
+
+  public:
+  // string start_time = 4;
+  void clear_start_time() ;
+  const std::string& start_time() const;
+  template <typename Arg_ = const std::string&, typename... Args_>
+  void set_start_time(Arg_&& arg, Args_... args);
+  std::string* mutable_start_time();
+  PROTOBUF_NODISCARD std::string* release_start_time();
+  void set_allocated_start_time(std::string* value);
+
+  private:
+  const std::string& _internal_start_time() const;
+  inline PROTOBUF_ALWAYS_INLINE void _internal_set_start_time(
+      const std::string& value);
+  std::string* _internal_mutable_start_time();
+
+  public:
+  // string end_time = 5;
+  void clear_end_time() ;
+  const std::string& end_time() const;
+  template <typename Arg_ = const std::string&, typename... Args_>
+  void set_end_time(Arg_&& arg, Args_... args);
+  std::string* mutable_end_time();
+  PROTOBUF_NODISCARD std::string* release_end_time();
+  void set_allocated_end_time(std::string* value);
+
+  private:
+  const std::string& _internal_end_time() const;
+  inline PROTOBUF_ALWAYS_INLINE void _internal_set_end_time(
+      const std::string& value);
+  std::string* _internal_mutable_end_time();
+
+  public:
+  // string operator_name = 6;
+  void clear_operator_name() ;
+  const std::string& operator_name() const;
+  template <typename Arg_ = const std::string&, typename... Args_>
+  void set_operator_name(Arg_&& arg, Args_... args);
+  std::string* mutable_operator_name();
+  PROTOBUF_NODISCARD std::string* release_operator_name();
+  void set_allocated_operator_name(std::string* value);
+
+  private:
+  const std::string& _internal_operator_name() const;
+  inline PROTOBUF_ALWAYS_INLINE void _internal_set_operator_name(
+      const std::string& value);
+  std::string* _internal_mutable_operator_name();
+
+  public:
+  // string end_type = 7;
+  void clear_end_type() ;
+  const std::string& end_type() const;
+  template <typename Arg_ = const std::string&, typename... Args_>
+  void set_end_type(Arg_&& arg, Args_... args);
+  std::string* mutable_end_type();
+  PROTOBUF_NODISCARD std::string* release_end_type();
+  void set_allocated_end_type(std::string* value);
+
+  private:
+  const std::string& _internal_end_type() const;
+  inline PROTOBUF_ALWAYS_INLINE void _internal_set_end_type(
+      const std::string& value);
+  std::string* _internal_mutable_end_type();
+
+  public:
+  // uint64 record_id = 1;
+  void clear_record_id() ;
+  ::uint64_t record_id() const;
+  void set_record_id(::uint64_t value);
+
+  private:
+  ::uint64_t _internal_record_id() const;
+  void _internal_set_record_id(::uint64_t value);
+
+  public:
+  // @@protoc_insertion_point(class_scope:ServerApi.PlayRecord)
+ private:
+  class _Internal;
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<
+      3, 7, 0,
+      87, 2>
+      _table_;
+
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+    inline explicit constexpr Impl_(
+        ::google::protobuf::internal::ConstantInitialized) noexcept;
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena);
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena, const Impl_& from,
+                          const PlayRecord& from_msg);
+    ::google::protobuf::internal::ArenaStringPtr movie_name_;
+    ::google::protobuf::internal::ArenaStringPtr play_date_;
+    ::google::protobuf::internal::ArenaStringPtr start_time_;
+    ::google::protobuf::internal::ArenaStringPtr end_time_;
+    ::google::protobuf::internal::ArenaStringPtr operator_name_;
+    ::google::protobuf::internal::ArenaStringPtr end_type_;
+    ::uint64_t record_id_;
+    ::google::protobuf::internal::CachedSize _cached_size_;
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_server_5fmsg_2eproto;
+};
+// -------------------------------------------------------------------
+
 class MovieInfo final : public ::google::protobuf::Message
 /* @@protoc_insertion_point(class_definition:ServerApi.MovieInfo) */ {
  public:
@@ -1907,6 +2226,226 @@ class Heartbeat final : public ::google::protobuf::Message
                           ::google::protobuf::Arena* arena, const Impl_& from,
                           const Heartbeat& from_msg);
     ::int64_t timestamp_;
+    ::google::protobuf::internal::CachedSize _cached_size_;
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_server_5fmsg_2eproto;
+};
+// -------------------------------------------------------------------
+
+class GetRecordsReq final : public ::google::protobuf::Message
+/* @@protoc_insertion_point(class_definition:ServerApi.GetRecordsReq) */ {
+ public:
+  inline GetRecordsReq() : GetRecordsReq(nullptr) {}
+  ~GetRecordsReq() PROTOBUF_FINAL;
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+  void operator delete(GetRecordsReq* msg, std::destroying_delete_t) {
+    SharedDtor(*msg);
+    ::google::protobuf::internal::SizedDelete(msg, sizeof(GetRecordsReq));
+  }
+#endif
+
+  template <typename = void>
+  explicit PROTOBUF_CONSTEXPR GetRecordsReq(
+      ::google::protobuf::internal::ConstantInitialized);
+
+  inline GetRecordsReq(const GetRecordsReq& from) : GetRecordsReq(nullptr, from) {}
+  inline GetRecordsReq(GetRecordsReq&& from) noexcept
+      : GetRecordsReq(nullptr, std::move(from)) {}
+  inline GetRecordsReq& operator=(const GetRecordsReq& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline GetRecordsReq& operator=(GetRecordsReq&& from) noexcept {
+    if (this == &from) return *this;
+    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields()
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::google::protobuf::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::google::protobuf::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const GetRecordsReq& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const GetRecordsReq* internal_default_instance() {
+    return reinterpret_cast<const GetRecordsReq*>(
+        &_GetRecordsReq_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages = 17;
+  friend void swap(GetRecordsReq& a, GetRecordsReq& b) { a.Swap(&b); }
+  inline void Swap(GetRecordsReq* other) {
+    if (other == this) return;
+    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(GetRecordsReq* other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  GetRecordsReq* New(::google::protobuf::Arena* arena = nullptr) const {
+    return ::google::protobuf::Message::DefaultConstruct<GetRecordsReq>(arena);
+  }
+  using ::google::protobuf::Message::CopyFrom;
+  void CopyFrom(const GetRecordsReq& from);
+  using ::google::protobuf::Message::MergeFrom;
+  void MergeFrom(const GetRecordsReq& from) { GetRecordsReq::MergeImpl(*this, from); }
+
+  private:
+  static void MergeImpl(
+      ::google::protobuf::MessageLite& to_msg,
+      const ::google::protobuf::MessageLite& from_msg);
+
+  public:
+  bool IsInitialized() const {
+    return true;
+  }
+  ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
+  #if defined(PROTOBUF_CUSTOM_VTABLE)
+  private:
+  static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
+  static ::uint8_t* _InternalSerialize(
+      const MessageLite& msg, ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream);
+
+  public:
+  ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+    return _InternalSerialize(*this, target, stream);
+  }
+  #else   // PROTOBUF_CUSTOM_VTABLE
+  ::size_t ByteSizeLong() const final;
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const final;
+  #endif  // PROTOBUF_CUSTOM_VTABLE
+  int GetCachedSize() const { return _impl_._cached_size_.Get(); }
+
+  private:
+  void SharedCtor(::google::protobuf::Arena* arena);
+  static void SharedDtor(MessageLite& self);
+  void InternalSwap(GetRecordsReq* other);
+ private:
+  template <typename T>
+  friend ::absl::string_view(
+      ::google::protobuf::internal::GetAnyMessageName)();
+  static ::absl::string_view FullMessageName() { return "ServerApi.GetRecordsReq"; }
+
+ protected:
+  explicit GetRecordsReq(::google::protobuf::Arena* arena);
+  GetRecordsReq(::google::protobuf::Arena* arena, const GetRecordsReq& from);
+  GetRecordsReq(::google::protobuf::Arena* arena, GetRecordsReq&& from) noexcept
+      : GetRecordsReq(arena) {
+    *this = ::std::move(from);
+  }
+  const ::google::protobuf::internal::ClassData* GetClassData() const PROTOBUF_FINAL;
+  static void* PlacementNew_(const void*, void* mem,
+                             ::google::protobuf::Arena* arena);
+  static constexpr auto InternalNewImpl_();
+  static const ::google::protobuf::internal::ClassDataFull _class_data_;
+
+ public:
+  ::google::protobuf::Metadata GetMetadata() const;
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+  enum : int {
+    kTargetDateFieldNumber = 1,
+    kPageIndexFieldNumber = 2,
+    kPageSizeFieldNumber = 3,
+  };
+  // string target_date = 1;
+  void clear_target_date() ;
+  const std::string& target_date() const;
+  template <typename Arg_ = const std::string&, typename... Args_>
+  void set_target_date(Arg_&& arg, Args_... args);
+  std::string* mutable_target_date();
+  PROTOBUF_NODISCARD std::string* release_target_date();
+  void set_allocated_target_date(std::string* value);
+
+  private:
+  const std::string& _internal_target_date() const;
+  inline PROTOBUF_ALWAYS_INLINE void _internal_set_target_date(
+      const std::string& value);
+  std::string* _internal_mutable_target_date();
+
+  public:
+  // uint32 page_index = 2;
+  void clear_page_index() ;
+  ::uint32_t page_index() const;
+  void set_page_index(::uint32_t value);
+
+  private:
+  ::uint32_t _internal_page_index() const;
+  void _internal_set_page_index(::uint32_t value);
+
+  public:
+  // uint32 page_size = 3;
+  void clear_page_size() ;
+  ::uint32_t page_size() const;
+  void set_page_size(::uint32_t value);
+
+  private:
+  ::uint32_t _internal_page_size() const;
+  void _internal_set_page_size(::uint32_t value);
+
+  public:
+  // @@protoc_insertion_point(class_scope:ServerApi.GetRecordsReq)
+ private:
+  class _Internal;
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<
+      2, 3, 0,
+      43, 2>
+      _table_;
+
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+    inline explicit constexpr Impl_(
+        ::google::protobuf::internal::ConstantInitialized) noexcept;
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena);
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena, const Impl_& from,
+                          const GetRecordsReq& from_msg);
+    ::google::protobuf::internal::ArenaStringPtr target_date_;
+    ::uint32_t page_index_;
+    ::uint32_t page_size_;
     ::google::protobuf::internal::CachedSize _cached_size_;
     PROTOBUF_TSAN_DECLARE_MEMBER
   };
@@ -2991,6 +3530,785 @@ class DownloadChunkReq final : public ::google::protobuf::Message
 };
 // -------------------------------------------------------------------
 
+class DeleteRecordRsp final : public ::google::protobuf::Message
+/* @@protoc_insertion_point(class_definition:ServerApi.DeleteRecordRsp) */ {
+ public:
+  inline DeleteRecordRsp() : DeleteRecordRsp(nullptr) {}
+  ~DeleteRecordRsp() PROTOBUF_FINAL;
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+  void operator delete(DeleteRecordRsp* msg, std::destroying_delete_t) {
+    SharedDtor(*msg);
+    ::google::protobuf::internal::SizedDelete(msg, sizeof(DeleteRecordRsp));
+  }
+#endif
+
+  template <typename = void>
+  explicit PROTOBUF_CONSTEXPR DeleteRecordRsp(
+      ::google::protobuf::internal::ConstantInitialized);
+
+  inline DeleteRecordRsp(const DeleteRecordRsp& from) : DeleteRecordRsp(nullptr, from) {}
+  inline DeleteRecordRsp(DeleteRecordRsp&& from) noexcept
+      : DeleteRecordRsp(nullptr, std::move(from)) {}
+  inline DeleteRecordRsp& operator=(const DeleteRecordRsp& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline DeleteRecordRsp& operator=(DeleteRecordRsp&& from) noexcept {
+    if (this == &from) return *this;
+    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields()
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::google::protobuf::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::google::protobuf::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const DeleteRecordRsp& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const DeleteRecordRsp* internal_default_instance() {
+    return reinterpret_cast<const DeleteRecordRsp*>(
+        &_DeleteRecordRsp_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages = 20;
+  friend void swap(DeleteRecordRsp& a, DeleteRecordRsp& b) { a.Swap(&b); }
+  inline void Swap(DeleteRecordRsp* other) {
+    if (other == this) return;
+    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(DeleteRecordRsp* other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  DeleteRecordRsp* New(::google::protobuf::Arena* arena = nullptr) const {
+    return ::google::protobuf::Message::DefaultConstruct<DeleteRecordRsp>(arena);
+  }
+  using ::google::protobuf::Message::CopyFrom;
+  void CopyFrom(const DeleteRecordRsp& from);
+  using ::google::protobuf::Message::MergeFrom;
+  void MergeFrom(const DeleteRecordRsp& from) { DeleteRecordRsp::MergeImpl(*this, from); }
+
+  private:
+  static void MergeImpl(
+      ::google::protobuf::MessageLite& to_msg,
+      const ::google::protobuf::MessageLite& from_msg);
+
+  public:
+  bool IsInitialized() const {
+    return true;
+  }
+  ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
+  #if defined(PROTOBUF_CUSTOM_VTABLE)
+  private:
+  static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
+  static ::uint8_t* _InternalSerialize(
+      const MessageLite& msg, ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream);
+
+  public:
+  ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+    return _InternalSerialize(*this, target, stream);
+  }
+  #else   // PROTOBUF_CUSTOM_VTABLE
+  ::size_t ByteSizeLong() const final;
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const final;
+  #endif  // PROTOBUF_CUSTOM_VTABLE
+  int GetCachedSize() const { return _impl_._cached_size_.Get(); }
+
+  private:
+  void SharedCtor(::google::protobuf::Arena* arena);
+  static void SharedDtor(MessageLite& self);
+  void InternalSwap(DeleteRecordRsp* other);
+ private:
+  template <typename T>
+  friend ::absl::string_view(
+      ::google::protobuf::internal::GetAnyMessageName)();
+  static ::absl::string_view FullMessageName() { return "ServerApi.DeleteRecordRsp"; }
+
+ protected:
+  explicit DeleteRecordRsp(::google::protobuf::Arena* arena);
+  DeleteRecordRsp(::google::protobuf::Arena* arena, const DeleteRecordRsp& from);
+  DeleteRecordRsp(::google::protobuf::Arena* arena, DeleteRecordRsp&& from) noexcept
+      : DeleteRecordRsp(arena) {
+    *this = ::std::move(from);
+  }
+  const ::google::protobuf::internal::ClassData* GetClassData() const PROTOBUF_FINAL;
+  static void* PlacementNew_(const void*, void* mem,
+                             ::google::protobuf::Arena* arena);
+  static constexpr auto InternalNewImpl_();
+  static const ::google::protobuf::internal::ClassDataFull _class_data_;
+
+ public:
+  ::google::protobuf::Metadata GetMetadata() const;
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+  enum : int {
+    kDeletedIdFieldNumber = 1,
+  };
+  // uint64 deleted_id = 1;
+  void clear_deleted_id() ;
+  ::uint64_t deleted_id() const;
+  void set_deleted_id(::uint64_t value);
+
+  private:
+  ::uint64_t _internal_deleted_id() const;
+  void _internal_set_deleted_id(::uint64_t value);
+
+  public:
+  // @@protoc_insertion_point(class_scope:ServerApi.DeleteRecordRsp)
+ private:
+  class _Internal;
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<
+      0, 1, 0,
+      0, 2>
+      _table_;
+
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+    inline explicit constexpr Impl_(
+        ::google::protobuf::internal::ConstantInitialized) noexcept;
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena);
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena, const Impl_& from,
+                          const DeleteRecordRsp& from_msg);
+    ::uint64_t deleted_id_;
+    ::google::protobuf::internal::CachedSize _cached_size_;
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_server_5fmsg_2eproto;
+};
+// -------------------------------------------------------------------
+
+class DeleteRecordReq final : public ::google::protobuf::Message
+/* @@protoc_insertion_point(class_definition:ServerApi.DeleteRecordReq) */ {
+ public:
+  inline DeleteRecordReq() : DeleteRecordReq(nullptr) {}
+  ~DeleteRecordReq() PROTOBUF_FINAL;
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+  void operator delete(DeleteRecordReq* msg, std::destroying_delete_t) {
+    SharedDtor(*msg);
+    ::google::protobuf::internal::SizedDelete(msg, sizeof(DeleteRecordReq));
+  }
+#endif
+
+  template <typename = void>
+  explicit PROTOBUF_CONSTEXPR DeleteRecordReq(
+      ::google::protobuf::internal::ConstantInitialized);
+
+  inline DeleteRecordReq(const DeleteRecordReq& from) : DeleteRecordReq(nullptr, from) {}
+  inline DeleteRecordReq(DeleteRecordReq&& from) noexcept
+      : DeleteRecordReq(nullptr, std::move(from)) {}
+  inline DeleteRecordReq& operator=(const DeleteRecordReq& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline DeleteRecordReq& operator=(DeleteRecordReq&& from) noexcept {
+    if (this == &from) return *this;
+    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields()
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::google::protobuf::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::google::protobuf::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const DeleteRecordReq& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const DeleteRecordReq* internal_default_instance() {
+    return reinterpret_cast<const DeleteRecordReq*>(
+        &_DeleteRecordReq_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages = 19;
+  friend void swap(DeleteRecordReq& a, DeleteRecordReq& b) { a.Swap(&b); }
+  inline void Swap(DeleteRecordReq* other) {
+    if (other == this) return;
+    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(DeleteRecordReq* other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  DeleteRecordReq* New(::google::protobuf::Arena* arena = nullptr) const {
+    return ::google::protobuf::Message::DefaultConstruct<DeleteRecordReq>(arena);
+  }
+  using ::google::protobuf::Message::CopyFrom;
+  void CopyFrom(const DeleteRecordReq& from);
+  using ::google::protobuf::Message::MergeFrom;
+  void MergeFrom(const DeleteRecordReq& from) { DeleteRecordReq::MergeImpl(*this, from); }
+
+  private:
+  static void MergeImpl(
+      ::google::protobuf::MessageLite& to_msg,
+      const ::google::protobuf::MessageLite& from_msg);
+
+  public:
+  bool IsInitialized() const {
+    return true;
+  }
+  ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
+  #if defined(PROTOBUF_CUSTOM_VTABLE)
+  private:
+  static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
+  static ::uint8_t* _InternalSerialize(
+      const MessageLite& msg, ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream);
+
+  public:
+  ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+    return _InternalSerialize(*this, target, stream);
+  }
+  #else   // PROTOBUF_CUSTOM_VTABLE
+  ::size_t ByteSizeLong() const final;
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const final;
+  #endif  // PROTOBUF_CUSTOM_VTABLE
+  int GetCachedSize() const { return _impl_._cached_size_.Get(); }
+
+  private:
+  void SharedCtor(::google::protobuf::Arena* arena);
+  static void SharedDtor(MessageLite& self);
+  void InternalSwap(DeleteRecordReq* other);
+ private:
+  template <typename T>
+  friend ::absl::string_view(
+      ::google::protobuf::internal::GetAnyMessageName)();
+  static ::absl::string_view FullMessageName() { return "ServerApi.DeleteRecordReq"; }
+
+ protected:
+  explicit DeleteRecordReq(::google::protobuf::Arena* arena);
+  DeleteRecordReq(::google::protobuf::Arena* arena, const DeleteRecordReq& from);
+  DeleteRecordReq(::google::protobuf::Arena* arena, DeleteRecordReq&& from) noexcept
+      : DeleteRecordReq(arena) {
+    *this = ::std::move(from);
+  }
+  const ::google::protobuf::internal::ClassData* GetClassData() const PROTOBUF_FINAL;
+  static void* PlacementNew_(const void*, void* mem,
+                             ::google::protobuf::Arena* arena);
+  static constexpr auto InternalNewImpl_();
+  static const ::google::protobuf::internal::ClassDataFull _class_data_;
+
+ public:
+  ::google::protobuf::Metadata GetMetadata() const;
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+  enum : int {
+    kRecordIdFieldNumber = 1,
+  };
+  // uint64 record_id = 1;
+  void clear_record_id() ;
+  ::uint64_t record_id() const;
+  void set_record_id(::uint64_t value);
+
+  private:
+  ::uint64_t _internal_record_id() const;
+  void _internal_set_record_id(::uint64_t value);
+
+  public:
+  // @@protoc_insertion_point(class_scope:ServerApi.DeleteRecordReq)
+ private:
+  class _Internal;
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<
+      0, 1, 0,
+      0, 2>
+      _table_;
+
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+    inline explicit constexpr Impl_(
+        ::google::protobuf::internal::ConstantInitialized) noexcept;
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena);
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena, const Impl_& from,
+                          const DeleteRecordReq& from_msg);
+    ::uint64_t record_id_;
+    ::google::protobuf::internal::CachedSize _cached_size_;
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_server_5fmsg_2eproto;
+};
+// -------------------------------------------------------------------
+
+class AddRecordRsp final : public ::google::protobuf::Message
+/* @@protoc_insertion_point(class_definition:ServerApi.AddRecordRsp) */ {
+ public:
+  inline AddRecordRsp() : AddRecordRsp(nullptr) {}
+  ~AddRecordRsp() PROTOBUF_FINAL;
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+  void operator delete(AddRecordRsp* msg, std::destroying_delete_t) {
+    SharedDtor(*msg);
+    ::google::protobuf::internal::SizedDelete(msg, sizeof(AddRecordRsp));
+  }
+#endif
+
+  template <typename = void>
+  explicit PROTOBUF_CONSTEXPR AddRecordRsp(
+      ::google::protobuf::internal::ConstantInitialized);
+
+  inline AddRecordRsp(const AddRecordRsp& from) : AddRecordRsp(nullptr, from) {}
+  inline AddRecordRsp(AddRecordRsp&& from) noexcept
+      : AddRecordRsp(nullptr, std::move(from)) {}
+  inline AddRecordRsp& operator=(const AddRecordRsp& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline AddRecordRsp& operator=(AddRecordRsp&& from) noexcept {
+    if (this == &from) return *this;
+    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields()
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::google::protobuf::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::google::protobuf::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const AddRecordRsp& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const AddRecordRsp* internal_default_instance() {
+    return reinterpret_cast<const AddRecordRsp*>(
+        &_AddRecordRsp_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages = 16;
+  friend void swap(AddRecordRsp& a, AddRecordRsp& b) { a.Swap(&b); }
+  inline void Swap(AddRecordRsp* other) {
+    if (other == this) return;
+    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(AddRecordRsp* other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  AddRecordRsp* New(::google::protobuf::Arena* arena = nullptr) const {
+    return ::google::protobuf::Message::DefaultConstruct<AddRecordRsp>(arena);
+  }
+  using ::google::protobuf::Message::CopyFrom;
+  void CopyFrom(const AddRecordRsp& from);
+  using ::google::protobuf::Message::MergeFrom;
+  void MergeFrom(const AddRecordRsp& from) { AddRecordRsp::MergeImpl(*this, from); }
+
+  private:
+  static void MergeImpl(
+      ::google::protobuf::MessageLite& to_msg,
+      const ::google::protobuf::MessageLite& from_msg);
+
+  public:
+  bool IsInitialized() const {
+    return true;
+  }
+  ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
+  #if defined(PROTOBUF_CUSTOM_VTABLE)
+  private:
+  static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
+  static ::uint8_t* _InternalSerialize(
+      const MessageLite& msg, ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream);
+
+  public:
+  ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+    return _InternalSerialize(*this, target, stream);
+  }
+  #else   // PROTOBUF_CUSTOM_VTABLE
+  ::size_t ByteSizeLong() const final;
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const final;
+  #endif  // PROTOBUF_CUSTOM_VTABLE
+  int GetCachedSize() const { return _impl_._cached_size_.Get(); }
+
+  private:
+  void SharedCtor(::google::protobuf::Arena* arena);
+  static void SharedDtor(MessageLite& self);
+  void InternalSwap(AddRecordRsp* other);
+ private:
+  template <typename T>
+  friend ::absl::string_view(
+      ::google::protobuf::internal::GetAnyMessageName)();
+  static ::absl::string_view FullMessageName() { return "ServerApi.AddRecordRsp"; }
+
+ protected:
+  explicit AddRecordRsp(::google::protobuf::Arena* arena);
+  AddRecordRsp(::google::protobuf::Arena* arena, const AddRecordRsp& from);
+  AddRecordRsp(::google::protobuf::Arena* arena, AddRecordRsp&& from) noexcept
+      : AddRecordRsp(arena) {
+    *this = ::std::move(from);
+  }
+  const ::google::protobuf::internal::ClassData* GetClassData() const PROTOBUF_FINAL;
+  static void* PlacementNew_(const void*, void* mem,
+                             ::google::protobuf::Arena* arena);
+  static constexpr auto InternalNewImpl_();
+  static const ::google::protobuf::internal::ClassDataFull _class_data_;
+
+ public:
+  ::google::protobuf::Metadata GetMetadata() const;
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+  enum : int {
+    kNewRecordIdFieldNumber = 1,
+  };
+  // uint64 new_record_id = 1;
+  void clear_new_record_id() ;
+  ::uint64_t new_record_id() const;
+  void set_new_record_id(::uint64_t value);
+
+  private:
+  ::uint64_t _internal_new_record_id() const;
+  void _internal_set_new_record_id(::uint64_t value);
+
+  public:
+  // @@protoc_insertion_point(class_scope:ServerApi.AddRecordRsp)
+ private:
+  class _Internal;
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<
+      0, 1, 0,
+      0, 2>
+      _table_;
+
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+    inline explicit constexpr Impl_(
+        ::google::protobuf::internal::ConstantInitialized) noexcept;
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena);
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena, const Impl_& from,
+                          const AddRecordRsp& from_msg);
+    ::uint64_t new_record_id_;
+    ::google::protobuf::internal::CachedSize _cached_size_;
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_server_5fmsg_2eproto;
+};
+// -------------------------------------------------------------------
+
+class GetRecordsRsp final : public ::google::protobuf::Message
+/* @@protoc_insertion_point(class_definition:ServerApi.GetRecordsRsp) */ {
+ public:
+  inline GetRecordsRsp() : GetRecordsRsp(nullptr) {}
+  ~GetRecordsRsp() PROTOBUF_FINAL;
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+  void operator delete(GetRecordsRsp* msg, std::destroying_delete_t) {
+    SharedDtor(*msg);
+    ::google::protobuf::internal::SizedDelete(msg, sizeof(GetRecordsRsp));
+  }
+#endif
+
+  template <typename = void>
+  explicit PROTOBUF_CONSTEXPR GetRecordsRsp(
+      ::google::protobuf::internal::ConstantInitialized);
+
+  inline GetRecordsRsp(const GetRecordsRsp& from) : GetRecordsRsp(nullptr, from) {}
+  inline GetRecordsRsp(GetRecordsRsp&& from) noexcept
+      : GetRecordsRsp(nullptr, std::move(from)) {}
+  inline GetRecordsRsp& operator=(const GetRecordsRsp& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline GetRecordsRsp& operator=(GetRecordsRsp&& from) noexcept {
+    if (this == &from) return *this;
+    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields()
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::google::protobuf::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::google::protobuf::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const GetRecordsRsp& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const GetRecordsRsp* internal_default_instance() {
+    return reinterpret_cast<const GetRecordsRsp*>(
+        &_GetRecordsRsp_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages = 18;
+  friend void swap(GetRecordsRsp& a, GetRecordsRsp& b) { a.Swap(&b); }
+  inline void Swap(GetRecordsRsp* other) {
+    if (other == this) return;
+    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(GetRecordsRsp* other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  GetRecordsRsp* New(::google::protobuf::Arena* arena = nullptr) const {
+    return ::google::protobuf::Message::DefaultConstruct<GetRecordsRsp>(arena);
+  }
+  using ::google::protobuf::Message::CopyFrom;
+  void CopyFrom(const GetRecordsRsp& from);
+  using ::google::protobuf::Message::MergeFrom;
+  void MergeFrom(const GetRecordsRsp& from) { GetRecordsRsp::MergeImpl(*this, from); }
+
+  private:
+  static void MergeImpl(
+      ::google::protobuf::MessageLite& to_msg,
+      const ::google::protobuf::MessageLite& from_msg);
+
+  public:
+  bool IsInitialized() const {
+    return true;
+  }
+  ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
+  #if defined(PROTOBUF_CUSTOM_VTABLE)
+  private:
+  static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
+  static ::uint8_t* _InternalSerialize(
+      const MessageLite& msg, ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream);
+
+  public:
+  ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+    return _InternalSerialize(*this, target, stream);
+  }
+  #else   // PROTOBUF_CUSTOM_VTABLE
+  ::size_t ByteSizeLong() const final;
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const final;
+  #endif  // PROTOBUF_CUSTOM_VTABLE
+  int GetCachedSize() const { return _impl_._cached_size_.Get(); }
+
+  private:
+  void SharedCtor(::google::protobuf::Arena* arena);
+  static void SharedDtor(MessageLite& self);
+  void InternalSwap(GetRecordsRsp* other);
+ private:
+  template <typename T>
+  friend ::absl::string_view(
+      ::google::protobuf::internal::GetAnyMessageName)();
+  static ::absl::string_view FullMessageName() { return "ServerApi.GetRecordsRsp"; }
+
+ protected:
+  explicit GetRecordsRsp(::google::protobuf::Arena* arena);
+  GetRecordsRsp(::google::protobuf::Arena* arena, const GetRecordsRsp& from);
+  GetRecordsRsp(::google::protobuf::Arena* arena, GetRecordsRsp&& from) noexcept
+      : GetRecordsRsp(arena) {
+    *this = ::std::move(from);
+  }
+  const ::google::protobuf::internal::ClassData* GetClassData() const PROTOBUF_FINAL;
+  static void* PlacementNew_(const void*, void* mem,
+                             ::google::protobuf::Arena* arena);
+  static constexpr auto InternalNewImpl_();
+  static const ::google::protobuf::internal::ClassDataFull _class_data_;
+
+ public:
+  ::google::protobuf::Metadata GetMetadata() const;
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+  enum : int {
+    kRecordsFieldNumber = 1,
+    kTotalCountFieldNumber = 2,
+  };
+  // repeated .ServerApi.PlayRecord records = 1;
+  int records_size() const;
+  private:
+  int _internal_records_size() const;
+
+  public:
+  void clear_records() ;
+  ::ServerApi::PlayRecord* mutable_records(int index);
+  ::google::protobuf::RepeatedPtrField<::ServerApi::PlayRecord>* mutable_records();
+
+  private:
+  const ::google::protobuf::RepeatedPtrField<::ServerApi::PlayRecord>& _internal_records() const;
+  ::google::protobuf::RepeatedPtrField<::ServerApi::PlayRecord>* _internal_mutable_records();
+  public:
+  const ::ServerApi::PlayRecord& records(int index) const;
+  ::ServerApi::PlayRecord* add_records();
+  const ::google::protobuf::RepeatedPtrField<::ServerApi::PlayRecord>& records() const;
+  // uint32 total_count = 2;
+  void clear_total_count() ;
+  ::uint32_t total_count() const;
+  void set_total_count(::uint32_t value);
+
+  private:
+  ::uint32_t _internal_total_count() const;
+  void _internal_set_total_count(::uint32_t value);
+
+  public:
+  // @@protoc_insertion_point(class_scope:ServerApi.GetRecordsRsp)
+ private:
+  class _Internal;
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<
+      1, 2, 1,
+      0, 2>
+      _table_;
+
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+    inline explicit constexpr Impl_(
+        ::google::protobuf::internal::ConstantInitialized) noexcept;
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena);
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena, const Impl_& from,
+                          const GetRecordsRsp& from_msg);
+    ::google::protobuf::RepeatedPtrField< ::ServerApi::PlayRecord > records_;
+    ::uint32_t total_count_;
+    ::google::protobuf::internal::CachedSize _cached_size_;
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_server_5fmsg_2eproto;
+};
+// -------------------------------------------------------------------
+
 class GetMovieListRsp final : public ::google::protobuf::Message
 /* @@protoc_insertion_point(class_definition:ServerApi.GetMovieListRsp) */ {
  public:
@@ -3181,6 +4499,202 @@ class GetMovieListRsp final : public ::google::protobuf::Message
                           const GetMovieListRsp& from_msg);
     ::google::protobuf::RepeatedPtrField< ::ServerApi::MovieInfo > movies_;
     ::google::protobuf::internal::CachedSize _cached_size_;
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_server_5fmsg_2eproto;
+};
+// -------------------------------------------------------------------
+
+class AddRecordReq final : public ::google::protobuf::Message
+/* @@protoc_insertion_point(class_definition:ServerApi.AddRecordReq) */ {
+ public:
+  inline AddRecordReq() : AddRecordReq(nullptr) {}
+  ~AddRecordReq() PROTOBUF_FINAL;
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+  void operator delete(AddRecordReq* msg, std::destroying_delete_t) {
+    SharedDtor(*msg);
+    ::google::protobuf::internal::SizedDelete(msg, sizeof(AddRecordReq));
+  }
+#endif
+
+  template <typename = void>
+  explicit PROTOBUF_CONSTEXPR AddRecordReq(
+      ::google::protobuf::internal::ConstantInitialized);
+
+  inline AddRecordReq(const AddRecordReq& from) : AddRecordReq(nullptr, from) {}
+  inline AddRecordReq(AddRecordReq&& from) noexcept
+      : AddRecordReq(nullptr, std::move(from)) {}
+  inline AddRecordReq& operator=(const AddRecordReq& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline AddRecordReq& operator=(AddRecordReq&& from) noexcept {
+    if (this == &from) return *this;
+    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields()
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::google::protobuf::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::google::protobuf::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const AddRecordReq& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const AddRecordReq* internal_default_instance() {
+    return reinterpret_cast<const AddRecordReq*>(
+        &_AddRecordReq_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages = 15;
+  friend void swap(AddRecordReq& a, AddRecordReq& b) { a.Swap(&b); }
+  inline void Swap(AddRecordReq* other) {
+    if (other == this) return;
+    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(AddRecordReq* other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  AddRecordReq* New(::google::protobuf::Arena* arena = nullptr) const {
+    return ::google::protobuf::Message::DefaultConstruct<AddRecordReq>(arena);
+  }
+  using ::google::protobuf::Message::CopyFrom;
+  void CopyFrom(const AddRecordReq& from);
+  using ::google::protobuf::Message::MergeFrom;
+  void MergeFrom(const AddRecordReq& from) { AddRecordReq::MergeImpl(*this, from); }
+
+  private:
+  static void MergeImpl(
+      ::google::protobuf::MessageLite& to_msg,
+      const ::google::protobuf::MessageLite& from_msg);
+
+  public:
+  bool IsInitialized() const {
+    return true;
+  }
+  ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
+  #if defined(PROTOBUF_CUSTOM_VTABLE)
+  private:
+  static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
+  static ::uint8_t* _InternalSerialize(
+      const MessageLite& msg, ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream);
+
+  public:
+  ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+    return _InternalSerialize(*this, target, stream);
+  }
+  #else   // PROTOBUF_CUSTOM_VTABLE
+  ::size_t ByteSizeLong() const final;
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const final;
+  #endif  // PROTOBUF_CUSTOM_VTABLE
+  int GetCachedSize() const { return _impl_._cached_size_.Get(); }
+
+  private:
+  void SharedCtor(::google::protobuf::Arena* arena);
+  static void SharedDtor(MessageLite& self);
+  void InternalSwap(AddRecordReq* other);
+ private:
+  template <typename T>
+  friend ::absl::string_view(
+      ::google::protobuf::internal::GetAnyMessageName)();
+  static ::absl::string_view FullMessageName() { return "ServerApi.AddRecordReq"; }
+
+ protected:
+  explicit AddRecordReq(::google::protobuf::Arena* arena);
+  AddRecordReq(::google::protobuf::Arena* arena, const AddRecordReq& from);
+  AddRecordReq(::google::protobuf::Arena* arena, AddRecordReq&& from) noexcept
+      : AddRecordReq(arena) {
+    *this = ::std::move(from);
+  }
+  const ::google::protobuf::internal::ClassData* GetClassData() const PROTOBUF_FINAL;
+  static void* PlacementNew_(const void*, void* mem,
+                             ::google::protobuf::Arena* arena);
+  static constexpr auto InternalNewImpl_();
+  static const ::google::protobuf::internal::ClassDataFull _class_data_;
+
+ public:
+  ::google::protobuf::Metadata GetMetadata() const;
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+  enum : int {
+    kRecordFieldNumber = 1,
+  };
+  // .ServerApi.PlayRecord record = 1;
+  bool has_record() const;
+  void clear_record() ;
+  const ::ServerApi::PlayRecord& record() const;
+  PROTOBUF_NODISCARD ::ServerApi::PlayRecord* release_record();
+  ::ServerApi::PlayRecord* mutable_record();
+  void set_allocated_record(::ServerApi::PlayRecord* value);
+  void unsafe_arena_set_allocated_record(::ServerApi::PlayRecord* value);
+  ::ServerApi::PlayRecord* unsafe_arena_release_record();
+
+  private:
+  const ::ServerApi::PlayRecord& _internal_record() const;
+  ::ServerApi::PlayRecord* _internal_mutable_record();
+
+  public:
+  // @@protoc_insertion_point(class_scope:ServerApi.AddRecordReq)
+ private:
+  class _Internal;
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<
+      0, 1, 1,
+      0, 2>
+      _table_;
+
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+    inline explicit constexpr Impl_(
+        ::google::protobuf::internal::ConstantInitialized) noexcept;
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena);
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena, const Impl_& from,
+                          const AddRecordReq& from_msg);
+    ::google::protobuf::internal::HasBits<1> _has_bits_;
+    ::google::protobuf::internal::CachedSize _cached_size_;
+    ::ServerApi::PlayRecord* record_;
     PROTOBUF_TSAN_DECLARE_MEMBER
   };
   union { Impl_ _impl_; };
@@ -4662,6 +6176,669 @@ inline void DownloadCoverRsp::set_allocated_cover_data(std::string* value) {
     _impl_.cover_data_.Set("", GetArena());
   }
   // @@protoc_insertion_point(field_set_allocated:ServerApi.DownloadCoverRsp.cover_data)
+}
+
+// -------------------------------------------------------------------
+
+// PlayRecord
+
+// uint64 record_id = 1;
+inline void PlayRecord::clear_record_id() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.record_id_ = ::uint64_t{0u};
+}
+inline ::uint64_t PlayRecord::record_id() const {
+  // @@protoc_insertion_point(field_get:ServerApi.PlayRecord.record_id)
+  return _internal_record_id();
+}
+inline void PlayRecord::set_record_id(::uint64_t value) {
+  _internal_set_record_id(value);
+  // @@protoc_insertion_point(field_set:ServerApi.PlayRecord.record_id)
+}
+inline ::uint64_t PlayRecord::_internal_record_id() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.record_id_;
+}
+inline void PlayRecord::_internal_set_record_id(::uint64_t value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.record_id_ = value;
+}
+
+// string movie_name = 2;
+inline void PlayRecord::clear_movie_name() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.movie_name_.ClearToEmpty();
+}
+inline const std::string& PlayRecord::movie_name() const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:ServerApi.PlayRecord.movie_name)
+  return _internal_movie_name();
+}
+template <typename Arg_, typename... Args_>
+inline PROTOBUF_ALWAYS_INLINE void PlayRecord::set_movie_name(Arg_&& arg,
+                                                     Args_... args) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.movie_name_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
+  // @@protoc_insertion_point(field_set:ServerApi.PlayRecord.movie_name)
+}
+inline std::string* PlayRecord::mutable_movie_name() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  std::string* _s = _internal_mutable_movie_name();
+  // @@protoc_insertion_point(field_mutable:ServerApi.PlayRecord.movie_name)
+  return _s;
+}
+inline const std::string& PlayRecord::_internal_movie_name() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.movie_name_.Get();
+}
+inline void PlayRecord::_internal_set_movie_name(const std::string& value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.movie_name_.Set(value, GetArena());
+}
+inline std::string* PlayRecord::_internal_mutable_movie_name() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  return _impl_.movie_name_.Mutable( GetArena());
+}
+inline std::string* PlayRecord::release_movie_name() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:ServerApi.PlayRecord.movie_name)
+  return _impl_.movie_name_.Release();
+}
+inline void PlayRecord::set_allocated_movie_name(std::string* value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.movie_name_.SetAllocated(value, GetArena());
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() && _impl_.movie_name_.IsDefault()) {
+    _impl_.movie_name_.Set("", GetArena());
+  }
+  // @@protoc_insertion_point(field_set_allocated:ServerApi.PlayRecord.movie_name)
+}
+
+// string play_date = 3;
+inline void PlayRecord::clear_play_date() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.play_date_.ClearToEmpty();
+}
+inline const std::string& PlayRecord::play_date() const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:ServerApi.PlayRecord.play_date)
+  return _internal_play_date();
+}
+template <typename Arg_, typename... Args_>
+inline PROTOBUF_ALWAYS_INLINE void PlayRecord::set_play_date(Arg_&& arg,
+                                                     Args_... args) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.play_date_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
+  // @@protoc_insertion_point(field_set:ServerApi.PlayRecord.play_date)
+}
+inline std::string* PlayRecord::mutable_play_date() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  std::string* _s = _internal_mutable_play_date();
+  // @@protoc_insertion_point(field_mutable:ServerApi.PlayRecord.play_date)
+  return _s;
+}
+inline const std::string& PlayRecord::_internal_play_date() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.play_date_.Get();
+}
+inline void PlayRecord::_internal_set_play_date(const std::string& value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.play_date_.Set(value, GetArena());
+}
+inline std::string* PlayRecord::_internal_mutable_play_date() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  return _impl_.play_date_.Mutable( GetArena());
+}
+inline std::string* PlayRecord::release_play_date() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:ServerApi.PlayRecord.play_date)
+  return _impl_.play_date_.Release();
+}
+inline void PlayRecord::set_allocated_play_date(std::string* value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.play_date_.SetAllocated(value, GetArena());
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() && _impl_.play_date_.IsDefault()) {
+    _impl_.play_date_.Set("", GetArena());
+  }
+  // @@protoc_insertion_point(field_set_allocated:ServerApi.PlayRecord.play_date)
+}
+
+// string start_time = 4;
+inline void PlayRecord::clear_start_time() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.start_time_.ClearToEmpty();
+}
+inline const std::string& PlayRecord::start_time() const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:ServerApi.PlayRecord.start_time)
+  return _internal_start_time();
+}
+template <typename Arg_, typename... Args_>
+inline PROTOBUF_ALWAYS_INLINE void PlayRecord::set_start_time(Arg_&& arg,
+                                                     Args_... args) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.start_time_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
+  // @@protoc_insertion_point(field_set:ServerApi.PlayRecord.start_time)
+}
+inline std::string* PlayRecord::mutable_start_time() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  std::string* _s = _internal_mutable_start_time();
+  // @@protoc_insertion_point(field_mutable:ServerApi.PlayRecord.start_time)
+  return _s;
+}
+inline const std::string& PlayRecord::_internal_start_time() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.start_time_.Get();
+}
+inline void PlayRecord::_internal_set_start_time(const std::string& value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.start_time_.Set(value, GetArena());
+}
+inline std::string* PlayRecord::_internal_mutable_start_time() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  return _impl_.start_time_.Mutable( GetArena());
+}
+inline std::string* PlayRecord::release_start_time() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:ServerApi.PlayRecord.start_time)
+  return _impl_.start_time_.Release();
+}
+inline void PlayRecord::set_allocated_start_time(std::string* value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.start_time_.SetAllocated(value, GetArena());
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() && _impl_.start_time_.IsDefault()) {
+    _impl_.start_time_.Set("", GetArena());
+  }
+  // @@protoc_insertion_point(field_set_allocated:ServerApi.PlayRecord.start_time)
+}
+
+// string end_time = 5;
+inline void PlayRecord::clear_end_time() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.end_time_.ClearToEmpty();
+}
+inline const std::string& PlayRecord::end_time() const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:ServerApi.PlayRecord.end_time)
+  return _internal_end_time();
+}
+template <typename Arg_, typename... Args_>
+inline PROTOBUF_ALWAYS_INLINE void PlayRecord::set_end_time(Arg_&& arg,
+                                                     Args_... args) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.end_time_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
+  // @@protoc_insertion_point(field_set:ServerApi.PlayRecord.end_time)
+}
+inline std::string* PlayRecord::mutable_end_time() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  std::string* _s = _internal_mutable_end_time();
+  // @@protoc_insertion_point(field_mutable:ServerApi.PlayRecord.end_time)
+  return _s;
+}
+inline const std::string& PlayRecord::_internal_end_time() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.end_time_.Get();
+}
+inline void PlayRecord::_internal_set_end_time(const std::string& value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.end_time_.Set(value, GetArena());
+}
+inline std::string* PlayRecord::_internal_mutable_end_time() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  return _impl_.end_time_.Mutable( GetArena());
+}
+inline std::string* PlayRecord::release_end_time() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:ServerApi.PlayRecord.end_time)
+  return _impl_.end_time_.Release();
+}
+inline void PlayRecord::set_allocated_end_time(std::string* value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.end_time_.SetAllocated(value, GetArena());
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() && _impl_.end_time_.IsDefault()) {
+    _impl_.end_time_.Set("", GetArena());
+  }
+  // @@protoc_insertion_point(field_set_allocated:ServerApi.PlayRecord.end_time)
+}
+
+// string operator_name = 6;
+inline void PlayRecord::clear_operator_name() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.operator_name_.ClearToEmpty();
+}
+inline const std::string& PlayRecord::operator_name() const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:ServerApi.PlayRecord.operator_name)
+  return _internal_operator_name();
+}
+template <typename Arg_, typename... Args_>
+inline PROTOBUF_ALWAYS_INLINE void PlayRecord::set_operator_name(Arg_&& arg,
+                                                     Args_... args) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.operator_name_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
+  // @@protoc_insertion_point(field_set:ServerApi.PlayRecord.operator_name)
+}
+inline std::string* PlayRecord::mutable_operator_name() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  std::string* _s = _internal_mutable_operator_name();
+  // @@protoc_insertion_point(field_mutable:ServerApi.PlayRecord.operator_name)
+  return _s;
+}
+inline const std::string& PlayRecord::_internal_operator_name() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.operator_name_.Get();
+}
+inline void PlayRecord::_internal_set_operator_name(const std::string& value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.operator_name_.Set(value, GetArena());
+}
+inline std::string* PlayRecord::_internal_mutable_operator_name() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  return _impl_.operator_name_.Mutable( GetArena());
+}
+inline std::string* PlayRecord::release_operator_name() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:ServerApi.PlayRecord.operator_name)
+  return _impl_.operator_name_.Release();
+}
+inline void PlayRecord::set_allocated_operator_name(std::string* value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.operator_name_.SetAllocated(value, GetArena());
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() && _impl_.operator_name_.IsDefault()) {
+    _impl_.operator_name_.Set("", GetArena());
+  }
+  // @@protoc_insertion_point(field_set_allocated:ServerApi.PlayRecord.operator_name)
+}
+
+// string end_type = 7;
+inline void PlayRecord::clear_end_type() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.end_type_.ClearToEmpty();
+}
+inline const std::string& PlayRecord::end_type() const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:ServerApi.PlayRecord.end_type)
+  return _internal_end_type();
+}
+template <typename Arg_, typename... Args_>
+inline PROTOBUF_ALWAYS_INLINE void PlayRecord::set_end_type(Arg_&& arg,
+                                                     Args_... args) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.end_type_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
+  // @@protoc_insertion_point(field_set:ServerApi.PlayRecord.end_type)
+}
+inline std::string* PlayRecord::mutable_end_type() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  std::string* _s = _internal_mutable_end_type();
+  // @@protoc_insertion_point(field_mutable:ServerApi.PlayRecord.end_type)
+  return _s;
+}
+inline const std::string& PlayRecord::_internal_end_type() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.end_type_.Get();
+}
+inline void PlayRecord::_internal_set_end_type(const std::string& value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.end_type_.Set(value, GetArena());
+}
+inline std::string* PlayRecord::_internal_mutable_end_type() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  return _impl_.end_type_.Mutable( GetArena());
+}
+inline std::string* PlayRecord::release_end_type() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:ServerApi.PlayRecord.end_type)
+  return _impl_.end_type_.Release();
+}
+inline void PlayRecord::set_allocated_end_type(std::string* value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.end_type_.SetAllocated(value, GetArena());
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() && _impl_.end_type_.IsDefault()) {
+    _impl_.end_type_.Set("", GetArena());
+  }
+  // @@protoc_insertion_point(field_set_allocated:ServerApi.PlayRecord.end_type)
+}
+
+// -------------------------------------------------------------------
+
+// AddRecordReq
+
+// .ServerApi.PlayRecord record = 1;
+inline bool AddRecordReq::has_record() const {
+  bool value = (_impl_._has_bits_[0] & 0x00000001u) != 0;
+  PROTOBUF_ASSUME(!value || _impl_.record_ != nullptr);
+  return value;
+}
+inline void AddRecordReq::clear_record() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (_impl_.record_ != nullptr) _impl_.record_->Clear();
+  _impl_._has_bits_[0] &= ~0x00000001u;
+}
+inline const ::ServerApi::PlayRecord& AddRecordReq::_internal_record() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  const ::ServerApi::PlayRecord* p = _impl_.record_;
+  return p != nullptr ? *p : reinterpret_cast<const ::ServerApi::PlayRecord&>(::ServerApi::_PlayRecord_default_instance_);
+}
+inline const ::ServerApi::PlayRecord& AddRecordReq::record() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:ServerApi.AddRecordReq.record)
+  return _internal_record();
+}
+inline void AddRecordReq::unsafe_arena_set_allocated_record(::ServerApi::PlayRecord* value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (GetArena() == nullptr) {
+    delete reinterpret_cast<::google::protobuf::MessageLite*>(_impl_.record_);
+  }
+  _impl_.record_ = reinterpret_cast<::ServerApi::PlayRecord*>(value);
+  if (value != nullptr) {
+    _impl_._has_bits_[0] |= 0x00000001u;
+  } else {
+    _impl_._has_bits_[0] &= ~0x00000001u;
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:ServerApi.AddRecordReq.record)
+}
+inline ::ServerApi::PlayRecord* AddRecordReq::release_record() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+
+  _impl_._has_bits_[0] &= ~0x00000001u;
+  ::ServerApi::PlayRecord* released = _impl_.record_;
+  _impl_.record_ = nullptr;
+  if (::google::protobuf::internal::DebugHardenForceCopyInRelease()) {
+    auto* old = reinterpret_cast<::google::protobuf::MessageLite*>(released);
+    released = ::google::protobuf::internal::DuplicateIfNonNull(released);
+    if (GetArena() == nullptr) {
+      delete old;
+    }
+  } else {
+    if (GetArena() != nullptr) {
+      released = ::google::protobuf::internal::DuplicateIfNonNull(released);
+    }
+  }
+  return released;
+}
+inline ::ServerApi::PlayRecord* AddRecordReq::unsafe_arena_release_record() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:ServerApi.AddRecordReq.record)
+
+  _impl_._has_bits_[0] &= ~0x00000001u;
+  ::ServerApi::PlayRecord* temp = _impl_.record_;
+  _impl_.record_ = nullptr;
+  return temp;
+}
+inline ::ServerApi::PlayRecord* AddRecordReq::_internal_mutable_record() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (_impl_.record_ == nullptr) {
+    auto* p = ::google::protobuf::Message::DefaultConstruct<::ServerApi::PlayRecord>(GetArena());
+    _impl_.record_ = reinterpret_cast<::ServerApi::PlayRecord*>(p);
+  }
+  return _impl_.record_;
+}
+inline ::ServerApi::PlayRecord* AddRecordReq::mutable_record() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  _impl_._has_bits_[0] |= 0x00000001u;
+  ::ServerApi::PlayRecord* _msg = _internal_mutable_record();
+  // @@protoc_insertion_point(field_mutable:ServerApi.AddRecordReq.record)
+  return _msg;
+}
+inline void AddRecordReq::set_allocated_record(::ServerApi::PlayRecord* value) {
+  ::google::protobuf::Arena* message_arena = GetArena();
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (message_arena == nullptr) {
+    delete (_impl_.record_);
+  }
+
+  if (value != nullptr) {
+    ::google::protobuf::Arena* submessage_arena = (value)->GetArena();
+    if (message_arena != submessage_arena) {
+      value = ::google::protobuf::internal::GetOwnedMessage(message_arena, value, submessage_arena);
+    }
+    _impl_._has_bits_[0] |= 0x00000001u;
+  } else {
+    _impl_._has_bits_[0] &= ~0x00000001u;
+  }
+
+  _impl_.record_ = reinterpret_cast<::ServerApi::PlayRecord*>(value);
+  // @@protoc_insertion_point(field_set_allocated:ServerApi.AddRecordReq.record)
+}
+
+// -------------------------------------------------------------------
+
+// AddRecordRsp
+
+// uint64 new_record_id = 1;
+inline void AddRecordRsp::clear_new_record_id() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.new_record_id_ = ::uint64_t{0u};
+}
+inline ::uint64_t AddRecordRsp::new_record_id() const {
+  // @@protoc_insertion_point(field_get:ServerApi.AddRecordRsp.new_record_id)
+  return _internal_new_record_id();
+}
+inline void AddRecordRsp::set_new_record_id(::uint64_t value) {
+  _internal_set_new_record_id(value);
+  // @@protoc_insertion_point(field_set:ServerApi.AddRecordRsp.new_record_id)
+}
+inline ::uint64_t AddRecordRsp::_internal_new_record_id() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.new_record_id_;
+}
+inline void AddRecordRsp::_internal_set_new_record_id(::uint64_t value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.new_record_id_ = value;
+}
+
+// -------------------------------------------------------------------
+
+// GetRecordsReq
+
+// string target_date = 1;
+inline void GetRecordsReq::clear_target_date() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.target_date_.ClearToEmpty();
+}
+inline const std::string& GetRecordsReq::target_date() const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:ServerApi.GetRecordsReq.target_date)
+  return _internal_target_date();
+}
+template <typename Arg_, typename... Args_>
+inline PROTOBUF_ALWAYS_INLINE void GetRecordsReq::set_target_date(Arg_&& arg,
+                                                     Args_... args) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.target_date_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
+  // @@protoc_insertion_point(field_set:ServerApi.GetRecordsReq.target_date)
+}
+inline std::string* GetRecordsReq::mutable_target_date() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  std::string* _s = _internal_mutable_target_date();
+  // @@protoc_insertion_point(field_mutable:ServerApi.GetRecordsReq.target_date)
+  return _s;
+}
+inline const std::string& GetRecordsReq::_internal_target_date() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.target_date_.Get();
+}
+inline void GetRecordsReq::_internal_set_target_date(const std::string& value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.target_date_.Set(value, GetArena());
+}
+inline std::string* GetRecordsReq::_internal_mutable_target_date() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  return _impl_.target_date_.Mutable( GetArena());
+}
+inline std::string* GetRecordsReq::release_target_date() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:ServerApi.GetRecordsReq.target_date)
+  return _impl_.target_date_.Release();
+}
+inline void GetRecordsReq::set_allocated_target_date(std::string* value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.target_date_.SetAllocated(value, GetArena());
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() && _impl_.target_date_.IsDefault()) {
+    _impl_.target_date_.Set("", GetArena());
+  }
+  // @@protoc_insertion_point(field_set_allocated:ServerApi.GetRecordsReq.target_date)
+}
+
+// uint32 page_index = 2;
+inline void GetRecordsReq::clear_page_index() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.page_index_ = 0u;
+}
+inline ::uint32_t GetRecordsReq::page_index() const {
+  // @@protoc_insertion_point(field_get:ServerApi.GetRecordsReq.page_index)
+  return _internal_page_index();
+}
+inline void GetRecordsReq::set_page_index(::uint32_t value) {
+  _internal_set_page_index(value);
+  // @@protoc_insertion_point(field_set:ServerApi.GetRecordsReq.page_index)
+}
+inline ::uint32_t GetRecordsReq::_internal_page_index() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.page_index_;
+}
+inline void GetRecordsReq::_internal_set_page_index(::uint32_t value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.page_index_ = value;
+}
+
+// uint32 page_size = 3;
+inline void GetRecordsReq::clear_page_size() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.page_size_ = 0u;
+}
+inline ::uint32_t GetRecordsReq::page_size() const {
+  // @@protoc_insertion_point(field_get:ServerApi.GetRecordsReq.page_size)
+  return _internal_page_size();
+}
+inline void GetRecordsReq::set_page_size(::uint32_t value) {
+  _internal_set_page_size(value);
+  // @@protoc_insertion_point(field_set:ServerApi.GetRecordsReq.page_size)
+}
+inline ::uint32_t GetRecordsReq::_internal_page_size() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.page_size_;
+}
+inline void GetRecordsReq::_internal_set_page_size(::uint32_t value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.page_size_ = value;
+}
+
+// -------------------------------------------------------------------
+
+// GetRecordsRsp
+
+// repeated .ServerApi.PlayRecord records = 1;
+inline int GetRecordsRsp::_internal_records_size() const {
+  return _internal_records().size();
+}
+inline int GetRecordsRsp::records_size() const {
+  return _internal_records_size();
+}
+inline void GetRecordsRsp::clear_records() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.records_.Clear();
+}
+inline ::ServerApi::PlayRecord* GetRecordsRsp::mutable_records(int index)
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_mutable:ServerApi.GetRecordsRsp.records)
+  return _internal_mutable_records()->Mutable(index);
+}
+inline ::google::protobuf::RepeatedPtrField<::ServerApi::PlayRecord>* GetRecordsRsp::mutable_records()
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_mutable_list:ServerApi.GetRecordsRsp.records)
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  return _internal_mutable_records();
+}
+inline const ::ServerApi::PlayRecord& GetRecordsRsp::records(int index) const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:ServerApi.GetRecordsRsp.records)
+  return _internal_records().Get(index);
+}
+inline ::ServerApi::PlayRecord* GetRecordsRsp::add_records() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  ::ServerApi::PlayRecord* _add = _internal_mutable_records()->Add();
+  // @@protoc_insertion_point(field_add:ServerApi.GetRecordsRsp.records)
+  return _add;
+}
+inline const ::google::protobuf::RepeatedPtrField<::ServerApi::PlayRecord>& GetRecordsRsp::records() const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_list:ServerApi.GetRecordsRsp.records)
+  return _internal_records();
+}
+inline const ::google::protobuf::RepeatedPtrField<::ServerApi::PlayRecord>&
+GetRecordsRsp::_internal_records() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.records_;
+}
+inline ::google::protobuf::RepeatedPtrField<::ServerApi::PlayRecord>*
+GetRecordsRsp::_internal_mutable_records() {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return &_impl_.records_;
+}
+
+// uint32 total_count = 2;
+inline void GetRecordsRsp::clear_total_count() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.total_count_ = 0u;
+}
+inline ::uint32_t GetRecordsRsp::total_count() const {
+  // @@protoc_insertion_point(field_get:ServerApi.GetRecordsRsp.total_count)
+  return _internal_total_count();
+}
+inline void GetRecordsRsp::set_total_count(::uint32_t value) {
+  _internal_set_total_count(value);
+  // @@protoc_insertion_point(field_set:ServerApi.GetRecordsRsp.total_count)
+}
+inline ::uint32_t GetRecordsRsp::_internal_total_count() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.total_count_;
+}
+inline void GetRecordsRsp::_internal_set_total_count(::uint32_t value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.total_count_ = value;
+}
+
+// -------------------------------------------------------------------
+
+// DeleteRecordReq
+
+// uint64 record_id = 1;
+inline void DeleteRecordReq::clear_record_id() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.record_id_ = ::uint64_t{0u};
+}
+inline ::uint64_t DeleteRecordReq::record_id() const {
+  // @@protoc_insertion_point(field_get:ServerApi.DeleteRecordReq.record_id)
+  return _internal_record_id();
+}
+inline void DeleteRecordReq::set_record_id(::uint64_t value) {
+  _internal_set_record_id(value);
+  // @@protoc_insertion_point(field_set:ServerApi.DeleteRecordReq.record_id)
+}
+inline ::uint64_t DeleteRecordReq::_internal_record_id() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.record_id_;
+}
+inline void DeleteRecordReq::_internal_set_record_id(::uint64_t value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.record_id_ = value;
+}
+
+// -------------------------------------------------------------------
+
+// DeleteRecordRsp
+
+// uint64 deleted_id = 1;
+inline void DeleteRecordRsp::clear_deleted_id() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.deleted_id_ = ::uint64_t{0u};
+}
+inline ::uint64_t DeleteRecordRsp::deleted_id() const {
+  // @@protoc_insertion_point(field_get:ServerApi.DeleteRecordRsp.deleted_id)
+  return _internal_deleted_id();
+}
+inline void DeleteRecordRsp::set_deleted_id(::uint64_t value) {
+  _internal_set_deleted_id(value);
+  // @@protoc_insertion_point(field_set:ServerApi.DeleteRecordRsp.deleted_id)
+}
+inline ::uint64_t DeleteRecordRsp::_internal_deleted_id() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.deleted_id_;
+}
+inline void DeleteRecordRsp::_internal_set_deleted_id(::uint64_t value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.deleted_id_ = value;
 }
 
 #ifdef __GNUC__

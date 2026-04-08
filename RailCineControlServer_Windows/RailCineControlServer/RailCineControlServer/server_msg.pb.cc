@@ -152,6 +152,49 @@ struct UploadChunkReqDefaultTypeInternal {
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
     PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 UploadChunkReqDefaultTypeInternal _UploadChunkReq_default_instance_;
 
+inline constexpr PlayRecord::Impl_::Impl_(
+    ::_pbi::ConstantInitialized) noexcept
+      : movie_name_(
+            &::google::protobuf::internal::fixed_address_empty_string,
+            ::_pbi::ConstantInitialized()),
+        play_date_(
+            &::google::protobuf::internal::fixed_address_empty_string,
+            ::_pbi::ConstantInitialized()),
+        start_time_(
+            &::google::protobuf::internal::fixed_address_empty_string,
+            ::_pbi::ConstantInitialized()),
+        end_time_(
+            &::google::protobuf::internal::fixed_address_empty_string,
+            ::_pbi::ConstantInitialized()),
+        operator_name_(
+            &::google::protobuf::internal::fixed_address_empty_string,
+            ::_pbi::ConstantInitialized()),
+        end_type_(
+            &::google::protobuf::internal::fixed_address_empty_string,
+            ::_pbi::ConstantInitialized()),
+        record_id_{::uint64_t{0u}},
+        _cached_size_{0} {}
+
+template <typename>
+PROTOBUF_CONSTEXPR PlayRecord::PlayRecord(::_pbi::ConstantInitialized)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(_class_data_.base()),
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(),
+#endif  // PROTOBUF_CUSTOM_VTABLE
+      _impl_(::_pbi::ConstantInitialized()) {
+}
+struct PlayRecordDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR PlayRecordDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~PlayRecordDefaultTypeInternal() {}
+  union {
+    PlayRecord _instance;
+  };
+};
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 PlayRecordDefaultTypeInternal _PlayRecord_default_instance_;
+
 inline constexpr MovieInfo::Impl_::Impl_(
     ::_pbi::ConstantInitialized) noexcept
       : movie_name_(
@@ -270,6 +313,35 @@ struct HeartbeatDefaultTypeInternal {
 
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
     PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 HeartbeatDefaultTypeInternal _Heartbeat_default_instance_;
+
+inline constexpr GetRecordsReq::Impl_::Impl_(
+    ::_pbi::ConstantInitialized) noexcept
+      : target_date_(
+            &::google::protobuf::internal::fixed_address_empty_string,
+            ::_pbi::ConstantInitialized()),
+        page_index_{0u},
+        page_size_{0u},
+        _cached_size_{0} {}
+
+template <typename>
+PROTOBUF_CONSTEXPR GetRecordsReq::GetRecordsReq(::_pbi::ConstantInitialized)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(_class_data_.base()),
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(),
+#endif  // PROTOBUF_CUSTOM_VTABLE
+      _impl_(::_pbi::ConstantInitialized()) {
+}
+struct GetRecordsReqDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR GetRecordsReqDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~GetRecordsReqDefaultTypeInternal() {}
+  union {
+    GetRecordsReq _instance;
+  };
+};
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 GetRecordsReqDefaultTypeInternal _GetRecordsReq_default_instance_;
 
 inline constexpr GetMovieListReq::Impl_::Impl_(
     ::_pbi::ConstantInitialized) noexcept
@@ -417,6 +489,107 @@ struct DownloadChunkReqDefaultTypeInternal {
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
     PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 DownloadChunkReqDefaultTypeInternal _DownloadChunkReq_default_instance_;
 
+inline constexpr DeleteRecordRsp::Impl_::Impl_(
+    ::_pbi::ConstantInitialized) noexcept
+      : deleted_id_{::uint64_t{0u}},
+        _cached_size_{0} {}
+
+template <typename>
+PROTOBUF_CONSTEXPR DeleteRecordRsp::DeleteRecordRsp(::_pbi::ConstantInitialized)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(_class_data_.base()),
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(),
+#endif  // PROTOBUF_CUSTOM_VTABLE
+      _impl_(::_pbi::ConstantInitialized()) {
+}
+struct DeleteRecordRspDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR DeleteRecordRspDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~DeleteRecordRspDefaultTypeInternal() {}
+  union {
+    DeleteRecordRsp _instance;
+  };
+};
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 DeleteRecordRspDefaultTypeInternal _DeleteRecordRsp_default_instance_;
+
+inline constexpr DeleteRecordReq::Impl_::Impl_(
+    ::_pbi::ConstantInitialized) noexcept
+      : record_id_{::uint64_t{0u}},
+        _cached_size_{0} {}
+
+template <typename>
+PROTOBUF_CONSTEXPR DeleteRecordReq::DeleteRecordReq(::_pbi::ConstantInitialized)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(_class_data_.base()),
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(),
+#endif  // PROTOBUF_CUSTOM_VTABLE
+      _impl_(::_pbi::ConstantInitialized()) {
+}
+struct DeleteRecordReqDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR DeleteRecordReqDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~DeleteRecordReqDefaultTypeInternal() {}
+  union {
+    DeleteRecordReq _instance;
+  };
+};
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 DeleteRecordReqDefaultTypeInternal _DeleteRecordReq_default_instance_;
+
+inline constexpr AddRecordRsp::Impl_::Impl_(
+    ::_pbi::ConstantInitialized) noexcept
+      : new_record_id_{::uint64_t{0u}},
+        _cached_size_{0} {}
+
+template <typename>
+PROTOBUF_CONSTEXPR AddRecordRsp::AddRecordRsp(::_pbi::ConstantInitialized)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(_class_data_.base()),
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(),
+#endif  // PROTOBUF_CUSTOM_VTABLE
+      _impl_(::_pbi::ConstantInitialized()) {
+}
+struct AddRecordRspDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR AddRecordRspDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~AddRecordRspDefaultTypeInternal() {}
+  union {
+    AddRecordRsp _instance;
+  };
+};
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 AddRecordRspDefaultTypeInternal _AddRecordRsp_default_instance_;
+
+inline constexpr GetRecordsRsp::Impl_::Impl_(
+    ::_pbi::ConstantInitialized) noexcept
+      : records_{},
+        total_count_{0u},
+        _cached_size_{0} {}
+
+template <typename>
+PROTOBUF_CONSTEXPR GetRecordsRsp::GetRecordsRsp(::_pbi::ConstantInitialized)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(_class_data_.base()),
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(),
+#endif  // PROTOBUF_CUSTOM_VTABLE
+      _impl_(::_pbi::ConstantInitialized()) {
+}
+struct GetRecordsRspDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR GetRecordsRspDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~GetRecordsRspDefaultTypeInternal() {}
+  union {
+    GetRecordsRsp _instance;
+  };
+};
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 GetRecordsRspDefaultTypeInternal _GetRecordsRsp_default_instance_;
+
 inline constexpr GetMovieListRsp::Impl_::Impl_(
     ::_pbi::ConstantInitialized) noexcept
       : movies_{},
@@ -441,6 +614,31 @@ struct GetMovieListRspDefaultTypeInternal {
 
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
     PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 GetMovieListRspDefaultTypeInternal _GetMovieListRsp_default_instance_;
+
+inline constexpr AddRecordReq::Impl_::Impl_(
+    ::_pbi::ConstantInitialized) noexcept
+      : _cached_size_{0},
+        record_{nullptr} {}
+
+template <typename>
+PROTOBUF_CONSTEXPR AddRecordReq::AddRecordReq(::_pbi::ConstantInitialized)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(_class_data_.base()),
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(),
+#endif  // PROTOBUF_CUSTOM_VTABLE
+      _impl_(::_pbi::ConstantInitialized()) {
+}
+struct AddRecordReqDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR AddRecordReqDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~AddRecordReqDefaultTypeInternal() {}
+  union {
+    AddRecordReq _instance;
+  };
+};
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 AddRecordReqDefaultTypeInternal _AddRecordReq_default_instance_;
 }  // namespace ServerApi
 static constexpr const ::_pb::EnumDescriptor**
     file_level_enum_descriptors_server_5fmsg_2eproto = nullptr;
@@ -599,6 +797,79 @@ const ::uint32_t
         PROTOBUF_FIELD_OFFSET(::ServerApi::DownloadCoverRsp, _impl_.file_md5_),
         PROTOBUF_FIELD_OFFSET(::ServerApi::DownloadCoverRsp, _impl_.cover_name_),
         PROTOBUF_FIELD_OFFSET(::ServerApi::DownloadCoverRsp, _impl_.cover_data_),
+        ~0u,  // no _has_bits_
+        PROTOBUF_FIELD_OFFSET(::ServerApi::PlayRecord, _internal_metadata_),
+        ~0u,  // no _extensions_
+        ~0u,  // no _oneof_case_
+        ~0u,  // no _weak_field_map_
+        ~0u,  // no _inlined_string_donated_
+        ~0u,  // no _split_
+        ~0u,  // no sizeof(Split)
+        PROTOBUF_FIELD_OFFSET(::ServerApi::PlayRecord, _impl_.record_id_),
+        PROTOBUF_FIELD_OFFSET(::ServerApi::PlayRecord, _impl_.movie_name_),
+        PROTOBUF_FIELD_OFFSET(::ServerApi::PlayRecord, _impl_.play_date_),
+        PROTOBUF_FIELD_OFFSET(::ServerApi::PlayRecord, _impl_.start_time_),
+        PROTOBUF_FIELD_OFFSET(::ServerApi::PlayRecord, _impl_.end_time_),
+        PROTOBUF_FIELD_OFFSET(::ServerApi::PlayRecord, _impl_.operator_name_),
+        PROTOBUF_FIELD_OFFSET(::ServerApi::PlayRecord, _impl_.end_type_),
+        PROTOBUF_FIELD_OFFSET(::ServerApi::AddRecordReq, _impl_._has_bits_),
+        PROTOBUF_FIELD_OFFSET(::ServerApi::AddRecordReq, _internal_metadata_),
+        ~0u,  // no _extensions_
+        ~0u,  // no _oneof_case_
+        ~0u,  // no _weak_field_map_
+        ~0u,  // no _inlined_string_donated_
+        ~0u,  // no _split_
+        ~0u,  // no sizeof(Split)
+        PROTOBUF_FIELD_OFFSET(::ServerApi::AddRecordReq, _impl_.record_),
+        0,
+        ~0u,  // no _has_bits_
+        PROTOBUF_FIELD_OFFSET(::ServerApi::AddRecordRsp, _internal_metadata_),
+        ~0u,  // no _extensions_
+        ~0u,  // no _oneof_case_
+        ~0u,  // no _weak_field_map_
+        ~0u,  // no _inlined_string_donated_
+        ~0u,  // no _split_
+        ~0u,  // no sizeof(Split)
+        PROTOBUF_FIELD_OFFSET(::ServerApi::AddRecordRsp, _impl_.new_record_id_),
+        ~0u,  // no _has_bits_
+        PROTOBUF_FIELD_OFFSET(::ServerApi::GetRecordsReq, _internal_metadata_),
+        ~0u,  // no _extensions_
+        ~0u,  // no _oneof_case_
+        ~0u,  // no _weak_field_map_
+        ~0u,  // no _inlined_string_donated_
+        ~0u,  // no _split_
+        ~0u,  // no sizeof(Split)
+        PROTOBUF_FIELD_OFFSET(::ServerApi::GetRecordsReq, _impl_.target_date_),
+        PROTOBUF_FIELD_OFFSET(::ServerApi::GetRecordsReq, _impl_.page_index_),
+        PROTOBUF_FIELD_OFFSET(::ServerApi::GetRecordsReq, _impl_.page_size_),
+        ~0u,  // no _has_bits_
+        PROTOBUF_FIELD_OFFSET(::ServerApi::GetRecordsRsp, _internal_metadata_),
+        ~0u,  // no _extensions_
+        ~0u,  // no _oneof_case_
+        ~0u,  // no _weak_field_map_
+        ~0u,  // no _inlined_string_donated_
+        ~0u,  // no _split_
+        ~0u,  // no sizeof(Split)
+        PROTOBUF_FIELD_OFFSET(::ServerApi::GetRecordsRsp, _impl_.records_),
+        PROTOBUF_FIELD_OFFSET(::ServerApi::GetRecordsRsp, _impl_.total_count_),
+        ~0u,  // no _has_bits_
+        PROTOBUF_FIELD_OFFSET(::ServerApi::DeleteRecordReq, _internal_metadata_),
+        ~0u,  // no _extensions_
+        ~0u,  // no _oneof_case_
+        ~0u,  // no _weak_field_map_
+        ~0u,  // no _inlined_string_donated_
+        ~0u,  // no _split_
+        ~0u,  // no sizeof(Split)
+        PROTOBUF_FIELD_OFFSET(::ServerApi::DeleteRecordReq, _impl_.record_id_),
+        ~0u,  // no _has_bits_
+        PROTOBUF_FIELD_OFFSET(::ServerApi::DeleteRecordRsp, _internal_metadata_),
+        ~0u,  // no _extensions_
+        ~0u,  // no _oneof_case_
+        ~0u,  // no _weak_field_map_
+        ~0u,  // no _inlined_string_donated_
+        ~0u,  // no _split_
+        ~0u,  // no sizeof(Split)
+        PROTOBUF_FIELD_OFFSET(::ServerApi::DeleteRecordRsp, _impl_.deleted_id_),
 };
 
 static const ::_pbi::MigrationSchema
@@ -617,6 +888,13 @@ static const ::_pbi::MigrationSchema
         {118, -1, -1, sizeof(::ServerApi::DownloadChunkRsp)},
         {130, -1, -1, sizeof(::ServerApi::DownloadCoverReq)},
         {139, -1, -1, sizeof(::ServerApi::DownloadCoverRsp)},
+        {150, -1, -1, sizeof(::ServerApi::PlayRecord)},
+        {165, 174, -1, sizeof(::ServerApi::AddRecordReq)},
+        {175, -1, -1, sizeof(::ServerApi::AddRecordRsp)},
+        {184, -1, -1, sizeof(::ServerApi::GetRecordsReq)},
+        {195, -1, -1, sizeof(::ServerApi::GetRecordsRsp)},
+        {205, -1, -1, sizeof(::ServerApi::DeleteRecordReq)},
+        {214, -1, -1, sizeof(::ServerApi::DeleteRecordRsp)},
 };
 static const ::_pb::Message* const file_default_instances[] = {
     &::ServerApi::_LoginReq_default_instance_._instance,
@@ -633,6 +911,13 @@ static const ::_pb::Message* const file_default_instances[] = {
     &::ServerApi::_DownloadChunkRsp_default_instance_._instance,
     &::ServerApi::_DownloadCoverReq_default_instance_._instance,
     &::ServerApi::_DownloadCoverRsp_default_instance_._instance,
+    &::ServerApi::_PlayRecord_default_instance_._instance,
+    &::ServerApi::_AddRecordReq_default_instance_._instance,
+    &::ServerApi::_AddRecordRsp_default_instance_._instance,
+    &::ServerApi::_GetRecordsReq_default_instance_._instance,
+    &::ServerApi::_GetRecordsRsp_default_instance_._instance,
+    &::ServerApi::_DeleteRecordReq_default_instance_._instance,
+    &::ServerApi::_DeleteRecordRsp_default_instance_._instance,
 };
 const char descriptor_table_protodef_server_5fmsg_2eproto[] ABSL_ATTRIBUTE_SECTION_VARIABLE(
     protodesc_cold) = {
@@ -661,19 +946,31 @@ const char descriptor_table_protodef_server_5fmsg_2eproto[] ABSL_ATTRIBUTE_SECTI
     "chunk_data\030\003 \001(\014\022\017\n\007is_last\030\004 \001(\010\"$\n\020Dow"
     "nloadCoverReq\022\020\n\010file_md5\030\001 \001(\t\"L\n\020Downl"
     "oadCoverRsp\022\020\n\010file_md5\030\001 \001(\t\022\022\n\ncover_n"
-    "ame\030\002 \001(\t\022\022\n\ncover_data\030\003 \001(\014b\006proto3"
+    "ame\030\002 \001(\t\022\022\n\ncover_data\030\003 \001(\014\"\225\001\n\nPlayRe"
+    "cord\022\021\n\trecord_id\030\001 \001(\004\022\022\n\nmovie_name\030\002 "
+    "\001(\t\022\021\n\tplay_date\030\003 \001(\t\022\022\n\nstart_time\030\004 \001"
+    "(\t\022\020\n\010end_time\030\005 \001(\t\022\025\n\roperator_name\030\006 "
+    "\001(\t\022\020\n\010end_type\030\007 \001(\t\"5\n\014AddRecordReq\022%\n"
+    "\006record\030\001 \001(\0132\025.ServerApi.PlayRecord\"%\n\014"
+    "AddRecordRsp\022\025\n\rnew_record_id\030\001 \001(\004\"K\n\rG"
+    "etRecordsReq\022\023\n\013target_date\030\001 \001(\t\022\022\n\npag"
+    "e_index\030\002 \001(\r\022\021\n\tpage_size\030\003 \001(\r\"L\n\rGetR"
+    "ecordsRsp\022&\n\007records\030\001 \003(\0132\025.ServerApi.P"
+    "layRecord\022\023\n\013total_count\030\002 \001(\r\"$\n\017Delete"
+    "RecordReq\022\021\n\trecord_id\030\001 \001(\004\"%\n\017DeleteRe"
+    "cordRsp\022\022\n\ndeleted_id\030\001 \001(\004b\006proto3"
 };
 static ::absl::once_flag descriptor_table_server_5fmsg_2eproto_once;
 PROTOBUF_CONSTINIT const ::_pbi::DescriptorTable descriptor_table_server_5fmsg_2eproto = {
     false,
     false,
-    1037,
+    1515,
     descriptor_table_protodef_server_5fmsg_2eproto,
     "server_msg.proto",
     &descriptor_table_server_5fmsg_2eproto_once,
     nullptr,
     0,
-    14,
+    21,
     schemas,
     file_default_instances,
     TableStruct_server_5fmsg_2eproto::offsets,
@@ -4546,6 +4843,1841 @@ void DownloadCoverRsp::InternalSwap(DownloadCoverRsp* PROTOBUF_RESTRICT other) {
 }
 
 ::google::protobuf::Metadata DownloadCoverRsp::GetMetadata() const {
+  return ::google::protobuf::Message::GetMetadataImpl(GetClassData()->full());
+}
+// ===================================================================
+
+class PlayRecord::_Internal {
+ public:
+};
+
+PlayRecord::PlayRecord(::google::protobuf::Arena* arena)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(arena, _class_data_.base()) {
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  SharedCtor(arena);
+  // @@protoc_insertion_point(arena_constructor:ServerApi.PlayRecord)
+}
+inline PROTOBUF_NDEBUG_INLINE PlayRecord::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility, ::google::protobuf::Arena* arena,
+    const Impl_& from, const ::ServerApi::PlayRecord& from_msg)
+      : movie_name_(arena, from.movie_name_),
+        play_date_(arena, from.play_date_),
+        start_time_(arena, from.start_time_),
+        end_time_(arena, from.end_time_),
+        operator_name_(arena, from.operator_name_),
+        end_type_(arena, from.end_type_),
+        _cached_size_{0} {}
+
+PlayRecord::PlayRecord(
+    ::google::protobuf::Arena* arena,
+    const PlayRecord& from)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(arena, _class_data_.base()) {
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  PlayRecord* const _this = this;
+  (void)_this;
+  _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
+      from._internal_metadata_);
+  new (&_impl_) Impl_(internal_visibility(), arena, from._impl_, from);
+  _impl_.record_id_ = from._impl_.record_id_;
+
+  // @@protoc_insertion_point(copy_constructor:ServerApi.PlayRecord)
+}
+inline PROTOBUF_NDEBUG_INLINE PlayRecord::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility,
+    ::google::protobuf::Arena* arena)
+      : movie_name_(arena),
+        play_date_(arena),
+        start_time_(arena),
+        end_time_(arena),
+        operator_name_(arena),
+        end_type_(arena),
+        _cached_size_{0} {}
+
+inline void PlayRecord::SharedCtor(::_pb::Arena* arena) {
+  new (&_impl_) Impl_(internal_visibility(), arena);
+  _impl_.record_id_ = {};
+}
+PlayRecord::~PlayRecord() {
+  // @@protoc_insertion_point(destructor:ServerApi.PlayRecord)
+  SharedDtor(*this);
+}
+inline void PlayRecord::SharedDtor(MessageLite& self) {
+  PlayRecord& this_ = static_cast<PlayRecord&>(self);
+  this_._internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
+  ABSL_DCHECK(this_.GetArena() == nullptr);
+  this_._impl_.movie_name_.Destroy();
+  this_._impl_.play_date_.Destroy();
+  this_._impl_.start_time_.Destroy();
+  this_._impl_.end_time_.Destroy();
+  this_._impl_.operator_name_.Destroy();
+  this_._impl_.end_type_.Destroy();
+  this_._impl_.~Impl_();
+}
+
+inline void* PlayRecord::PlacementNew_(const void*, void* mem,
+                                        ::google::protobuf::Arena* arena) {
+  return ::new (mem) PlayRecord(arena);
+}
+constexpr auto PlayRecord::InternalNewImpl_() {
+  return ::google::protobuf::internal::MessageCreator::CopyInit(sizeof(PlayRecord),
+                                            alignof(PlayRecord));
+}
+PROTOBUF_CONSTINIT
+PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::google::protobuf::internal::ClassDataFull PlayRecord::_class_data_ = {
+    ::google::protobuf::internal::ClassData{
+        &_PlayRecord_default_instance_._instance,
+        &_table_.header,
+        nullptr,  // OnDemandRegisterArenaDtor
+        nullptr,  // IsInitialized
+        &PlayRecord::MergeImpl,
+        ::google::protobuf::Message::GetNewImpl<PlayRecord>(),
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+        &PlayRecord::SharedDtor,
+        ::google::protobuf::Message::GetClearImpl<PlayRecord>(), &PlayRecord::ByteSizeLong,
+            &PlayRecord::_InternalSerialize,
+#endif  // PROTOBUF_CUSTOM_VTABLE
+        PROTOBUF_FIELD_OFFSET(PlayRecord, _impl_._cached_size_),
+        false,
+    },
+    &PlayRecord::kDescriptorMethods,
+    &descriptor_table_server_5fmsg_2eproto,
+    nullptr,  // tracker
+};
+const ::google::protobuf::internal::ClassData* PlayRecord::GetClassData() const {
+  ::google::protobuf::internal::PrefetchToLocalCache(&_class_data_);
+  ::google::protobuf::internal::PrefetchToLocalCache(_class_data_.tc_table);
+  return _class_data_.base();
+}
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::_pbi::TcParseTable<3, 7, 0, 87, 2> PlayRecord::_table_ = {
+  {
+    0,  // no _has_bits_
+    0, // no _extensions_
+    7, 56,  // max_field_number, fast_idx_mask
+    offsetof(decltype(_table_), field_lookup_table),
+    4294967168,  // skipmap
+    offsetof(decltype(_table_), field_entries),
+    7,  // num_field_entries
+    0,  // num_aux_entries
+    offsetof(decltype(_table_), field_names),  // no aux_entries
+    _class_data_.base(),
+    nullptr,  // post_loop_handler
+    ::_pbi::TcParser::GenericFallback,  // fallback
+    #ifdef PROTOBUF_PREFETCH_PARSE_TABLE
+    ::_pbi::TcParser::GetTable<::ServerApi::PlayRecord>(),  // to_prefetch
+    #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
+  }, {{
+    {::_pbi::TcParser::MiniParse, {}},
+    // uint64 record_id = 1;
+    {::_pbi::TcParser::SingularVarintNoZag1<::uint64_t, offsetof(PlayRecord, _impl_.record_id_), 63>(),
+     {8, 63, 0, PROTOBUF_FIELD_OFFSET(PlayRecord, _impl_.record_id_)}},
+    // string movie_name = 2;
+    {::_pbi::TcParser::FastUS1,
+     {18, 63, 0, PROTOBUF_FIELD_OFFSET(PlayRecord, _impl_.movie_name_)}},
+    // string play_date = 3;
+    {::_pbi::TcParser::FastUS1,
+     {26, 63, 0, PROTOBUF_FIELD_OFFSET(PlayRecord, _impl_.play_date_)}},
+    // string start_time = 4;
+    {::_pbi::TcParser::FastUS1,
+     {34, 63, 0, PROTOBUF_FIELD_OFFSET(PlayRecord, _impl_.start_time_)}},
+    // string end_time = 5;
+    {::_pbi::TcParser::FastUS1,
+     {42, 63, 0, PROTOBUF_FIELD_OFFSET(PlayRecord, _impl_.end_time_)}},
+    // string operator_name = 6;
+    {::_pbi::TcParser::FastUS1,
+     {50, 63, 0, PROTOBUF_FIELD_OFFSET(PlayRecord, _impl_.operator_name_)}},
+    // string end_type = 7;
+    {::_pbi::TcParser::FastUS1,
+     {58, 63, 0, PROTOBUF_FIELD_OFFSET(PlayRecord, _impl_.end_type_)}},
+  }}, {{
+    65535, 65535
+  }}, {{
+    // uint64 record_id = 1;
+    {PROTOBUF_FIELD_OFFSET(PlayRecord, _impl_.record_id_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kUInt64)},
+    // string movie_name = 2;
+    {PROTOBUF_FIELD_OFFSET(PlayRecord, _impl_.movie_name_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
+    // string play_date = 3;
+    {PROTOBUF_FIELD_OFFSET(PlayRecord, _impl_.play_date_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
+    // string start_time = 4;
+    {PROTOBUF_FIELD_OFFSET(PlayRecord, _impl_.start_time_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
+    // string end_time = 5;
+    {PROTOBUF_FIELD_OFFSET(PlayRecord, _impl_.end_time_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
+    // string operator_name = 6;
+    {PROTOBUF_FIELD_OFFSET(PlayRecord, _impl_.operator_name_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
+    // string end_type = 7;
+    {PROTOBUF_FIELD_OFFSET(PlayRecord, _impl_.end_type_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
+  }},
+  // no aux_entries
+  {{
+    "\24\0\12\11\12\10\15\10"
+    "ServerApi.PlayRecord"
+    "movie_name"
+    "play_date"
+    "start_time"
+    "end_time"
+    "operator_name"
+    "end_type"
+  }},
+};
+
+PROTOBUF_NOINLINE void PlayRecord::Clear() {
+// @@protoc_insertion_point(message_clear_start:ServerApi.PlayRecord)
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  ::uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  _impl_.movie_name_.ClearToEmpty();
+  _impl_.play_date_.ClearToEmpty();
+  _impl_.start_time_.ClearToEmpty();
+  _impl_.end_time_.ClearToEmpty();
+  _impl_.operator_name_.ClearToEmpty();
+  _impl_.end_type_.ClearToEmpty();
+  _impl_.record_id_ = ::uint64_t{0u};
+  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
+}
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+        ::uint8_t* PlayRecord::_InternalSerialize(
+            const MessageLite& base, ::uint8_t* target,
+            ::google::protobuf::io::EpsCopyOutputStream* stream) {
+          const PlayRecord& this_ = static_cast<const PlayRecord&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+        ::uint8_t* PlayRecord::_InternalSerialize(
+            ::uint8_t* target,
+            ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+          const PlayRecord& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+          // @@protoc_insertion_point(serialize_to_array_start:ServerApi.PlayRecord)
+          ::uint32_t cached_has_bits = 0;
+          (void)cached_has_bits;
+
+          // uint64 record_id = 1;
+          if (this_._internal_record_id() != 0) {
+            target = stream->EnsureSpace(target);
+            target = ::_pbi::WireFormatLite::WriteUInt64ToArray(
+                1, this_._internal_record_id(), target);
+          }
+
+          // string movie_name = 2;
+          if (!this_._internal_movie_name().empty()) {
+            const std::string& _s = this_._internal_movie_name();
+            ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+                _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "ServerApi.PlayRecord.movie_name");
+            target = stream->WriteStringMaybeAliased(2, _s, target);
+          }
+
+          // string play_date = 3;
+          if (!this_._internal_play_date().empty()) {
+            const std::string& _s = this_._internal_play_date();
+            ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+                _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "ServerApi.PlayRecord.play_date");
+            target = stream->WriteStringMaybeAliased(3, _s, target);
+          }
+
+          // string start_time = 4;
+          if (!this_._internal_start_time().empty()) {
+            const std::string& _s = this_._internal_start_time();
+            ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+                _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "ServerApi.PlayRecord.start_time");
+            target = stream->WriteStringMaybeAliased(4, _s, target);
+          }
+
+          // string end_time = 5;
+          if (!this_._internal_end_time().empty()) {
+            const std::string& _s = this_._internal_end_time();
+            ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+                _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "ServerApi.PlayRecord.end_time");
+            target = stream->WriteStringMaybeAliased(5, _s, target);
+          }
+
+          // string operator_name = 6;
+          if (!this_._internal_operator_name().empty()) {
+            const std::string& _s = this_._internal_operator_name();
+            ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+                _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "ServerApi.PlayRecord.operator_name");
+            target = stream->WriteStringMaybeAliased(6, _s, target);
+          }
+
+          // string end_type = 7;
+          if (!this_._internal_end_type().empty()) {
+            const std::string& _s = this_._internal_end_type();
+            ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+                _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "ServerApi.PlayRecord.end_type");
+            target = stream->WriteStringMaybeAliased(7, _s, target);
+          }
+
+          if (PROTOBUF_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
+            target =
+                ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+                    this_._internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
+          }
+          // @@protoc_insertion_point(serialize_to_array_end:ServerApi.PlayRecord)
+          return target;
+        }
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+        ::size_t PlayRecord::ByteSizeLong(const MessageLite& base) {
+          const PlayRecord& this_ = static_cast<const PlayRecord&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+        ::size_t PlayRecord::ByteSizeLong() const {
+          const PlayRecord& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+          // @@protoc_insertion_point(message_byte_size_start:ServerApi.PlayRecord)
+          ::size_t total_size = 0;
+
+          ::uint32_t cached_has_bits = 0;
+          // Prevent compiler warnings about cached_has_bits being unused
+          (void)cached_has_bits;
+
+          ::_pbi::Prefetch5LinesFrom7Lines(&this_);
+           {
+            // string movie_name = 2;
+            if (!this_._internal_movie_name().empty()) {
+              total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
+                                              this_._internal_movie_name());
+            }
+            // string play_date = 3;
+            if (!this_._internal_play_date().empty()) {
+              total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
+                                              this_._internal_play_date());
+            }
+            // string start_time = 4;
+            if (!this_._internal_start_time().empty()) {
+              total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
+                                              this_._internal_start_time());
+            }
+            // string end_time = 5;
+            if (!this_._internal_end_time().empty()) {
+              total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
+                                              this_._internal_end_time());
+            }
+            // string operator_name = 6;
+            if (!this_._internal_operator_name().empty()) {
+              total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
+                                              this_._internal_operator_name());
+            }
+            // string end_type = 7;
+            if (!this_._internal_end_type().empty()) {
+              total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
+                                              this_._internal_end_type());
+            }
+            // uint64 record_id = 1;
+            if (this_._internal_record_id() != 0) {
+              total_size += ::_pbi::WireFormatLite::UInt64SizePlusOne(
+                  this_._internal_record_id());
+            }
+          }
+          return this_.MaybeComputeUnknownFieldsSize(total_size,
+                                                     &this_._impl_._cached_size_);
+        }
+
+void PlayRecord::MergeImpl(::google::protobuf::MessageLite& to_msg, const ::google::protobuf::MessageLite& from_msg) {
+  auto* const _this = static_cast<PlayRecord*>(&to_msg);
+  auto& from = static_cast<const PlayRecord&>(from_msg);
+  // @@protoc_insertion_point(class_specific_merge_from_start:ServerApi.PlayRecord)
+  ABSL_DCHECK_NE(&from, _this);
+  ::uint32_t cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  if (!from._internal_movie_name().empty()) {
+    _this->_internal_set_movie_name(from._internal_movie_name());
+  }
+  if (!from._internal_play_date().empty()) {
+    _this->_internal_set_play_date(from._internal_play_date());
+  }
+  if (!from._internal_start_time().empty()) {
+    _this->_internal_set_start_time(from._internal_start_time());
+  }
+  if (!from._internal_end_time().empty()) {
+    _this->_internal_set_end_time(from._internal_end_time());
+  }
+  if (!from._internal_operator_name().empty()) {
+    _this->_internal_set_operator_name(from._internal_operator_name());
+  }
+  if (!from._internal_end_type().empty()) {
+    _this->_internal_set_end_type(from._internal_end_type());
+  }
+  if (from._internal_record_id() != 0) {
+    _this->_impl_.record_id_ = from._impl_.record_id_;
+  }
+  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
+}
+
+void PlayRecord::CopyFrom(const PlayRecord& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:ServerApi.PlayRecord)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+
+void PlayRecord::InternalSwap(PlayRecord* PROTOBUF_RESTRICT other) {
+  using std::swap;
+  auto* arena = GetArena();
+  ABSL_DCHECK_EQ(arena, other->GetArena());
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
+  ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.movie_name_, &other->_impl_.movie_name_, arena);
+  ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.play_date_, &other->_impl_.play_date_, arena);
+  ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.start_time_, &other->_impl_.start_time_, arena);
+  ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.end_time_, &other->_impl_.end_time_, arena);
+  ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.operator_name_, &other->_impl_.operator_name_, arena);
+  ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.end_type_, &other->_impl_.end_type_, arena);
+        swap(_impl_.record_id_, other->_impl_.record_id_);
+}
+
+::google::protobuf::Metadata PlayRecord::GetMetadata() const {
+  return ::google::protobuf::Message::GetMetadataImpl(GetClassData()->full());
+}
+// ===================================================================
+
+class AddRecordReq::_Internal {
+ public:
+  using HasBits =
+      decltype(std::declval<AddRecordReq>()._impl_._has_bits_);
+  static constexpr ::int32_t kHasBitsOffset =
+      8 * PROTOBUF_FIELD_OFFSET(AddRecordReq, _impl_._has_bits_);
+};
+
+AddRecordReq::AddRecordReq(::google::protobuf::Arena* arena)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(arena, _class_data_.base()) {
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  SharedCtor(arena);
+  // @@protoc_insertion_point(arena_constructor:ServerApi.AddRecordReq)
+}
+inline PROTOBUF_NDEBUG_INLINE AddRecordReq::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility, ::google::protobuf::Arena* arena,
+    const Impl_& from, const ::ServerApi::AddRecordReq& from_msg)
+      : _has_bits_{from._has_bits_},
+        _cached_size_{0} {}
+
+AddRecordReq::AddRecordReq(
+    ::google::protobuf::Arena* arena,
+    const AddRecordReq& from)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(arena, _class_data_.base()) {
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  AddRecordReq* const _this = this;
+  (void)_this;
+  _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
+      from._internal_metadata_);
+  new (&_impl_) Impl_(internal_visibility(), arena, from._impl_, from);
+  ::uint32_t cached_has_bits = _impl_._has_bits_[0];
+  _impl_.record_ = (cached_has_bits & 0x00000001u) ? ::google::protobuf::Message::CopyConstruct<::ServerApi::PlayRecord>(
+                              arena, *from._impl_.record_)
+                        : nullptr;
+
+  // @@protoc_insertion_point(copy_constructor:ServerApi.AddRecordReq)
+}
+inline PROTOBUF_NDEBUG_INLINE AddRecordReq::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility,
+    ::google::protobuf::Arena* arena)
+      : _cached_size_{0} {}
+
+inline void AddRecordReq::SharedCtor(::_pb::Arena* arena) {
+  new (&_impl_) Impl_(internal_visibility(), arena);
+  _impl_.record_ = {};
+}
+AddRecordReq::~AddRecordReq() {
+  // @@protoc_insertion_point(destructor:ServerApi.AddRecordReq)
+  SharedDtor(*this);
+}
+inline void AddRecordReq::SharedDtor(MessageLite& self) {
+  AddRecordReq& this_ = static_cast<AddRecordReq&>(self);
+  this_._internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
+  ABSL_DCHECK(this_.GetArena() == nullptr);
+  delete this_._impl_.record_;
+  this_._impl_.~Impl_();
+}
+
+inline void* AddRecordReq::PlacementNew_(const void*, void* mem,
+                                        ::google::protobuf::Arena* arena) {
+  return ::new (mem) AddRecordReq(arena);
+}
+constexpr auto AddRecordReq::InternalNewImpl_() {
+  return ::google::protobuf::internal::MessageCreator::ZeroInit(sizeof(AddRecordReq),
+                                            alignof(AddRecordReq));
+}
+PROTOBUF_CONSTINIT
+PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::google::protobuf::internal::ClassDataFull AddRecordReq::_class_data_ = {
+    ::google::protobuf::internal::ClassData{
+        &_AddRecordReq_default_instance_._instance,
+        &_table_.header,
+        nullptr,  // OnDemandRegisterArenaDtor
+        nullptr,  // IsInitialized
+        &AddRecordReq::MergeImpl,
+        ::google::protobuf::Message::GetNewImpl<AddRecordReq>(),
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+        &AddRecordReq::SharedDtor,
+        ::google::protobuf::Message::GetClearImpl<AddRecordReq>(), &AddRecordReq::ByteSizeLong,
+            &AddRecordReq::_InternalSerialize,
+#endif  // PROTOBUF_CUSTOM_VTABLE
+        PROTOBUF_FIELD_OFFSET(AddRecordReq, _impl_._cached_size_),
+        false,
+    },
+    &AddRecordReq::kDescriptorMethods,
+    &descriptor_table_server_5fmsg_2eproto,
+    nullptr,  // tracker
+};
+const ::google::protobuf::internal::ClassData* AddRecordReq::GetClassData() const {
+  ::google::protobuf::internal::PrefetchToLocalCache(&_class_data_);
+  ::google::protobuf::internal::PrefetchToLocalCache(_class_data_.tc_table);
+  return _class_data_.base();
+}
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::_pbi::TcParseTable<0, 1, 1, 0, 2> AddRecordReq::_table_ = {
+  {
+    PROTOBUF_FIELD_OFFSET(AddRecordReq, _impl_._has_bits_),
+    0, // no _extensions_
+    1, 0,  // max_field_number, fast_idx_mask
+    offsetof(decltype(_table_), field_lookup_table),
+    4294967294,  // skipmap
+    offsetof(decltype(_table_), field_entries),
+    1,  // num_field_entries
+    1,  // num_aux_entries
+    offsetof(decltype(_table_), aux_entries),
+    _class_data_.base(),
+    nullptr,  // post_loop_handler
+    ::_pbi::TcParser::GenericFallback,  // fallback
+    #ifdef PROTOBUF_PREFETCH_PARSE_TABLE
+    ::_pbi::TcParser::GetTable<::ServerApi::AddRecordReq>(),  // to_prefetch
+    #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
+  }, {{
+    // .ServerApi.PlayRecord record = 1;
+    {::_pbi::TcParser::FastMtS1,
+     {10, 0, 0, PROTOBUF_FIELD_OFFSET(AddRecordReq, _impl_.record_)}},
+  }}, {{
+    65535, 65535
+  }}, {{
+    // .ServerApi.PlayRecord record = 1;
+    {PROTOBUF_FIELD_OFFSET(AddRecordReq, _impl_.record_), _Internal::kHasBitsOffset + 0, 0,
+    (0 | ::_fl::kFcOptional | ::_fl::kMessage | ::_fl::kTvTable)},
+  }}, {{
+    {::_pbi::TcParser::GetTable<::ServerApi::PlayRecord>()},
+  }}, {{
+  }},
+};
+
+PROTOBUF_NOINLINE void AddRecordReq::Clear() {
+// @@protoc_insertion_point(message_clear_start:ServerApi.AddRecordReq)
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  ::uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  cached_has_bits = _impl_._has_bits_[0];
+  if (cached_has_bits & 0x00000001u) {
+    ABSL_DCHECK(_impl_.record_ != nullptr);
+    _impl_.record_->Clear();
+  }
+  _impl_._has_bits_.Clear();
+  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
+}
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+        ::uint8_t* AddRecordReq::_InternalSerialize(
+            const MessageLite& base, ::uint8_t* target,
+            ::google::protobuf::io::EpsCopyOutputStream* stream) {
+          const AddRecordReq& this_ = static_cast<const AddRecordReq&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+        ::uint8_t* AddRecordReq::_InternalSerialize(
+            ::uint8_t* target,
+            ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+          const AddRecordReq& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+          // @@protoc_insertion_point(serialize_to_array_start:ServerApi.AddRecordReq)
+          ::uint32_t cached_has_bits = 0;
+          (void)cached_has_bits;
+
+          cached_has_bits = this_._impl_._has_bits_[0];
+          // .ServerApi.PlayRecord record = 1;
+          if (cached_has_bits & 0x00000001u) {
+            target = ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
+                1, *this_._impl_.record_, this_._impl_.record_->GetCachedSize(), target,
+                stream);
+          }
+
+          if (PROTOBUF_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
+            target =
+                ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+                    this_._internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
+          }
+          // @@protoc_insertion_point(serialize_to_array_end:ServerApi.AddRecordReq)
+          return target;
+        }
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+        ::size_t AddRecordReq::ByteSizeLong(const MessageLite& base) {
+          const AddRecordReq& this_ = static_cast<const AddRecordReq&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+        ::size_t AddRecordReq::ByteSizeLong() const {
+          const AddRecordReq& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+          // @@protoc_insertion_point(message_byte_size_start:ServerApi.AddRecordReq)
+          ::size_t total_size = 0;
+
+          ::uint32_t cached_has_bits = 0;
+          // Prevent compiler warnings about cached_has_bits being unused
+          (void)cached_has_bits;
+
+           {
+            // .ServerApi.PlayRecord record = 1;
+            cached_has_bits = this_._impl_._has_bits_[0];
+            if (cached_has_bits & 0x00000001u) {
+              total_size += 1 +
+                            ::google::protobuf::internal::WireFormatLite::MessageSize(*this_._impl_.record_);
+            }
+          }
+          return this_.MaybeComputeUnknownFieldsSize(total_size,
+                                                     &this_._impl_._cached_size_);
+        }
+
+void AddRecordReq::MergeImpl(::google::protobuf::MessageLite& to_msg, const ::google::protobuf::MessageLite& from_msg) {
+  auto* const _this = static_cast<AddRecordReq*>(&to_msg);
+  auto& from = static_cast<const AddRecordReq&>(from_msg);
+  ::google::protobuf::Arena* arena = _this->GetArena();
+  // @@protoc_insertion_point(class_specific_merge_from_start:ServerApi.AddRecordReq)
+  ABSL_DCHECK_NE(&from, _this);
+  ::uint32_t cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  cached_has_bits = from._impl_._has_bits_[0];
+  if (cached_has_bits & 0x00000001u) {
+    ABSL_DCHECK(from._impl_.record_ != nullptr);
+    if (_this->_impl_.record_ == nullptr) {
+      _this->_impl_.record_ =
+          ::google::protobuf::Message::CopyConstruct<::ServerApi::PlayRecord>(arena, *from._impl_.record_);
+    } else {
+      _this->_impl_.record_->MergeFrom(*from._impl_.record_);
+    }
+  }
+  _this->_impl_._has_bits_[0] |= cached_has_bits;
+  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
+}
+
+void AddRecordReq::CopyFrom(const AddRecordReq& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:ServerApi.AddRecordReq)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+
+void AddRecordReq::InternalSwap(AddRecordReq* PROTOBUF_RESTRICT other) {
+  using std::swap;
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
+  swap(_impl_._has_bits_[0], other->_impl_._has_bits_[0]);
+  swap(_impl_.record_, other->_impl_.record_);
+}
+
+::google::protobuf::Metadata AddRecordReq::GetMetadata() const {
+  return ::google::protobuf::Message::GetMetadataImpl(GetClassData()->full());
+}
+// ===================================================================
+
+class AddRecordRsp::_Internal {
+ public:
+};
+
+AddRecordRsp::AddRecordRsp(::google::protobuf::Arena* arena)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(arena, _class_data_.base()) {
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  SharedCtor(arena);
+  // @@protoc_insertion_point(arena_constructor:ServerApi.AddRecordRsp)
+}
+AddRecordRsp::AddRecordRsp(
+    ::google::protobuf::Arena* arena, const AddRecordRsp& from)
+    : AddRecordRsp(arena) {
+  MergeFrom(from);
+}
+inline PROTOBUF_NDEBUG_INLINE AddRecordRsp::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility,
+    ::google::protobuf::Arena* arena)
+      : _cached_size_{0} {}
+
+inline void AddRecordRsp::SharedCtor(::_pb::Arena* arena) {
+  new (&_impl_) Impl_(internal_visibility(), arena);
+  _impl_.new_record_id_ = {};
+}
+AddRecordRsp::~AddRecordRsp() {
+  // @@protoc_insertion_point(destructor:ServerApi.AddRecordRsp)
+  SharedDtor(*this);
+}
+inline void AddRecordRsp::SharedDtor(MessageLite& self) {
+  AddRecordRsp& this_ = static_cast<AddRecordRsp&>(self);
+  this_._internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
+  ABSL_DCHECK(this_.GetArena() == nullptr);
+  this_._impl_.~Impl_();
+}
+
+inline void* AddRecordRsp::PlacementNew_(const void*, void* mem,
+                                        ::google::protobuf::Arena* arena) {
+  return ::new (mem) AddRecordRsp(arena);
+}
+constexpr auto AddRecordRsp::InternalNewImpl_() {
+  return ::google::protobuf::internal::MessageCreator::ZeroInit(sizeof(AddRecordRsp),
+                                            alignof(AddRecordRsp));
+}
+PROTOBUF_CONSTINIT
+PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::google::protobuf::internal::ClassDataFull AddRecordRsp::_class_data_ = {
+    ::google::protobuf::internal::ClassData{
+        &_AddRecordRsp_default_instance_._instance,
+        &_table_.header,
+        nullptr,  // OnDemandRegisterArenaDtor
+        nullptr,  // IsInitialized
+        &AddRecordRsp::MergeImpl,
+        ::google::protobuf::Message::GetNewImpl<AddRecordRsp>(),
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+        &AddRecordRsp::SharedDtor,
+        ::google::protobuf::Message::GetClearImpl<AddRecordRsp>(), &AddRecordRsp::ByteSizeLong,
+            &AddRecordRsp::_InternalSerialize,
+#endif  // PROTOBUF_CUSTOM_VTABLE
+        PROTOBUF_FIELD_OFFSET(AddRecordRsp, _impl_._cached_size_),
+        false,
+    },
+    &AddRecordRsp::kDescriptorMethods,
+    &descriptor_table_server_5fmsg_2eproto,
+    nullptr,  // tracker
+};
+const ::google::protobuf::internal::ClassData* AddRecordRsp::GetClassData() const {
+  ::google::protobuf::internal::PrefetchToLocalCache(&_class_data_);
+  ::google::protobuf::internal::PrefetchToLocalCache(_class_data_.tc_table);
+  return _class_data_.base();
+}
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::_pbi::TcParseTable<0, 1, 0, 0, 2> AddRecordRsp::_table_ = {
+  {
+    0,  // no _has_bits_
+    0, // no _extensions_
+    1, 0,  // max_field_number, fast_idx_mask
+    offsetof(decltype(_table_), field_lookup_table),
+    4294967294,  // skipmap
+    offsetof(decltype(_table_), field_entries),
+    1,  // num_field_entries
+    0,  // num_aux_entries
+    offsetof(decltype(_table_), field_names),  // no aux_entries
+    _class_data_.base(),
+    nullptr,  // post_loop_handler
+    ::_pbi::TcParser::GenericFallback,  // fallback
+    #ifdef PROTOBUF_PREFETCH_PARSE_TABLE
+    ::_pbi::TcParser::GetTable<::ServerApi::AddRecordRsp>(),  // to_prefetch
+    #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
+  }, {{
+    // uint64 new_record_id = 1;
+    {::_pbi::TcParser::SingularVarintNoZag1<::uint64_t, offsetof(AddRecordRsp, _impl_.new_record_id_), 63>(),
+     {8, 63, 0, PROTOBUF_FIELD_OFFSET(AddRecordRsp, _impl_.new_record_id_)}},
+  }}, {{
+    65535, 65535
+  }}, {{
+    // uint64 new_record_id = 1;
+    {PROTOBUF_FIELD_OFFSET(AddRecordRsp, _impl_.new_record_id_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kUInt64)},
+  }},
+  // no aux_entries
+  {{
+  }},
+};
+
+PROTOBUF_NOINLINE void AddRecordRsp::Clear() {
+// @@protoc_insertion_point(message_clear_start:ServerApi.AddRecordRsp)
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  ::uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  _impl_.new_record_id_ = ::uint64_t{0u};
+  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
+}
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+        ::uint8_t* AddRecordRsp::_InternalSerialize(
+            const MessageLite& base, ::uint8_t* target,
+            ::google::protobuf::io::EpsCopyOutputStream* stream) {
+          const AddRecordRsp& this_ = static_cast<const AddRecordRsp&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+        ::uint8_t* AddRecordRsp::_InternalSerialize(
+            ::uint8_t* target,
+            ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+          const AddRecordRsp& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+          // @@protoc_insertion_point(serialize_to_array_start:ServerApi.AddRecordRsp)
+          ::uint32_t cached_has_bits = 0;
+          (void)cached_has_bits;
+
+          // uint64 new_record_id = 1;
+          if (this_._internal_new_record_id() != 0) {
+            target = stream->EnsureSpace(target);
+            target = ::_pbi::WireFormatLite::WriteUInt64ToArray(
+                1, this_._internal_new_record_id(), target);
+          }
+
+          if (PROTOBUF_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
+            target =
+                ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+                    this_._internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
+          }
+          // @@protoc_insertion_point(serialize_to_array_end:ServerApi.AddRecordRsp)
+          return target;
+        }
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+        ::size_t AddRecordRsp::ByteSizeLong(const MessageLite& base) {
+          const AddRecordRsp& this_ = static_cast<const AddRecordRsp&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+        ::size_t AddRecordRsp::ByteSizeLong() const {
+          const AddRecordRsp& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+          // @@protoc_insertion_point(message_byte_size_start:ServerApi.AddRecordRsp)
+          ::size_t total_size = 0;
+
+          ::uint32_t cached_has_bits = 0;
+          // Prevent compiler warnings about cached_has_bits being unused
+          (void)cached_has_bits;
+
+           {
+            // uint64 new_record_id = 1;
+            if (this_._internal_new_record_id() != 0) {
+              total_size += ::_pbi::WireFormatLite::UInt64SizePlusOne(
+                  this_._internal_new_record_id());
+            }
+          }
+          return this_.MaybeComputeUnknownFieldsSize(total_size,
+                                                     &this_._impl_._cached_size_);
+        }
+
+void AddRecordRsp::MergeImpl(::google::protobuf::MessageLite& to_msg, const ::google::protobuf::MessageLite& from_msg) {
+  auto* const _this = static_cast<AddRecordRsp*>(&to_msg);
+  auto& from = static_cast<const AddRecordRsp&>(from_msg);
+  // @@protoc_insertion_point(class_specific_merge_from_start:ServerApi.AddRecordRsp)
+  ABSL_DCHECK_NE(&from, _this);
+  ::uint32_t cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  if (from._internal_new_record_id() != 0) {
+    _this->_impl_.new_record_id_ = from._impl_.new_record_id_;
+  }
+  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
+}
+
+void AddRecordRsp::CopyFrom(const AddRecordRsp& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:ServerApi.AddRecordRsp)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+
+void AddRecordRsp::InternalSwap(AddRecordRsp* PROTOBUF_RESTRICT other) {
+  using std::swap;
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
+        swap(_impl_.new_record_id_, other->_impl_.new_record_id_);
+}
+
+::google::protobuf::Metadata AddRecordRsp::GetMetadata() const {
+  return ::google::protobuf::Message::GetMetadataImpl(GetClassData()->full());
+}
+// ===================================================================
+
+class GetRecordsReq::_Internal {
+ public:
+};
+
+GetRecordsReq::GetRecordsReq(::google::protobuf::Arena* arena)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(arena, _class_data_.base()) {
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  SharedCtor(arena);
+  // @@protoc_insertion_point(arena_constructor:ServerApi.GetRecordsReq)
+}
+inline PROTOBUF_NDEBUG_INLINE GetRecordsReq::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility, ::google::protobuf::Arena* arena,
+    const Impl_& from, const ::ServerApi::GetRecordsReq& from_msg)
+      : target_date_(arena, from.target_date_),
+        _cached_size_{0} {}
+
+GetRecordsReq::GetRecordsReq(
+    ::google::protobuf::Arena* arena,
+    const GetRecordsReq& from)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(arena, _class_data_.base()) {
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  GetRecordsReq* const _this = this;
+  (void)_this;
+  _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
+      from._internal_metadata_);
+  new (&_impl_) Impl_(internal_visibility(), arena, from._impl_, from);
+  ::memcpy(reinterpret_cast<char *>(&_impl_) +
+               offsetof(Impl_, page_index_),
+           reinterpret_cast<const char *>(&from._impl_) +
+               offsetof(Impl_, page_index_),
+           offsetof(Impl_, page_size_) -
+               offsetof(Impl_, page_index_) +
+               sizeof(Impl_::page_size_));
+
+  // @@protoc_insertion_point(copy_constructor:ServerApi.GetRecordsReq)
+}
+inline PROTOBUF_NDEBUG_INLINE GetRecordsReq::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility,
+    ::google::protobuf::Arena* arena)
+      : target_date_(arena),
+        _cached_size_{0} {}
+
+inline void GetRecordsReq::SharedCtor(::_pb::Arena* arena) {
+  new (&_impl_) Impl_(internal_visibility(), arena);
+  ::memset(reinterpret_cast<char *>(&_impl_) +
+               offsetof(Impl_, page_index_),
+           0,
+           offsetof(Impl_, page_size_) -
+               offsetof(Impl_, page_index_) +
+               sizeof(Impl_::page_size_));
+}
+GetRecordsReq::~GetRecordsReq() {
+  // @@protoc_insertion_point(destructor:ServerApi.GetRecordsReq)
+  SharedDtor(*this);
+}
+inline void GetRecordsReq::SharedDtor(MessageLite& self) {
+  GetRecordsReq& this_ = static_cast<GetRecordsReq&>(self);
+  this_._internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
+  ABSL_DCHECK(this_.GetArena() == nullptr);
+  this_._impl_.target_date_.Destroy();
+  this_._impl_.~Impl_();
+}
+
+inline void* GetRecordsReq::PlacementNew_(const void*, void* mem,
+                                        ::google::protobuf::Arena* arena) {
+  return ::new (mem) GetRecordsReq(arena);
+}
+constexpr auto GetRecordsReq::InternalNewImpl_() {
+  return ::google::protobuf::internal::MessageCreator::CopyInit(sizeof(GetRecordsReq),
+                                            alignof(GetRecordsReq));
+}
+PROTOBUF_CONSTINIT
+PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::google::protobuf::internal::ClassDataFull GetRecordsReq::_class_data_ = {
+    ::google::protobuf::internal::ClassData{
+        &_GetRecordsReq_default_instance_._instance,
+        &_table_.header,
+        nullptr,  // OnDemandRegisterArenaDtor
+        nullptr,  // IsInitialized
+        &GetRecordsReq::MergeImpl,
+        ::google::protobuf::Message::GetNewImpl<GetRecordsReq>(),
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+        &GetRecordsReq::SharedDtor,
+        ::google::protobuf::Message::GetClearImpl<GetRecordsReq>(), &GetRecordsReq::ByteSizeLong,
+            &GetRecordsReq::_InternalSerialize,
+#endif  // PROTOBUF_CUSTOM_VTABLE
+        PROTOBUF_FIELD_OFFSET(GetRecordsReq, _impl_._cached_size_),
+        false,
+    },
+    &GetRecordsReq::kDescriptorMethods,
+    &descriptor_table_server_5fmsg_2eproto,
+    nullptr,  // tracker
+};
+const ::google::protobuf::internal::ClassData* GetRecordsReq::GetClassData() const {
+  ::google::protobuf::internal::PrefetchToLocalCache(&_class_data_);
+  ::google::protobuf::internal::PrefetchToLocalCache(_class_data_.tc_table);
+  return _class_data_.base();
+}
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::_pbi::TcParseTable<2, 3, 0, 43, 2> GetRecordsReq::_table_ = {
+  {
+    0,  // no _has_bits_
+    0, // no _extensions_
+    3, 24,  // max_field_number, fast_idx_mask
+    offsetof(decltype(_table_), field_lookup_table),
+    4294967288,  // skipmap
+    offsetof(decltype(_table_), field_entries),
+    3,  // num_field_entries
+    0,  // num_aux_entries
+    offsetof(decltype(_table_), field_names),  // no aux_entries
+    _class_data_.base(),
+    nullptr,  // post_loop_handler
+    ::_pbi::TcParser::GenericFallback,  // fallback
+    #ifdef PROTOBUF_PREFETCH_PARSE_TABLE
+    ::_pbi::TcParser::GetTable<::ServerApi::GetRecordsReq>(),  // to_prefetch
+    #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
+  }, {{
+    {::_pbi::TcParser::MiniParse, {}},
+    // string target_date = 1;
+    {::_pbi::TcParser::FastUS1,
+     {10, 63, 0, PROTOBUF_FIELD_OFFSET(GetRecordsReq, _impl_.target_date_)}},
+    // uint32 page_index = 2;
+    {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(GetRecordsReq, _impl_.page_index_), 63>(),
+     {16, 63, 0, PROTOBUF_FIELD_OFFSET(GetRecordsReq, _impl_.page_index_)}},
+    // uint32 page_size = 3;
+    {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(GetRecordsReq, _impl_.page_size_), 63>(),
+     {24, 63, 0, PROTOBUF_FIELD_OFFSET(GetRecordsReq, _impl_.page_size_)}},
+  }}, {{
+    65535, 65535
+  }}, {{
+    // string target_date = 1;
+    {PROTOBUF_FIELD_OFFSET(GetRecordsReq, _impl_.target_date_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
+    // uint32 page_index = 2;
+    {PROTOBUF_FIELD_OFFSET(GetRecordsReq, _impl_.page_index_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kUInt32)},
+    // uint32 page_size = 3;
+    {PROTOBUF_FIELD_OFFSET(GetRecordsReq, _impl_.page_size_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kUInt32)},
+  }},
+  // no aux_entries
+  {{
+    "\27\13\0\0\0\0\0\0"
+    "ServerApi.GetRecordsReq"
+    "target_date"
+  }},
+};
+
+PROTOBUF_NOINLINE void GetRecordsReq::Clear() {
+// @@protoc_insertion_point(message_clear_start:ServerApi.GetRecordsReq)
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  ::uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  _impl_.target_date_.ClearToEmpty();
+  ::memset(&_impl_.page_index_, 0, static_cast<::size_t>(
+      reinterpret_cast<char*>(&_impl_.page_size_) -
+      reinterpret_cast<char*>(&_impl_.page_index_)) + sizeof(_impl_.page_size_));
+  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
+}
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+        ::uint8_t* GetRecordsReq::_InternalSerialize(
+            const MessageLite& base, ::uint8_t* target,
+            ::google::protobuf::io::EpsCopyOutputStream* stream) {
+          const GetRecordsReq& this_ = static_cast<const GetRecordsReq&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+        ::uint8_t* GetRecordsReq::_InternalSerialize(
+            ::uint8_t* target,
+            ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+          const GetRecordsReq& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+          // @@protoc_insertion_point(serialize_to_array_start:ServerApi.GetRecordsReq)
+          ::uint32_t cached_has_bits = 0;
+          (void)cached_has_bits;
+
+          // string target_date = 1;
+          if (!this_._internal_target_date().empty()) {
+            const std::string& _s = this_._internal_target_date();
+            ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+                _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "ServerApi.GetRecordsReq.target_date");
+            target = stream->WriteStringMaybeAliased(1, _s, target);
+          }
+
+          // uint32 page_index = 2;
+          if (this_._internal_page_index() != 0) {
+            target = stream->EnsureSpace(target);
+            target = ::_pbi::WireFormatLite::WriteUInt32ToArray(
+                2, this_._internal_page_index(), target);
+          }
+
+          // uint32 page_size = 3;
+          if (this_._internal_page_size() != 0) {
+            target = stream->EnsureSpace(target);
+            target = ::_pbi::WireFormatLite::WriteUInt32ToArray(
+                3, this_._internal_page_size(), target);
+          }
+
+          if (PROTOBUF_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
+            target =
+                ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+                    this_._internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
+          }
+          // @@protoc_insertion_point(serialize_to_array_end:ServerApi.GetRecordsReq)
+          return target;
+        }
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+        ::size_t GetRecordsReq::ByteSizeLong(const MessageLite& base) {
+          const GetRecordsReq& this_ = static_cast<const GetRecordsReq&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+        ::size_t GetRecordsReq::ByteSizeLong() const {
+          const GetRecordsReq& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+          // @@protoc_insertion_point(message_byte_size_start:ServerApi.GetRecordsReq)
+          ::size_t total_size = 0;
+
+          ::uint32_t cached_has_bits = 0;
+          // Prevent compiler warnings about cached_has_bits being unused
+          (void)cached_has_bits;
+
+          ::_pbi::Prefetch5LinesFrom7Lines(&this_);
+           {
+            // string target_date = 1;
+            if (!this_._internal_target_date().empty()) {
+              total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
+                                              this_._internal_target_date());
+            }
+            // uint32 page_index = 2;
+            if (this_._internal_page_index() != 0) {
+              total_size += ::_pbi::WireFormatLite::UInt32SizePlusOne(
+                  this_._internal_page_index());
+            }
+            // uint32 page_size = 3;
+            if (this_._internal_page_size() != 0) {
+              total_size += ::_pbi::WireFormatLite::UInt32SizePlusOne(
+                  this_._internal_page_size());
+            }
+          }
+          return this_.MaybeComputeUnknownFieldsSize(total_size,
+                                                     &this_._impl_._cached_size_);
+        }
+
+void GetRecordsReq::MergeImpl(::google::protobuf::MessageLite& to_msg, const ::google::protobuf::MessageLite& from_msg) {
+  auto* const _this = static_cast<GetRecordsReq*>(&to_msg);
+  auto& from = static_cast<const GetRecordsReq&>(from_msg);
+  // @@protoc_insertion_point(class_specific_merge_from_start:ServerApi.GetRecordsReq)
+  ABSL_DCHECK_NE(&from, _this);
+  ::uint32_t cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  if (!from._internal_target_date().empty()) {
+    _this->_internal_set_target_date(from._internal_target_date());
+  }
+  if (from._internal_page_index() != 0) {
+    _this->_impl_.page_index_ = from._impl_.page_index_;
+  }
+  if (from._internal_page_size() != 0) {
+    _this->_impl_.page_size_ = from._impl_.page_size_;
+  }
+  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
+}
+
+void GetRecordsReq::CopyFrom(const GetRecordsReq& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:ServerApi.GetRecordsReq)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+
+void GetRecordsReq::InternalSwap(GetRecordsReq* PROTOBUF_RESTRICT other) {
+  using std::swap;
+  auto* arena = GetArena();
+  ABSL_DCHECK_EQ(arena, other->GetArena());
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
+  ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.target_date_, &other->_impl_.target_date_, arena);
+  ::google::protobuf::internal::memswap<
+      PROTOBUF_FIELD_OFFSET(GetRecordsReq, _impl_.page_size_)
+      + sizeof(GetRecordsReq::_impl_.page_size_)
+      - PROTOBUF_FIELD_OFFSET(GetRecordsReq, _impl_.page_index_)>(
+          reinterpret_cast<char*>(&_impl_.page_index_),
+          reinterpret_cast<char*>(&other->_impl_.page_index_));
+}
+
+::google::protobuf::Metadata GetRecordsReq::GetMetadata() const {
+  return ::google::protobuf::Message::GetMetadataImpl(GetClassData()->full());
+}
+// ===================================================================
+
+class GetRecordsRsp::_Internal {
+ public:
+};
+
+GetRecordsRsp::GetRecordsRsp(::google::protobuf::Arena* arena)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(arena, _class_data_.base()) {
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  SharedCtor(arena);
+  // @@protoc_insertion_point(arena_constructor:ServerApi.GetRecordsRsp)
+}
+inline PROTOBUF_NDEBUG_INLINE GetRecordsRsp::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility, ::google::protobuf::Arena* arena,
+    const Impl_& from, const ::ServerApi::GetRecordsRsp& from_msg)
+      : records_{visibility, arena, from.records_},
+        _cached_size_{0} {}
+
+GetRecordsRsp::GetRecordsRsp(
+    ::google::protobuf::Arena* arena,
+    const GetRecordsRsp& from)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(arena, _class_data_.base()) {
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  GetRecordsRsp* const _this = this;
+  (void)_this;
+  _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
+      from._internal_metadata_);
+  new (&_impl_) Impl_(internal_visibility(), arena, from._impl_, from);
+  _impl_.total_count_ = from._impl_.total_count_;
+
+  // @@protoc_insertion_point(copy_constructor:ServerApi.GetRecordsRsp)
+}
+inline PROTOBUF_NDEBUG_INLINE GetRecordsRsp::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility,
+    ::google::protobuf::Arena* arena)
+      : records_{visibility, arena},
+        _cached_size_{0} {}
+
+inline void GetRecordsRsp::SharedCtor(::_pb::Arena* arena) {
+  new (&_impl_) Impl_(internal_visibility(), arena);
+  _impl_.total_count_ = {};
+}
+GetRecordsRsp::~GetRecordsRsp() {
+  // @@protoc_insertion_point(destructor:ServerApi.GetRecordsRsp)
+  SharedDtor(*this);
+}
+inline void GetRecordsRsp::SharedDtor(MessageLite& self) {
+  GetRecordsRsp& this_ = static_cast<GetRecordsRsp&>(self);
+  this_._internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
+  ABSL_DCHECK(this_.GetArena() == nullptr);
+  this_._impl_.~Impl_();
+}
+
+inline void* GetRecordsRsp::PlacementNew_(const void*, void* mem,
+                                        ::google::protobuf::Arena* arena) {
+  return ::new (mem) GetRecordsRsp(arena);
+}
+constexpr auto GetRecordsRsp::InternalNewImpl_() {
+  constexpr auto arena_bits = ::google::protobuf::internal::EncodePlacementArenaOffsets({
+      PROTOBUF_FIELD_OFFSET(GetRecordsRsp, _impl_.records_) +
+          decltype(GetRecordsRsp::_impl_.records_)::
+              InternalGetArenaOffset(
+                  ::google::protobuf::Message::internal_visibility()),
+  });
+  if (arena_bits.has_value()) {
+    return ::google::protobuf::internal::MessageCreator::ZeroInit(
+        sizeof(GetRecordsRsp), alignof(GetRecordsRsp), *arena_bits);
+  } else {
+    return ::google::protobuf::internal::MessageCreator(&GetRecordsRsp::PlacementNew_,
+                                 sizeof(GetRecordsRsp),
+                                 alignof(GetRecordsRsp));
+  }
+}
+PROTOBUF_CONSTINIT
+PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::google::protobuf::internal::ClassDataFull GetRecordsRsp::_class_data_ = {
+    ::google::protobuf::internal::ClassData{
+        &_GetRecordsRsp_default_instance_._instance,
+        &_table_.header,
+        nullptr,  // OnDemandRegisterArenaDtor
+        nullptr,  // IsInitialized
+        &GetRecordsRsp::MergeImpl,
+        ::google::protobuf::Message::GetNewImpl<GetRecordsRsp>(),
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+        &GetRecordsRsp::SharedDtor,
+        ::google::protobuf::Message::GetClearImpl<GetRecordsRsp>(), &GetRecordsRsp::ByteSizeLong,
+            &GetRecordsRsp::_InternalSerialize,
+#endif  // PROTOBUF_CUSTOM_VTABLE
+        PROTOBUF_FIELD_OFFSET(GetRecordsRsp, _impl_._cached_size_),
+        false,
+    },
+    &GetRecordsRsp::kDescriptorMethods,
+    &descriptor_table_server_5fmsg_2eproto,
+    nullptr,  // tracker
+};
+const ::google::protobuf::internal::ClassData* GetRecordsRsp::GetClassData() const {
+  ::google::protobuf::internal::PrefetchToLocalCache(&_class_data_);
+  ::google::protobuf::internal::PrefetchToLocalCache(_class_data_.tc_table);
+  return _class_data_.base();
+}
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::_pbi::TcParseTable<1, 2, 1, 0, 2> GetRecordsRsp::_table_ = {
+  {
+    0,  // no _has_bits_
+    0, // no _extensions_
+    2, 8,  // max_field_number, fast_idx_mask
+    offsetof(decltype(_table_), field_lookup_table),
+    4294967292,  // skipmap
+    offsetof(decltype(_table_), field_entries),
+    2,  // num_field_entries
+    1,  // num_aux_entries
+    offsetof(decltype(_table_), aux_entries),
+    _class_data_.base(),
+    nullptr,  // post_loop_handler
+    ::_pbi::TcParser::GenericFallback,  // fallback
+    #ifdef PROTOBUF_PREFETCH_PARSE_TABLE
+    ::_pbi::TcParser::GetTable<::ServerApi::GetRecordsRsp>(),  // to_prefetch
+    #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
+  }, {{
+    // uint32 total_count = 2;
+    {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(GetRecordsRsp, _impl_.total_count_), 63>(),
+     {16, 63, 0, PROTOBUF_FIELD_OFFSET(GetRecordsRsp, _impl_.total_count_)}},
+    // repeated .ServerApi.PlayRecord records = 1;
+    {::_pbi::TcParser::FastMtR1,
+     {10, 63, 0, PROTOBUF_FIELD_OFFSET(GetRecordsRsp, _impl_.records_)}},
+  }}, {{
+    65535, 65535
+  }}, {{
+    // repeated .ServerApi.PlayRecord records = 1;
+    {PROTOBUF_FIELD_OFFSET(GetRecordsRsp, _impl_.records_), 0, 0,
+    (0 | ::_fl::kFcRepeated | ::_fl::kMessage | ::_fl::kTvTable)},
+    // uint32 total_count = 2;
+    {PROTOBUF_FIELD_OFFSET(GetRecordsRsp, _impl_.total_count_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kUInt32)},
+  }}, {{
+    {::_pbi::TcParser::GetTable<::ServerApi::PlayRecord>()},
+  }}, {{
+  }},
+};
+
+PROTOBUF_NOINLINE void GetRecordsRsp::Clear() {
+// @@protoc_insertion_point(message_clear_start:ServerApi.GetRecordsRsp)
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  ::uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  _impl_.records_.Clear();
+  _impl_.total_count_ = 0u;
+  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
+}
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+        ::uint8_t* GetRecordsRsp::_InternalSerialize(
+            const MessageLite& base, ::uint8_t* target,
+            ::google::protobuf::io::EpsCopyOutputStream* stream) {
+          const GetRecordsRsp& this_ = static_cast<const GetRecordsRsp&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+        ::uint8_t* GetRecordsRsp::_InternalSerialize(
+            ::uint8_t* target,
+            ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+          const GetRecordsRsp& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+          // @@protoc_insertion_point(serialize_to_array_start:ServerApi.GetRecordsRsp)
+          ::uint32_t cached_has_bits = 0;
+          (void)cached_has_bits;
+
+          // repeated .ServerApi.PlayRecord records = 1;
+          for (unsigned i = 0, n = static_cast<unsigned>(
+                                   this_._internal_records_size());
+               i < n; i++) {
+            const auto& repfield = this_._internal_records().Get(i);
+            target =
+                ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
+                    1, repfield, repfield.GetCachedSize(),
+                    target, stream);
+          }
+
+          // uint32 total_count = 2;
+          if (this_._internal_total_count() != 0) {
+            target = stream->EnsureSpace(target);
+            target = ::_pbi::WireFormatLite::WriteUInt32ToArray(
+                2, this_._internal_total_count(), target);
+          }
+
+          if (PROTOBUF_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
+            target =
+                ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+                    this_._internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
+          }
+          // @@protoc_insertion_point(serialize_to_array_end:ServerApi.GetRecordsRsp)
+          return target;
+        }
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+        ::size_t GetRecordsRsp::ByteSizeLong(const MessageLite& base) {
+          const GetRecordsRsp& this_ = static_cast<const GetRecordsRsp&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+        ::size_t GetRecordsRsp::ByteSizeLong() const {
+          const GetRecordsRsp& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+          // @@protoc_insertion_point(message_byte_size_start:ServerApi.GetRecordsRsp)
+          ::size_t total_size = 0;
+
+          ::uint32_t cached_has_bits = 0;
+          // Prevent compiler warnings about cached_has_bits being unused
+          (void)cached_has_bits;
+
+          ::_pbi::Prefetch5LinesFrom7Lines(&this_);
+           {
+            // repeated .ServerApi.PlayRecord records = 1;
+            {
+              total_size += 1UL * this_._internal_records_size();
+              for (const auto& msg : this_._internal_records()) {
+                total_size += ::google::protobuf::internal::WireFormatLite::MessageSize(msg);
+              }
+            }
+          }
+           {
+            // uint32 total_count = 2;
+            if (this_._internal_total_count() != 0) {
+              total_size += ::_pbi::WireFormatLite::UInt32SizePlusOne(
+                  this_._internal_total_count());
+            }
+          }
+          return this_.MaybeComputeUnknownFieldsSize(total_size,
+                                                     &this_._impl_._cached_size_);
+        }
+
+void GetRecordsRsp::MergeImpl(::google::protobuf::MessageLite& to_msg, const ::google::protobuf::MessageLite& from_msg) {
+  auto* const _this = static_cast<GetRecordsRsp*>(&to_msg);
+  auto& from = static_cast<const GetRecordsRsp&>(from_msg);
+  // @@protoc_insertion_point(class_specific_merge_from_start:ServerApi.GetRecordsRsp)
+  ABSL_DCHECK_NE(&from, _this);
+  ::uint32_t cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  _this->_internal_mutable_records()->MergeFrom(
+      from._internal_records());
+  if (from._internal_total_count() != 0) {
+    _this->_impl_.total_count_ = from._impl_.total_count_;
+  }
+  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
+}
+
+void GetRecordsRsp::CopyFrom(const GetRecordsRsp& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:ServerApi.GetRecordsRsp)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+
+void GetRecordsRsp::InternalSwap(GetRecordsRsp* PROTOBUF_RESTRICT other) {
+  using std::swap;
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
+  _impl_.records_.InternalSwap(&other->_impl_.records_);
+        swap(_impl_.total_count_, other->_impl_.total_count_);
+}
+
+::google::protobuf::Metadata GetRecordsRsp::GetMetadata() const {
+  return ::google::protobuf::Message::GetMetadataImpl(GetClassData()->full());
+}
+// ===================================================================
+
+class DeleteRecordReq::_Internal {
+ public:
+};
+
+DeleteRecordReq::DeleteRecordReq(::google::protobuf::Arena* arena)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(arena, _class_data_.base()) {
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  SharedCtor(arena);
+  // @@protoc_insertion_point(arena_constructor:ServerApi.DeleteRecordReq)
+}
+DeleteRecordReq::DeleteRecordReq(
+    ::google::protobuf::Arena* arena, const DeleteRecordReq& from)
+    : DeleteRecordReq(arena) {
+  MergeFrom(from);
+}
+inline PROTOBUF_NDEBUG_INLINE DeleteRecordReq::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility,
+    ::google::protobuf::Arena* arena)
+      : _cached_size_{0} {}
+
+inline void DeleteRecordReq::SharedCtor(::_pb::Arena* arena) {
+  new (&_impl_) Impl_(internal_visibility(), arena);
+  _impl_.record_id_ = {};
+}
+DeleteRecordReq::~DeleteRecordReq() {
+  // @@protoc_insertion_point(destructor:ServerApi.DeleteRecordReq)
+  SharedDtor(*this);
+}
+inline void DeleteRecordReq::SharedDtor(MessageLite& self) {
+  DeleteRecordReq& this_ = static_cast<DeleteRecordReq&>(self);
+  this_._internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
+  ABSL_DCHECK(this_.GetArena() == nullptr);
+  this_._impl_.~Impl_();
+}
+
+inline void* DeleteRecordReq::PlacementNew_(const void*, void* mem,
+                                        ::google::protobuf::Arena* arena) {
+  return ::new (mem) DeleteRecordReq(arena);
+}
+constexpr auto DeleteRecordReq::InternalNewImpl_() {
+  return ::google::protobuf::internal::MessageCreator::ZeroInit(sizeof(DeleteRecordReq),
+                                            alignof(DeleteRecordReq));
+}
+PROTOBUF_CONSTINIT
+PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::google::protobuf::internal::ClassDataFull DeleteRecordReq::_class_data_ = {
+    ::google::protobuf::internal::ClassData{
+        &_DeleteRecordReq_default_instance_._instance,
+        &_table_.header,
+        nullptr,  // OnDemandRegisterArenaDtor
+        nullptr,  // IsInitialized
+        &DeleteRecordReq::MergeImpl,
+        ::google::protobuf::Message::GetNewImpl<DeleteRecordReq>(),
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+        &DeleteRecordReq::SharedDtor,
+        ::google::protobuf::Message::GetClearImpl<DeleteRecordReq>(), &DeleteRecordReq::ByteSizeLong,
+            &DeleteRecordReq::_InternalSerialize,
+#endif  // PROTOBUF_CUSTOM_VTABLE
+        PROTOBUF_FIELD_OFFSET(DeleteRecordReq, _impl_._cached_size_),
+        false,
+    },
+    &DeleteRecordReq::kDescriptorMethods,
+    &descriptor_table_server_5fmsg_2eproto,
+    nullptr,  // tracker
+};
+const ::google::protobuf::internal::ClassData* DeleteRecordReq::GetClassData() const {
+  ::google::protobuf::internal::PrefetchToLocalCache(&_class_data_);
+  ::google::protobuf::internal::PrefetchToLocalCache(_class_data_.tc_table);
+  return _class_data_.base();
+}
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::_pbi::TcParseTable<0, 1, 0, 0, 2> DeleteRecordReq::_table_ = {
+  {
+    0,  // no _has_bits_
+    0, // no _extensions_
+    1, 0,  // max_field_number, fast_idx_mask
+    offsetof(decltype(_table_), field_lookup_table),
+    4294967294,  // skipmap
+    offsetof(decltype(_table_), field_entries),
+    1,  // num_field_entries
+    0,  // num_aux_entries
+    offsetof(decltype(_table_), field_names),  // no aux_entries
+    _class_data_.base(),
+    nullptr,  // post_loop_handler
+    ::_pbi::TcParser::GenericFallback,  // fallback
+    #ifdef PROTOBUF_PREFETCH_PARSE_TABLE
+    ::_pbi::TcParser::GetTable<::ServerApi::DeleteRecordReq>(),  // to_prefetch
+    #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
+  }, {{
+    // uint64 record_id = 1;
+    {::_pbi::TcParser::SingularVarintNoZag1<::uint64_t, offsetof(DeleteRecordReq, _impl_.record_id_), 63>(),
+     {8, 63, 0, PROTOBUF_FIELD_OFFSET(DeleteRecordReq, _impl_.record_id_)}},
+  }}, {{
+    65535, 65535
+  }}, {{
+    // uint64 record_id = 1;
+    {PROTOBUF_FIELD_OFFSET(DeleteRecordReq, _impl_.record_id_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kUInt64)},
+  }},
+  // no aux_entries
+  {{
+  }},
+};
+
+PROTOBUF_NOINLINE void DeleteRecordReq::Clear() {
+// @@protoc_insertion_point(message_clear_start:ServerApi.DeleteRecordReq)
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  ::uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  _impl_.record_id_ = ::uint64_t{0u};
+  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
+}
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+        ::uint8_t* DeleteRecordReq::_InternalSerialize(
+            const MessageLite& base, ::uint8_t* target,
+            ::google::protobuf::io::EpsCopyOutputStream* stream) {
+          const DeleteRecordReq& this_ = static_cast<const DeleteRecordReq&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+        ::uint8_t* DeleteRecordReq::_InternalSerialize(
+            ::uint8_t* target,
+            ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+          const DeleteRecordReq& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+          // @@protoc_insertion_point(serialize_to_array_start:ServerApi.DeleteRecordReq)
+          ::uint32_t cached_has_bits = 0;
+          (void)cached_has_bits;
+
+          // uint64 record_id = 1;
+          if (this_._internal_record_id() != 0) {
+            target = stream->EnsureSpace(target);
+            target = ::_pbi::WireFormatLite::WriteUInt64ToArray(
+                1, this_._internal_record_id(), target);
+          }
+
+          if (PROTOBUF_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
+            target =
+                ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+                    this_._internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
+          }
+          // @@protoc_insertion_point(serialize_to_array_end:ServerApi.DeleteRecordReq)
+          return target;
+        }
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+        ::size_t DeleteRecordReq::ByteSizeLong(const MessageLite& base) {
+          const DeleteRecordReq& this_ = static_cast<const DeleteRecordReq&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+        ::size_t DeleteRecordReq::ByteSizeLong() const {
+          const DeleteRecordReq& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+          // @@protoc_insertion_point(message_byte_size_start:ServerApi.DeleteRecordReq)
+          ::size_t total_size = 0;
+
+          ::uint32_t cached_has_bits = 0;
+          // Prevent compiler warnings about cached_has_bits being unused
+          (void)cached_has_bits;
+
+           {
+            // uint64 record_id = 1;
+            if (this_._internal_record_id() != 0) {
+              total_size += ::_pbi::WireFormatLite::UInt64SizePlusOne(
+                  this_._internal_record_id());
+            }
+          }
+          return this_.MaybeComputeUnknownFieldsSize(total_size,
+                                                     &this_._impl_._cached_size_);
+        }
+
+void DeleteRecordReq::MergeImpl(::google::protobuf::MessageLite& to_msg, const ::google::protobuf::MessageLite& from_msg) {
+  auto* const _this = static_cast<DeleteRecordReq*>(&to_msg);
+  auto& from = static_cast<const DeleteRecordReq&>(from_msg);
+  // @@protoc_insertion_point(class_specific_merge_from_start:ServerApi.DeleteRecordReq)
+  ABSL_DCHECK_NE(&from, _this);
+  ::uint32_t cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  if (from._internal_record_id() != 0) {
+    _this->_impl_.record_id_ = from._impl_.record_id_;
+  }
+  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
+}
+
+void DeleteRecordReq::CopyFrom(const DeleteRecordReq& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:ServerApi.DeleteRecordReq)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+
+void DeleteRecordReq::InternalSwap(DeleteRecordReq* PROTOBUF_RESTRICT other) {
+  using std::swap;
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
+        swap(_impl_.record_id_, other->_impl_.record_id_);
+}
+
+::google::protobuf::Metadata DeleteRecordReq::GetMetadata() const {
+  return ::google::protobuf::Message::GetMetadataImpl(GetClassData()->full());
+}
+// ===================================================================
+
+class DeleteRecordRsp::_Internal {
+ public:
+};
+
+DeleteRecordRsp::DeleteRecordRsp(::google::protobuf::Arena* arena)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(arena, _class_data_.base()) {
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  SharedCtor(arena);
+  // @@protoc_insertion_point(arena_constructor:ServerApi.DeleteRecordRsp)
+}
+DeleteRecordRsp::DeleteRecordRsp(
+    ::google::protobuf::Arena* arena, const DeleteRecordRsp& from)
+    : DeleteRecordRsp(arena) {
+  MergeFrom(from);
+}
+inline PROTOBUF_NDEBUG_INLINE DeleteRecordRsp::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility,
+    ::google::protobuf::Arena* arena)
+      : _cached_size_{0} {}
+
+inline void DeleteRecordRsp::SharedCtor(::_pb::Arena* arena) {
+  new (&_impl_) Impl_(internal_visibility(), arena);
+  _impl_.deleted_id_ = {};
+}
+DeleteRecordRsp::~DeleteRecordRsp() {
+  // @@protoc_insertion_point(destructor:ServerApi.DeleteRecordRsp)
+  SharedDtor(*this);
+}
+inline void DeleteRecordRsp::SharedDtor(MessageLite& self) {
+  DeleteRecordRsp& this_ = static_cast<DeleteRecordRsp&>(self);
+  this_._internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
+  ABSL_DCHECK(this_.GetArena() == nullptr);
+  this_._impl_.~Impl_();
+}
+
+inline void* DeleteRecordRsp::PlacementNew_(const void*, void* mem,
+                                        ::google::protobuf::Arena* arena) {
+  return ::new (mem) DeleteRecordRsp(arena);
+}
+constexpr auto DeleteRecordRsp::InternalNewImpl_() {
+  return ::google::protobuf::internal::MessageCreator::ZeroInit(sizeof(DeleteRecordRsp),
+                                            alignof(DeleteRecordRsp));
+}
+PROTOBUF_CONSTINIT
+PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::google::protobuf::internal::ClassDataFull DeleteRecordRsp::_class_data_ = {
+    ::google::protobuf::internal::ClassData{
+        &_DeleteRecordRsp_default_instance_._instance,
+        &_table_.header,
+        nullptr,  // OnDemandRegisterArenaDtor
+        nullptr,  // IsInitialized
+        &DeleteRecordRsp::MergeImpl,
+        ::google::protobuf::Message::GetNewImpl<DeleteRecordRsp>(),
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+        &DeleteRecordRsp::SharedDtor,
+        ::google::protobuf::Message::GetClearImpl<DeleteRecordRsp>(), &DeleteRecordRsp::ByteSizeLong,
+            &DeleteRecordRsp::_InternalSerialize,
+#endif  // PROTOBUF_CUSTOM_VTABLE
+        PROTOBUF_FIELD_OFFSET(DeleteRecordRsp, _impl_._cached_size_),
+        false,
+    },
+    &DeleteRecordRsp::kDescriptorMethods,
+    &descriptor_table_server_5fmsg_2eproto,
+    nullptr,  // tracker
+};
+const ::google::protobuf::internal::ClassData* DeleteRecordRsp::GetClassData() const {
+  ::google::protobuf::internal::PrefetchToLocalCache(&_class_data_);
+  ::google::protobuf::internal::PrefetchToLocalCache(_class_data_.tc_table);
+  return _class_data_.base();
+}
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::_pbi::TcParseTable<0, 1, 0, 0, 2> DeleteRecordRsp::_table_ = {
+  {
+    0,  // no _has_bits_
+    0, // no _extensions_
+    1, 0,  // max_field_number, fast_idx_mask
+    offsetof(decltype(_table_), field_lookup_table),
+    4294967294,  // skipmap
+    offsetof(decltype(_table_), field_entries),
+    1,  // num_field_entries
+    0,  // num_aux_entries
+    offsetof(decltype(_table_), field_names),  // no aux_entries
+    _class_data_.base(),
+    nullptr,  // post_loop_handler
+    ::_pbi::TcParser::GenericFallback,  // fallback
+    #ifdef PROTOBUF_PREFETCH_PARSE_TABLE
+    ::_pbi::TcParser::GetTable<::ServerApi::DeleteRecordRsp>(),  // to_prefetch
+    #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
+  }, {{
+    // uint64 deleted_id = 1;
+    {::_pbi::TcParser::SingularVarintNoZag1<::uint64_t, offsetof(DeleteRecordRsp, _impl_.deleted_id_), 63>(),
+     {8, 63, 0, PROTOBUF_FIELD_OFFSET(DeleteRecordRsp, _impl_.deleted_id_)}},
+  }}, {{
+    65535, 65535
+  }}, {{
+    // uint64 deleted_id = 1;
+    {PROTOBUF_FIELD_OFFSET(DeleteRecordRsp, _impl_.deleted_id_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kUInt64)},
+  }},
+  // no aux_entries
+  {{
+  }},
+};
+
+PROTOBUF_NOINLINE void DeleteRecordRsp::Clear() {
+// @@protoc_insertion_point(message_clear_start:ServerApi.DeleteRecordRsp)
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  ::uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  _impl_.deleted_id_ = ::uint64_t{0u};
+  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
+}
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+        ::uint8_t* DeleteRecordRsp::_InternalSerialize(
+            const MessageLite& base, ::uint8_t* target,
+            ::google::protobuf::io::EpsCopyOutputStream* stream) {
+          const DeleteRecordRsp& this_ = static_cast<const DeleteRecordRsp&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+        ::uint8_t* DeleteRecordRsp::_InternalSerialize(
+            ::uint8_t* target,
+            ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+          const DeleteRecordRsp& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+          // @@protoc_insertion_point(serialize_to_array_start:ServerApi.DeleteRecordRsp)
+          ::uint32_t cached_has_bits = 0;
+          (void)cached_has_bits;
+
+          // uint64 deleted_id = 1;
+          if (this_._internal_deleted_id() != 0) {
+            target = stream->EnsureSpace(target);
+            target = ::_pbi::WireFormatLite::WriteUInt64ToArray(
+                1, this_._internal_deleted_id(), target);
+          }
+
+          if (PROTOBUF_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
+            target =
+                ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+                    this_._internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
+          }
+          // @@protoc_insertion_point(serialize_to_array_end:ServerApi.DeleteRecordRsp)
+          return target;
+        }
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+        ::size_t DeleteRecordRsp::ByteSizeLong(const MessageLite& base) {
+          const DeleteRecordRsp& this_ = static_cast<const DeleteRecordRsp&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+        ::size_t DeleteRecordRsp::ByteSizeLong() const {
+          const DeleteRecordRsp& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+          // @@protoc_insertion_point(message_byte_size_start:ServerApi.DeleteRecordRsp)
+          ::size_t total_size = 0;
+
+          ::uint32_t cached_has_bits = 0;
+          // Prevent compiler warnings about cached_has_bits being unused
+          (void)cached_has_bits;
+
+           {
+            // uint64 deleted_id = 1;
+            if (this_._internal_deleted_id() != 0) {
+              total_size += ::_pbi::WireFormatLite::UInt64SizePlusOne(
+                  this_._internal_deleted_id());
+            }
+          }
+          return this_.MaybeComputeUnknownFieldsSize(total_size,
+                                                     &this_._impl_._cached_size_);
+        }
+
+void DeleteRecordRsp::MergeImpl(::google::protobuf::MessageLite& to_msg, const ::google::protobuf::MessageLite& from_msg) {
+  auto* const _this = static_cast<DeleteRecordRsp*>(&to_msg);
+  auto& from = static_cast<const DeleteRecordRsp&>(from_msg);
+  // @@protoc_insertion_point(class_specific_merge_from_start:ServerApi.DeleteRecordRsp)
+  ABSL_DCHECK_NE(&from, _this);
+  ::uint32_t cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  if (from._internal_deleted_id() != 0) {
+    _this->_impl_.deleted_id_ = from._impl_.deleted_id_;
+  }
+  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
+}
+
+void DeleteRecordRsp::CopyFrom(const DeleteRecordRsp& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:ServerApi.DeleteRecordRsp)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+
+void DeleteRecordRsp::InternalSwap(DeleteRecordRsp* PROTOBUF_RESTRICT other) {
+  using std::swap;
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
+        swap(_impl_.deleted_id_, other->_impl_.deleted_id_);
+}
+
+::google::protobuf::Metadata DeleteRecordRsp::GetMetadata() const {
   return ::google::protobuf::Message::GetMetadataImpl(GetClassData()->full());
 }
 // @@protoc_insertion_point(namespace_scope)

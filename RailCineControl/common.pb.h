@@ -78,6 +78,12 @@ enum MsgId : int {
   ID_DOWNLOAD_CHUNK_RSP = 2104,
   ID_DOWNLOAD_COVER_REQ = 2201,
   ID_DOWNLOAD_COVER_RSP = 2202,
+  ID_ADD_RECORD_REQ = 3001,
+  ID_ADD_RECORD_RSP = 3002,
+  ID_GET_RECORDS_REQ = 3003,
+  ID_GET_RECORDS_RSP = 3004,
+  ID_DELETE_RECORD_REQ = 3005,
+  ID_DELETE_RECORD_RSP = 3006,
   MsgId_INT_MIN_SENTINEL_DO_NOT_USE_ =
       std::numeric_limits<::int32_t>::min(),
   MsgId_INT_MAX_SENTINEL_DO_NOT_USE_ =
@@ -87,8 +93,8 @@ enum MsgId : int {
 bool MsgId_IsValid(int value);
 extern const uint32_t MsgId_internal_data_[];
 constexpr MsgId MsgId_MIN = static_cast<MsgId>(0);
-constexpr MsgId MsgId_MAX = static_cast<MsgId>(2202);
-constexpr int MsgId_ARRAYSIZE = 2202 + 1;
+constexpr MsgId MsgId_MAX = static_cast<MsgId>(3006);
+constexpr int MsgId_ARRAYSIZE = 3006 + 1;
 const ::google::protobuf::EnumDescriptor*
 MsgId_descriptor();
 template <typename T>
