@@ -11,6 +11,7 @@
 #include <QDir>
 #include <filesystem> 
 #include <QMessageBox>
+#include <QTimer>
 #include <QDebug>
 #include "TCPMgr.h"
 #include "Global.h"
@@ -276,6 +277,16 @@ void PlaybackPage::SwitchControlPanelState(bool isDownloaded)
 
 void PlaybackPage::onMovieSelected(QListWidgetItem* current, QListWidgetItem* previous)
 {
+    // 👑 状态锁拦截：如果正在下载，强行剥夺用户的切换能力，直到下载完成！
+    if (m_isDownloading) 
+    {
+        // 让 UI 的选中虚线强制弹回上一个选项 (保持视觉一致性)
+        if (previous) {
+            m_movieList->setCurrentItem(previous);
+        }
+        return;
+    }
+
     if (previous) {
         QWidget* preWidget = m_movieList->itemWidget(previous);
         preWidget->setProperty("selected", false);
@@ -334,6 +345,8 @@ void PlaybackPage::onDownloadClicked()
     if (m_selectedMovieMd5.isEmpty()) return;
 
     // 1. 锁定界面与按钮 (防手贱连点)
+    m_currentDownloadBytes = 0;
+    m_isDownloading = true;
     m_btnDownload->setEnabled(false);
     m_btnDownload->setText(u8"正在建立传输通道...");
 
@@ -341,7 +354,6 @@ void PlaybackPage::onDownloadClicked()
     m_downloadProgress->show();
 
     // 2. 准备本地文件 (创建或清空旧的残缺文件)
-    // m_selectedMoviePath 里面存的就是 "./LocalAssets/xxxx.mp4"
     QFile localFile(m_selectedMoviePath);
     if (!localFile.open(QIODevice::WriteOnly)) {
         m_btnDownload->setText(u8"本地磁盘错误");
@@ -528,7 +540,6 @@ void PlaybackPage::onDownloadFailed(const QString& errMsg)
     m_downloadProgress->hide();
     m_btnDownload->setText(u8"📥 下载到本地");
     m_btnDownload->setEnabled(true);
-    m_movieList->setEnabled(true); // 解锁列表
 }
 
 // =========================================================================================
@@ -565,7 +576,7 @@ void PlaybackPage::onDownloadFinished(const QString& fileMd5)
     // 1. 恢复底层状态
     m_currentDownloadBytes = 0;
     m_downloadProgress->hide();
-    m_movieList->setEnabled(true); // 解锁列表
+    m_isDownloading = false;
 
     // 2. 核心 UI 切换：藏起下载按钮，掏出播放按钮！
     m_selectedIsDownloaded = true;
@@ -593,5 +604,9 @@ void PlaybackPage::onDownloadFinished(const QString& fileMd5)
         }
     }
 
-    QMessageBox::information(this, u8"下载完成", u8"影片已准备就绪，可以开始播放！");
+    // 👑 绝杀防御：将 MessageBox 扔到下一个事件循环去执行！
+        // 彻底避免网络 Socket 被 UI 弹窗阻塞导致的界面塌陷 Bug
+    QTimer::singleShot(100, this, [this]() {
+        QMessageBox::information(this, u8"下载完成", u8"影片已准备就绪，可以开始播放！");
+        });
 }

@@ -74,6 +74,7 @@ private:
     QDateTime m_playStartTime;                                                                  // 记录开始播放的时间
 
     bool m_isPlayingRecord;                                                                     // 防抖标志位，防止重复记录
+    bool m_isDownloading = false;                                                               // 状态锁，防止下载时乱点
     bool     m_selectedIsDownloaded;                                                            // 当前选中的影片是否已下载
     QString  m_selectedMovieMd5;                                                                // 当前选中影片的 MD5 (用于向服务器请求分片)
     uint64_t m_selectedMovieSize;                                                               // 当前选中影片的总大小
