@@ -5,12 +5,10 @@
 #include <QPushButton>
 #include <QHeaderView>
 #include <QMessageBox>
-#include <QFileDialog>                                                      // 💡 导出文件需要
-#include <QTextStream>                                                      // 💡 写入文件需要
+#include <QFileDialog>                                                      // 导出文件需要
+#include <QTextStream>                                                      // 写入文件需要
 #include <QDebug>
 #include <QDateTime>
-
-// 👑 引入网络通信核心
 #include "TCPMgr.h"
 
 RecordPage::RecordPage(QWidget* parent) : QWidget(parent)

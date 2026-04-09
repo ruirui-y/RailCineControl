@@ -49,6 +49,8 @@ private:
     uint64_t m_currentOffset;                                                       // 当前已读取的字节偏移量
     uint32_t m_chunkIndex;                                                          // 当前分片序号
     uint64_t m_totalFileSize;                                                       // 文件总大小
+    QString  m_currentEncryptKey;                                                   // 当前视频的专属加密密钥 (UUID)
+    uint32_t m_currentDurationSec;                                                  // 当前视频的总时长(秒)
 };
 
 #endif // UPLOADPAGE_H

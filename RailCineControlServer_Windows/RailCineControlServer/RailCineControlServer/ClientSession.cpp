@@ -303,6 +303,7 @@ void ClientSession::InitHandlers()
                 saveChunkToDisk(req, seq_id);
             }
         };
+
     // ------------------------------------------------------------------
     // 处理客户端发来的 [影片元数据录入请求]
     // ------------------------------------------------------------------
@@ -312,10 +313,13 @@ void ClientSession::InitHandlers()
             ServerApi::UploadMovieReq req;
             if (!req.ParseFromArray(bodyData.data(), bodyData.size())) return;
 
-            QString movieName = QString::fromStdString(req.movie_name());
-            QString desc = QString::fromStdString(req.description());
-            QString videoMd5 = QString::fromStdString(req.video_md5());
-            QString suffix = QString::fromStdString(req.cover_suffix());
+            // 解析请求
+            QString movieName = QString::fromStdString(req.movie_name());                                   // 影片名字
+            QString desc = QString::fromStdString(req.description());                                       // 影片描述
+            QString videoMd5 = QString::fromStdString(req.video_md5());                                     // 影片md5码
+            QString suffix = QString::fromStdString(req.cover_suffix());                                    // 封面图片后缀
+            QString encryptKey = QString::fromStdString(req.encrypt_key());                                 // 影片加密key
+            uint32_t durationSec = req.duration_sec();                                                      // 影片总时长
 
             QString dirPath = "./UploadedAssets";
             QDir().mkpath(dirPath);
@@ -340,11 +344,19 @@ void ClientSession::InitHandlers()
             // =========================================================================
             // 💡 使用 INSERT IGNORE：如果 MD5 已存在（触发 uk_file_md5 唯一约束），不会报错，而是平稳度过
             QString sqlStep1 = "INSERT IGNORE INTO t_movie_resource "
-                "(file_md5, original_name, cover_url, video_url, description, file_size, duration_sec, upload_by, create_time) "
-                "VALUES (?, ?, ?, ?, ?, ?, 0, ?, NOW())";
+                "(file_md5, original_name, cover_url, video_url, description, file_size, duration_sec, encrypt_key, upload_by, create_time) "
+                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, NOW())";
 
             QList<QVariant> paramsStep1;
-            paramsStep1 << videoMd5 << movieName << coverPath << videoPath << desc << fileSize << m_accountId;
+            paramsStep1 << videoMd5
+                << movieName
+                << coverPath
+                << videoPath
+                << desc
+                << fileSize
+                << durationSec
+                << (encryptKey.isEmpty() ? QVariant(QVariant::String) : encryptKey) // 如果没加密，写入 NULL 而不是空字符串
+                << m_accountId;
 
             ThreadPool::Instance()->PostUpdateTask(sqlStep1, [weakSelf, seq_id, movieName, videoMd5](bool success1) {
                 auto strongSelf1 = weakSelf.lock();
@@ -409,8 +421,8 @@ void ClientSession::InitHandlers()
         };
 
         // ------------------------------------------------------------------
-    // 处理客户端发来的 [获取影片列表请求]
-    // ------------------------------------------------------------------
+        // 处理客户端发来的 [获取影片列表请求]
+        // ------------------------------------------------------------------
         m_router[ServerApi::ID_GET_MOVIE_LIST_REQ] = [this](const ServerApi::PacketHeader& header, const QByteArray& bodyData)
             {
                 uint64_t seq_id = header.seq_id();

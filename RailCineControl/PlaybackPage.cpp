@@ -177,7 +177,7 @@ void PlaybackPage::RefreshMovies()
 
 void PlaybackPage::AddMovieCard(uint64_t id, const QString& name, const QString& coverUrl,
     const QString& localPath, bool isDownloaded, int playStatus,
-    const QString& fileMd5, uint64_t expectedSize)
+    const QString& fileMd5, uint64_t expectedSize, const QString& encryptKey)
 {
     QFrame* card = new QFrame();
     card->setObjectName("gameCard");
@@ -243,6 +243,7 @@ void PlaybackPage::AddMovieCard(uint64_t id, const QString& name, const QString&
     item->setData(Qt::UserRole + 3, isDownloaded);                      // 是否已下载
     item->setData(Qt::UserRole + 4, fileMd5);                           // 下载请求凭证 MD5
     item->setData(Qt::UserRole + 5, expectedSize);                      // 用于计算进度条
+    item->setData(Qt::UserRole + 6, encryptKey);                        // 运行时的专属解密密钥
 
     m_movieList->addItem(item);
     m_movieList->setItemWidget(item, card);
@@ -306,6 +307,7 @@ void PlaybackPage::onMovieSelected(QListWidgetItem* current, QListWidgetItem* pr
         m_selectedIsDownloaded = current->data(Qt::UserRole + 3).toBool();
         m_selectedMovieMd5 = current->data(Qt::UserRole + 4).toString();
         m_selectedMovieSize = current->data(Qt::UserRole + 5).toULongLong();
+        m_selectedMovieEncryptKey = current->data(Qt::UserRole + 6).toString();
 
         // 👑 智能显隐：互斥展示 播放/下载 按钮
         SwitchControlPanelState(m_selectedIsDownloaded);
@@ -464,10 +466,13 @@ void PlaybackPage::onMovieListReceived(const ServerApi::GetMovieListRsp& rsp)
         QFileInfo cover_file_info(coverUrl);
         QString cover_name = cover_file_info.fileName();
         int status = movie.play_status();
-
+        
         // 提取纯净的下载要素
         QString fileMd5 = QString::fromStdString(movie.file_md5());
         uint64_t expectedSize = movie.file_size();
+
+        // 获取影片密钥
+        QString encryptKey = QString::fromStdString(movie.encrypt_key());
 
         // 物理路径推导 (纯粹用 MD5 命名)
         QString localVideoPath = MovieVideoPath + "/" + fileMd5 + ".mp4";
@@ -496,7 +501,7 @@ void PlaybackPage::onMovieListReceived(const ServerApi::GetMovieListRsp& rsp)
         }
 
         // 渲染卡片
-        AddMovieCard(id, name, localCoverPath, localVideoPath, isVideoDownloaded, status, fileMd5, expectedSize);
+        AddMovieCard(id, name, localCoverPath, localVideoPath, isVideoDownloaded, status, fileMd5, expectedSize, encryptKey);
     }
 }
 

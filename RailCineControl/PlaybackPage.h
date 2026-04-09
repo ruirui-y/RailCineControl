@@ -52,7 +52,7 @@ private:
     void LoadMoviesFromServer();                                                                // 从服务器获取视频列表
     void AddMovieCard(uint64_t id, const QString& name, const QString& coverUrl,
         const QString& localPath, bool isDownloaded, int playStatus,
-        const QString& fileMd5, uint64_t expectedSize);                                         // 创建海报card
+        const QString& fileMd5, uint64_t expectedSize, const QString& encryptKey);              // 创建海报card
     void SwitchControlPanelState(bool isDownloaded);                                            // 根据下载状态，整体切换底部播控面板的按钮显隐
                         
 private:
@@ -78,6 +78,7 @@ private:
     bool     m_selectedIsDownloaded;                                                            // 当前选中的影片是否已下载
     QString  m_selectedMovieMd5;                                                                // 当前选中影片的 MD5 (用于向服务器请求分片)
     uint64_t m_selectedMovieSize;                                                               // 当前选中影片的总大小
+    QString m_selectedMovieEncryptKey;                                                          // 当前选中影片的加密密钥
 
     qint64 m_currentDownloadBytes = 0;                                                          // 用于累加当前正在下载的视频的已接收字节数
 };

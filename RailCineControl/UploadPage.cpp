@@ -12,6 +12,7 @@
 #include <QCryptographicHash>
 #include "ThreadPool.h"
 #include "TCPMgr.h"
+#include "VideoSecurityTool.h"
 
 UploadPage::UploadPage(QWidget* parent) : QWidget(parent)
 {
@@ -291,10 +292,19 @@ void UploadPage::startTcpChunkUpload()
                     return;
                 }
 
-                // 1. 初始化切片状态
+                // ==========================================================
+                // 1. 初始化切片状态、生成加密 Key、获取时长
+                // ==========================================================
                 safeThis->m_totalFileSize = safeThis->m_videoFile->size();
                 safeThis->m_currentOffset = 0;
                 safeThis->m_chunkIndex = 0;
+
+                // 🔑 生成一个没有横杠的 32 位随机 UUID 作为当前视频的绝对密钥
+                safeThis->m_currentEncryptKey = QUuid::createUuid().toString(QUuid::Id128);
+
+                // ⏱️ 获取时长。如果你界面上有填写时长的输入框，这里直接 read UI 即可。
+                // 假设你界面上没有，暂时填 0，或者你可以用 QMediaPlayer 去预读视频的时长
+                safeThis->m_currentDurationSec = 0;
 
                 safeThis->m_btnUpload->setText(u8"正在进行视频切片与上传 [1/2]...");
 
@@ -304,6 +314,7 @@ void UploadPage::startTcpChunkUpload()
                 }, Qt::QueuedConnection);
         });
 }
+
 // =========================================================================
 // ⚙️ 核心：抽水泵动作 (每次触发，切一块发送)
 // =========================================================================
@@ -319,6 +330,15 @@ void UploadPage::pumpNextChunk()
     QByteArray chunkData = m_videoFile->read(CHUNK_SIZE);
 
     bool isLast = m_videoFile->atEnd();
+
+    // ==========================================================
+    // 👑 核心加密：只对第 0 块数据（包含 MP4 视频头）下毒！
+    // ==========================================================
+    if (m_chunkIndex == 0 && !m_currentEncryptKey.isEmpty()) 
+    {
+        VideoSecurityTool::XorProcessByteArray(chunkData, m_currentEncryptKey);
+        qDebug() << u8"[UploadPage] 🛡️ 头部 1MB 切片已被 XOR 混淆加密！";
+    }
 
     // 2. 组装 Protobuf 切片请求
     ServerApi::UploadChunkReq req;
@@ -358,6 +378,10 @@ void UploadPage::submitMetadataToTcp()
 
     // 把刚才上传视频的专属 ID 传过去，让服务器去关联硬盘上的文件
     req.set_video_md5(m_currentFileMd5.toStdString());
+
+    // 影片加密的密钥和影片总时长
+    req.set_encrypt_key(m_currentEncryptKey.toStdString());
+    req.set_duration_sec(m_currentDurationSec);
 
     // 👑 绝杀：直接读取海报图片的二进制数据！
     QFileInfo coverInfo(m_coverPathEdit->text());
