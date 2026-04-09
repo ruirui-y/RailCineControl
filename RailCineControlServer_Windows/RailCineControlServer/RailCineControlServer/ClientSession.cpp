@@ -420,28 +420,29 @@ void ClientSession::InitHandlers()
                 }, true, paramsStep1); // 结束 Step 1
         };
 
-        // ------------------------------------------------------------------
-        // 处理客户端发来的 [获取影片列表请求]
-        // ------------------------------------------------------------------
-        m_router[ServerApi::ID_GET_MOVIE_LIST_REQ] = [this](const ServerApi::PacketHeader& header, const QByteArray& bodyData)
+    // ------------------------------------------------------------------
+    // 处理客户端发来的 [获取影片列表请求]
+    // ------------------------------------------------------------------
+    m_router[ServerApi::ID_GET_MOVIE_LIST_REQ] = [this](const ServerApi::PacketHeader& header, const QByteArray& bodyData)
             {
                 uint64_t seq_id = header.seq_id();
                 std::weak_ptr<ClientSession> weakSelf = weak_from_this();
 
                 // 👑 连表查询：把 MD5 和 file_size 也查出来！
                 QString sql = R"(
-            SELECT 
-                r.id AS movie_id, 
-                IFNULL(rel.custom_name, r.original_name) AS display_name,
-                r.cover_url, 
-                r.file_md5,     -- 💡 新增：查出物理文件的 MD5
-                r.file_size,    -- 💡 新增：查出文件大小
-                rel.play_status
-            FROM t_user_movie_rel rel
-            INNER JOIN t_movie_resource r ON rel.movie_id = r.id
-            WHERE rel.user_id = ? AND rel.auth_status = 1
-            ORDER BY rel.sort_order ASC, rel.create_time DESC
-        )";
+                    SELECT 
+                        r.id AS movie_id, 
+                        IFNULL(rel.custom_name, r.original_name) AS display_name,
+                        r.cover_url, 
+                        r.file_md5,     -- 查出物理文件的 MD5
+                        r.file_size,    -- 查出文件大小
+                        r.encrypt_key,  -- 加密密钥
+                        rel.play_status
+                    FROM t_user_movie_rel rel
+                    INNER JOIN t_movie_resource r ON rel.movie_id = r.id
+                    WHERE rel.user_id = ? AND rel.auth_status = 1
+                    ORDER BY rel.sort_order ASC, rel.create_time DESC
+                )";
 
                 QList<QVariant> params;
                 params << m_accountId;
@@ -462,6 +463,9 @@ void ClientSession::InitHandlers()
                         movie->set_file_md5(row["file_md5"].toString().toStdString());
                         movie->set_file_size(row["file_size"].toULongLong());
 
+                        // 加密密钥
+                        movie->set_encrypt_key(row["encrypt_key"].toString().toStdString());
+
                         movie->set_play_status(row["play_status"].toInt());
                     }
 
@@ -469,10 +473,10 @@ void ClientSession::InitHandlers()
                     }, true, params);
             };
 
-        // ------------------------------------------------------------------
-        // 💡 处理客户端发来的 [海报下载请求]
-        // ------------------------------------------------------------------
-        m_router[ServerApi::ID_DOWNLOAD_COVER_REQ] = [this](const ServerApi::PacketHeader& header, const QByteArray& bodyData)
+    // ------------------------------------------------------------------
+    // 💡 处理客户端发来的 [海报下载请求]
+    // ------------------------------------------------------------------
+    m_router[ServerApi::ID_DOWNLOAD_COVER_REQ] = [this](const ServerApi::PacketHeader& header, const QByteArray& bodyData)
             {
                 uint64_t seq_id = header.seq_id();
                 ServerApi::DownloadCoverReq req;
@@ -513,10 +517,10 @@ void ClientSession::InitHandlers()
                     }, true, params);
             };
 
-        // ------------------------------------------------------------------
-        // 💡 处理客户端发来的 [分片下载请求]
-        // ------------------------------------------------------------------
-        m_router[ServerApi::ID_DOWNLOAD_CHUNK_REQ] = [this](const ServerApi::PacketHeader& header, const QByteArray& bodyData)
+    // ------------------------------------------------------------------
+    // 💡 处理客户端发来的 [分片下载请求]
+    // ------------------------------------------------------------------
+    m_router[ServerApi::ID_DOWNLOAD_CHUNK_REQ] = [this](const ServerApi::PacketHeader& header, const QByteArray& bodyData)
             {
                 uint64_t seq_id = header.seq_id();
                 ServerApi::DownloadChunkReq req;
@@ -566,10 +570,10 @@ void ClientSession::InitHandlers()
                 SendProtoMsg(ServerApi::ID_DOWNLOAD_CHUNK_RSP, rsp, seq_id);
             };
 
-        // ------------------------------------------------------------------
-        // 💡 处理客户端发来的 [获取播放记录请求]
-        // ------------------------------------------------------------------
-        m_router[ServerApi::ID_GET_RECORDS_REQ] = [this](const ServerApi::PacketHeader& header, const QByteArray& bodyData)
+    // ------------------------------------------------------------------
+    // 💡 处理客户端发来的 [获取播放记录请求]
+    // ------------------------------------------------------------------
+    m_router[ServerApi::ID_GET_RECORDS_REQ] = [this](const ServerApi::PacketHeader& header, const QByteArray& bodyData)
             {
                 uint64_t seq_id = header.seq_id();
                 ServerApi::GetRecordsReq req;
@@ -619,10 +623,10 @@ void ClientSession::InitHandlers()
                     }, true, params);
             };
 
-        // ------------------------------------------------------------------
-        // 💡 处理客户端发来的 [添加播放记录请求]
-        // ------------------------------------------------------------------
-        m_router[ServerApi::ID_ADD_RECORD_REQ] = [this](const ServerApi::PacketHeader& header, const QByteArray& bodyData)
+    // ------------------------------------------------------------------
+    // 💡 处理客户端发来的 [添加播放记录请求]
+    // ------------------------------------------------------------------
+    m_router[ServerApi::ID_ADD_RECORD_REQ] = [this](const ServerApi::PacketHeader& header, const QByteArray& bodyData)
             {
                 uint64_t seq_id = header.seq_id();
                 ServerApi::AddRecordReq req;
@@ -660,10 +664,10 @@ void ClientSession::InitHandlers()
                     }, true, params);
             };
 
-        // ------------------------------------------------------------------
-        // 💡 处理客户端发来的 [删除播放记录请求]
-        // ------------------------------------------------------------------
-        m_router[ServerApi::ID_DELETE_RECORD_REQ] = [this](const ServerApi::PacketHeader& header, const QByteArray& bodyData)
+    // ------------------------------------------------------------------
+    // 💡 处理客户端发来的 [删除播放记录请求]
+    // ------------------------------------------------------------------
+    m_router[ServerApi::ID_DELETE_RECORD_REQ] = [this](const ServerApi::PacketHeader& header, const QByteArray& bodyData)
             {
                 uint64_t seq_id = header.seq_id();
                 ServerApi::DeleteRecordReq req;

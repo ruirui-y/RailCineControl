@@ -28,6 +28,9 @@
 // UDP端口
 #define UDP_BROADCASTER_PORT							8889
 
+// 本地http server listen 端口
+#define LOCAL_HTTP_SERVER_PORT							8888
+
 // 返回结果
 #define RETURN_SUCCESS									"SUCCESS"
 #define RETURN_FAILURE									"FAILURE"

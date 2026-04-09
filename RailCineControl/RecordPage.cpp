@@ -33,10 +33,10 @@ void RecordPage::BuildUI()
 
     // ================= 1. 筛选操作栏 =================
     QHBoxLayout* filterLayout = new QHBoxLayout();
-    filterLayout->setSpacing(15);                                           // 💡 全局间距
+    filterLayout->setSpacing(15);                                           // 全局间距
 
     QLabel* dateLabel = new QLabel(u8"查询日期:", this);
-    dateLabel->setObjectName("recordFilterLabel");                          // 👑 绑定 QSS
+    dateLabel->setObjectName("recordFilterLabel");                          // 绑定 QSS
 
     m_dateEdit = new QDateEdit(QDate::currentDate(), this);
     m_dateEdit->setCalendarPopup(true);
@@ -46,7 +46,7 @@ void RecordPage::BuildUI()
     btnSearch->setMinimumSize(90, 35);
 
     QPushButton* btnDelete = new QPushButton(u8"🗑️ 删除", this);
-    btnDelete->setObjectName("btnDeleteDanger");                            // 👑 绑定专属危险红色 QSS
+    btnDelete->setObjectName("btnDeleteDanger");                            // 绑定专属危险红色 QSS
     btnDelete->setMinimumSize(90, 35);
 
     QPushButton* btnExport = new QPushButton(u8"📊 导出 Excel", this);

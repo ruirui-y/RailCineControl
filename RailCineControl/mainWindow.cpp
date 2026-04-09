@@ -11,6 +11,7 @@
 #include "Macro.h"
 #include "UserMgr.h"
 #include "UdpManager.h"
+#include "LocalStreamServer.h"
 
 mainWindow::mainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -72,6 +73,13 @@ void mainWindow::MoveManagerToThread()
         {
             UdpManager::Instance();
             qDebug() << "UdpManager created in thread:" << QThread::currentThread();
+        });
+
+    ThreadPool::Instance()->DispatchToWorker(
+        []()
+        {
+            LocalStreamServer::Instance()->StartServer(LOCAL_HTTP_SERVER_PORT);
+            qDebug() << "LocalStreamServer created in thread:" << QThread::currentThread();
         });
 }
 

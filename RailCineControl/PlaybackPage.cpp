@@ -16,6 +16,7 @@
 #include "TCPMgr.h"
 #include "Global.h"
 #include "JsonTool.h"
+#include "LocalStreamServer.h"
 
 PlaybackPage::PlaybackPage(QWidget* parent) : QWidget(parent)
 {
@@ -326,7 +327,24 @@ void PlaybackPage::onPlayClicked()
     m_playStartTime = QDateTime::currentDateTime();                         // 记录播放开始的真实时间
     m_isPlayingRecord = true;
 
-    m_player->setMedia(QUrl::fromLocalFile(QFileInfo(m_selectedMoviePath).absoluteFilePath()));
+    // ==============================================================================
+    // 👑 终极流媒体魔法开始
+    // ==============================================================================
+
+    // 1. 告诉你的暗网代理：我要播这个物理文件了，这是它的解密钥匙
+    auto server = LocalStreamServer::Instance();
+    QString safePath = m_selectedMoviePath;
+    QString safeKey = m_selectedMovieEncryptKey;
+    QMetaObject::invokeMethod(server.get(), [server, safePath, safeKey]()
+        {
+            // 这段代码才会在 WorkerThread-2 中安全执行！
+            server->SetCurrentMedia(safePath, safeKey);
+        }, Qt::QueuedConnection);
+
+    // 2. 欺骗傻白甜 QMediaPlayer：别去读硬盘了，去给我请求这个网址！
+    // GetPlayUrl() 返回的其实就是 "http://127.0.0.1:12345/play_secure.mp4"
+    m_player->setMedia(QUrl(LocalStreamServer::Instance()->GetPlayUrl()));
+    // ==============================================================================
 
     QList<QScreen*> screens = QGuiApplication::screens();
     if (screens.count() > 1) {

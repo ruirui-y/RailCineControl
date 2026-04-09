@@ -102,6 +102,12 @@
     <Filter Include="Source Files\SELF_UI\StackPage\PlayMovie">
       <UniqueIdentifier>{7cba6c66-3081-49ff-8b48-47c4d52aecd1}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Http">
+      <UniqueIdentifier>{060ba87d-84b2-4b53-8a59-20e6aa57add2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Http">
+      <UniqueIdentifier>{069a0377-3360-4fd7-815b-b9d1d0198119}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <QtUic Include="mainWindow.ui">
@@ -247,6 +253,12 @@
     <ClCompile Include="UploadPage.cpp">
       <Filter>Source Files\SELF_UI\StackPage\PlayMovie</Filter>
     </ClCompile>
+    <ClCompile Include="LocalStreamServer.cpp">
+      <Filter>Header Files\Http</Filter>
+    </ClCompile>
+    <ClCompile Include="LocalStreamServer.cpp">
+      <Filter>Source Files\Http</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Enum.h">
@@ -278,6 +290,9 @@
     </ClInclude>
     <ClInclude Include="common.pb.h">
       <Filter>Header Files\Pb</Filter>
+    </ClInclude>
+    <ClInclude Include="VideoSecurityTool.h">
+      <Filter>Header Files\Global</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -385,6 +400,9 @@
     </QtMoc>
     <QtMoc Include="UploadPage.h">
       <Filter>Header Files\SELF_UI\StackPage\PlayMovie</Filter>
+    </QtMoc>
+    <QtMoc Include="LocalStreamServer.h">
+      <Filter>Header Files\Http</Filter>
     </QtMoc>
   </ItemGroup>
   <ItemGroup>

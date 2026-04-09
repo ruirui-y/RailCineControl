@@ -116,6 +116,7 @@
     <ClCompile Include="ControlHubWindow.cpp" />
     <ClCompile Include="ImageBgButton.cpp" />
     <ClCompile Include="JsonTool.cpp" />
+    <ClCompile Include="LocalStreamServer.cpp" />
     <ClCompile Include="LoginWidget.cpp" />
     <ClCompile Include="MovieWidget.cpp" />
     <ClCompile Include="ParamSettingWidget.cpp" />
@@ -145,6 +146,8 @@
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <QtMoc Include="LocalStreamServer.h" />
+    <ClInclude Include="VideoSecurityTool.h" />
     <QtMoc Include="UploadPage.h" />
     <QtMoc Include="UdpManager.h" />
     <QtMoc Include="WorkerThread.h" />
