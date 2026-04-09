@@ -50,6 +50,8 @@ message UploadMovieReq {
     bytes  cover_data   = 3;                                                    // 👑 海报图片的完整二进制流 (直接通过 TCP 传)
     string cover_suffix = 4;                                                    // 海报后缀名 (如 ".jpg", ".png")
     string video_md5    = 5;                                                    // 刚才切片上传的视频 MD5，通知服务器进行数据库绑定
+    string encrypt_key  = 6;                                                    // 客户端上传时生成的 XOR 加密密钥
+    uint32 duration_sec = 7;                                                    // 视频总时长(秒)
 }
 
 // 服务端 -> 客户端：登记成功
@@ -69,6 +71,7 @@ message MovieInfo {
     int32  play_status = 4;                                                     // 播放状态：0空闲 1播放中
     string file_md5    = 5;                                                     // 用于底层 TCP 分片下载的唯一标识！
     uint64 file_size   = 6;                                                     // 用于客户端判定本地是否已下载完毕
+    string encrypt_key = 7;                                                     // 服务器下发给客户端，用于播放前“瞬间解锁”的钥匙
 }
 
 // 客户端 -> 服务端：请求拉取列表

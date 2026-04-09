@@ -68,6 +68,10 @@ inline constexpr UploadMovieReq::Impl_::Impl_(
         video_md5_(
             &::google::protobuf::internal::fixed_address_empty_string,
             ::_pbi::ConstantInitialized()),
+        encrypt_key_(
+            &::google::protobuf::internal::fixed_address_empty_string,
+            ::_pbi::ConstantInitialized()),
+        duration_sec_{0u},
         _cached_size_{0} {}
 
 template <typename>
@@ -204,6 +208,9 @@ inline constexpr MovieInfo::Impl_::Impl_(
             &::google::protobuf::internal::fixed_address_empty_string,
             ::_pbi::ConstantInitialized()),
         file_md5_(
+            &::google::protobuf::internal::fixed_address_empty_string,
+            ::_pbi::ConstantInitialized()),
+        encrypt_key_(
             &::google::protobuf::internal::fixed_address_empty_string,
             ::_pbi::ConstantInitialized()),
         movie_id_{::uint64_t{0u}},
@@ -713,6 +720,8 @@ const ::uint32_t
         PROTOBUF_FIELD_OFFSET(::ServerApi::UploadMovieReq, _impl_.cover_data_),
         PROTOBUF_FIELD_OFFSET(::ServerApi::UploadMovieReq, _impl_.cover_suffix_),
         PROTOBUF_FIELD_OFFSET(::ServerApi::UploadMovieReq, _impl_.video_md5_),
+        PROTOBUF_FIELD_OFFSET(::ServerApi::UploadMovieReq, _impl_.encrypt_key_),
+        PROTOBUF_FIELD_OFFSET(::ServerApi::UploadMovieReq, _impl_.duration_sec_),
         ~0u,  // no _has_bits_
         PROTOBUF_FIELD_OFFSET(::ServerApi::UploadMovieRsp, _internal_metadata_),
         ~0u,  // no _extensions_
@@ -736,6 +745,7 @@ const ::uint32_t
         PROTOBUF_FIELD_OFFSET(::ServerApi::MovieInfo, _impl_.play_status_),
         PROTOBUF_FIELD_OFFSET(::ServerApi::MovieInfo, _impl_.file_md5_),
         PROTOBUF_FIELD_OFFSET(::ServerApi::MovieInfo, _impl_.file_size_),
+        PROTOBUF_FIELD_OFFSET(::ServerApi::MovieInfo, _impl_.encrypt_key_),
         ~0u,  // no _has_bits_
         PROTOBUF_FIELD_OFFSET(::ServerApi::GetMovieListReq, _internal_metadata_),
         ~0u,  // no _extensions_
@@ -880,21 +890,21 @@ static const ::_pbi::MigrationSchema
         {29, -1, -1, sizeof(::ServerApi::UploadChunkReq)},
         {42, -1, -1, sizeof(::ServerApi::UploadChunkRsp)},
         {53, -1, -1, sizeof(::ServerApi::UploadMovieReq)},
-        {66, -1, -1, sizeof(::ServerApi::UploadMovieRsp)},
-        {75, -1, -1, sizeof(::ServerApi::MovieInfo)},
-        {89, -1, -1, sizeof(::ServerApi::GetMovieListReq)},
-        {99, -1, -1, sizeof(::ServerApi::GetMovieListRsp)},
-        {108, -1, -1, sizeof(::ServerApi::DownloadChunkReq)},
-        {118, -1, -1, sizeof(::ServerApi::DownloadChunkRsp)},
-        {130, -1, -1, sizeof(::ServerApi::DownloadCoverReq)},
-        {139, -1, -1, sizeof(::ServerApi::DownloadCoverRsp)},
-        {150, -1, -1, sizeof(::ServerApi::PlayRecord)},
-        {165, 174, -1, sizeof(::ServerApi::AddRecordReq)},
-        {175, -1, -1, sizeof(::ServerApi::AddRecordRsp)},
-        {184, -1, -1, sizeof(::ServerApi::GetRecordsReq)},
-        {195, -1, -1, sizeof(::ServerApi::GetRecordsRsp)},
-        {205, -1, -1, sizeof(::ServerApi::DeleteRecordReq)},
-        {214, -1, -1, sizeof(::ServerApi::DeleteRecordRsp)},
+        {68, -1, -1, sizeof(::ServerApi::UploadMovieRsp)},
+        {77, -1, -1, sizeof(::ServerApi::MovieInfo)},
+        {92, -1, -1, sizeof(::ServerApi::GetMovieListReq)},
+        {102, -1, -1, sizeof(::ServerApi::GetMovieListRsp)},
+        {111, -1, -1, sizeof(::ServerApi::DownloadChunkReq)},
+        {121, -1, -1, sizeof(::ServerApi::DownloadChunkRsp)},
+        {133, -1, -1, sizeof(::ServerApi::DownloadCoverReq)},
+        {142, -1, -1, sizeof(::ServerApi::DownloadCoverRsp)},
+        {153, -1, -1, sizeof(::ServerApi::PlayRecord)},
+        {168, 177, -1, sizeof(::ServerApi::AddRecordReq)},
+        {178, -1, -1, sizeof(::ServerApi::AddRecordRsp)},
+        {187, -1, -1, sizeof(::ServerApi::GetRecordsReq)},
+        {198, -1, -1, sizeof(::ServerApi::GetRecordsRsp)},
+        {208, -1, -1, sizeof(::ServerApi::DeleteRecordReq)},
+        {217, -1, -1, sizeof(::ServerApi::DeleteRecordRsp)},
 };
 static const ::_pb::Message* const file_default_instances[] = {
     &::ServerApi::_LoginReq_default_instance_._instance,
@@ -929,42 +939,44 @@ const char descriptor_table_protodef_server_5fmsg_2eproto[] ABSL_ATTRIBUTE_SECTI
     "\013chunk_index\030\002 \001(\r\022\024\n\014chunk_offset\030\003 \001(\004"
     "\022\022\n\nchunk_data\030\004 \001(\014\022\017\n\007is_last\030\005 \001(\010\"L\n"
     "\016UploadChunkRsp\022\020\n\010file_md5\030\001 \001(\t\022\023\n\013chu"
-    "nk_index\030\002 \001(\r\022\023\n\013is_complete\030\003 \001(\010\"v\n\016U"
-    "ploadMovieReq\022\022\n\nmovie_name\030\001 \001(\t\022\023\n\013des"
-    "cription\030\002 \001(\t\022\022\n\ncover_data\030\003 \001(\014\022\024\n\014co"
-    "ver_suffix\030\004 \001(\t\022\021\n\tvideo_md5\030\005 \001(\t\"&\n\016U"
-    "ploadMovieRsp\022\024\n\014new_movie_id\030\001 \001(\004\"~\n\tM"
-    "ovieInfo\022\020\n\010movie_id\030\001 \001(\004\022\022\n\nmovie_name"
-    "\030\002 \001(\t\022\021\n\tcover_url\030\003 \001(\t\022\023\n\013play_status"
-    "\030\004 \001(\005\022\020\n\010file_md5\030\005 \001(\t\022\021\n\tfile_size\030\006 "
-    "\001(\004\"8\n\017GetMovieListReq\022\022\n\npage_index\030\001 \001"
-    "(\r\022\021\n\tpage_size\030\002 \001(\r\"7\n\017GetMovieListRsp"
-    "\022$\n\006movies\030\001 \003(\0132\024.ServerApi.MovieInfo\"9"
-    "\n\020DownloadChunkReq\022\020\n\010file_md5\030\001 \001(\t\022\023\n\013"
-    "chunk_index\030\002 \001(\r\"^\n\020DownloadChunkRsp\022\020\n"
-    "\010file_md5\030\001 \001(\t\022\023\n\013chunk_index\030\002 \001(\r\022\022\n\n"
-    "chunk_data\030\003 \001(\014\022\017\n\007is_last\030\004 \001(\010\"$\n\020Dow"
-    "nloadCoverReq\022\020\n\010file_md5\030\001 \001(\t\"L\n\020Downl"
-    "oadCoverRsp\022\020\n\010file_md5\030\001 \001(\t\022\022\n\ncover_n"
-    "ame\030\002 \001(\t\022\022\n\ncover_data\030\003 \001(\014\"\225\001\n\nPlayRe"
-    "cord\022\021\n\trecord_id\030\001 \001(\004\022\022\n\nmovie_name\030\002 "
-    "\001(\t\022\021\n\tplay_date\030\003 \001(\t\022\022\n\nstart_time\030\004 \001"
-    "(\t\022\020\n\010end_time\030\005 \001(\t\022\025\n\roperator_name\030\006 "
-    "\001(\t\022\020\n\010end_type\030\007 \001(\t\"5\n\014AddRecordReq\022%\n"
-    "\006record\030\001 \001(\0132\025.ServerApi.PlayRecord\"%\n\014"
-    "AddRecordRsp\022\025\n\rnew_record_id\030\001 \001(\004\"K\n\rG"
-    "etRecordsReq\022\023\n\013target_date\030\001 \001(\t\022\022\n\npag"
-    "e_index\030\002 \001(\r\022\021\n\tpage_size\030\003 \001(\r\"L\n\rGetR"
-    "ecordsRsp\022&\n\007records\030\001 \003(\0132\025.ServerApi.P"
-    "layRecord\022\023\n\013total_count\030\002 \001(\r\"$\n\017Delete"
-    "RecordReq\022\021\n\trecord_id\030\001 \001(\004\"%\n\017DeleteRe"
-    "cordRsp\022\022\n\ndeleted_id\030\001 \001(\004b\006proto3"
+    "nk_index\030\002 \001(\r\022\023\n\013is_complete\030\003 \001(\010\"\241\001\n\016"
+    "UploadMovieReq\022\022\n\nmovie_name\030\001 \001(\t\022\023\n\013de"
+    "scription\030\002 \001(\t\022\022\n\ncover_data\030\003 \001(\014\022\024\n\014c"
+    "over_suffix\030\004 \001(\t\022\021\n\tvideo_md5\030\005 \001(\t\022\023\n\013"
+    "encrypt_key\030\006 \001(\t\022\024\n\014duration_sec\030\007 \001(\r\""
+    "&\n\016UploadMovieRsp\022\024\n\014new_movie_id\030\001 \001(\004\""
+    "\223\001\n\tMovieInfo\022\020\n\010movie_id\030\001 \001(\004\022\022\n\nmovie"
+    "_name\030\002 \001(\t\022\021\n\tcover_url\030\003 \001(\t\022\023\n\013play_s"
+    "tatus\030\004 \001(\005\022\020\n\010file_md5\030\005 \001(\t\022\021\n\tfile_si"
+    "ze\030\006 \001(\004\022\023\n\013encrypt_key\030\007 \001(\t\"8\n\017GetMovi"
+    "eListReq\022\022\n\npage_index\030\001 \001(\r\022\021\n\tpage_siz"
+    "e\030\002 \001(\r\"7\n\017GetMovieListRsp\022$\n\006movies\030\001 \003"
+    "(\0132\024.ServerApi.MovieInfo\"9\n\020DownloadChun"
+    "kReq\022\020\n\010file_md5\030\001 \001(\t\022\023\n\013chunk_index\030\002 "
+    "\001(\r\"^\n\020DownloadChunkRsp\022\020\n\010file_md5\030\001 \001("
+    "\t\022\023\n\013chunk_index\030\002 \001(\r\022\022\n\nchunk_data\030\003 \001"
+    "(\014\022\017\n\007is_last\030\004 \001(\010\"$\n\020DownloadCoverReq\022"
+    "\020\n\010file_md5\030\001 \001(\t\"L\n\020DownloadCoverRsp\022\020\n"
+    "\010file_md5\030\001 \001(\t\022\022\n\ncover_name\030\002 \001(\t\022\022\n\nc"
+    "over_data\030\003 \001(\014\"\225\001\n\nPlayRecord\022\021\n\trecord"
+    "_id\030\001 \001(\004\022\022\n\nmovie_name\030\002 \001(\t\022\021\n\tplay_da"
+    "te\030\003 \001(\t\022\022\n\nstart_time\030\004 \001(\t\022\020\n\010end_time"
+    "\030\005 \001(\t\022\025\n\roperator_name\030\006 \001(\t\022\020\n\010end_typ"
+    "e\030\007 \001(\t\"5\n\014AddRecordReq\022%\n\006record\030\001 \001(\0132"
+    "\025.ServerApi.PlayRecord\"%\n\014AddRecordRsp\022\025"
+    "\n\rnew_record_id\030\001 \001(\004\"K\n\rGetRecordsReq\022\023"
+    "\n\013target_date\030\001 \001(\t\022\022\n\npage_index\030\002 \001(\r\022"
+    "\021\n\tpage_size\030\003 \001(\r\"L\n\rGetRecordsRsp\022&\n\007r"
+    "ecords\030\001 \003(\0132\025.ServerApi.PlayRecord\022\023\n\013t"
+    "otal_count\030\002 \001(\r\"$\n\017DeleteRecordReq\022\021\n\tr"
+    "ecord_id\030\001 \001(\004\"%\n\017DeleteRecordRsp\022\022\n\ndel"
+    "eted_id\030\001 \001(\004b\006proto3"
 };
 static ::absl::once_flag descriptor_table_server_5fmsg_2eproto_once;
 PROTOBUF_CONSTINIT const ::_pbi::DescriptorTable descriptor_table_server_5fmsg_2eproto = {
     false,
     false,
-    1515,
+    1581,
     descriptor_table_protodef_server_5fmsg_2eproto,
     "server_msg.proto",
     &descriptor_table_server_5fmsg_2eproto_once,
@@ -2365,6 +2377,7 @@ inline PROTOBUF_NDEBUG_INLINE UploadMovieReq::Impl_::Impl_(
         cover_data_(arena, from.cover_data_),
         cover_suffix_(arena, from.cover_suffix_),
         video_md5_(arena, from.video_md5_),
+        encrypt_key_(arena, from.encrypt_key_),
         _cached_size_{0} {}
 
 UploadMovieReq::UploadMovieReq(
@@ -2380,6 +2393,7 @@ UploadMovieReq::UploadMovieReq(
   _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
       from._internal_metadata_);
   new (&_impl_) Impl_(internal_visibility(), arena, from._impl_, from);
+  _impl_.duration_sec_ = from._impl_.duration_sec_;
 
   // @@protoc_insertion_point(copy_constructor:ServerApi.UploadMovieReq)
 }
@@ -2391,10 +2405,12 @@ inline PROTOBUF_NDEBUG_INLINE UploadMovieReq::Impl_::Impl_(
         cover_data_(arena),
         cover_suffix_(arena),
         video_md5_(arena),
+        encrypt_key_(arena),
         _cached_size_{0} {}
 
 inline void UploadMovieReq::SharedCtor(::_pb::Arena* arena) {
   new (&_impl_) Impl_(internal_visibility(), arena);
+  _impl_.duration_sec_ = {};
 }
 UploadMovieReq::~UploadMovieReq() {
   // @@protoc_insertion_point(destructor:ServerApi.UploadMovieReq)
@@ -2409,6 +2425,7 @@ inline void UploadMovieReq::SharedDtor(MessageLite& self) {
   this_._impl_.cover_data_.Destroy();
   this_._impl_.cover_suffix_.Destroy();
   this_._impl_.video_md5_.Destroy();
+  this_._impl_.encrypt_key_.Destroy();
   this_._impl_.~Impl_();
 }
 
@@ -2448,15 +2465,15 @@ const ::google::protobuf::internal::ClassData* UploadMovieReq::GetClassData() co
   return _class_data_.base();
 }
 PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
-const ::_pbi::TcParseTable<3, 5, 0, 75, 2> UploadMovieReq::_table_ = {
+const ::_pbi::TcParseTable<3, 7, 0, 86, 2> UploadMovieReq::_table_ = {
   {
     0,  // no _has_bits_
     0, // no _extensions_
-    5, 56,  // max_field_number, fast_idx_mask
+    7, 56,  // max_field_number, fast_idx_mask
     offsetof(decltype(_table_), field_lookup_table),
-    4294967264,  // skipmap
+    4294967168,  // skipmap
     offsetof(decltype(_table_), field_entries),
-    5,  // num_field_entries
+    7,  // num_field_entries
     0,  // num_aux_entries
     offsetof(decltype(_table_), field_names),  // no aux_entries
     _class_data_.base(),
@@ -2482,8 +2499,12 @@ const ::_pbi::TcParseTable<3, 5, 0, 75, 2> UploadMovieReq::_table_ = {
     // string video_md5 = 5;
     {::_pbi::TcParser::FastUS1,
      {42, 63, 0, PROTOBUF_FIELD_OFFSET(UploadMovieReq, _impl_.video_md5_)}},
-    {::_pbi::TcParser::MiniParse, {}},
-    {::_pbi::TcParser::MiniParse, {}},
+    // string encrypt_key = 6;
+    {::_pbi::TcParser::FastUS1,
+     {50, 63, 0, PROTOBUF_FIELD_OFFSET(UploadMovieReq, _impl_.encrypt_key_)}},
+    // uint32 duration_sec = 7;
+    {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(UploadMovieReq, _impl_.duration_sec_), 63>(),
+     {56, 63, 0, PROTOBUF_FIELD_OFFSET(UploadMovieReq, _impl_.duration_sec_)}},
   }}, {{
     65535, 65535
   }}, {{
@@ -2502,15 +2523,22 @@ const ::_pbi::TcParseTable<3, 5, 0, 75, 2> UploadMovieReq::_table_ = {
     // string video_md5 = 5;
     {PROTOBUF_FIELD_OFFSET(UploadMovieReq, _impl_.video_md5_), 0, 0,
     (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
+    // string encrypt_key = 6;
+    {PROTOBUF_FIELD_OFFSET(UploadMovieReq, _impl_.encrypt_key_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
+    // uint32 duration_sec = 7;
+    {PROTOBUF_FIELD_OFFSET(UploadMovieReq, _impl_.duration_sec_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kUInt32)},
   }},
   // no aux_entries
   {{
-    "\30\12\13\0\14\11\0\0"
+    "\30\12\13\0\14\11\13\0"
     "ServerApi.UploadMovieReq"
     "movie_name"
     "description"
     "cover_suffix"
     "video_md5"
+    "encrypt_key"
   }},
 };
 
@@ -2526,6 +2554,8 @@ PROTOBUF_NOINLINE void UploadMovieReq::Clear() {
   _impl_.cover_data_.ClearToEmpty();
   _impl_.cover_suffix_.ClearToEmpty();
   _impl_.video_md5_.ClearToEmpty();
+  _impl_.encrypt_key_.ClearToEmpty();
+  _impl_.duration_sec_ = 0u;
   _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
 }
 
@@ -2582,6 +2612,21 @@ PROTOBUF_NOINLINE void UploadMovieReq::Clear() {
             target = stream->WriteStringMaybeAliased(5, _s, target);
           }
 
+          // string encrypt_key = 6;
+          if (!this_._internal_encrypt_key().empty()) {
+            const std::string& _s = this_._internal_encrypt_key();
+            ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+                _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "ServerApi.UploadMovieReq.encrypt_key");
+            target = stream->WriteStringMaybeAliased(6, _s, target);
+          }
+
+          // uint32 duration_sec = 7;
+          if (this_._internal_duration_sec() != 0) {
+            target = stream->EnsureSpace(target);
+            target = ::_pbi::WireFormatLite::WriteUInt32ToArray(
+                7, this_._internal_duration_sec(), target);
+          }
+
           if (PROTOBUF_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
             target =
                 ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
@@ -2632,6 +2677,16 @@ PROTOBUF_NOINLINE void UploadMovieReq::Clear() {
               total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
                                               this_._internal_video_md5());
             }
+            // string encrypt_key = 6;
+            if (!this_._internal_encrypt_key().empty()) {
+              total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
+                                              this_._internal_encrypt_key());
+            }
+            // uint32 duration_sec = 7;
+            if (this_._internal_duration_sec() != 0) {
+              total_size += ::_pbi::WireFormatLite::UInt32SizePlusOne(
+                  this_._internal_duration_sec());
+            }
           }
           return this_.MaybeComputeUnknownFieldsSize(total_size,
                                                      &this_._impl_._cached_size_);
@@ -2660,6 +2715,12 @@ void UploadMovieReq::MergeImpl(::google::protobuf::MessageLite& to_msg, const ::
   if (!from._internal_video_md5().empty()) {
     _this->_internal_set_video_md5(from._internal_video_md5());
   }
+  if (!from._internal_encrypt_key().empty()) {
+    _this->_internal_set_encrypt_key(from._internal_encrypt_key());
+  }
+  if (from._internal_duration_sec() != 0) {
+    _this->_impl_.duration_sec_ = from._impl_.duration_sec_;
+  }
   _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
 }
 
@@ -2681,6 +2742,8 @@ void UploadMovieReq::InternalSwap(UploadMovieReq* PROTOBUF_RESTRICT other) {
   ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.cover_data_, &other->_impl_.cover_data_, arena);
   ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.cover_suffix_, &other->_impl_.cover_suffix_, arena);
   ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.video_md5_, &other->_impl_.video_md5_, arena);
+  ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.encrypt_key_, &other->_impl_.encrypt_key_, arena);
+        swap(_impl_.duration_sec_, other->_impl_.duration_sec_);
 }
 
 ::google::protobuf::Metadata UploadMovieReq::GetMetadata() const {
@@ -2914,6 +2977,7 @@ inline PROTOBUF_NDEBUG_INLINE MovieInfo::Impl_::Impl_(
       : movie_name_(arena, from.movie_name_),
         cover_url_(arena, from.cover_url_),
         file_md5_(arena, from.file_md5_),
+        encrypt_key_(arena, from.encrypt_key_),
         _cached_size_{0} {}
 
 MovieInfo::MovieInfo(
@@ -2945,6 +3009,7 @@ inline PROTOBUF_NDEBUG_INLINE MovieInfo::Impl_::Impl_(
       : movie_name_(arena),
         cover_url_(arena),
         file_md5_(arena),
+        encrypt_key_(arena),
         _cached_size_{0} {}
 
 inline void MovieInfo::SharedCtor(::_pb::Arena* arena) {
@@ -2967,6 +3032,7 @@ inline void MovieInfo::SharedDtor(MessageLite& self) {
   this_._impl_.movie_name_.Destroy();
   this_._impl_.cover_url_.Destroy();
   this_._impl_.file_md5_.Destroy();
+  this_._impl_.encrypt_key_.Destroy();
   this_._impl_.~Impl_();
 }
 
@@ -3006,15 +3072,15 @@ const ::google::protobuf::internal::ClassData* MovieInfo::GetClassData() const {
   return _class_data_.base();
 }
 PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
-const ::_pbi::TcParseTable<3, 6, 0, 55, 2> MovieInfo::_table_ = {
+const ::_pbi::TcParseTable<3, 7, 0, 66, 2> MovieInfo::_table_ = {
   {
     0,  // no _has_bits_
     0, // no _extensions_
-    6, 56,  // max_field_number, fast_idx_mask
+    7, 56,  // max_field_number, fast_idx_mask
     offsetof(decltype(_table_), field_lookup_table),
-    4294967232,  // skipmap
+    4294967168,  // skipmap
     offsetof(decltype(_table_), field_entries),
-    6,  // num_field_entries
+    7,  // num_field_entries
     0,  // num_aux_entries
     offsetof(decltype(_table_), field_names),  // no aux_entries
     _class_data_.base(),
@@ -3043,7 +3109,9 @@ const ::_pbi::TcParseTable<3, 6, 0, 55, 2> MovieInfo::_table_ = {
     // uint64 file_size = 6;
     {::_pbi::TcParser::SingularVarintNoZag1<::uint64_t, offsetof(MovieInfo, _impl_.file_size_), 63>(),
      {48, 63, 0, PROTOBUF_FIELD_OFFSET(MovieInfo, _impl_.file_size_)}},
-    {::_pbi::TcParser::MiniParse, {}},
+    // string encrypt_key = 7;
+    {::_pbi::TcParser::FastUS1,
+     {58, 63, 0, PROTOBUF_FIELD_OFFSET(MovieInfo, _impl_.encrypt_key_)}},
   }}, {{
     65535, 65535
   }}, {{
@@ -3065,14 +3133,18 @@ const ::_pbi::TcParseTable<3, 6, 0, 55, 2> MovieInfo::_table_ = {
     // uint64 file_size = 6;
     {PROTOBUF_FIELD_OFFSET(MovieInfo, _impl_.file_size_), 0, 0,
     (0 | ::_fl::kFcSingular | ::_fl::kUInt64)},
+    // string encrypt_key = 7;
+    {PROTOBUF_FIELD_OFFSET(MovieInfo, _impl_.encrypt_key_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
   }},
   // no aux_entries
   {{
-    "\23\0\12\11\0\10\0\0"
+    "\23\0\12\11\0\10\0\13"
     "ServerApi.MovieInfo"
     "movie_name"
     "cover_url"
     "file_md5"
+    "encrypt_key"
   }},
 };
 
@@ -3086,6 +3158,7 @@ PROTOBUF_NOINLINE void MovieInfo::Clear() {
   _impl_.movie_name_.ClearToEmpty();
   _impl_.cover_url_.ClearToEmpty();
   _impl_.file_md5_.ClearToEmpty();
+  _impl_.encrypt_key_.ClearToEmpty();
   ::memset(&_impl_.movie_id_, 0, static_cast<::size_t>(
       reinterpret_cast<char*>(&_impl_.play_status_) -
       reinterpret_cast<char*>(&_impl_.movie_id_)) + sizeof(_impl_.play_status_));
@@ -3152,6 +3225,14 @@ PROTOBUF_NOINLINE void MovieInfo::Clear() {
                 6, this_._internal_file_size(), target);
           }
 
+          // string encrypt_key = 7;
+          if (!this_._internal_encrypt_key().empty()) {
+            const std::string& _s = this_._internal_encrypt_key();
+            ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+                _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "ServerApi.MovieInfo.encrypt_key");
+            target = stream->WriteStringMaybeAliased(7, _s, target);
+          }
+
           if (PROTOBUF_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
             target =
                 ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
@@ -3192,6 +3273,11 @@ PROTOBUF_NOINLINE void MovieInfo::Clear() {
               total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
                                               this_._internal_file_md5());
             }
+            // string encrypt_key = 7;
+            if (!this_._internal_encrypt_key().empty()) {
+              total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
+                                              this_._internal_encrypt_key());
+            }
             // uint64 movie_id = 1;
             if (this_._internal_movie_id() != 0) {
               total_size += ::_pbi::WireFormatLite::UInt64SizePlusOne(
@@ -3229,6 +3315,9 @@ void MovieInfo::MergeImpl(::google::protobuf::MessageLite& to_msg, const ::googl
   if (!from._internal_file_md5().empty()) {
     _this->_internal_set_file_md5(from._internal_file_md5());
   }
+  if (!from._internal_encrypt_key().empty()) {
+    _this->_internal_set_encrypt_key(from._internal_encrypt_key());
+  }
   if (from._internal_movie_id() != 0) {
     _this->_impl_.movie_id_ = from._impl_.movie_id_;
   }
@@ -3257,6 +3346,7 @@ void MovieInfo::InternalSwap(MovieInfo* PROTOBUF_RESTRICT other) {
   ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.movie_name_, &other->_impl_.movie_name_, arena);
   ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.cover_url_, &other->_impl_.cover_url_, arena);
   ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.file_md5_, &other->_impl_.file_md5_, arena);
+  ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.encrypt_key_, &other->_impl_.encrypt_key_, arena);
   ::google::protobuf::internal::memswap<
       PROTOBUF_FIELD_OFFSET(MovieInfo, _impl_.play_status_)
       + sizeof(MovieInfo::_impl_.play_status_)

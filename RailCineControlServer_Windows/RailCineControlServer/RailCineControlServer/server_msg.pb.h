@@ -469,6 +469,8 @@ class UploadMovieReq final : public ::google::protobuf::Message
     kCoverDataFieldNumber = 3,
     kCoverSuffixFieldNumber = 4,
     kVideoMd5FieldNumber = 5,
+    kEncryptKeyFieldNumber = 6,
+    kDurationSecFieldNumber = 7,
   };
   // string movie_name = 1;
   void clear_movie_name() ;
@@ -550,13 +552,39 @@ class UploadMovieReq final : public ::google::protobuf::Message
   std::string* _internal_mutable_video_md5();
 
   public:
+  // string encrypt_key = 6;
+  void clear_encrypt_key() ;
+  const std::string& encrypt_key() const;
+  template <typename Arg_ = const std::string&, typename... Args_>
+  void set_encrypt_key(Arg_&& arg, Args_... args);
+  std::string* mutable_encrypt_key();
+  PROTOBUF_NODISCARD std::string* release_encrypt_key();
+  void set_allocated_encrypt_key(std::string* value);
+
+  private:
+  const std::string& _internal_encrypt_key() const;
+  inline PROTOBUF_ALWAYS_INLINE void _internal_set_encrypt_key(
+      const std::string& value);
+  std::string* _internal_mutable_encrypt_key();
+
+  public:
+  // uint32 duration_sec = 7;
+  void clear_duration_sec() ;
+  ::uint32_t duration_sec() const;
+  void set_duration_sec(::uint32_t value);
+
+  private:
+  ::uint32_t _internal_duration_sec() const;
+  void _internal_set_duration_sec(::uint32_t value);
+
+  public:
   // @@protoc_insertion_point(class_scope:ServerApi.UploadMovieReq)
  private:
   class _Internal;
   friend class ::google::protobuf::internal::TcParser;
   static const ::google::protobuf::internal::TcParseTable<
-      3, 5, 0,
-      75, 2>
+      3, 7, 0,
+      86, 2>
       _table_;
 
   friend class ::google::protobuf::MessageLite;
@@ -578,6 +606,8 @@ class UploadMovieReq final : public ::google::protobuf::Message
     ::google::protobuf::internal::ArenaStringPtr cover_data_;
     ::google::protobuf::internal::ArenaStringPtr cover_suffix_;
     ::google::protobuf::internal::ArenaStringPtr video_md5_;
+    ::google::protobuf::internal::ArenaStringPtr encrypt_key_;
+    ::uint32_t duration_sec_;
     ::google::protobuf::internal::CachedSize _cached_size_;
     PROTOBUF_TSAN_DECLARE_MEMBER
   };
@@ -1503,6 +1533,7 @@ class MovieInfo final : public ::google::protobuf::Message
     kMovieNameFieldNumber = 2,
     kCoverUrlFieldNumber = 3,
     kFileMd5FieldNumber = 5,
+    kEncryptKeyFieldNumber = 7,
     kMovieIdFieldNumber = 1,
     kFileSizeFieldNumber = 6,
     kPlayStatusFieldNumber = 4,
@@ -1555,6 +1586,22 @@ class MovieInfo final : public ::google::protobuf::Message
   std::string* _internal_mutable_file_md5();
 
   public:
+  // string encrypt_key = 7;
+  void clear_encrypt_key() ;
+  const std::string& encrypt_key() const;
+  template <typename Arg_ = const std::string&, typename... Args_>
+  void set_encrypt_key(Arg_&& arg, Args_... args);
+  std::string* mutable_encrypt_key();
+  PROTOBUF_NODISCARD std::string* release_encrypt_key();
+  void set_allocated_encrypt_key(std::string* value);
+
+  private:
+  const std::string& _internal_encrypt_key() const;
+  inline PROTOBUF_ALWAYS_INLINE void _internal_set_encrypt_key(
+      const std::string& value);
+  std::string* _internal_mutable_encrypt_key();
+
+  public:
   // uint64 movie_id = 1;
   void clear_movie_id() ;
   ::uint64_t movie_id() const;
@@ -1590,8 +1637,8 @@ class MovieInfo final : public ::google::protobuf::Message
   class _Internal;
   friend class ::google::protobuf::internal::TcParser;
   static const ::google::protobuf::internal::TcParseTable<
-      3, 6, 0,
-      55, 2>
+      3, 7, 0,
+      66, 2>
       _table_;
 
   friend class ::google::protobuf::MessageLite;
@@ -1611,6 +1658,7 @@ class MovieInfo final : public ::google::protobuf::Message
     ::google::protobuf::internal::ArenaStringPtr movie_name_;
     ::google::protobuf::internal::ArenaStringPtr cover_url_;
     ::google::protobuf::internal::ArenaStringPtr file_md5_;
+    ::google::protobuf::internal::ArenaStringPtr encrypt_key_;
     ::uint64_t movie_id_;
     ::uint64_t file_size_;
     ::int32_t play_status_;
@@ -5419,6 +5467,76 @@ inline void UploadMovieReq::set_allocated_video_md5(std::string* value) {
   // @@protoc_insertion_point(field_set_allocated:ServerApi.UploadMovieReq.video_md5)
 }
 
+// string encrypt_key = 6;
+inline void UploadMovieReq::clear_encrypt_key() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.encrypt_key_.ClearToEmpty();
+}
+inline const std::string& UploadMovieReq::encrypt_key() const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:ServerApi.UploadMovieReq.encrypt_key)
+  return _internal_encrypt_key();
+}
+template <typename Arg_, typename... Args_>
+inline PROTOBUF_ALWAYS_INLINE void UploadMovieReq::set_encrypt_key(Arg_&& arg,
+                                                     Args_... args) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.encrypt_key_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
+  // @@protoc_insertion_point(field_set:ServerApi.UploadMovieReq.encrypt_key)
+}
+inline std::string* UploadMovieReq::mutable_encrypt_key() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  std::string* _s = _internal_mutable_encrypt_key();
+  // @@protoc_insertion_point(field_mutable:ServerApi.UploadMovieReq.encrypt_key)
+  return _s;
+}
+inline const std::string& UploadMovieReq::_internal_encrypt_key() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.encrypt_key_.Get();
+}
+inline void UploadMovieReq::_internal_set_encrypt_key(const std::string& value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.encrypt_key_.Set(value, GetArena());
+}
+inline std::string* UploadMovieReq::_internal_mutable_encrypt_key() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  return _impl_.encrypt_key_.Mutable( GetArena());
+}
+inline std::string* UploadMovieReq::release_encrypt_key() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:ServerApi.UploadMovieReq.encrypt_key)
+  return _impl_.encrypt_key_.Release();
+}
+inline void UploadMovieReq::set_allocated_encrypt_key(std::string* value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.encrypt_key_.SetAllocated(value, GetArena());
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() && _impl_.encrypt_key_.IsDefault()) {
+    _impl_.encrypt_key_.Set("", GetArena());
+  }
+  // @@protoc_insertion_point(field_set_allocated:ServerApi.UploadMovieReq.encrypt_key)
+}
+
+// uint32 duration_sec = 7;
+inline void UploadMovieReq::clear_duration_sec() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.duration_sec_ = 0u;
+}
+inline ::uint32_t UploadMovieReq::duration_sec() const {
+  // @@protoc_insertion_point(field_get:ServerApi.UploadMovieReq.duration_sec)
+  return _internal_duration_sec();
+}
+inline void UploadMovieReq::set_duration_sec(::uint32_t value) {
+  _internal_set_duration_sec(value);
+  // @@protoc_insertion_point(field_set:ServerApi.UploadMovieReq.duration_sec)
+}
+inline ::uint32_t UploadMovieReq::_internal_duration_sec() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.duration_sec_;
+}
+inline void UploadMovieReq::_internal_set_duration_sec(::uint32_t value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.duration_sec_ = value;
+}
+
 // -------------------------------------------------------------------
 
 // UploadMovieRsp
@@ -5657,6 +5775,54 @@ inline ::uint64_t MovieInfo::_internal_file_size() const {
 inline void MovieInfo::_internal_set_file_size(::uint64_t value) {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.file_size_ = value;
+}
+
+// string encrypt_key = 7;
+inline void MovieInfo::clear_encrypt_key() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.encrypt_key_.ClearToEmpty();
+}
+inline const std::string& MovieInfo::encrypt_key() const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:ServerApi.MovieInfo.encrypt_key)
+  return _internal_encrypt_key();
+}
+template <typename Arg_, typename... Args_>
+inline PROTOBUF_ALWAYS_INLINE void MovieInfo::set_encrypt_key(Arg_&& arg,
+                                                     Args_... args) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.encrypt_key_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
+  // @@protoc_insertion_point(field_set:ServerApi.MovieInfo.encrypt_key)
+}
+inline std::string* MovieInfo::mutable_encrypt_key() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  std::string* _s = _internal_mutable_encrypt_key();
+  // @@protoc_insertion_point(field_mutable:ServerApi.MovieInfo.encrypt_key)
+  return _s;
+}
+inline const std::string& MovieInfo::_internal_encrypt_key() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.encrypt_key_.Get();
+}
+inline void MovieInfo::_internal_set_encrypt_key(const std::string& value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.encrypt_key_.Set(value, GetArena());
+}
+inline std::string* MovieInfo::_internal_mutable_encrypt_key() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  return _impl_.encrypt_key_.Mutable( GetArena());
+}
+inline std::string* MovieInfo::release_encrypt_key() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:ServerApi.MovieInfo.encrypt_key)
+  return _impl_.encrypt_key_.Release();
+}
+inline void MovieInfo::set_allocated_encrypt_key(std::string* value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.encrypt_key_.SetAllocated(value, GetArena());
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() && _impl_.encrypt_key_.IsDefault()) {
+    _impl_.encrypt_key_.Set("", GetArena());
+  }
+  // @@protoc_insertion_point(field_set_allocated:ServerApi.MovieInfo.encrypt_key)
 }
 
 // -------------------------------------------------------------------
