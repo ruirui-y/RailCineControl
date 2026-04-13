@@ -30,7 +30,6 @@ mainWindow::mainWindow(QWidget *parent)
 
     setWindowTitle("Demand Station");
 
-    BindSlots();
     hide();
     MoveManagerToThread();
 }
@@ -62,9 +61,11 @@ void mainWindow::SetFrameless(bool on)
 void mainWindow::MoveManagerToThread()
 {
     ThreadPool::Instance()->DispatchToWorker(
-        []()
+        [this]()
         {
             TCPMgr::Instance();
+            // Tcp在线程中创建后，才允许绑定信号槽
+            QMetaObject::invokeMethod(this, &mainWindow::BindSlots, Qt::QueuedConnection);
             qDebug() << "TCPMgr created in thread:" << QThread::currentThread();
         });
 
