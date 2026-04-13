@@ -17,24 +17,21 @@
 #include "UserMgr.h"
 #include "JsonTool.h"
 
-LoginWidget::LoginWidget(QWidget*parent)
+LoginWidget::LoginWidget(QWidget* parent)
 	: QWidget(parent), _Parent(parent)
 {
 	setFixedSize(1100, 700);
 
 	setAttribute(Qt::WA_StyledBackground, true);
-	m_bgRaw = QPixmap(":/MiNi/Images/MiNiWorld/Login/Background.png");
 
 	BuildUI();
-	ApplyStyle();
 	LoadFont();
 	qApp->setFont(m_font);
 
 	hide();
-
 	BindSlots();
 
-	QTimer::singleShot(1000, this, [this]()
+	QTimer::singleShot(0, this, [this]()
 		{
 			emit sig_connect_tcp();															// 与ChatServer建立稳定的TCP连接
 		}
@@ -51,17 +48,6 @@ LoginWidget::~LoginWidget()
 
 void LoginWidget::BuildUI()
 {
-	// 背景层
-	m_bg = new QLabel(this);
-	m_bg->setScaledContents(true);															
-	m_bg->lower();
-	
-	// 设置背景
-	const QSize s = size();
-	QPixmap fit = m_bgRaw.scaled(s, Qt::KeepAspectRatioByExpanding, Qt::SmoothTransformation);
-	m_bg->setPixmap(fit);
-	m_bg->setGeometry(rect());
-
 	// 中央面板
 	m_panel = new QWidget(this);
 	m_panel->setObjectName("panel");
@@ -77,10 +63,8 @@ void LoginWidget::BuildUI()
 	// 内容
 	m_logo = new QLabel(m_panel);
 	m_logo->setObjectName("logo");
-	m_logo->setPixmap(QPixmap(":/MiNi/Images/MiNiWorld/Login/Logo.png"));
-	m_logo->setAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
 	m_logo->setMinimumHeight(96);
-	m_logo->setScaledContents(true);
+	m_logo->setFixedWidth(300);
 
 	m_userLbl = new QLabel(QStringLiteral("账号"), m_panel);
 	m_userEdit = new QLineEdit(m_panel);
@@ -127,68 +111,14 @@ void LoginWidget::BuildUI()
 	setLayout(outer);
 }
 
-void LoginWidget::ApplyStyle()
-{
-	const QString qss = QString(R"(
-        QWidget { color: #EAF2FF; }
-        #panel { background: rgba(0,0,0,180); border-radius: 16px; }
-        #logo  { margin-top: 8px; margin-bottom: 8px; }
-        #fieldLabel { color: #CBE1FF; font-size: 14px; }
-
-        QLineEdit {
-            height: 44px; padding: 0 14px;
-            background: rgba(255,255,255,0.6);
-            border: 1px solid rgba(255,255,255,0.15);
-            border-radius: 8px; color: #FFFFFF;
-            selection-background-color: #3aa7ff;
-            selection-color: #061018;
-        }
-        QLineEdit:hover { border-color: #4DC3FF; }
-        QLineEdit:focus { border: 1px solid #4DC3FF; }
-
-        QCheckBox { spacing: 8px; color: #A9A9A9; }
-        QCheckBox::indicator {
-            width: 18px; height: 18px; border-radius: 9px;
-            border: 1px solid rgba(255,255,255,0.35);
-            background: rgba(255,255,255,0.08);
-        }
-
-		/* 选中：带绿色勾的框 */
-		QCheckBox::indicator:checked 
-		{
-		    image: url(:/MiNi/Images/MiNiWorld/Login/BoxCheck.png);
-		}
-
-        QPushButton 
-		{
-			color: #905900; font-weight: 700; font-size: 20px;
-            border: none; border-radius: 10px;
-            background-image: url(:/MiNi/Images/MiNiWorld/Login/NormalBtn.png);
-            background-position: center; background-repeat: no-repeat;
-        }
-		QPushButton:hover 
-		{
-			background-image: url(:/MiNi/Images/MiNiWorld/Login/HoverBtn.png);
-		}
-		QPushButton:pressed 
-		{
-		    background-image: url(:/MiNi/Images/MiNiWorld/Login/PressBtn.png);
-		    margin-top: 2px;                /* 整个按钮向下“压”2px */
-		    margin-bottom: 0px;
-		}
-
-    )");
-
-	setStyleSheet(qss);
-}
-
 void LoginWidget::LoadFont()
 {
 	const int id = QFontDatabase::addApplicationFont(":/MiNi/Images/MiNiWorld/Login/FZTingBian.ttf");
-	if (id >= 0) 
+	if (id >= 0)
 	{
 		const QString fam = QFontDatabase::applicationFontFamilies(id).value(0);
-		if (!fam.isEmpty()) 
+		qDebug() << "[LoginWidget] Loaded Font Family:" << fam;
+		if (!fam.isEmpty())
 		{
 			m_font = QFont(fam);
 			m_font.setPointSize(12);
@@ -229,7 +159,7 @@ void LoginWidget::AutoLogin()
 		_Parent->show();
 		return;
 	}
-	
+
 	QString user = obj["Account"].toString();
 	QString pass = obj["Password"].toString();
 
@@ -304,7 +234,7 @@ void LoginWidget::OnLoginButtonClicked()
 		EnableBtn(true);
 		return;
 	}
-		
+
 	if (!CheckPasswordValid())
 	{
 		EnableBtn(true);
@@ -317,7 +247,7 @@ void LoginWidget::OnLoginButtonClicked()
 	// 设置用户名和密码
 	UserInfo user_info;
 	user_info.UserName = user;
-    user_info.Password = pass;
+	user_info.Password = pass;
 	UserMgr::Instance()->setUserInfo(user_info);
 
 	// 禁止重复点击
@@ -325,10 +255,6 @@ void LoginWidget::OnLoginButtonClicked()
 
 	// 写入配置文件中
 	WriteLoginConfig();
-
-	// 开始记录日志
-	QString FileName = QString("Log_%1.txt").arg(user);
-	LogRecord::startRecord(FileName);
 
 	TCPMgr::Instance()->Login(user, pass);												// 发送登录请求
 
@@ -388,4 +314,15 @@ void LoginWidget::slot_login_failed(int errCode)
 
 	qDebug() << QString::fromLocal8Bit("登录失败,错误码:") << errCode << "  " << result;
 	EnableBtn(true);
+}
+
+// 用于注销退回登录页时，清空残留数据
+void LoginWidget::ClearInputs()
+{
+	// 如果你不希望每次退出连账号都清空，可以注释掉 m_userEdit->clear()
+	// m_userEdit->clear(); 
+
+	m_passEdit->clear();																	// 密码必须清空，防泄露
+	EnableBtn(true);																		// 确保按钮是可以点击的
+	m_loginBtn->setText(u8"登 录");															// 恢复按钮文字
 }

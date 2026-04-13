@@ -53,6 +53,9 @@ int main(int argc, char *argv[])
     RegisterMetaTypes();
     QApplication app(argc, argv);
 
+    // 开始记录日志
+    LogRecord::startRecord("Log.txt");
+
     // 启动线程池
     ThreadPool::Instance()->Start(4);
 

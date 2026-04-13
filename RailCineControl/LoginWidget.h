@@ -18,16 +18,16 @@ class LoginWidget : public QWidget
 	Q_OBJECT
 
 public:
-	LoginWidget(QWidget*parent = nullptr);
+	LoginWidget(QWidget* parent = nullptr);
 	~LoginWidget();
 
 public:
 	bool EnableBtn(bool);
+	void ClearInputs();																				// 切换回登录界面清空登录残留信息
 
 private:
 	void BindSlots();
 	void BuildUI();																					// 构建UI
-	void ApplyStyle();
 	void LoadFont();
 	bool CheckUserValid();																			// 检查用户名是否合法
 	bool CheckPasswordValid();																		// 检查密码是否合法
@@ -48,17 +48,16 @@ private:
 	QWidget* _Parent;																				// 父窗口
 
 private:
-	QLabel* m_bg			= nullptr;																// 背景
-	QWidget* m_panel		= nullptr;																// 中央面板
-	QLabel* m_logo			= nullptr;
+	QWidget* m_panel = nullptr;																		// 中央面板
+	QLabel* m_logo = nullptr;
 
-	QLabel* m_userLbl		= nullptr;
-	QLineEdit* m_userEdit	= nullptr;																// 账户
+	QLabel* m_userLbl = nullptr;
+	QLineEdit* m_userEdit = nullptr;																// 账户
 
-	QLabel* m_passLbl		= nullptr;
-	QLineEdit* m_passEdit	= nullptr;																// 密码
+	QLabel* m_passLbl = nullptr;
+	QLineEdit* m_passEdit = nullptr;																// 密码
 
-	QCheckBox* m_remember	= nullptr;																// 记住密码
+	QCheckBox* m_remember = nullptr;																// 记住密码
 	QPushButton* m_loginBtn = nullptr;
 
 	QPixmap      m_bgRaw;

@@ -13,6 +13,10 @@
 #include "UdpManager.h"
 #include "LocalStreamServer.h"
 
+// 定义固定窗口大小常量
+constexpr int HUB_WIDTH = 1100;
+constexpr int HUB_HEIGHT = 800;
+
 mainWindow::mainWindow(QWidget *parent)
     : QMainWindow(parent)
 {
@@ -30,7 +34,6 @@ mainWindow::mainWindow(QWidget *parent)
 
     setWindowTitle("Demand Station");
 
-    hide();
     MoveManagerToThread();
 }
 
@@ -86,6 +89,12 @@ void mainWindow::MoveManagerToThread()
 
 void mainWindow::SlotSwitchToLoginWidget()
 {
+    if (m_pages->currentWidget() == _LoginWidget)
+    {
+        emit _LoginWidget->sig_connect_tcp();
+        return;
+    }
+
     // 有边框
     SetFrameless(false);
     setAutoFillBackground(true);                                // 登录页一般不需要透明背景
@@ -94,9 +103,12 @@ void mainWindow::SlotSwitchToLoginWidget()
     JsonTool::Instance()->clearJsonFile(LoginConfigPath);
 
     // 切换界面
-    m_pages->removeWidget(_ControlHub);
-    _ControlHub->deleteLater();
-    _ControlHub = nullptr;
+    if (_ControlHub != nullptr)
+    {
+        m_pages->removeWidget(_ControlHub);
+        _ControlHub->deleteLater();
+        _ControlHub = nullptr;
+    }
 
     // 清空用户数据
     UserMgr::Instance()->ClearUser();
@@ -107,7 +119,7 @@ void mainWindow::SlotSwitchToLoginWidget()
 
     setFixedSize(_LoginWidget->size());
 
-    qDebug() << "Switch to LoginWidget";
+    qDebug() << "[mainWindow] Switch to LoginWidget";
 }
 
 void mainWindow::SlotSwitchToControlHubWidget()
@@ -116,6 +128,11 @@ void mainWindow::SlotSwitchToControlHubWidget()
     {
         _ControlHub = new ControlHubWindow(this);
         m_pages->addWidget(_ControlHub);
+
+        // 获取标题栏
+        TitleBar* title = _ControlHub->GetTitle();
+        connect(title, &TitleBar::minimizeRequested, this, &QWidget::showMinimized);                                // 最小化
+        connect(title, &TitleBar::closeRequested, this, &mainWindow::CloseWidget);                                  // 关闭
     }
 
     // 无边框 + 自绘背景
@@ -124,13 +141,9 @@ void mainWindow::SlotSwitchToControlHubWidget()
 
     m_pages->setCurrentWidget(_ControlHub);
 
-    // 获取标题栏
-    TitleBar* title = _ControlHub->GetTitle();
-    connect(title, &TitleBar::minimizeRequested, this, &QWidget::showMinimized);                                // 最小化
-    connect(title, &TitleBar::closeRequested, this, &mainWindow::CloseWidget);                                  // 关闭
-
-    setFixedSize(QSize(1100, 800));
+    setFixedSize(QSize(HUB_WIDTH, HUB_HEIGHT));
     show();
+    qDebug() << "[mainWindow] Switch to ControlHubWindow";
 }
 
 void mainWindow::CloseWidget()
