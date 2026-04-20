@@ -66,5 +66,10 @@ int main(int argc, char *argv[])
     // 加载样式表
     LoadStyle(&app);
 
-    return app.exec();
+    app.exec();
+
+    // 停止线程池
+    ThreadPool::Instance()->Stop();
+
+    return 0;
 }
