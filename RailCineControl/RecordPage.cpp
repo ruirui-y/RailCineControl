@@ -18,6 +18,10 @@ RecordPage::RecordPage(QWidget* parent) : QWidget(parent)
     setAttribute(Qt::WA_StyledBackground, true);
     setObjectName("RecordPage");
 
+    // 让当前页面本身能够接受点击焦点，并在初始化时强行抢走焦点
+    this->setFocusPolicy(Qt::ClickFocus);
+    this->setFocus();
+
     BuildUI();
 
     // ==========================================================
@@ -47,6 +51,7 @@ void RecordPage::BuildUI()
     m_dateEdit->setCalendarPopup(true);
     m_dateEdit->setObjectName("recordDateEdit");                            // 日期框本身 ID
     m_dateEdit->calendarWidget()->setObjectName("recordCalendar");          // 弹出的日历面板 ID
+    m_dateEdit->setFocusPolicy(Qt::ClickFocus);                             // 防止页面切换时被系统强制自动选中
 
     QPushButton* btnSearch = new QPushButton(u8"🔍 查询", this);
     btnSearch->setObjectName("controlBtn");
