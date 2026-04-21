@@ -15,6 +15,80 @@
 }
 
 /* ============================================================================== */
+/* 全局自定义弹窗系统 (CinemaDialogBase / CinemaMessageBox)                          */
+/* ============================================================================== */
+
+/* ---------------- 1. 弹窗底板与标题栏 ---------------- */
+#CinemaDialogBase {                                                 /* 弹窗最底层主面板 */
+    background-color: #1A1F29;                                      /* 采用比主窗口稍亮的深灰蓝 */
+    border: 1px solid rgba(0, 195, 255, 0.3);                       /* 外围包裹一圈微弱的科技蓝边框 */
+}
+
+#DialogTitleBar {                                                   /* 弹窗顶部的拖拽标题栏 */
+    background-color: #12161E;                                      /* 深邃暗色压住阵脚 */
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);             /* 底部微弱分割线 */
+}
+
+#DialogTitleLabel {                                                 /* 标题文字 */
+    color: #E0E6ED;                                                 /* 标准灰白文字 */
+    font-weight: bold;                                              /* 标题加粗 */
+    font-size: 14px;                                                /* 适中字号 */
+}
+
+#DialogBtnClose {                                                   /* 标题栏关闭按钮 */
+    background: transparent;                                        /* 默认透明 */
+    border: none;                                                   /* 无边框 */
+    color: #8A95A5;                                                 /* 默认暗灰蓝色 */
+    font-size: 16px;                                                /* 叉号稍微放大 */
+    font-weight: bold;                                              /* 叉号加粗 */
+}
+
+#DialogBtnClose:hover {                                             /* 关闭按钮悬浮态 */
+    background-color: #E81123;                                      /* 瞬间变身微软警示红底 */
+    color: #FFFFFF;                                                 /* 叉号纯白高亮 */
+}
+
+/* ---------------- 2. 弹窗内容文字 ---------------- */
+#CinemaMsgLabel {                                                   /* MessageBox 中间的提示文字 */
+    color: #FFFFFF;                                                 /* 纯白文字确保绝对清晰 */
+    font-size: 16px;                                                /* 字体稍大，易于阅读 */
+    font-weight: bold;                                              /* 醒目加粗 */
+    padding: 10px;                                                  /* 增加文字周围的呼吸感 */
+}
+
+/* ---------------- 3. 底部三色交互按钮 ---------------- */
+#btnCinemaInfo, 
+#btnCinemaWarning, 
+#btnCinemaError {                                                   /* 三个按钮的基础通用样式 */
+    border: none;                                                   /* 移除系统边框 */
+    border-radius: 6px;                                             /* 工业级微圆角 */
+    color: #FFFFFF;                                                 /* 按钮文字纯白 */
+    font-weight: bold;                                              /* 按钮文字加粗 */
+    font-size: 14px;                                                /* 适中字号 */
+}
+
+/* 🔵 Info (常规信息) - 科技蓝风格 */
+#btnCinemaInfo {
+    background-color: #0088CC;                                      /* 沉稳的深科技蓝 */
+}
+#btnCinemaInfo:hover { background-color: #00C3FF; }                 /* 悬浮瞬间点亮为高亮科技蓝 */
+#btnCinemaInfo:pressed { background-color: #0077B3; }               /* 按下时颜色加深 */
+
+/* 🟠 Warning (警告信息) - 影院金风格 */
+#btnCinemaWarning {
+    background-color: #D48806;                                      /* 沉稳的暗影院金 */
+}
+#btnCinemaWarning:hover { background-color: #FFB300; }              /* 悬浮瞬间提亮为高亮金橘色 */
+#btnCinemaWarning:pressed { background-color: #AD6800; }            /* 按下时颜色加深 */
+
+/* 🔴 Error (错误信息) - 警示红风格 */
+#btnCinemaError {
+    background-color: #C50F1F;                                      /* 沉稳的暗警示红 */
+}
+#btnCinemaError:hover { background-color: #E81123; }                /* 悬浮瞬间提亮为微软警示红 */
+#btnCinemaError:pressed { background-color: #A4000F; }              /* 按下时颜色加深 */
+
+/* ============================================================================== */
 /* 模块：LoginWidget - 登录界面专属样式 (无图纯向量渲染版)                           */
 /* ============================================================================== */
 
@@ -487,13 +561,211 @@ RecordPage {                                                        /* 播放记
     background: transparent;                                        /* 彻底透明漏出主底色 */
 }
 
-RecordPage QTableView,                                              /* 表格主体去白底 */
-RecordPage QHeaderView::section {                                   /* 表头区域去白底 */
-    background: transparent;                                        /* 彻底透明漏出主底色 */
-    border: none;                                                   /* 移除系统默认边框 */
-    color: #E0E6ED;                                                 /* 表格文字统一颜色 */
+#recordFilterLabel {                                                /* 查询日期文本标签 */
+    color: #8A95A5;                                                 /* 暗灰蓝文字 */
+    font-size: 14px;                                                /* 适中字号 */
+    font-weight: bold;                                              /* 字体加粗 */
+}
+/* ============================================================================== */
+/* [3.1.2.1] 播放记录页 - 日期筛选输入框 (#recordDateEdit) 极简向量版                   */
+/* ============================================================================== */
+
+/* ---------------- 1. 输入框主体 ---------------- */
+#recordDateEdit {                                                   /* 日期输入框本体 */
+    background-color: rgba(255, 255, 255, 0.05);                    /* 半透明微亮底色 */
+    color: #FFFFFF;                                                 /* 纯白输入文字 */
+    border: 1px solid rgba(255, 255, 255, 0.1);                     /* 极细的边界感 */
+    border-radius: 6px;                                             /* 整体现代圆角设计 */
+    padding: 4px 10px;                                              /* 内边距撑开空间 */
+    font-weight: bold;                                              /* 文本强行加粗 */
+    font-size: 14px;                                                /* 适中的可读字号 */
+    min-width: 100px;                                               /* 保证不被过度压缩 */
 }
 
+#recordDateEdit:hover {                                             /* 日期输入框悬浮态 */
+    border: 1px solid rgba(0, 195, 255, 0.5);                       /* 边框泛起科技蓝边 */
+    background-color: rgba(255, 255, 255, 0.08);                    /* 底板提亮增强交互感 */
+}
+
+/* ---------------- 2. 下拉触控区与向量箭头 ---------------- */
+#recordDateEdit::drop-down {                                        /* 下拉按钮的触控热区 */
+    subcontrol-origin: padding;                                     /* 保证在内边距内对齐 */
+    subcontrol-position: top right;                                 /* 靠右侧绝对对齐 */
+    width: 26px;                                                    /* 留出舒适的拇指点击宽度 */
+    border-left: 1px solid rgba(255, 255, 255, 0.05);               /* 极微弱的左侧竖向分割线 */
+    border-top-right-radius: 5px;                                   /* 右侧贴合输入框大圆角 */
+    border-bottom-right-radius: 5px;                                /* 右侧贴合输入框大圆角 */
+}
+
+#recordDateEdit:hover::drop-down {                                  /* 悬浮整个输入框时的下拉区 */
+    background-color: rgba(255, 255, 255, 0.03);                    /* 下拉区底色微微发亮 */
+}
+
+#recordDateEdit::drop-down:hover {                                  /* 鼠标精准悬浮在下拉区时 */
+    background-color: rgba(0, 195, 255, 0.15);                      /* 亮起明显的科技蓝底板 */
+}
+
+#recordDateEdit::down-arrow {                                       /* 无图化极简向量折线箭头 */
+    image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%238A95A5' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'><polyline points='6 9 12 15 18 9'/></svg>");
+    width: 14px;                                                    /* SVG 渲染基准宽 */
+    height: 14px;                                                   /* SVG 渲染基准高 */
+}
+
+#recordDateEdit:hover::down-arrow {                                 /* 悬浮时箭头同步变色(科技蓝) */
+    image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%2300C3FF' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'><polyline points='6 9 12 15 18 9'/></svg>");
+}
+
+
+/* ============================================================================== */
+/* [3.1.2.2] 播放记录页 - 弹出日历主面板 (#recordCalendar) 藏青色重塑版                 */
+/* ============================================================================== */
+
+/* ---------------- 1. 日历总面板与导航栏 ---------------- */
+#recordCalendar {                                                   /* 日历弹出框最底层面板 */
+    background-color: #161A23;                                      /* 深邃的藏青色面板底漆 */
+}
+
+#recordCalendar QWidget#qt_calendar_navigationbar {                 /* 顶部含有年月的导航栏 */
+    background-color: #12161E;                                      /* 稍深一阶的导航栏底色 */
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);             /* 导航栏底部微弱分割线 */
+}
+
+#recordCalendar QToolButton {                                       /* 导航栏两端及中间控制按钮 */
+    color: #E0E6ED;                                                 /* 明亮的灰白色按钮文字 */
+    font-weight: bold;                                              /* 按钮文本强行加粗 */
+    background: transparent;                                        /* 按钮默认背景透明 */
+    border-radius: 4px;                                             /* 按钮微圆角处理 */
+}
+
+#recordCalendar QToolButton:hover {                                 /* 导航控制按钮悬浮态 */
+    background-color: rgba(0, 195, 255, 0.15);                      /* 底色改为微弱的科技蓝光晕 */
+    color: #00C3FF;                                                 /* 字体瞬间点亮为科技蓝，彻底告别白色 */
+}
+
+/* ---------------- 2. 下方日期数字表格 ---------------- */
+#recordCalendar QAbstractItemView {                                 /* 日历下方的日期数字矩阵 */
+    background-color: #161A23;                                      /* 继承深藏青色底板 */
+    color: #8A95A5;                                                 /* 日期数字默认呈暗灰蓝 */
+    selection-background-color: rgba(0, 195, 255, 0.3);             /* 选中的日期底板(科技蓝) */
+    selection-color: #00C3FF;                                       /* 选中的日期文字(科技蓝) */
+    border: 1px solid rgba(255, 255, 255, 0.1);                     /* 表格矩阵的极细外边框 */
+    font-weight: bold;                                              /* 日期数字统一加粗 */
+    outline: none;                                                  /* 强行抹除点击时的虚线框 */
+}
+
+
+/* ============================================================================== */
+/* [3.1.2.3] 播放记录页 - 日历内的极微小组件 (#recordCalendar 内嵌控件)                 */
+/* ============================================================================== */
+
+/* ---------------- 1. 顶部年份微调框 (QSpinBox) ---------------- */
+#recordCalendar QSpinBox {                                          /* 年份数字输入微调框 */
+    background: transparent;                                        /* 背景透明以融入导航栏 */
+    color: #00C3FF;                                                 /* 年份文本用科技蓝突显 */
+    border: 1px solid rgba(255, 255, 255, 0.1);                     /* 输入框极细边界包裹 */
+    border-radius: 4px;                                             /* 边缘微圆角 */
+    font-weight: bold;                                              /* 年份文本加粗 */
+    font-size: 14px;                                                /* 适中清晰字号 */
+    padding-left: 4px;                                              /* 文本距左侧边框留白 */
+}
+
+#recordCalendar QSpinBox::up-button,                                /* 年份微调器的上下控制区 */
+#recordCalendar QSpinBox::down-button {                             /* 年份微调器的上下控制区 */
+    background: transparent;                                        /* 按钮区背景默认透明 */
+    border-left: 1px solid rgba(255, 255, 255, 0.1);                /* 按钮区左侧的竖向分割线 */
+    width: 16px;                                                    /* 固定微调按钮的点击热区 */
+}
+
+#recordCalendar QSpinBox::up-button:hover,                          /* 调节器按钮悬浮态 */
+#recordCalendar QSpinBox::down-button:hover {                       /* 调节器按钮悬浮态 */
+    background: rgba(0, 195, 255, 0.2);                             /* 悬浮时亮起科技蓝微光 */
+}
+
+#recordCalendar QSpinBox::up-arrow {                                /* 向上调节向量折线箭头 */
+    image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 24 24' fill='none' stroke='%23E0E6ED' stroke-width='3'><polyline points='18 15 12 9 6 15'/></svg>");
+}
+
+#recordCalendar QSpinBox::down-arrow {                              /* 向下调节向量折线箭头 */
+    image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 24 24' fill='none' stroke='%23E0E6ED' stroke-width='3'><polyline points='6 9 12 15 18 9'/></svg>");
+}
+
+/* ---------------- 2. 顶部月份下拉选择单 (QMenu) ---------------- */
+#recordCalendar QMenu {                                             /* 月份点击弹出的菜单层 */
+    background-color: #161A23;                                      /* 继承极暗的藏青色底板 */
+    color: #E0E6ED;                                                 /* 默认灰白月份文字 */
+    border: 1px solid rgba(0, 195, 255, 0.3);                       /* 边缘套上科技蓝外框线 */
+    border-radius: 4px;                                             /* 菜单层四角修圆 */
+}
+
+#recordCalendar QMenu::item {                                       /* 弹出菜单里的每一行月份 */
+    padding: 6px 24px;                                              /* 上下左右留白撑开间距 */
+    background: transparent;                                        /* 单行背景默认透明 */
+    font-weight: bold;                                              /* 月份文字加粗 */
+}
+
+#recordCalendar QMenu::item:selected {                              /* 鼠标划过悬浮选中的月份 */
+    background-color: rgba(0, 195, 255, 0.2);                       /* 选中行底色亮起微弱蓝光 */
+    color: #00C3FF;                                                 /* 选中行文字变为科技蓝 */
+}
+
+/* ============================================================================== */
+/* [3.1.2.4] 播放记录页 - 危险操作按钮 (#btnDeleteDanger) 警示红风格                 */
+/* ============================================================================== */
+
+#btnDeleteDanger {                                                  /* 删除按钮专属 */
+    background-color: rgba(232, 17, 35, 0.05);                      /* 极其微弱的红色底 */
+    color: #E81123;                                                 /* 微软警示红文字 */
+    border: 1px solid rgba(232, 17, 35, 0.3);                       /* 微弱的红色边框 */
+    border-radius: 6px;                                             /* 圆角设计 */
+    font-weight: bold;                                              /* 字体加粗 */
+    font-size: 14px;                                                /* 适中的字号 */
+}
+
+#btnDeleteDanger:hover {                                            /* 删除按钮悬浮态 */
+    background-color: #E81123;                                      /* 变为实心警示红 */
+    color: #FFFFFF;                                                 /* 文字纯白高亮 */
+}
+
+#btnDeleteDanger:pressed {                                          /* 删除按钮按下态 */
+    background-color: #B00A1A;                                      /* 颜色加深反馈 */
+    border: 1px solid #B00A1A;                                      /* 边框同步加深 */
+}
+
+
+/* ============================================================================== */
+/* [3.1.2.5] 播放记录页 - 数据表格主体 (#recordTable) 大荧幕监控台风格               */
+/* ============================================================================== */
+
+#recordTable {                                                      /* 表格主体 */
+    background: transparent;                                        /* 彻底透明漏出主底色 */
+    alternate-background-color: rgba(255, 255, 255, 0.02);          /* 交替行的斑马纹微白底 */
+    border: 1px solid rgba(255, 255, 255, 0.05);                    /* 极其微弱的全局外边框 */
+    gridline-color: rgba(255, 255, 255, 0.03);                      /* 暗淡的内部网格线 */
+    color: #E0E6ED;                                                 /* 数据行文字颜色 */
+    font-size: 13px;                                                /* 数据字号 */
+    outline: none;                                                  /* 移除点击虚线框 */
+}
+
+#recordTable::item {                                                /* 数据单元格 */
+    padding: 4px 8px;                                               /* 增加内容呼吸感 */
+    border-bottom: 1px solid rgba(255, 255, 255, 0.02);             /* 极微弱的底部行分割线 */
+}
+
+#recordTable::item:selected {                                       /* 选中整行时的状态 */
+    background-color: rgba(0, 195, 255, 0.1);                       /* 浅色科技蓝底板拉满 */
+    color: #00C3FF;                                                 /* 科技蓝高亮纯色文字 */
+}
+
+#recordTable QHeaderView::section {                                 /* 顶部表头单元格 */
+    background-color: #12161E;                                      /* 深色表头区别于数据区 */
+    color: #8A95A5;                                                 /* 表头字体偏灰蓝不抢主次 */
+    border: none;                                                   /* 移除 Windows 默认立体感 */
+    border-right: 1px solid rgba(255, 255, 255, 0.02);              /* 表头右侧微弱列分割线 */
+    border-bottom: 2px solid rgba(0, 0, 0, 0.5);                    /* 表头底部重阴影压住数据区 */
+    padding: 8px;                                                   /* 表头宽大内边距 */
+    font-weight: bold;                                              /* 表头强行加粗 */
+    font-size: 14px;                                                /* 表头字号略大显庄重 */
+}
 
 /* ============================================================================== */
 /* [3.1.3] 资源上传页 (UploadPage) 内部控件细节                                     */

@@ -32,7 +32,7 @@ void LoadStyle(QApplication* app)
 
 void RegisterMetaTypes()
 {
-    qRegisterMetaType<ReqID_TCP>("ReqID_TCP");
+
 }
 
 int main(int argc, char *argv[])

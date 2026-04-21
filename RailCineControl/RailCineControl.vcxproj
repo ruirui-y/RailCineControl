@@ -105,6 +105,7 @@
   <ItemGroup>
     <ClCompile Include="AccountInfoWidget.cpp" />
     <ClCompile Include="AccountWidget.cpp" />
+    <ClCompile Include="CinemaDialogBase.cpp" />
     <ClCompile Include="ClickedLabel.cpp" />
     <ClCompile Include="CMDTools.cpp" />
     <ClCompile Include="common.pb.cc" />
@@ -147,6 +148,8 @@
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="LocalStreamServer.h" />
+    <QtMoc Include="CinemaDialogBase.h" />
+    <QtMoc Include="CinemaMessageBox.h" />
     <ClInclude Include="VideoSecurityTool.h" />
     <QtMoc Include="UploadPage.h" />
     <QtMoc Include="UdpManager.h" />

@@ -108,6 +108,12 @@
     <Filter Include="Source Files\Http">
       <UniqueIdentifier>{069a0377-3360-4fd7-815b-b9d1d0198119}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\CustomUI">
+      <UniqueIdentifier>{b4cc78a8-0630-4a7b-8a29-53a9878b7274}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\CustomUI">
+      <UniqueIdentifier>{759726af-1b2b-4f98-aa72-1fec16a9a2be}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <QtUic Include="mainWindow.ui">
@@ -259,6 +265,15 @@
     <ClCompile Include="LocalStreamServer.cpp">
       <Filter>Source Files\Http</Filter>
     </ClCompile>
+    <ClCompile Include="CinemaDialogBase.cpp">
+      <Filter>Source Files\CustomUI</Filter>
+    </ClCompile>
+    <ClCompile Include="CinemaDialogBase.cpp">
+      <Filter>Source Files\CustomUI</Filter>
+    </ClCompile>
+    <ClCompile Include="CinemaMessageBox.cpp">
+      <Filter>Source Files\CustomUI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Enum.h">
@@ -403,6 +418,12 @@
     </QtMoc>
     <QtMoc Include="LocalStreamServer.h">
       <Filter>Header Files\Http</Filter>
+    </QtMoc>
+    <QtMoc Include="CinemaDialogBase.h">
+      <Filter>Header Files\CustomUI</Filter>
+    </QtMoc>
+    <QtMoc Include="CinemaMessageBox.h">
+      <Filter>Header Files\CustomUI</Filter>
     </QtMoc>
   </ItemGroup>
   <ItemGroup>

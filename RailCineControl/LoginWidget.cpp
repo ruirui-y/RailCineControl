@@ -11,11 +11,14 @@
 #include <QFont>
 #include <QApplication>
 #include <QMessageBox>
+#include "common.pb.h"
 #include "TCPMgr.h"
 #include "LogRecord.h"
 #include "Global.h"
 #include "UserMgr.h"
 #include "JsonTool.h"
+#include "CinemaMessageBox.h"
+
 
 LoginWidget::LoginWidget(QWidget* parent)
 	: QWidget(parent), _Parent(parent)
@@ -272,32 +275,43 @@ void LoginWidget::slot_tcp_con_finished(bool success)
 
 void LoginWidget::slot_login_failed(int errCode)
 {
+	using namespace ServerApi;
 	QString result;
-	if (errCode == ErrorCodes::LOGIN_USER_EXIT_ERR)
-	{
-		result = QString::fromLocal8Bit("用户已登录，请勿重复登录");
 
-	}
-	else if (errCode == ErrorCodes::LOGIN_PWD_ERR)
+	// 👑 绝杀：使用 switch-case 替换 if-else，逻辑更清晰，执行效率更高
+	switch (errCode)
 	{
-		result = QString::fromLocal8Bit("密码错误");
-	}
-	else if (errCode == ErrorCodes::LOGIN_USER_NOT_EXIST_ERR)
-	{
-		result = QString::fromLocal8Bit("用户不存在");
+	case ErrorCode::ERR_SERVER_INTERNAL:
+		result = QString::fromLocal8Bit("服务器内部错误，请稍后再试");
+		break;
+	case ErrorCode::ERR_WRONG_PWD:
+		result = QString::fromLocal8Bit("账号不存在或密码错误");
+		break;
+	case ErrorCode::ERR_ACCOUNT_IN_USE:
+		result = QString::fromLocal8Bit("账号已在其他设备登录，请勿重复登录");
+		break;
+	case ErrorCode::ERR_ACCOUNT_EXPIRED:
+		result = QString::fromLocal8Bit("账号授权已过期，请联系管理员续期");
+		break;
+	default:
+		// 兜底逻辑：如果出现其他未知的错误码（比如网络层的断层）
+		result = QString::fromLocal8Bit("登录异常，未知错误码: ") + QString::number(errCode);
+		break;
 	}
 
-	QMessageBox msgBox(QMessageBox::Warning,
-		QString::fromLocal8Bit("登录失败"),
-		result,
-		QMessageBox::Ok,
-		this);
+	// ---------------------------------------------------------
+	// 💡 架构师的小提醒：
+	// 你这里依然在使用原生的 QMessageBox。
+	// 在我们做完极其酷炫的暗黑影院 QSS 后，这个白底的系统弹窗可能会非常刺眼。
+	// 后期有空的时候，强烈建议把它替换成咱们自定义的无边框 Dialog！
+	// ---------------------------------------------------------
+	CinemaMessageBox::ShowWarning(this, u8"登录失败", result);
 
 	_Parent->show();
 
-	msgBox.exec();
+	qDebug() << QString::fromLocal8Bit("[LoginWidget] 登录失败, 错误码:") << errCode << " 描述:" << result;
 
-	qDebug() << QString::fromLocal8Bit("登录失败,错误码:") << errCode << "  " << result;
+	// 恢复登录按钮状态
 	EnableBtn(true);
 }
 

@@ -43,7 +43,6 @@ signals:
 
 private:
 	QMap<TipErr, QString> _TipErrs;																	// 错误提示记录
-	QMap<ReqID_TCP, std::function<void(const QJsonObject&)>> _handlers;								// 不同类型的回调函数
 	QWidget* _Parent;																				// 父窗口
 
 private:
