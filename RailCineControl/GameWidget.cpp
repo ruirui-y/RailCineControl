@@ -4,8 +4,8 @@
 #include <QLabel>
 #include <QFile>
 #include <QApplication>
-#include <QMessageBox>
 #include <QDebug>
+#include "CinemaMessageBox.h"
 
 GameWidget::GameWidget(QWidget* parent)
     : QWidget(parent)
@@ -172,7 +172,7 @@ void GameWidget::onPlayClicked()
         m_btnStop->setEnabled(true);                                    // 激活红钮
     }
     else {
-        QMessageBox::critical(this, u8"错误", u8"启动失败！");
+        CinemaMessageBox::ShowError(this, u8"错误", u8"启动失败！");
         m_btnPlay->setEnabled(true);                                    // 恢复绿钮
         m_listWidget->setEnabled(true);                                 // 解锁列表
     }

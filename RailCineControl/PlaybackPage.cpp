@@ -10,13 +10,13 @@
 #include <QFileInfo>
 #include <QDir>
 #include <filesystem> 
-#include <QMessageBox>
 #include <QTimer>
 #include <QDebug>
 #include "TCPMgr.h"
 #include "Global.h"
 #include "JsonTool.h"
 #include "LocalStreamServer.h"
+#include "CinemaMessageBox.h"
 
 PlaybackPage::PlaybackPage(QWidget* parent) : QWidget(parent)
 {
@@ -555,7 +555,7 @@ void PlaybackPage::onCoverDownloaded(const QString& fileMd5, const QString& loca
 // =========================================================================================
 void PlaybackPage::onDownloadFailed(const QString& errMsg)
 {
-    QMessageBox::warning(this, u8"下载失败", errMsg);
+    CinemaMessageBox::ShowWarning(this, u8"下载失败", errMsg);
 
     // 恢复 UI 状态，允许用户重试
     m_downloadProgress->hide();
@@ -628,6 +628,6 @@ void PlaybackPage::onDownloadFinished(const QString& fileMd5)
     // 👑 绝杀防御：将 MessageBox 扔到下一个事件循环去执行！
         // 彻底避免网络 Socket 被 UI 弹窗阻塞导致的界面塌陷 Bug
     QTimer::singleShot(100, this, [this]() {
-        QMessageBox::information(this, u8"下载完成", u8"影片已准备就绪，可以开始播放！");
+        CinemaMessageBox::ShowInfo(this, u8"下载完成", u8"影片已准备就绪，可以开始播放！");
         });
 }
