@@ -129,7 +129,7 @@ void UploadPage::BuildUI()
     QVBoxLayout* bottomLayout = new QVBoxLayout();
 
     m_progressBar = new QProgressBar(this);
-    m_progressBar->setObjectName("uploadProgress");                             // 👑 绑定 QSS
+    m_progressBar->setObjectName("Progress");                                   // 👑 绑定 QSS
     m_progressBar->setFixedHeight(15);
     m_progressBar->setRange(0, 100);
     m_progressBar->setValue(0);

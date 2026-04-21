@@ -127,6 +127,7 @@ void PlaybackPage::BuildUI()
 
     // ================= 3. 最底部：全局下载进度条 =================
     m_downloadProgress = new QProgressBar(this);
+    m_downloadProgress->setObjectName("Progress");
     m_downloadProgress->setFixedHeight(15);
     m_downloadProgress->setRange(0, 100);
     m_downloadProgress->setValue(0);
