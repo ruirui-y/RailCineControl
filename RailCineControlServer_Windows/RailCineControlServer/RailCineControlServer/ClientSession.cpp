@@ -226,44 +226,51 @@ void ClientSession::InitHandlers()
         {
             // 1. 解析请求 (使用智能指针包装，方便跨线程捕获)
             auto req = std::make_shared<ServerApi::UploadChunkReq>();
-            if (!req->ParseFromArray(bodyData.data(), bodyData.size())) return;
+            if (!req->ParseFromArray(bodyData.data(), bodyData.size()))
+            {
+                ServerApi::UploadChunkRsp emptyRsp;
+                SendProtoMsg(ServerApi::ID_UPLOAD_CHUNK_RSP, emptyRsp, -1,
+                    ServerApi::ERR_FILE_IO_FAILED, u8"分片上传请求解析失败");
+                return;
+            }
 
             uint64_t seq_id = header.seq_id();
             QString fileMd5 = QString::fromStdString(req->file_md5());
             std::weak_ptr<ClientSession> weakSelf = weak_from_this();
 
             // 💡 定义一个通用的分片落盘 Lambda 函数，用于复用
-            auto saveChunkToDisk = [weakSelf](std::shared_ptr<ServerApi::UploadChunkReq> req, uint64_t seq_id) {
-                auto strongSelf = weakSelf.lock();
-                if (!strongSelf) return;
+            auto saveChunkToDisk = [weakSelf, fileMd5](std::shared_ptr<ServerApi::UploadChunkReq> req, uint64_t seq_id)
+                {
+                    auto strongSelf = weakSelf.lock();
+                    if (!strongSelf) return;
 
-                QString fileMd5 = QString::fromStdString(req->file_md5());
-                QString dirPath = "./UploadedAssets";
-                QDir().mkpath(dirPath);
-                QString filePath = dirPath + "/" + fileMd5 + ".mp4";
+                    QString dirPath = "./UploadedAssets";
+                    QDir().mkpath(dirPath);
+                    QString filePath = dirPath + "/" + fileMd5 + ".mp4";
 
-                QFile file(filePath);
-                if (!file.open(QIODevice::ReadWrite)) {
-                    ServerApi::UploadChunkRsp emptyRsp;
-                    strongSelf->SendProtoMsg(ServerApi::ID_UPLOAD_CHUNK_RSP, emptyRsp, seq_id,
-                        ServerApi::ERR_FILE_IO_FAILED, u8"服务器磁盘写入失败");
-                    return;
-                }
+                    QFile file(filePath);
+                    if (!file.open(QIODevice::ReadWrite)) 
+                    {
+                        ServerApi::UploadChunkRsp emptyRsp;
+                        strongSelf->SendProtoMsg(ServerApi::ID_UPLOAD_CHUNK_RSP, emptyRsp, seq_id,
+                            ServerApi::ERR_FILE_IO_FAILED, u8"服务器磁盘写入失败");
+                        return;
+                    }
 
-                file.seek(req->chunk_offset());
-                file.write(req->chunk_data().data(), req->chunk_data().size());
-                file.close();
+                    file.seek(req->chunk_offset());
+                    file.write(req->chunk_data().data(), req->chunk_data().size());
+                    file.close();
 
-                // 回复确认
-                ServerApi::UploadChunkRsp rsp;
-                rsp.set_file_md5(req->file_md5());
-                rsp.set_chunk_index(req->chunk_index());
-                rsp.set_is_complete(req->is_last());
-                strongSelf->SendProtoMsg(ServerApi::ID_UPLOAD_CHUNK_RSP, rsp, seq_id);
+                    // 回复确认
+                    ServerApi::UploadChunkRsp rsp;
+                    rsp.set_file_md5(req->file_md5());
+                    rsp.set_chunk_index(req->chunk_index());
+                    rsp.set_is_complete(req->is_last());
+                    strongSelf->SendProtoMsg(ServerApi::ID_UPLOAD_CHUNK_RSP, rsp, seq_id);
 
-                if (req->is_last()) {
-                    qDebug() << u8"[ClientSession] 视频文件接收完毕，MD5:" << fileMd5;
-                }
+                    if (req->is_last()) {
+                        qDebug() << u8"[ClientSession] 视频文件接收完毕，MD5:" << fileMd5;
+                    }
                 };
 
             // ==========================================================
