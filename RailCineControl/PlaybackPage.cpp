@@ -223,14 +223,8 @@ void PlaybackPage::AddMovieCard(uint64_t id, const QString& name, const QString&
     QLabel* subTitle = new QLabel(statusText, card);
     subTitle->setObjectName("cardSub");
 
-    // 简单的颜色区分 (建议通过 QSS 配合动态属性设置)
-    if (isDownloaded) {
-        subTitle->setStyleSheet("color: #4CAF50; font-weight: bold;"); // 下载完成显绿色
-    }
-    else 
-    {
-        subTitle->setStyleSheet("color: #9E9E9E;");                     // 未下载显灰色
-    }
+    // 👑 绝杀：利用 Qt 动态属性机制，将状态交给外部 QSS 去渲染
+    subTitle->setProperty("downloaded", isDownloaded);
 
     layout->addWidget(cover);
     layout->addWidget(title);

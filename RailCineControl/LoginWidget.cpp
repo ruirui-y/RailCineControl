@@ -23,17 +23,15 @@ LoginWidget::LoginWidget(QWidget* parent)
 	setFixedSize(1100, 700);
 
 	setAttribute(Qt::WA_StyledBackground, true);
-
+	setObjectName("LoginWidget");
 	BuildUI();
-	LoadFont();
-	qApp->setFont(m_font);
 
 	hide();
 	BindSlots();
 
 	QTimer::singleShot(0, this, [this]()
 		{
-			emit sig_connect_tcp();															// 与ChatServer建立稳定的TCP连接
+			emit sig_connect_tcp();												// 与ChatServer建立稳定的TCP连接
 		}
 	);
 }
@@ -50,7 +48,7 @@ void LoginWidget::BuildUI()
 {
 	// 中央面板
 	m_panel = new QWidget(this);
-	m_panel->setObjectName("panel");
+	m_panel->setObjectName("loginPanel");                                       // 绑定专属面板 ID
 	m_panel->setMinimumWidth(560);
 
 	// 阴影
@@ -60,24 +58,29 @@ void LoginWidget::BuildUI()
 	shadow->setColor(QColor(0, 0, 0, 150));
 	m_panel->setGraphicsEffect(shadow);
 
-	// 内容
+	// 内容 (Logo)
 	m_logo = new QLabel(m_panel);
-	m_logo->setObjectName("logo");
+	m_logo->setObjectName("loginLogo");                                         // 绑定 Logo ID
 	m_logo->setMinimumHeight(96);
 	m_logo->setFixedWidth(300);
 
 	m_userLbl = new QLabel(QStringLiteral("账号"), m_panel);
 	m_userEdit = new QLineEdit(m_panel);
+	m_userEdit->setObjectName("loginInput");                                    // 统一输入框 ID
 	m_userEdit->setPlaceholderText(QStringLiteral("请输入账号"));
 
 	m_passLbl = new QLabel(QStringLiteral("密码"), m_panel);
 	m_passEdit = new QLineEdit(m_panel);
+	m_passEdit->setObjectName("loginInput");                                    // 统一输入框 ID
 	m_passEdit->setPlaceholderText(QStringLiteral("请输入密码"));
 	// m_passEdit->setEchoMode(QLineEdit::Password);
 
 	m_remember = new QCheckBox(QStringLiteral("记住密码"), m_panel);
+	m_remember->setObjectName("loginCheckBox");                                 // 绑定多选框 ID
 	m_remember->setChecked(true);
+
 	m_loginBtn = new QPushButton(QStringLiteral("登 录"), m_panel);
+	m_loginBtn->setObjectName("loginSubmitBtn");                                // 👑 核心登录大按钮专属 ID
 	m_loginBtn->setCursor(Qt::PointingHandCursor);
 	m_loginBtn->setFixedHeight(54);
 
@@ -88,7 +91,7 @@ void LoginWidget::BuildUI()
 	form->addWidget(m_logo, 0, Qt::AlignHCenter);
 
 	auto addField = [&](QLabel* lbl, QLineEdit* edit) {
-		lbl->setObjectName("fieldLabel");
+		lbl->setObjectName("fieldLabel");                                       // 标题 Label 统一 ID
 		auto* v = new QVBoxLayout();
 		v->setSpacing(8);
 		v->addWidget(lbl);
@@ -109,22 +112,6 @@ void LoginWidget::BuildUI()
 	outer->addWidget(m_panel, 0, Qt::AlignVCenter);
 	outer->addStretch();
 	setLayout(outer);
-}
-
-void LoginWidget::LoadFont()
-{
-	const int id = QFontDatabase::addApplicationFont(":/MiNi/Images/MiNiWorld/Login/FZTingBian.ttf");
-	if (id >= 0)
-	{
-		const QString fam = QFontDatabase::applicationFontFamilies(id).value(0);
-		qDebug() << "[LoginWidget] Loaded Font Family:" << fam;
-		if (!fam.isEmpty())
-		{
-			m_font = QFont(fam);
-			m_font.setPointSize(12);
-			setFont(m_font);
-		}
-	}
 }
 
 void LoginWidget::BindSlots()

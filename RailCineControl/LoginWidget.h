@@ -28,7 +28,6 @@ public:
 private:
 	void BindSlots();
 	void BuildUI();																					// 构建UI
-	void LoadFont();
 	bool CheckUserValid();																			// 检查用户名是否合法
 	bool CheckPasswordValid();																		// 检查密码是否合法
 	void AutoLogin();																				// 自动登录

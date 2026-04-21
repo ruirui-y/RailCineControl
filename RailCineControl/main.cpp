@@ -16,7 +16,7 @@
 
 void LoadStyle(QApplication* app)
 {
-    QFile file(":/StyleSheet/stylesheet.qss");
+    QFile file("./StyleSheet/stylesheet.qss");
     if (file.open(QFile::ReadOnly))
     {
         QString style = QString::fromUtf8(file.readAll());
@@ -53,6 +53,9 @@ int main(int argc, char *argv[])
     RegisterMetaTypes();
     QApplication app(argc, argv);
 
+    // 加载样式表
+    LoadStyle(&app);
+
     // 开始记录日志
     LogRecord::startRecord("Log.txt");
 
@@ -62,9 +65,6 @@ int main(int argc, char *argv[])
     mainWindow window;
 
     app.setWindowIcon(QIcon(":/MiNi/Images/MiNiWorld/Login.jpg"));
-
-    // 加载样式表
-    LoadStyle(&app);
 
     app.exec();
 

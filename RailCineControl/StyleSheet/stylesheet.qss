@@ -3,173 +3,128 @@
    规范：使用“父类名”或“对象名(#)”进行作用域隔离，坚决防止不同界面的控件样式互相污染！
    ========================================================================================= */
 
-/* ==========================================================
-   [全局设定]：科幻风垂直滚动条 (干掉原生丑陋白边)
-   ========================================================== */
-
-/* 1. 滚动条整体轨道 */
-QScrollBar:vertical {
-    background: rgba(10, 25, 45, 100);  /* 轨道背景：极暗的透明深蓝色 */
-    width: 8px;                         /* 滚动条整体宽度，瘦身变得更精致 */
-    border-radius: 4px;                 /* 轨道圆角 */
-    margin: 0px 0px 0px 0px;            /* 消除原生的外边距 */
+/* ---------------------------------------------------------
+[1. 全局配置与字体重置]
+--------------------------------------------------------- */
+* {
+    /* 🔴 强制使用更优雅的微软雅黑，增大行高 */
+    font-family: "Microsoft YaHei", "Segoe UI", sans-serif;
+    font-size: 14px;
+    color: white;
+    outline: none;
 }
 
-/* 2. 滚动条的滑块 (可拖拽的那部分) */
-QScrollBar::handle:vertical {
-    background: rgba(0, 229, 255, 120); /* 默认状态：半透明的科幻青色 */
-    border-radius: 4px;                 /* 胶囊圆角 */
-    min-height: 30px;                   /* 滑块最小高度，防止内容太多时滑块变成一条线连点都点不到 */
-}
+/* ============================================================================== */
+/* 模块：LoginWidget - 登录界面专属样式 (无图纯向量渲染版)                           */
+/* ============================================================================== */
 
-/* 3. 鼠标悬浮在滑块上的发光态 */
-QScrollBar::handle:vertical:hover {
-    background: rgba(0, 229, 255, 255); /* 鼠标悬浮时：全亮的青色荧光 */
-}
-
-/* 4. 隐藏顶部和底部的上下箭头按钮 (现代 UI 标配操作) */
-QScrollBar::add-line:vertical,
-QScrollBar::sub-line:vertical {
-    height: 0px;                        /* 高度设为0直接抹杀 */
-    background: none;
-    border: none;
-}
-
-/* 5. 点击轨道空白处时，消除原生的丑陋灰色背景 */
-QScrollBar::add-page:vertical,
-QScrollBar::sub-page:vertical {
-    background: none;
-}
-
-
-/* ==========================================================
-   [模块 1]：GameWidget - 顶部导航栏专属样式
-   ========================================================== */
-
-/* 1.1 标题特例 (通过 objectName 精确绑定) */
-QToolButton#nameBtn {
-    font-size: 20px;
-}
-
-/* 1.2 导航按钮基础态 (限定在 GameWidget 内部) */
-GameWidget QToolButton {
-    color: #BBBBBB;
-    background: transparent;
-    border: none;
-    padding: 6px 12px;
-    border-bottom: 2px solid transparent;    /* 预留2px高度，未选中时看不见，避免切换时布局跳动 */
-    outline: 0;
-}
-
-/* 1.3 导航按钮悬浮态 */
-GameWidget QToolButton:hover {
-    background: rgba(255, 255, 255, 0.06);
-    border-bottom-color: transparent;        /* 悬浮也不显示下划线 */
-}
-
-/* 1.4 导航按钮选中态 */
-GameWidget QToolButton:checked {
-    color: #FFFFFF;
-    border-bottom-color: #FFFFFF;            /* 只有选中有白色下划线 */
-}
-
-/* 1.5 导航按钮按下态 */
-GameWidget QToolButton:pressed {
-    background: rgba(255, 255, 255, 0.10);
-}
-
-
-
-/* ==========================================================
-   [模块]：LoginWidget - 登录界面专属样式
-   ========================================================== */
-
-/* 1. 基础样式、背景图与全局字体 */
-LoginWidget { 
+/* ---------------------------------------------------------
+   [1. 登录底板与容器]
+--------------------------------------------------------- */
+#LoginWidget { 
     color: #EAF2FF; 
-    /* 👑 绝杀1：使用 border-image 代替 QLabel，它会自动拉伸铺满整个窗口 */
-    border-image: url(:/MiNi/Images/MiNiWorld/Login/Background.png);
-    /* 👑 绝杀2：统一指定字体家族 (填入通过 C++ 打印出来的那个 family 名称) */
-    font-family: "方正听便"; /* 注意：这里填你实际解析出来的名字，比如 "FZHuPo-M04S" */
+    border-image: url(:/MiNi/Images/MiNiWorld/Login/Background.png);               /* 自动拉伸铺满全屏 */
 }
 
-/* 2. 中央半透明面板 */
-LoginWidget #panel { 
-    /* 注意：因为父窗口用了 border-image，这里必须覆盖一下 border-image: none，否则会继承背景 */
-    border-image: none;
-    background: rgba(0, 0, 0, 180); 
-    border-radius: 16px; 
+#LoginWidget #loginPanel { 
+    border-image: none;                                                             /* 防止继承父级背景图 */
+    background: rgba(0, 0, 0, 180);                                                 /* 高级半透明磨砂黑面板 */
+    border-radius: 16px;                                                            /* 现代圆角 */
 }
 
-/* 3. Logo 图标 */
-LoginWidget #logo { 
+#LoginWidget #loginLogo { 
     margin-top: 8px; 
     margin-bottom: 8px; 
-    /* 👑 绝杀3：使用 image 属性，它会自动保持比例居中缩放 */
-    image: url(:/MiNi/Images/MiNiWorld/Login/Logo.png);
-    width: 300px; /* 填入你的Logo图片原本的像素宽度 */
+    image: url(:/MiNi/Images/MiNiWorld/Login/Logo.png);                             /* Logo独立居中 */
 }
 
-/* 4. 输入框标题 (账号/密码) */
-LoginWidget #fieldLabel { 
-    color: #CBE1FF; 
+#LoginWidget #fieldLabel { 
+    color: #CBE1FF;                                                                 /* 浅蓝色标题 */
     font-size: 14px; 
+    font-weight: bold;                                                              /* 强行加粗字体 */
 }
 
-/* 5. 输入框通用样式 */
-LoginWidget QLineEdit {
+/* ---------------------------------------------------------
+   [2. 通用基础控件层 (在 Login 作用域内通用)]
+--------------------------------------------------------- */
+#LoginWidget QLineEdit#loginInput {
     height: 44px; 
     padding: 0 14px;
-    background: rgba(255, 255, 255, 0.6);
-    border: 1px solid rgba(255, 255, 255, 0.15);
-    border-radius: 8px; 
-    color: #FFFFFF;
-    selection-background-color: #3aa7ff;
-    selection-color: #061018;
-}
-LoginWidget QLineEdit:hover { 
-    border-color: #4DC3FF; 
-}
-LoginWidget QLineEdit:focus { 
-    border: 1px solid #4DC3FF; 
+    background: rgba(255, 255, 255, 0.1);                                           /* 极简玻璃质感背景 */
+    border: 1px solid rgba(255, 255, 255, 0.15);                                    /* 极细微边框 */
+    border-radius: 8px;                                                             /* 适中圆角 */
+    color: #FFFFFF;                                                                 /* 输入的白字 */
+    font-weight: bold;                                                              /* 输入字体加粗 */
+    selection-background-color: #00C3FF;
 }
 
-/* 6. 记住密码复选框 */
-LoginWidget QCheckBox { 
+#LoginWidget QLineEdit#loginInput:hover { 
+    border-color: rgba(255, 255, 255, 0.4);                                         /* 悬浮微亮 */
+}
+
+#LoginWidget QLineEdit#loginInput:focus { 
+    border: 1px solid #00C3FF;                                                      /* 焦点科技蓝 */
+    background: rgba(0, 0, 0, 0.3);                                                 /* 聚焦时加深背景对比 */
+}
+
+#LoginWidget QCheckBox#loginCheckBox { 
     spacing: 8px; 
     color: #A9A9A9; 
+    font-weight: bold;
 }
-LoginWidget QCheckBox::indicator {
+
+#LoginWidget QCheckBox#loginCheckBox::indicator {
     width: 18px; 
     height: 18px; 
-    border-radius: 9px;
+    border-radius: 9px;                                                             /* 圆形多选框 */
     border: 1px solid rgba(255, 255, 255, 0.35);
     background: rgba(255, 255, 255, 0.08);
 }
-/* 选中：带绿色勾的框 */
-LoginWidget QCheckBox::indicator:checked {
-    image: url(:/MiNi/Images/MiNiWorld/Login/BoxCheck.png);
+
+#LoginWidget QCheckBox#loginCheckBox::indicator:checked {
+    /* 既然抛弃图片，我们可以用系统底层的勾或者 QSS 直接上色 */
+    background: #31C27C;                                                            /* 极客绿填充 */
+    border: 1px solid #31C27C;
+    image: url(:/MiNi/Images/MiNiWorld/Login/BoxCheck.png);                        /* 如果你有单独的勾图可以保留，没有的话删掉这行也有纯绿底色 */
 }
 
-/* 7. 登录大按钮 (包含迷你世界图片态) */
-LoginWidget QPushButton {
-    color: #905900; 
-    font-weight: 700; 
-    font-size: 20px;
-    border: none; 
+/* ---------------------------------------------------------
+   [3. 按钮层：通用大基底 + 专属 ID 覆盖 (极客绿)]
+--------------------------------------------------------- */
+/* 基础按钮：半透明毛玻璃质感 (方便以后加别的辅助按钮) */
+#LoginWidget QPushButton {
+    background-color: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
     border-radius: 10px;
-    background-image: url(:/MiNi/Images/MiNiWorld/Login/NormalBtn.png);
-    background-position: center; 
-    background-repeat: no-repeat;
+    padding: 10px 20px;
+    font-weight: bold;
+    color: white;
 }
-LoginWidget QPushButton:hover {
-    background-image: url(:/MiNi/Images/MiNiWorld/Login/HoverBtn.png);
+
+#LoginWidget QPushButton:hover {
+    background-color: rgba(255, 255, 255, 0.25);
+    border: 1px solid rgba(255, 255, 255, 0.4);
 }
-LoginWidget QPushButton:pressed {
-    background-image: url(:/MiNi/Images/MiNiWorld/Login/PressBtn.png);
-    margin-top: 2px;     /* 整个按钮向下“压”2px，物理反馈拉满 */
-    margin-bottom: 0px;
+
+/* 👑 核心覆写：登录大按钮专属 (纯色向量极客绿，彻底干掉旧贴图) */
+#LoginWidget QPushButton#loginSubmitBtn {
+    background-color: #31C27C;                                                      /* 主基调：高亮极客绿 */
+    border: none;                                                                   /* 移除基础边框 */
+    color: white;                                                                   /* 纯白文字 */
+    font-size: 20px;                                                                /* 硕大字号 */
+    font-weight: 900;                                                               /* 极限加粗 */
+    border-radius: 10px;                                                            /* 保持大圆角 */
 }
+
+#LoginWidget QPushButton#loginSubmitBtn:hover {
+    background-color: #3AD589;                                                      /* 悬浮时稍稍提亮 */
+}
+
+#LoginWidget QPushButton#loginSubmitBtn:pressed {
+    background-color: #29A368;                                                      /* 按下时加深颜色 */
+    padding-top: 4px;                                                               /* 产生向下按压的物理视觉反馈 */
+}
+
 
 /* ==========================================================
    [模块 3]：AccountInfoWidget - 账户信息面板
@@ -180,6 +135,7 @@ AccountInfoWidget QWidget#accountPanel {
     background-color: rgba(20, 40, 70, 200);   /* 科技深蓝底色 */
     border: 2px solid rgba(0, 180, 220, 150);  /* 外部发光边框 */
     border-radius: 4px;
+    font-weight: bold;                         /* 字体加粗 */
 }
 
 /* 3.2 顶部标题栏 */
@@ -273,6 +229,7 @@ AccountInfoWidget QPushButton#accountArrowBtn:hover {
 /* 中控窗口全局底板兜底                                                                     */
 /* ============================================================================== */
 ControlHubWindow {                                                  /* 顶层主窗体 */
+    font-weight: bold;                                              /* 字体加粗 */
     background-color: #0B0E14;                                      /* 极暗的黑蓝色兜底 */
     color: #E0E6ED;                                                 /* 全局标准文字色 */
 }
@@ -400,6 +357,126 @@ PlaybackPage QListWidget,                                           /* 列表组
 PlaybackPage QWidget#scrollAreaWidgetContents {                     /* 滚动区域的内部视口 */
     background: transparent;                                        /* 彻底透明漏出主底色 */
     border: none;                                                   /* 移除极其丑陋的边框 */
+    outline: none;                                                  /* 移除点击时的系统虚线框 */
+}
+
+/* ==========================================================
+   [3.1.1.1] 科幻风垂直滚动条 (干掉原生丑陋白边)
+   ========================================================== */
+/* 1. 滚动条整体轨道 */
+QScrollBar:vertical {
+    background: rgba(10, 25, 45, 100);  /* 轨道背景：极暗的透明深蓝色 */
+    width: 8px;                         /* 滚动条整体宽度，瘦身变得更精致 */
+    border-radius: 4px;                 /* 轨道圆角 */
+    margin: 0px 0px 0px 0px;            /* 消除原生的外边距 */
+}
+
+/* 2. 滚动条的滑块 (可拖拽的那部分) */
+QScrollBar::handle:vertical {
+    background: rgba(0, 229, 255, 120); /* 默认状态：半透明的科幻青色 */
+    border-radius: 4px;                 /* 胶囊圆角 */
+    min-height: 30px;                   /* 滑块最小高度，防止内容太多时滑块变成一条线连点都点不到 */
+}
+
+/* 3. 鼠标悬浮在滑块上的发光态 */
+QScrollBar::handle:vertical:hover {
+    background: rgba(0, 229, 255, 255); /* 鼠标悬浮时：全亮的青色荧光 */
+}
+
+/* 4. 隐藏顶部和底部的上下箭头按钮 (现代 UI 标配操作) */
+QScrollBar::add-line:vertical,
+QScrollBar::sub-line:vertical {
+    height: 0px;                        /* 高度设为0直接抹杀 */
+    background: none;
+    border: none;
+}
+
+/* 5. 点击轨道空白处时，消除原生的丑陋灰色背景 */
+QScrollBar::add-page:vertical,
+QScrollBar::sub-page:vertical {
+    background: none;
+}
+
+/* ============================================================================== */
+/* [3.1.1.2] 核心卡片与列表窗口                                                       */
+/* ============================================================================== */
+
+/* 1. 移花接木：让内部的 QFrame 变成纯透明骨架，不参与绘制 */
+#gameCard {
+    background: transparent;
+    border: none;
+}
+
+/* 2. 华丽外衣：直接套在 QListWidget 的 Item 身上，完美避开解析 Bug */
+PlaybackPage QListWidget::item {                                    /* 卡片默认状态 */
+    background-color: rgba(255, 255, 255, 0.03);                    /* 极其微弱的泛白玻璃底 */
+    border-radius: 8px;                                             /* 现代感圆角 */
+    border: 1px solid rgba(255, 255, 255, 0.05);                    /* 极细的立体边界线 */
+}
+
+PlaybackPage QListWidget::item:hover {                              /* 卡片悬浮状态 */
+    background-color: rgba(255, 255, 255, 0.08);                    /* 悬浮提亮，增加互动感 */
+    border: 1px solid rgba(0, 195, 255, 0.3);                       /* 边框泛起隐约的科技蓝 */
+}
+
+PlaybackPage QListWidget::item:selected {                           /* 卡片选中状态 */
+    background-color: rgba(0, 195, 255, 0.1);                       /* 选中时呈浅蓝色底板 */
+    border: 1px solid #00C3FF;                                      /* 边框锁定为高亮科技蓝 */
+}
+
+/* ---------------- 海报与文字细节 ---------------- */
+#cardCover {                                                        /* 海报图片控件 */
+    background-color: #0F1319;                                      /* 图片未加载时的暗色占位 */
+    border-radius: 6px;                                             /* 配合外框微调圆角 */
+}
+
+#cardTitle {                                                        /* 影片主标题 */
+    color: #E0E6ED;                                                 /* 亮灰色标准字体 */
+    font-size: 16px;                                                /* 标题字号稍大 */
+    font-weight: bold;                                              /* 标题强调加粗 */
+    margin-top: 4px;                                                /* 距离海报稍微拉开间距 */
+}
+
+#cardSub {                                                          /* 影片副标题/状态文本 */
+    font-size: 13px;                                                /* 字号偏小 */
+    font-weight: bold;                                              /* 保持加粗加深视觉印象 */
+    margin-bottom: 4px;                                             /* 距离底部留出呼吸感 */
+}
+
+/* 动态属性捕获：接管 C++ 里的 isDownloaded 状态 */
+#cardSub[downloaded="true"] { color: #00E676; }                     /* 属性靶点：已下载 (亮绿) */
+#cardSub[downloaded="false"] { color: #8A95A5; }                    /* 属性靶点：未下载 (暗灰) */
+
+
+/* ============================================================================== */
+/* [3.1.1.3] 底部播控台样式 (#controlBtn & #statusLcd)                              */
+/* ============================================================================== */
+
+#statusLcd {                                                        /* 左下角的时间倒计时标签 */
+    color: #00C3FF;                                                 /* 醒目的科技蓝计时 */
+    font-size: 24px;                                                /* 硕大的数字字体 */
+    font-weight: bold;                                              /* 加粗 */
+    font-family: "Consolas", "Courier New", monospace;              /* 等宽字体防止时间跳动变宽 */
+}
+
+#controlBtn {                                                       /* 底部播放控制按钮通用样式 */
+    background-color: rgba(255, 255, 255, 0.05);                    /* 半透明微亮底色 */
+    color: #E0E6ED;                                                 /* 默认灰白文字 */
+    border: 1px solid rgba(255, 255, 255, 0.1);                     /* 极细的边界感 */
+    border-radius: 6px;                                             /* 圆角设计 */
+    font-weight: bold;                                              /* 字体加粗 */
+    font-size: 14px;                                                /* 适中的字号 */
+}
+
+#controlBtn:hover {                                                 /* 播控按钮悬浮态 */
+    background-color: rgba(0, 195, 255, 0.15);                      /* 浮现科技蓝光晕 */
+    border: 1px solid #00C3FF;                                      /* 亮起蓝色边框 */
+    color: #FFFFFF;                                                 /* 字体纯白高亮 */
+}
+
+#controlBtn:pressed {                                               /* 播控按钮按下态 */
+    background-color: rgba(0, 195, 255, 0.3);                       /* 深蓝色按压反馈 */
+    color: #00C3FF;                                                 /* 文字也变为蓝色呼应 */
 }
 
 
