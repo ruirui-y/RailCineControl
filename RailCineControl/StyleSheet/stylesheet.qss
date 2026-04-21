@@ -121,24 +121,27 @@
 /* ---------------------------------------------------------
    [2. 通用基础控件层 (在 Login 作用域内通用)]
 --------------------------------------------------------- */
-#LoginWidget QLineEdit#loginInput {
+#LoginWidget QLineEdit#loginInput { 
     height: 44px; 
     padding: 0 14px;
-    background: rgba(255, 255, 255, 0.1);                                           /* 极简玻璃质感背景 */
+    /* 👑 绝杀修复 1：必须使用 background-color 而不是 background，防止盖住光标 */
+    background-color: rgba(255, 255, 255, 0.1);                                     /* 极简玻璃质感背景 */
     border: 1px solid rgba(255, 255, 255, 0.15);                                    /* 极细微边框 */
     border-radius: 8px;                                                             /* 适中圆角 */
-    color: #FFFFFF;                                                                 /* 输入的白字 */
+    color: #FFFFFF;                                                                 /* 输入的白字与白光标 */
     font-weight: bold;                                                              /* 输入字体加粗 */
-    selection-background-color: #00C3FF;
-}
-
-#LoginWidget QLineEdit#loginInput:hover { 
-    border-color: rgba(255, 255, 255, 0.4);                                         /* 悬浮微亮 */
+    selection-background-color: #00C3FF;                                            /* 鼠标拖拽选中文本的底色 */
+    selection-color: #FFFFFF;                                                       /* 👑 绝杀修复 2：选中文本时的反色文字 */
 }
 
 #LoginWidget QLineEdit#loginInput:focus { 
     border: 1px solid #00C3FF;                                                      /* 焦点科技蓝 */
-    background: rgba(0, 0, 0, 0.3);                                                 /* 聚焦时加深背景对比 */
+    
+    /* 光标颜色 = 文字颜色 XOR 背景底色*/
+    /* 👑 绝杀修复 3：终结光标变异！改用不透明的纯实色底板，彻底阻断背景图片的像素透视 */
+    /* 当白字(#FFFFFF) 异或 极暗深蓝(#0F1319) 时，算出的光标将是一个非常稳定的“暖白色” */
+    background-color: #0F1319;                                                      
+    color: #FFFFFF;
 }
 
 #LoginWidget QCheckBox#loginCheckBox { 
