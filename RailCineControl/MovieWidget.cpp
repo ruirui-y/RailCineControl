@@ -3,7 +3,7 @@
 #include <QHBoxLayout>
 #include <QToolButton>
 #include <QButtonGroup>
-#include <QMessageBox>
+#include "CinemaMessageBox.h"
 #include "UserMgr.h"
 #include "TCPMgr.h"
 
@@ -83,14 +83,14 @@ void MovieWidget::BuildUI()
             m_playbackPage->RefreshMovies();
 
             // 3. 弹窗提示，并切回播放页面
-            QMessageBox::information(this, u8"成功", u8"影片已成功录入云端！");
+            CinemaMessageBox::ShowInfo(this, u8"成功", u8"影片已成功录入云端！");
         });
 
     // 监听底层的上传失败信号
     connect(TCPMgr::Instance().get(), &TCPMgr::SigUploadFailed, this, [this](QString errMsg) {
         // 恢复上传页面的按钮
         m_uploadPage->UnlockUI();
-        QMessageBox::critical(this, u8"上传失败", errMsg);
+        CinemaMessageBox::ShowError(this, u8"上传失败", errMsg);
         });
 }
 

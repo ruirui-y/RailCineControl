@@ -4,13 +4,14 @@
 #include <QLabel>
 #include <QPushButton>
 #include <QHeaderView>
-#include <QMessageBox>
 #include <QFileDialog>                                                      // 导出文件需要
 #include <QTextStream>                                                      // 写入文件需要
 #include <QDebug>
 #include <QDateTime>
 #include <QCalendarWidget>
 #include "TCPMgr.h"
+#include "CinemaMessageBox.h"
+
 
 RecordPage::RecordPage(QWidget* parent) : QWidget(parent)
 {
@@ -198,11 +199,12 @@ void RecordPage::onDeleteClicked()
 {
     int row = m_recordTable->currentRow();
     if (row < 0) {
-        QMessageBox::warning(this, u8"提示", u8"请先在表格中选中要删除的记录！");
+        CinemaMessageBox::ShowWarning(this, u8"提示", u8"请先在表格中选中要删除的记录！");
         return;
     }
-    if (QMessageBox::question(this, u8"确认", u8"确定要永久删除这条播放记录吗？(云端将同步删除)") != QMessageBox::Yes) {
-        return;
+    // 👑 用咱们自己封装的高级弹窗进行拦截
+    if (!CinemaMessageBox::ShowQuestion(this, u8"操作确认", u8"确定要永久删除这条播放记录吗？\n(云端将同步删除)")) {
+        return; // 用户点击了“取消”或按了关闭键
     }
 
     // 提取隐藏的真实数据库主键 ID
@@ -235,7 +237,7 @@ void RecordPage::onExportClicked()
 {
     // 如果表格是空的，直接驳回
     if (m_recordTable->rowCount() == 0) {
-        QMessageBox::information(this, u8"提示", u8"当前没有可导出的数据！");
+        CinemaMessageBox::ShowInfo(this, u8"提示", u8"当前没有可导出的数据！");
         return;
     }
 
@@ -247,7 +249,7 @@ void RecordPage::onExportClicked()
 
     QFile file(filePath);
     if (!file.open(QIODevice::WriteOnly | QIODevice::Text)) {
-        QMessageBox::critical(this, u8"错误", u8"文件创建失败，请检查文件是否被占用！");
+        CinemaMessageBox::ShowError(this, u8"错误", u8"文件创建失败，请检查文件是否被占用！");
         return;
     }
 
@@ -275,5 +277,5 @@ void RecordPage::onExportClicked()
     }
 
     file.close();
-    QMessageBox::information(this, u8"成功", u8"播放记录已成功导出！");
+    CinemaMessageBox::ShowInfo(this, u8"成功", u8"播放记录已成功导出！");
 }

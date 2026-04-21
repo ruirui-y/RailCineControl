@@ -56,10 +56,11 @@
     padding: 10px;                                                  /* 增加文字周围的呼吸感 */
 }
 
-/* ---------------- 3. 底部三色交互按钮 ---------------- */
+/* ---------------- 3. 底部交互按钮组 (含询问框的双按钮) ---------------- */
+
 #btnCinemaInfo, 
 #btnCinemaWarning, 
-#btnCinemaError {                                                   /* 三个按钮的基础通用样式 */
+#btnCinemaError {                                                   /* 实心按钮的基础通用样式 */
     border: none;                                                   /* 移除系统边框 */
     border-radius: 6px;                                             /* 工业级微圆角 */
     color: #FFFFFF;                                                 /* 按钮文字纯白 */
@@ -74,6 +75,7 @@
 #btnCinemaInfo:hover { background-color: #00C3FF; }                 /* 悬浮瞬间点亮为高亮科技蓝 */
 #btnCinemaInfo:pressed { background-color: #0077B3; }               /* 按下时颜色加深 */
 
+
 /* 🟠 Warning (警告信息) - 影院金风格 */
 #btnCinemaWarning {
     background-color: #D48806;                                      /* 沉稳的暗影院金 */
@@ -81,12 +83,32 @@
 #btnCinemaWarning:hover { background-color: #FFB300; }              /* 悬浮瞬间提亮为高亮金橘色 */
 #btnCinemaWarning:pressed { background-color: #AD6800; }            /* 按下时颜色加深 */
 
-/* 🔴 Error (错误信息) - 警示红风格 */
+
+/* 🔴 Error / Confirm (错误与高危操作确认) - 警示红风格 */
 #btnCinemaError {
     background-color: #C50F1F;                                      /* 沉稳的暗警示红 */
 }
 #btnCinemaError:hover { background-color: #E81123; }                /* 悬浮瞬间提亮为微软警示红 */
 #btnCinemaError:pressed { background-color: #A4000F; }              /* 按下时颜色加深 */
+
+
+/* ⚪ Cancel (取消按钮) - 暗色低调镂空风格 (用于 Question 弹窗) */
+#btnCinemaCancel {
+    background: transparent;                                        /* 透明底色，极大降低视觉权重 */
+    border: 1px solid rgba(255, 255, 255, 0.2);                     /* 极其微弱的灰色边框 */
+    border-radius: 6px;                                             /* 统一工业微圆角 */
+    color: #8A95A5;                                                 /* 暗淡的灰蓝色文字 */
+    font-weight: bold;                                              /* 字体加粗 */
+    font-size: 14px;                                                /* 适中字号 */
+}
+#btnCinemaCancel:hover {                                            /* 取消按钮悬浮态 */
+    background-color: rgba(255, 255, 255, 0.05);                    /* 悬浮时微亮提示可点击 */
+    border-color: rgba(255, 255, 255, 0.4);                         /* 边框泛白提高辨识度 */
+    color: #FFFFFF;                                                 /* 文字纯白高亮 */
+}
+#btnCinemaCancel:pressed {                                          /* 取消按钮按下态 */
+    background-color: rgba(0, 0, 0, 0.2);                           /* 产生下陷的物理阴影感 */
+}
 
 /* ============================================================================== */
 /* 模块：LoginWidget - 登录界面专属样式 (无图纯向量渲染版)                           */
