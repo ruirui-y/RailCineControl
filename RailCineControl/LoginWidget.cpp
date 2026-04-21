@@ -10,7 +10,6 @@
 #include <QFontDatabase>
 #include <QFont>
 #include <QApplication>
-#include <QMessageBox>
 #include "common.pb.h"
 #include "TCPMgr.h"
 #include "LogRecord.h"
@@ -299,12 +298,6 @@ void LoginWidget::slot_login_failed(int errCode)
 		break;
 	}
 
-	// ---------------------------------------------------------
-	// 💡 架构师的小提醒：
-	// 你这里依然在使用原生的 QMessageBox。
-	// 在我们做完极其酷炫的暗黑影院 QSS 后，这个白底的系统弹窗可能会非常刺眼。
-	// 后期有空的时候，强烈建议把它替换成咱们自定义的无边框 Dialog！
-	// ---------------------------------------------------------
 	CinemaMessageBox::ShowWarning(this, u8"登录失败", result);
 
 	_Parent->show();
