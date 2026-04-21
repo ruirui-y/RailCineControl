@@ -3,7 +3,6 @@
 #include <QHBoxLayout>
 #include <QFormLayout>
 #include <QFileDialog>
-#include <QMessageBox>
 #include <QUuid>
 #include <QFileInfo>
 #include <QMediaPlayer>
@@ -16,6 +15,8 @@
 #include "ThreadPool.h"
 #include "TCPMgr.h"
 #include "VideoSecurityTool.h"
+#include "CinemaMessageBox.h"
+
 
 UploadPage::UploadPage(QWidget* parent) : QWidget(parent)
 {
@@ -139,17 +140,8 @@ void UploadPage::BuildUI()
     m_btnUpload->setObjectName("uploadSubmitBtn");                              // 👑 绑定 QSS
     m_btnUpload->setFixedHeight(45);
 
-    QPushButton* btn = new QPushButton(u8"QMessageBox", this);
-    btn->setObjectName("uploadSubmitBtn");
-    btn->setFixedHeight(45);
-    connect(btn, &QPushButton::clicked, this, [this]()
-        {
-            QMessageBox::information(this, u8"成功", u8"影片已成功录入云端！");
-        });
-
     btnLayout->addStretch();
     btnLayout->addWidget(m_btnUpload, 1);
-    btnLayout->addWidget(btn);
     btnLayout->addStretch();
 
     bottomLayout->addWidget(m_progressBar);
@@ -261,7 +253,7 @@ void UploadPage::onSelectCover()
 void UploadPage::onUploadClicked()
 {
     if (m_videoPathEdit->text().isEmpty() || m_coverPathEdit->text().isEmpty() || m_nameEdit->text().isEmpty()) {
-        QMessageBox::warning(this, u8"提示", u8"请填写完整的影片信息！");
+        CinemaMessageBox::ShowWarning(this, u8"提示", u8"请填写完整的影片信息！");
         return;
     }
 
@@ -318,7 +310,7 @@ void UploadPage::startTcpChunkUpload()
                 // A. 计算失败的情况
                 if (!calcSuccess) {
                     safeThis->UnlockUI();
-                    QMessageBox::critical(safeThis, u8"错误", u8"文件指纹计算失败！文件可能被占用。");
+                    CinemaMessageBox::ShowError(safeThis, u8"错误", u8"文件指纹计算失败！文件可能被占用。");
                     return;
                 }
 
@@ -330,7 +322,7 @@ void UploadPage::startTcpChunkUpload()
                 safeThis->m_videoFile->setFileName(videoPath);
                 if (!safeThis->m_videoFile->open(QIODevice::ReadOnly)) {
                     safeThis->UnlockUI();
-                    QMessageBox::critical(safeThis, u8"错误", u8"无法读取视频文件！");
+                    CinemaMessageBox::ShowError(safeThis, u8"错误", u8"无法读取视频文件！");
                     return;
                 }
 
