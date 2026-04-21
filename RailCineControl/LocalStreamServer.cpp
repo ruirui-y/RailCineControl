@@ -1,6 +1,7 @@
 ﻿#include "LocalStreamServer.h"
 #include <QFile>
 #include <QFileInfo>
+#include <QCoreApplication>
 #include <QHash>
 #include <QDebug>
 
@@ -103,12 +104,27 @@ void LocalStreamServer::onReadyRead()
 
     // 开始抽水！每次读取 64KB 发送，防止内存撑爆
     const int BUF_SIZE = 64 * 1024;
+    const qint64 HIGH_WATER_MARK = 5 * 1024 * 1024;
+
     while (bytesWritten < lengthToSend) {
+        // 如果播放器中途断开，立刻刹车
+        if (socket->state() != QAbstractSocket::ConnectedState) break;
+
+        // ====================================================================
+        // 👑 真正的商业级流控：只要底层缓冲区没满 5MB，就疯狂往里塞数据！
+        // 满了 5MB，说明播放器吃不消了，我们再稍作休眠等待。
+        // ====================================================================
+        if (socket->bytesToWrite() > HIGH_WATER_MARK) {
+            socket->waitForBytesWritten(10); // 稍微等一下，让网卡把数据发出去
+            QCoreApplication::processEvents(QEventLoop::AllEvents, 2);
+            continue; // 继续检查水位，不要去读硬盘
+        }
+
         qint64 toRead = qMin((qint64)BUF_SIZE, lengthToSend - bytesWritten);
         QByteArray chunk = file.read(toRead);
         if (chunk.isEmpty()) break;
 
-        // 👑 绝杀：在这个管道口，进行瞬间解密！
+        // 在管道口，进行瞬间解密！
         DecryptStreamChunk(chunk, currentOffset);
 
         socket->write(chunk);
@@ -116,6 +132,7 @@ void LocalStreamServer::onReadyRead()
         bytesWritten += chunk.size();
         currentOffset += chunk.size(); // 偏移量递增
     }
+
     file.close();
     // 数据发送完毕，挂断这个短连接
     socket->disconnectFromHost();
