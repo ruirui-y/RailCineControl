@@ -211,6 +211,7 @@ bool LoginWidget::CheckPasswordValid()
 	if (passText.length() < 6 || passText.length() > 15)
 	{
 		qDebug() << QString::fromLocal8Bit("密码长度必须在6-15位之间");
+		QMessageBox::warning(this, u8"密码校验", u8"密码长度必须在6-15位之间");
 		return false;
 	}
 
@@ -304,9 +305,6 @@ void LoginWidget::slot_login_failed(int errCode)
 		result,
 		QMessageBox::Ok,
 		this);
-
-	// 强制设置文本标签的颜色为黑色
-	msgBox.setStyleSheet("QLabel{ color: black; font-weight: bold; }");
 
 	_Parent->show();
 
