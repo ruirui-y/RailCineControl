@@ -1,36 +1,80 @@
-#include "Titlebar.h"
+#include "TitleBar.h"
 #include <QHBoxLayout>
-#include <QToolButton>
-#include <QLabel>
 #include <QMouseEvent>
 #include <QPushButton>
-#include <QApplication>
-#include <QScreen>
+#include <QPainter>
+#include <QPainterPath>
 #include "UserMgr.h"
-#include "Macro.h"
 #include "AccountWidget.h"
-#include "Global.h"
 
+// ==============================================================================
+// 内部类：自绘系统控制按钮 (抛弃图片，全向量渲染)
+// ==============================================================================
+enum class SysBtnType { Minimize, Close };
 
-static QString AccountBtnStytle(R"(
-   QPushButton{
-       border:0; background:transparent; color:#BBBBBB;
-       font-size:20px; font-weight:400; text-align:left; padding-left:8px;
-   }
-   QPushButton[styled="true"]:pressed{ color:#FFFFFF; }
-)");
+class SysButton : public QPushButton
+{
+public:
+    SysButton(SysBtnType type, QWidget* parent = nullptr) : QPushButton(parent), m_type(type) {}
 
-TitleBar::TitleBar(QWidget* parent) : QWidget(parent) 
+protected:
+    void paintEvent(QPaintEvent* e) override
+    {
+        // 1. 让 QPushButton 先画底色 (这样就能完美响应外部 QSS 的 hover/pressed 背景)
+        QPushButton::paintEvent(e);
+
+        // 2. 启动高精度自绘
+        QPainter painter(this);
+        painter.setRenderHint(QPainter::Antialiasing);                                  // 开启抗锯齿
+
+        // 动态计算画笔颜色：如果鼠标悬浮，关闭按钮画白色，否则画暗灰蓝色
+        QColor penColor = "#8A95A5";
+        if (underMouse() && m_type == SysBtnType::Close) {
+            penColor = "#FFFFFF";                                                       // 悬浮关闭按钮时，线段变白
+        }
+        else if (underMouse()) {
+            penColor = "#00C3FF";                                                       // 悬浮最小化按钮时，线段变科技蓝
+        }
+
+        QPen pen(penColor);
+        pen.setWidth(2);                                                                // 线条粗细
+        pen.setCapStyle(Qt::RoundCap);                                                  // 圆滑线头
+        painter.setPen(pen);
+
+        QRect r = rect();
+        int cx = r.width() / 2;
+        int cy = r.height() / 2;
+        int w = 10;                                                                     // 图标的跨度大小
+
+        // 3. 核心向量渲染逻辑
+        if (m_type == SysBtnType::Minimize)
+        {
+            // 画一条底部的横线 [-]
+            painter.drawLine(cx - w / 2, cy, cx + w / 2, cy);
+        }
+        else if (m_type == SysBtnType::Close)
+        {
+            // 画一个叉叉 [X]
+            painter.drawLine(cx - w / 2, cy - w / 2, cx + w / 2, cy + w / 2);
+            painter.drawLine(cx - w / 2, cy + w / 2, cx + w / 2, cy - w / 2);
+        }
+    }
+
+private:
+    SysBtnType m_type;
+};
+// ==============================================================================
+
+TitleBar::TitleBar(QWidget* parent) : QWidget(parent)
 {
     setFixedHeight(56);
-    setAttribute(Qt::WA_StyledBackground, true);                                                        // 启用样式表渲染
-    setStyleSheet("background:transparent;");                                                           // 背景透明
+    setAttribute(Qt::WA_StyledBackground, true);                                        // 启用 QSS 渲染
+    setObjectName("MainTitleBar");                                                      // 赋予全局唯一 ID
 
     QHBoxLayout* hLayout = new QHBoxLayout(this);
-    hLayout->setContentsMargins(0, 0, 10, 0);
+    hLayout->setContentsMargins(0, 0, 16, 0);
     hLayout->setSpacing(8);
-    
-    // 创建按钮
+
     InitBtns();
 
     hLayout->addWidget(m_btnName);
@@ -38,35 +82,32 @@ TitleBar::TitleBar(QWidget* parent) : QWidget(parent)
     hLayout->addSpacing(12);
     hLayout->addWidget(m_btnMin);
     hLayout->addWidget(m_btnClose);
-    
-    // 绑定信号槽
-    connect(m_btnMin, &QToolButton::clicked, this, &TitleBar::minimizeRequested);
-    connect(m_btnClose, &QToolButton::clicked, this, &TitleBar::closeRequested);
+
+    connect(m_btnMin, &QPushButton::clicked, this, &TitleBar::minimizeRequested);
+    connect(m_btnClose, &QPushButton::clicked, this, &TitleBar::closeRequested);
 }
 
-void TitleBar::mousePressEvent(QMouseEvent* e) 
-{ 
-    if (e->button() == Qt::LeftButton) 
+void TitleBar::mousePressEvent(QMouseEvent* e)
+{
+    if (e->button() == Qt::LeftButton)
     {
-        // 计算相对顶层窗口左上的偏移
-        m_dragOffset = e->globalPos() - window()->frameGeometry().topLeft();
+        m_dragOffset = e->globalPos() - window()->frameGeometry().topLeft();            // 计算相对顶层窗口左上的偏移
         e->accept();
     }
-    else 
+    else
     {
         QWidget::mousePressEvent(e);
     }
 }
 
-void TitleBar::mouseMoveEvent(QMouseEvent* e) 
-{ 
-    if (e->buttons() & Qt::LeftButton) 
+void TitleBar::mouseMoveEvent(QMouseEvent* e)
+{
+    if (e->buttons() & Qt::LeftButton)
     {
-        // 拖动顶层窗口（MainWindow）
-        window()->move(e->globalPos() - m_dragOffset);
+        window()->move(e->globalPos() - m_dragOffset);                                  // 拖动顶层主窗口
         e->accept();
     }
-    else 
+    else
     {
         QWidget::mouseMoveEvent(e);
     }
@@ -74,54 +115,40 @@ void TitleBar::mouseMoveEvent(QMouseEvent* e)
 
 void TitleBar::InitBtns()
 {
-    m_btnMin = new QToolButton(this);
-    m_btnClose = new QToolButton(this);
+    // 实例化咱们的自绘按钮
+    m_btnMin = new SysButton(SysBtnType::Minimize, this);
+    m_btnClose = new SysButton(SysBtnType::Close, this);
     m_btnName = new QPushButton(this);
 
-    // 纯图标按钮
-    for (QToolButton* btn : {m_btnMin, m_btnClose })
+    // 绑定 QSS ID，彻底解耦
+    m_btnMin->setObjectName("TitleMinBtn");
+    m_btnClose->setObjectName("TitleCloseBtn");
+    m_btnName->setObjectName("TitleAccountBtn");
+
+    // 配置基础属性
+    for (QPushButton* btn : { m_btnMin, m_btnClose })
     {
-        btn->setToolButtonStyle(Qt::ToolButtonIconOnly);
-        btn->setAutoRaise(true);                                                                          // 扁平风格
-        btn->setIconSize(QSize(18, 18));                                                                  // 图标像素大小
         btn->setCursor(Qt::PointingHandCursor);
-        btn->setFixedSize(32, 28);                                                                        // 按钮本体大小（留出内边距）
-        btn->setStyleSheet(
-            "QToolButton{border:0; background:transparent;}"
-        );
+        btn->setFixedSize(36, 36);                                                      // 加大一点判定区域，提升手感
+        btn->setToolTip(btn == m_btnMin ? u8"最小化" : u8"关闭");
     }
 
-    // 纯文本按钮
-    m_btnName->setFlat(true);
+    // 账号按钮配置
     UserInfo userinfo = UserMgr::Instance()->getUserInfo();
     m_btnName->setText(userinfo.UserName);
     m_btnName->setCursor(Qt::PointingHandCursor);
-    m_btnName->setFixedSize(HZ_LIST_WIDTH, 28);
-    m_btnName->setStyleSheet(AccountBtnStytle);
-    m_btnName->setProperty("styled", true);
-    repolish(m_btnName);
+    m_btnName->setFixedSize(200, 36);                                                   // 宽度与左侧栏对齐
+    m_btnName->setToolTip(u8"账号信息");
 
-    m_btnMin->setIcon(QIcon(":/MiNi/Images/MiNiWorld/min.png"));
-    m_btnClose->setIcon(QIcon(":/MiNi/Images/MiNiWorld/close.png"));
-
-    m_btnMin->setToolTip(QString::fromLocal8Bit("最小化"));
-    m_btnClose->setToolTip(QString::fromLocal8Bit("关闭"));
-    m_btnName->setToolTip(QString::fromLocal8Bit("账号信息"));
-
-    auto accountWidget = new AccountWidget(m_btnName);      // 给按钮当父对象，自动释放
+    // 账号弹层逻辑
+    auto accountWidget = new AccountWidget(m_btnName);                                  // 以按钮为父对象，随之销毁
     accountWidget->setUserName(userinfo.UserName);
 
-    connect(m_btnName, &QAbstractButton::clicked, m_btnName, [=] 
+    connect(m_btnName, &QPushButton::clicked, this, [=]()
         {
-            m_btnName->setProperty("styled", false);
-            repolish(m_btnName);
-            // 计算右下角对齐的位置：让弹层右边对齐按钮右边，顶边接在按钮底边
             accountWidget->adjustSize();
-            const QSize sz = accountWidget->size();
-
             QPoint pt = m_btnName->mapToGlobal(QPoint(m_btnName->width(), m_btnName->height()));
-
             accountWidget->move(pt);
-            accountWidget->show();                                                                  // Qt::accountWidget：点击外面自动关闭
+            accountWidget->show();                                                      // 点击外部自动关闭(由弹窗自身属性控制)
         });
 }

@@ -9,6 +9,9 @@
 
 MovieWidget::MovieWidget(QWidget* parent) : QWidget(parent)
 {
+    setAttribute(Qt::WA_StyledBackground, true);
+    setObjectName("MovieWidget");
+
     BuildUI();
 }
 

@@ -20,9 +20,6 @@ public:
 public:
     TitleBar* GetTitle() { return m_title; }
 
-protected:
-    void paintEvent(QPaintEvent*) override;
-
 private:
     void AddGameItem(QString name);                                                     // Ìí¼Ó²à±ßÀ¸Ñ¡Ïî
 

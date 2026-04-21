@@ -19,6 +19,9 @@
 
 UploadPage::UploadPage(QWidget* parent) : QWidget(parent)
 {
+    setAttribute(Qt::WA_StyledBackground, true);
+    setObjectName("UploadPage");
+
     // 初始化抽水泵和文件指针
     m_videoFile = new QFile(this);
     m_chunkPumpTimer = new QTimer(this);

@@ -1,12 +1,11 @@
 #ifndef TITLEBAR_H
 #define TITLEBAR_H
+
 #include <QWidget>
 
-
-class QToolButton;
 class QPushButton;
 
-class TitleBar : public QWidget 
+class TitleBar : public QWidget
 {
     Q_OBJECT
 
@@ -20,17 +19,17 @@ signals:
     void closeRequested();
 
 protected:
-    void mousePressEvent(QMouseEvent*) override;
-    void mouseMoveEvent(QMouseEvent*) override;
+    void mousePressEvent(QMouseEvent* e) override;
+    void mouseMoveEvent(QMouseEvent* e) override;
 
 private:
     void InitBtns();
 
 private:
-    QPoint m_dragOffset;                                                            // 鼠标相对窗口左上角的偏移
-    QPushButton* m_btnName = nullptr;                                               // 名称
-    QToolButton* m_btnMin = nullptr;                                                // 最小化
-    QToolButton* m_btnClose = nullptr;                                              // 关闭
+    QPoint m_dragOffset;                                                                // 鼠标相对窗口左上角的偏移
+    QPushButton* m_btnName = nullptr;                                                   // 账号名称按钮
+    QPushButton* m_btnMin = nullptr;                                                    // 最小化按钮 (自绘)
+    QPushButton* m_btnClose = nullptr;                                                  // 关闭按钮 (自绘)
 };
 
 #endif // TITLEBAR_H

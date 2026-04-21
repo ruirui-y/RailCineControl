@@ -12,6 +12,8 @@
 SettingWidget::SettingWidget(QWidget* parent)
 	: QWidget(parent)
 {
+	setAttribute(Qt::WA_StyledBackground, true);
+	setObjectName("SettingWidget");
 	BuildUI();
 	BindSignals();
 }

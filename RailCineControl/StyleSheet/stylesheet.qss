@@ -269,280 +269,172 @@ AccountInfoWidget QPushButton#accountArrowBtn:hover {
     color: #ffffff;
 }
 
-
-/* ==========================================================
-   [模块 4]：GameLauncher - 游戏平台主窗口样式表
-   ========================================================== */
-
-/* 4.1 主窗口背景 (深邃暗色渐变感) */
-QWidget#ControlHubWindow {
-    background-color: #161621;
+/* ============================================================================== */
+/* 中控窗口全局底板兜底                                                                     */
+/* ============================================================================== */
+ControlHubWindow {                                                  /* 顶层主窗体 */
+    background-color: #0B0E14;                                      /* 极暗的黑蓝色兜底 */
+    color: #E0E6ED;                                                 /* 全局标准文字色 */
 }
 
-/* 4.2 顶部标题栏 */
-QLabel#logoLabel {
-    color: #FFFFFF;
-    font-size: 22px;
-    font-weight: bold;
-    font-family: "Segoe UI", "Microsoft YaHei";
+/* ============================================================================== */
+/* [1] 顶部标题栏 (Title Bar) - 控制全局的“天花板”                                  */
+/* ============================================================================== */
+#MainTitleBar {                                                     /* 标题栏容器 */
+    background-color: #12161E;                                      /* 极暗的深邃蓝灰 */
+    border-bottom: 1px solid rgba(0, 0, 0, 0.8);                    /* 底部强阴影分割 */
 }
 
-/* 4.3 核心：QListWidget (加入父类限制，隐藏默认滚动条和边框) */
-GameLauncher QListWidget {
-    background-color: transparent;
-    border: none;
-    outline: none;
-}
-/* 列表项的默认状态和选中状态 (用于给卡片流出一点光晕空间) */
-GameLauncher QListWidget::item {
-    background-color: transparent;
-}
-GameLauncher QListWidget::item:selected {
-    background-color: transparent;
+#TitleAccountBtn {                                                  /* 标题栏账号按钮 */
+    border: none;                                                   /* 移除边框 */
+    background: transparent;                                        /* 背景透明 */
+    color: #8A95A5;                                                 /* 默认暗灰蓝色 */
+    font-size: 20px;                                                /* 字体放大 */
+    font-weight: 700;                                               /* 账号加粗突显 */
+    text-align: left;                                               /* 靠左对齐 */
+    padding-left: 20px;                                             /* 文本左侧留白 */
 }
 
-/* 4.4 游戏卡片本体 (默认状态) */
-QFrame#gameCard {
-    background-color: #262635;
-    border-radius: 12px;
-    border: 1px solid #333345;
-}
-/* 卡片悬浮状态 */
-QFrame#gameCard:hover {
-    background-color: #303040;
-}
-/* 卡片选中状态 (图里的高亮蓝光边框) */
-QFrame#gameCard[selected="true"] {
-    border: 2px solid #00E5FF;
-    background-color: #203545;
+#TitleAccountBtn:hover {                                            /* 账号按钮悬浮 */
+    color: #FFFFFF;                                                 /* 悬浮发白高亮 */
 }
 
-/* 4.5 卡片内部文字 */
-QLabel#cardTitle {
-    color: #FFFFFF;
-    font-size: 15px;
-    font-weight: bold;
-}
-QLabel#cardSub {
-    color: #888899;
-    font-size: 12px;
-}
-QLabel#cardCover {
-    background-color: #1A1A24;
-    border-radius: 8px;
+#TitleAccountBtn:pressed {                                          /* 账号按钮按下 */
+    color: #00C3FF;                                                 /* 激活科技蓝 */
 }
 
-/* 4.6 右下角全局圆形大按钮 */
-QPushButton#btnPlay {
-    background-color: #33D36F;
-    border-radius: 35px;                       /* 高度70的一半变圆形 */
-    color: white;
-    font-size: 28px;
-    font-weight: bold;
-}
-QPushButton#btnPlay:hover {
-    background-color: #45E581;
-}
-QPushButton#btnPlay:disabled {
-    background-color: #1E5A35;
-    color: #888888;
+#TitleMinBtn, #TitleCloseBtn {                                      /* 右上角系统控制按钮 */
+    border: none;                                                   /* 移除边框 */
+    background: transparent;                                        /* 默认透明 */
+    border-radius: 6px;                                             /* 微圆角更现代 */
 }
 
-QPushButton#btnStop {
-    background-color: #FF4757;
-    border-radius: 35px;
-    color: white;
-    font-size: 28px;
-    font-weight: bold;
-}
-QPushButton#btnStop:hover {
-    background-color: #FF6775;
-}
-QPushButton#btnStop:disabled {
-    background-color: #6A1A23;
-    color: #888888;
-}
-/* ==========================================================
-   [模块 5]：MovieWidget - 影片库与播控中心 (包含播放、记录、上传)
-   ========================================================== */
-
-/* ---------------- 5.1 顶部导航栏 ---------------- */
-MovieWidget QToolButton#navBtn {
-    color: #888899;
-    font-size: 16px;
-    font-weight: bold;
-    background: transparent;
-    border: none;
-    padding: 8px 16px;
-    border-bottom: 2px solid transparent;
-}
-MovieWidget QToolButton#navBtn:hover {
-    color: #FFFFFF;
-}
-MovieWidget QToolButton#navBtn:checked {
-    color: #00E5FF;
-    border-bottom: 2px solid #00E5FF; /* 选中时底部亮起青色霓虹线 */
+#TitleMinBtn:hover {                                                /* 最小化悬浮 */
+    background: rgba(255, 255, 255, 0.08);                          /* 浅浅的白底反馈 */
 }
 
-/* ---------------- 5.2 通用播控与操作按钮 ---------------- */
-/* 标准按钮 (播放、暂停、查询、导出等) */
-QPushButton#controlBtn {
-    background-color: rgba(38, 38, 53, 200);
-    border: 1px solid #333345;
-    border-radius: 8px;
-    color: #FFFFFF;
-    font-size: 14px;
-    font-weight: bold;
-}
-QPushButton#controlBtn:hover {
-    background-color: #303040;
-    border-color: #00E5FF;
-    color: #00E5FF;
-}
-QPushButton#controlBtn:pressed {
-    background-color: rgba(0, 229, 255, 50);
+#TitleCloseBtn:hover {                                              /* 关闭按钮悬浮 */
+    background: #E81123;                                            /* 微软标准警示红 */
 }
 
-/* 危险操作按钮 (专属：删除按钮) */
-QPushButton#btnDeleteDanger {
-    background-color: rgba(38, 38, 53, 200);
-    border: 1px solid #333345;
-    border-radius: 8px;
-    color: #FFFFFF;
-    font-size: 14px;
-    font-weight: bold;
-}
-QPushButton#btnDeleteDanger:hover {
-    background-color: #303040;
-    border-color: #FF4757; /* 悬浮时变红警告 */
-    color: #FF4757;
-}
-QPushButton#btnDeleteDanger:pressed {
-    background-color: rgba(255, 71, 87, 50);
+#TitleCloseBtn:pressed {                                            /* 关闭按钮按下 */
+    background: #B00A1A;                                            /* 更深的按下红 */
 }
 
-/* ---------------- 5.3 播放台专属 (PlaybackPage) ---------------- */
-/* 倒计时 / 状态文本 */
-QLabel#statusLcd {
-    color: #00E5FF;
-    font-size: 24px;
-    font-weight: bold;
-    font-family: "Consolas", "Courier New";
-    background-color: #1A1A24;
-    border-radius: 6px;
-    padding: 4px 12px;
-    border: 1px solid #333345;
+
+/* ============================================================================== */
+/* [2] 左侧导航栏 (Left Sidebar) - 系统的“中枢神经”                                 */
+/* ============================================================================== */
+#LeftSidebar {                                                      /* 左侧列表容器 */
+    background-color: #161A23;                                      /* 藏青色导航底板 */
+    border: none;                                                   /* 去除边框 */
 }
 
-/* ---------------- 5.4 记录台专属 (RecordPage) ---------------- */
-/* 筛选区文本 */
-QLabel#recordFilterLabel {
-    color: #BBBBBB; 
-    font-weight: bold;
+GameItem {                                                          /* 侧边栏菜单项 */
+    background-color: transparent;                                  /* 默认背景透明 */
+    color: #8A95A5;                                                 /* 未选中为暗蓝灰 */
+    font-size: 16px;                                                /* 导航字体大小 */
+    font-weight: 500;                                               /* 中等加粗 */
+    border: none;                                                   /* 无边框 */
+    text-align: left;                                               /* 靠左对齐 */
+    padding-left: 20px;                                             /* 图标文本左边距 */
+    border-left: 4px solid transparent;                             /* 预留物理指示条 */
 }
 
-/* 播放记录的数据表格 */
-RecordPage QTableWidget {
-    background-color: #161621;
-    alternate-background-color: #1A1A24;
-    color: #BBBBBB;
-    border: 1px solid #333345;
-    border-radius: 8px;
-    gridline-color: #262635;
-    outline: none;
-}
-RecordPage QTableWidget::item:selected {
-    background-color: rgba(0, 229, 255, 40);
-    color: #FFFFFF;
-}
-RecordPage QHeaderView::section {
-    background-color: #262635;
-    color: #FFFFFF;
-    font-weight: bold;
-    border: none;
-    border-bottom: 2px solid #333345;
-    padding: 8px;
-}
-RecordPage QDateEdit {
-    background-color: #1A1A24;
-    color: #FFFFFF;
-    border: 1px solid #333345;
-    border-radius: 4px;
-    padding: 4px 8px;
-}
-RecordPage QDateEdit::drop-down {
-    border: none;
+GameItem:hover {                                                    /* 菜单项悬浮 */
+    background-color: rgba(255, 255, 255, 0.03);                    /* 微弱的高亮反馈 */
+    color: #FFFFFF;                                                 /* 文字提亮 */
 }
 
-/* ---------------- 5.5 上传台专属 (UploadPage) ---------------- */
-/* 海报预览框 */
-QLabel#coverPreviewArea {
-    background-color: #1A1A24; 
-    border: 2px dashed #333345; 
-    border-radius: 8px; 
-    color: #555566;
+GameItem:checked {                                                  /* 菜单项选中(焦点) */
+    background: qlineargradient(x1:0, y1:0, x2:1, y2:0,
+                stop:0 rgba(0, 195, 255, 0.15),
+                stop:1 transparent);                                /* 科技蓝渐变扫光 */
+    color: #00C3FF;                                                 /* 文本变为科技蓝 */
+    border-left: 4px solid #00C3FF;                                 /* 左侧亮起物理推杆 */
+    font-weight: 700;                                               /* 选中字体加粗 */
 }
 
-/* 表单标题 Label */
-QLabel#uploadLabelHighlight {
-    color: #00E5FF; 
-    font-weight: bold;
-}
-QLabel#uploadLabelNormal {
-    color: #BBBBBB; 
-    font-weight: bold;
+
+/* ============================================================================== */
+/* [3] 右侧堆栈内容区 (Right Stacked Content) - 核心展示的“大荧幕”                    */
+/* ============================================================================== */
+MovieWidget, GameWidget, SettingWidget {                            /* 右侧三大核心界面 */
+    background-color: #1A1F29;                                      /* 最亮的深灰蓝底色 */
 }
 
-/* 输入框通用 (单行与多行) */
-QLineEdit#uploadInput, QTextEdit#uploadDescInput {
-    background-color: #1A1A24; 
-    color: #FFFFFF; 
-    border: 1px solid #333345; 
-    border-radius: 4px;
-}
-QLineEdit#uploadInput {
-    padding-left: 8px;
-}
-QTextEdit#uploadDescInput {
-    padding: 8px;
+/* ============================================================================== */
+/* [3.1] 影片中心子模块 (MovieWidget) 专属样式                                      */
+/* ============================================================================== */
+
+/* ---------------- 顶部导航按钮 (#navBtn) ---------------- */
+#navBtn {                                                           /* 内部顶部导航按钮 */
+    background: transparent;                                        /* 背景透明融入底色 */
+    color: #8A95A5;                                                 /* 未选中为暗蓝灰 */
+    font-size: 16px;                                                /* 字体大小适中 */
+    font-weight: bold;                                              /* 字体加粗显示 */
+    padding: 8px 16px;                                              /* 撑开点击区域 */
+    border: none;                                                   /* 移除系统边框 */
+    border-bottom: 3px solid transparent;                           /* 预留底部选中指示线 */
 }
 
-/* 浏览文件小按钮 */
-QPushButton#browseBtn {
-    background-color: #262635; 
-    color: #FFFFFF; 
-    border: 1px solid #00E5FF; 
-    border-radius: 4px;
-}
-QPushButton#browseBtn:hover {
-    background-color: rgba(0, 229, 255, 30);
+#navBtn:hover {                                                     /* 导航按钮悬浮态 */
+    color: #FFFFFF;                                                 /* 悬浮文字高亮变白 */
 }
 
-/* 巨型提交按钮 */
-QPushButton#uploadSubmitBtn {
-    background-color: rgba(0, 229, 255, 30); 
-    color: #00E5FF; 
-    border: 1px solid #00E5FF; 
-    border-radius: 8px; 
-    font-size: 16px; 
-    font-weight: bold;
-}
-QPushButton#uploadSubmitBtn:hover {
-    background-color: rgba(0, 229, 255, 60);
-}
-QPushButton#uploadSubmitBtn:disabled {
-    background-color: #262635;
-    color: #888899;
-    border-color: #333345;
+#navBtn:checked {                                                   /* 导航按钮选中态 */
+    color: #00C3FF;                                                 /* 选中文字变科技蓝 */
+    border-bottom: 3px solid #00C3FF;                               /* 底部亮起科技蓝下划线 */
 }
 
-/* 上传进度条 */
-QProgressBar#uploadProgress {
-    background-color: #1A1A24; 
-    border: 1px solid #333345; 
-    border-radius: 7px;
+
+/* ============================================================================== */
+/* [3.1.1] 影片播放页 (PlaybackPage) 内部控件细节                                   */
+/* ============================================================================== */
+PlaybackPage {                                                      /* 影片播放页根节点 */
+    background: transparent;                                        /* 彻底透明漏出主底色 */
 }
-QProgressBar#uploadProgress::chunk {
-    background-color: #00E5FF; 
-    border-radius: 6px;
+
+PlaybackPage QScrollArea,                                           /* 滚动区域去白底 */
+PlaybackPage QListWidget,                                           /* 列表组件去白底 */
+PlaybackPage QWidget#scrollAreaWidgetContents {                     /* 滚动区域的内部视口 */
+    background: transparent;                                        /* 彻底透明漏出主底色 */
+    border: none;                                                   /* 移除极其丑陋的边框 */
+}
+
+
+/* ============================================================================== */
+/* [3.1.2] 播放记录页 (RecordPage) 内部控件细节                                     */
+/* ============================================================================== */
+RecordPage {                                                        /* 播放记录页根节点 */
+    background: transparent;                                        /* 彻底透明漏出主底色 */
+}
+
+RecordPage QTableView,                                              /* 表格主体去白底 */
+RecordPage QHeaderView::section {                                   /* 表头区域去白底 */
+    background: transparent;                                        /* 彻底透明漏出主底色 */
+    border: none;                                                   /* 移除系统默认边框 */
+    color: #E0E6ED;                                                 /* 表格文字统一颜色 */
+}
+
+
+/* ============================================================================== */
+/* [3.1.3] 资源上传页 (UploadPage) 内部控件细节                                     */
+/* ============================================================================== */
+UploadPage {                                                        /* 资源上传页根节点 */
+    background: transparent;                                        /* 彻底透明漏出主底色 */
+}
+
+UploadPage QLineEdit,                                               /* 上传页的输入框 */
+UploadPage QTextEdit {                                              /* 上传页的简介大文本框 */
+    background: rgba(255, 255, 255, 0.05);                          /* 极其微弱的透明白底 */
+    border: 1px solid rgba(255, 255, 255, 0.1);                     /* 浅色细边框划分边界 */
+    border-radius: 4px;                                             /* 文本框微圆角 */
+    color: #FFFFFF;                                                 /* 输入的文字为纯白 */
+    padding: 6px;                                                   /* 文本框内边距 */
+}
+
+UploadPage QLineEdit:focus,
+UploadPage QTextEdit:focus {                                        /* 输入框获取焦点时 */
+    border: 1px solid #00C3FF;                                      /* 边框亮起科技蓝 */
 }

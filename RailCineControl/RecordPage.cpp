@@ -13,6 +13,9 @@
 
 RecordPage::RecordPage(QWidget* parent) : QWidget(parent)
 {
+    setAttribute(Qt::WA_StyledBackground, true);
+    setObjectName("RecordPage");
+
     BuildUI();
 
     // ==========================================================

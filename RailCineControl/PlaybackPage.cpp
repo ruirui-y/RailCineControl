@@ -20,6 +20,9 @@
 
 PlaybackPage::PlaybackPage(QWidget* parent) : QWidget(parent)
 {
+    setAttribute(Qt::WA_StyledBackground, true);
+    setObjectName("PlaybackPage");
+
     m_player = new QMediaPlayer(this);                                      // 实例化多媒体引擎
     m_player->setVolume(100);                                               // 默认最大音量
 

@@ -10,7 +10,8 @@
 GameWidget::GameWidget(QWidget* parent)
     : QWidget(parent)
 {
-    this->setObjectName("mainWindow");                                  // 绑定主窗口QSS
+    setAttribute(Qt::WA_StyledBackground, true);
+    setObjectName("GameWidget");
     this->resize(1000, 650);                                            // 设置舒适的默认尺寸
 
     m_gameProcess = new QProcess(this);                                 // 实例化进程管理器

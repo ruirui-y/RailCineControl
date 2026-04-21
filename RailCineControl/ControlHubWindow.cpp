@@ -27,9 +27,6 @@ ControlHubWindow::ControlHubWindow(QWidget* parent) : QWidget(parent)
     setAutoFillBackground(false);
     setAttribute(Qt::WA_OpaquePaintEvent); // 我来负责整窗绘制，更高效
 
-    // 保留你原来的背景图片素材
-    m_bgCache = QPixmap(":/MiNi/Images/MiNiWorld/HZBg.png");
-
     // 1.根布局(垂直布局)
     auto* root = new QVBoxLayout(this);
     root->setContentsMargins(0, 0, 0, 0);
@@ -37,8 +34,8 @@ ControlHubWindow::ControlHubWindow(QWidget* parent) : QWidget(parent)
 
     // 2.顶部栏
     m_title = new TitleBar(this);
+    m_title->setObjectName("MainTitleBar");
     m_title->setAutoFillBackground(false);
-    m_title->setStyleSheet("background:transparent;");
     root->addWidget(m_title);
 
     // 3.主窗口(水平布局)
@@ -47,7 +44,6 @@ ControlHubWindow::ControlHubWindow(QWidget* parent) : QWidget(parent)
     hbox->setContentsMargins(0, 0, 0, 0);
     hbox->setSpacing(0);
 
-    center->setStyleSheet("background:transparent;");
     center->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 
     // ==========================================================
@@ -59,10 +55,10 @@ ControlHubWindow::ControlHubWindow(QWidget* parent) : QWidget(parent)
     m_gameItems.insert(u8"系统设置", ":/MiNi/Images/MiNiWorld/Setting.png");
 
     m_leftList_c = new QListWidget(center);
+    m_leftList_c->setObjectName("LeftSidebar");                                         // 为左侧栏赋予唯一 ID
     QVBoxLayout* listLayout = new QVBoxLayout(m_leftList_c);
     listLayout->setContentsMargins(0, 0, 0, 0);
     listLayout->setSpacing(0);
-    m_leftList_c->setStyleSheet("QListWidget { background-image: url(:/MiNi/Images/MiNiWorld/List.png); border: none; }");
     m_leftList_c->setFixedWidth(HZ_LIST_WIDTH);
 
     // 按钮组
@@ -96,8 +92,8 @@ ControlHubWindow::ControlHubWindow(QWidget* parent) : QWidget(parent)
     m_stack->addWidget(movie_widget);
 
     // Index 1: 对战控制大厅 (原 GameWidget，里面包含了设备、玩法、对战等)
-    GameWidget* gameControl = new GameWidget(center);
-    m_stack->addWidget(gameControl);
+    GameWidget* game_widget = new GameWidget(center);
+    m_stack->addWidget(game_widget);
 
     // Index 2: 系统设置
     SettingWidget* setting = new SettingWidget(center);
@@ -109,13 +105,6 @@ ControlHubWindow::ControlHubWindow(QWidget* parent) : QWidget(parent)
 
     hbox->addLayout(m_stack, 1);
     root->addWidget(center, 1);
-}
-
-void ControlHubWindow::paintEvent(QPaintEvent*)
-{
-    QPainter p(this);
-    p.setRenderHint(QPainter::Antialiasing, true);
-    p.drawPixmap(rect(), m_bgCache);
 }
 
 void ControlHubWindow::AddGameItem(QString name)
