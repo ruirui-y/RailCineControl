@@ -9,6 +9,7 @@
 #include <QTextStream>                                                      // 写入文件需要
 #include <QDebug>
 #include <QDateTime>
+#include <QCalendarWidget>
 #include "TCPMgr.h"
 
 RecordPage::RecordPage(QWidget* parent) : QWidget(parent)
@@ -43,6 +44,8 @@ void RecordPage::BuildUI()
 
     m_dateEdit = new QDateEdit(QDate::currentDate(), this);
     m_dateEdit->setCalendarPopup(true);
+    m_dateEdit->setObjectName("recordDateEdit");                            // 日期框本身 ID
+    m_dateEdit->calendarWidget()->setObjectName("recordCalendar");          // 弹出的日历面板 ID
 
     QPushButton* btnSearch = new QPushButton(u8"🔍 查询", this);
     btnSearch->setObjectName("controlBtn");
@@ -65,6 +68,7 @@ void RecordPage::BuildUI()
 
     // ================= 2. 数据表格 =================
     m_recordTable = new QTableWidget(0, 6, this);
+    m_recordTable->setObjectName("recordTable");
     m_recordTable->setHorizontalHeaderLabels({
         u8"播放日期", u8"影片名称", u8"开始时间", u8"结束时间", u8"操作员", u8"结束类型"
         });
