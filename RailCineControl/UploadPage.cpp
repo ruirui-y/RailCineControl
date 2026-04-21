@@ -6,6 +6,9 @@
 #include <QMessageBox>
 #include <QUuid>
 #include <QFileInfo>
+#include <QMediaPlayer>
+#include <QEventLoop>
+#include <QUrl>
 #include <QDebug>
 #include <QCoreApplication>
 #include <QPointer>
@@ -24,9 +27,7 @@ UploadPage::UploadPage(QWidget* parent) : QWidget(parent)
     connect(m_chunkPumpTimer, &QTimer::timeout, this, &UploadPage::pumpNextChunk);
 
     // 收到服务器的安全回执后，才真正提交海报与文字表单！
-    connect(TCPMgr::Instance().get(), &TCPMgr::SigAllChunksAcked, this, [this]() {
-        submitMetadataToTcp();
-        });
+    connect(TCPMgr::Instance().get(), &TCPMgr::SigAllChunksAcked, this, &UploadPage::submitMetadataToTcp);
 
     BuildUI();
 }
@@ -135,14 +136,23 @@ void UploadPage::BuildUI()
     m_btnUpload->setObjectName("uploadSubmitBtn");                              // 👑 绑定 QSS
     m_btnUpload->setFixedHeight(45);
 
+    QPushButton* btn = new QPushButton(u8"QMessageBox", this);
+    btn->setObjectName("uploadSubmitBtn");
+    btn->setFixedHeight(45);
+    connect(btn, &QPushButton::clicked, this, [this]()
+        {
+            QMessageBox::information(this, u8"成功", u8"影片已成功录入云端！");
+        });
+
     btnLayout->addStretch();
     btnLayout->addWidget(m_btnUpload, 1);
+    btnLayout->addWidget(btn);
     btnLayout->addStretch();
 
     bottomLayout->addWidget(m_progressBar);
+
     bottomLayout->addSpacing(10);
     bottomLayout->addLayout(btnLayout);
-
     mainLayout->addLayout(topLayout, 1);
     mainLayout->addLayout(bottomLayout);
 
@@ -150,6 +160,35 @@ void UploadPage::BuildUI()
     connect(btnBrowseVideo, &QPushButton::clicked, this, &UploadPage::onSelectVideo);
     connect(btnBrowseCover, &QPushButton::clicked, this, &UploadPage::onSelectCover);
     connect(m_btnUpload, &QPushButton::clicked, this, &UploadPage::onUploadClicked);
+}
+
+uint32_t UploadPage::GetVideoDurationSec(const QString& filePath)
+{
+    // 1. 创建一个临时的、不显示的“哑巴”播放器
+    QMediaPlayer dummyPlayer;
+    dummyPlayer.setMedia(QUrl::fromLocalFile(QFileInfo(filePath).absoluteFilePath()));
+
+    // 2. 创建局部事件循环
+    QEventLoop loop;
+
+    // 3. 核心机制：当播放器成功解析出时长时，触发事件循环退出
+    QObject::connect(&dummyPlayer, &QMediaPlayer::durationChanged, &loop, &QEventLoop::quit);
+
+    // 🛡️ 防御性编程：万一用户选了一个损坏的 mp4 文件，播放器永远解析不出时长，
+    // 为了防止程序在这里永远死锁，我们加一个 3 秒的强制超时炸弹！
+    QTimer timeoutTimer;
+    timeoutTimer.setSingleShot(true);
+    QObject::connect(&timeoutTimer, &QTimer::timeout, &loop, &QEventLoop::quit);
+    timeoutTimer.start(3000);
+
+    // 4. 开启循环：代码会“挂起”在这里等待，但不会卡死整个程序的 UI 刷新
+    loop.exec();
+
+    // 5. 拿到结果 (duration 返回的是毫秒)
+    qint64 durationMs = dummyPlayer.duration();
+
+    // 转换为秒并返回
+    return static_cast<uint32_t>(durationMs / 1000);
 }
 
 // -------------------------------------------------------------------------
@@ -302,9 +341,8 @@ void UploadPage::startTcpChunkUpload()
                 // 🔑 生成一个没有横杠的 32 位随机 UUID 作为当前视频的绝对密钥
                 safeThis->m_currentEncryptKey = QUuid::createUuid().toString(QUuid::Id128);
 
-                // ⏱️ 获取时长。如果你界面上有填写时长的输入框，这里直接 read UI 即可。
-                // 假设你界面上没有，暂时填 0，或者你可以用 QMediaPlayer 去预读视频的时长
-                safeThis->m_currentDurationSec = 0;
+                // ⏱️ 获取时长
+                safeThis->m_currentDurationSec = safeThis->GetVideoDurationSec(videoPath);
 
                 safeThis->m_btnUpload->setText(u8"正在进行视频切片与上传 [1/2]...");
 
@@ -339,7 +377,7 @@ void UploadPage::pumpNextChunk()
         VideoSecurityTool::XorProcessByteArray(chunkData, m_currentEncryptKey);
         qDebug() << u8"[UploadPage] 🛡️ 头部 1MB 切片已被 XOR 混淆加密！";
     }
-
+     
     // 2. 组装 Protobuf 切片请求
     ServerApi::UploadChunkReq req;
     req.set_file_md5(m_currentFileMd5.toStdString());

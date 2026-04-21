@@ -239,7 +239,9 @@ void TCPMgr::InitHandlers()
                     file.write(chunkData);
                     file.close();
                 }
-                else {
+                else 
+                {
+                    qDebug() << u8"[TCPMgr] 视频下载中断，本地磁盘写入失败";
                     emit SigDownloadFailed(u8"本地磁盘写入失败");
                     return;
                 }

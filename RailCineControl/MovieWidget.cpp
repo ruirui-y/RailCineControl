@@ -73,14 +73,14 @@ void MovieWidget::BuildUI()
     // 监听底层的上传成功信号
     connect(TCPMgr::Instance().get(), &TCPMgr::SigUploadSuccess, this, [this]()
         {
-        // 1. 通知 UploadPage 恢复按钮状态，清空输入框
-        m_uploadPage->ResetUI();                                                
+            // 1. 通知 UploadPage 恢复按钮状态，清空输入框
+            m_uploadPage->ResetUI();                                                
 
-        // 2. 通知 PlaybackPage 重新去服务器拉取最新的影片列表
-        m_playbackPage->RefreshMovies();
+            // 2. 通知 PlaybackPage 重新去服务器拉取最新的影片列表
+            m_playbackPage->RefreshMovies();
 
-        // 3. 弹窗提示，并切回播放页面
-        QMessageBox::information(this, u8"成功", u8"影片已成功录入云端！");
+            // 3. 弹窗提示，并切回播放页面
+            QMessageBox::information(this, u8"成功", u8"影片已成功录入云端！");
         });
 
     // 监听底层的上传失败信号

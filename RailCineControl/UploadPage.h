@@ -32,7 +32,9 @@ private slots:
 
 private:
     void BuildUI();
+    uint32_t GetVideoDurationSec(const QString& filePath);                          // 获取文件时长
 
+private:
     QLineEdit* m_videoPathEdit;
     QLineEdit* m_coverPathEdit;
     QLineEdit* m_nameEdit;
