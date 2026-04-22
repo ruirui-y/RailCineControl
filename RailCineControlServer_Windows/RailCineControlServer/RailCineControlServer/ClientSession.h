@@ -56,4 +56,5 @@ private:
 
     QTimer* m_heartbeatTimer = nullptr;                                         // 心跳定时器
     qint64 m_lastRecvTime = 0;                                                  // 上次收到任何数据的时间戳
+    qint64 m_lastDbSyncTime = 0;                                                // 记录上一次真实写入数据库的心跳时间 (秒)
 };

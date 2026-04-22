@@ -10,6 +10,7 @@
 
 #define CHECK_TIMEOUT                                                           10000
 #define CONN_TIME_OUT                                                           30000
+#define HEARTBEAT_TIMEOUT                                                       60
 
 ClientSession::ClientSession(qintptr socketDescriptor, QObject* parent)
     : QObject(parent), m_socketDescriptor(socketDescriptor)
@@ -76,13 +77,18 @@ void ClientSession::onDisconnected()
         m_heartbeatTimer->stop();
     }
 
-    // 把数据库里的 is_online 改回 0！
-    if (m_isLogined && !m_username.isEmpty()) {
-        QString sql = "UPDATE sys_account SET is_online = 0 WHERE username = ?";
+    // 正常断开时的“瞬间释放”机制
+    // 强制把心跳时间重置到远古时代
+    if (m_isLogined && m_accountId > 0) {
+        // 将时间改回 2000 年，确保他立刻重连时，时间差绝对大于 60 秒，实现 0 延迟登录！
+        QString sql = "UPDATE sys_account SET last_heartbeat_time = '2000-01-01 00:00:00' WHERE id = ?";
         QList<QVariant> params;
-        params << m_username;
+        params << m_accountId;                                                  // 用主键 ID 更新比用 username 性能高得多
+
         // 异步丢给数据库线程池，不用管结果
         ThreadPool::Instance()->PostUpdateTask(sql, [](bool) {}, true, params);
+
+        m_isLogined = false;                                                    // 状态清空
     }
 
     emit SigSessionClosed(this);                                                // 触发主服务器的回收机制
@@ -112,7 +118,7 @@ void ClientSession::InitHandlers()
         std::weak_ptr<ClientSession> weakSelf = weak_from_this();
 
         // 1. 构造查询语句 (查出我们需要风控的所有字段)
-        QString sql = "SELECT id, password, shop_name, expire_time, status, is_online FROM sys_account WHERE username = ?";
+        QString sql = "SELECT id, password, shop_name, expire_time, status, last_heartbeat_time FROM sys_account WHERE username = ?";
         QList<QVariant> params;
         params << loginUser;
 
@@ -138,7 +144,13 @@ void ClientSession::InitHandlers()
             QString shopName = row["shop_name"].toString();                                                                         // 门店名
             QDateTime expireTime = row["expire_time"].toDateTime();                                                                 // 过期时间
             int status = row["status"].toInt();                                                                                     // 账号状态
-            int isOnline = row["is_online"].toInt();                                                                                // 在线状态
+
+            // 提取最后一次心跳时间，并计算在线状态
+            QDateTime lastHeartbeat = row["last_heartbeat_time"].toDateTime();
+            QDateTime currentDateTime = QDateTime::currentDateTime();
+
+            // 计算时间差 (秒)。如果数据库里为空(isValid为假)，则默认给个极大值让它直接放行
+            qint64 diffSecs = lastHeartbeat.isValid() ? lastHeartbeat.secsTo(currentDateTime) : 999999;
 
             // B. 密码校验
             if (loginPwd != dbPwd) {
@@ -158,9 +170,9 @@ void ClientSession::InitHandlers()
                 return;
             }
 
-            // E. 防多开校验 (禁止重复登录)
-            if (isOnline == 1) {
-                strongSelf->SendProtoMsg(ServerApi::ID_LOGIN_RSP, emptyRsp, seq_id, ServerApi::ERR_ACCOUNT_IN_USE, u8"账号已在其他终端登录");
+            // E. 防多开校验
+            if (diffSecs >= 0 && diffSecs <= HEARTBEAT_TIMEOUT) {
+                strongSelf->SendProtoMsg(ServerApi::ID_LOGIN_RSP, emptyRsp, seq_id, ServerApi::ERR_ACCOUNT_IN_USE, u8"账号已在其他终端活跃，请稍后再试");
                 return;
             }
 
@@ -178,7 +190,8 @@ void ClientSession::InitHandlers()
             qDebug() << u8"[ClientSession] 账号登录成功:" << loginUser << u8"门店:" << shopName;
 
             // 4. 异步更新设备为“在线”状态，并刷新最后登录时间
-            QString updateSql = "UPDATE sys_account SET is_online = 1, last_login_time = NOW() WHERE id = ?";
+            // 登录成功即刻赋活心跳时间！(注意数据库要支持 NOW() 函数)
+            QString updateSql = "UPDATE sys_account SET last_login_time = NOW() WHERE id = ?";
             QList<QVariant> updateParams;
             updateParams << strongSelf->m_accountId;
 
@@ -435,6 +448,8 @@ void ClientSession::InitHandlers()
                 uint64_t seq_id = header.seq_id();
                 std::weak_ptr<ClientSession> weakSelf = weak_from_this();
 
+                qDebug() << u8"[ClientSession] 收到客户端 " << m_username << u8" 的 [获取影片列表请求]";
+
                 // 👑 连表查询：把 MD5 和 file_size 也查出来！
                 QString sql = R"(
                     SELECT 
@@ -477,6 +492,8 @@ void ClientSession::InitHandlers()
                     }
 
                     strongSelf->SendProtoMsg(ServerApi::ID_GET_MOVIE_LIST_RSP, rsp, seq_id);
+                    qDebug() << u8"[ClientSession] 发送 [获取影片列表响应] 给客户端 " << strongSelf->m_username;
+
                     }, true, params);
             };
 
@@ -743,6 +760,24 @@ void ClientSession::onReadyRead()
                 qDebug() << u8"[ClientSession] 非法请求，未登录尝试发送协议:" << msgId;
                 m_tcpSocket->disconnectFromHost();                              // 直接踢掉
                 return;
+            }
+
+            // =====================================================================
+            // 👑 绝杀：隐式心跳与数据库防暴击机制 (Throttling)
+            // =====================================================================
+            if (m_isLogined) {
+                qint64 currentSecs = m_lastRecvTime / 1000;
+                // 限流拦截：距离上次写库超过 15 秒，才允许再次 UPDATE 数据库
+                if (currentSecs - m_lastDbSyncTime >= 15) {
+                    m_lastDbSyncTime = currentSecs;                             // 刷新限流时间戳
+
+                    QString updateSql = "UPDATE sys_account SET last_heartbeat_time = NOW() WHERE id = ?";
+                    QList<QVariant> params;
+                    params << m_accountId; // 前提是你在登录成功时把 m_accountId 存入了 Session
+
+                    // 异步投递，绝对不卡 TCP 解析线程
+                    ThreadPool::Instance()->PostUpdateTask(updateSql, [](bool) {}, true, params);
+                }
             }
 
             if (m_router.contains(msgId)) {
