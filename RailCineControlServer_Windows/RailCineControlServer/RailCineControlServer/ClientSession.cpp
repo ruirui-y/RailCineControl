@@ -261,8 +261,17 @@ void ClientSession::InitHandlers()
                     QDir().mkpath(dirPath);
                     QString filePath = dirPath + "/" + fileMd5 + ".mp4";
 
+                    // 根据是否是首块，决定是覆盖写还是追加写
+                    QIODevice::OpenMode openMode;
+                    if (req->chunk_index() == 0) {
+                        openMode = QIODevice::WriteOnly | QIODevice::Truncate; // 即使没删干净，也强行清零重写！
+                    }
+                    else {
+                        openMode = QIODevice::Append;
+                    }
+
                     QFile file(filePath);
-                    if (!file.open(QIODevice::ReadWrite)) 
+                    if (!file.open(openMode))
                     {
                         ServerApi::UploadChunkRsp emptyRsp;
                         strongSelf->SendProtoMsg(ServerApi::ID_UPLOAD_CHUNK_RSP, emptyRsp, seq_id,
@@ -313,7 +322,30 @@ void ClientSession::InitHandlers()
                         return;
                     }
 
-                    // B. 未命中：正常执行第一块的物理写入
+                    // ==========================================================
+                   // B. 未命中：这是一次全新的上传轮回
+                   // 👑 绝杀：物理超度残留文件，防止脏数据污染！
+                   // ==========================================================
+                    QString fileMd5Str = QString::fromStdString(req->file_md5());
+
+                    // 注意：这里的 MovieVideoPath 需要是你存放上传视频的具体目录
+                    QString dirPath = "./UploadedAssets";
+                    QDir().mkpath(dirPath);
+                    QString videoPath = dirPath + fileMd5Str + ".mp4";
+                    QFile residualFile(videoPath);
+
+                    if (residualFile.exists()) {
+                        if (residualFile.remove()) {
+                            qDebug() << u8"[ClientSession] 清理历史残留坏文件成功，准备重新接收:" << videoPath;
+                        }
+                        else {
+                            qDebug() << u8"[ClientSession] 警告：残留文件清理失败，可能被占用:" << videoPath;
+                            // 极端情况下，如果旧文件被占用删不掉，强行写入可能会出问题。
+                            // 但为了鲁棒性，这里依然放行，依靠底层的 Truncate 去强行截断它。
+                        }
+                    }
+
+                    // 正常执行第一块的物理写入
                     saveChunkToDisk(req, seq_id);
 
                     }, true, params);
