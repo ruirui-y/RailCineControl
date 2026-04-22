@@ -204,6 +204,8 @@ void PlaybackPage::AddMovieCard(uint64_t id, const QString& name, const QString&
     card->setProperty("selected", false);
 
     QVBoxLayout* layout = new QVBoxLayout(card);
+    layout->setContentsMargins(8, 10, 5, 10);                                               // 内边距
+    layout->setSpacing(8);                                                                  // 图片和文字的间距
 
     // 1. 海报渲染
     QLabel* cover = new QLabel(card);
