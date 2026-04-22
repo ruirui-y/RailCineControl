@@ -293,16 +293,6 @@ void PlaybackPage::SwitchControlPanelState(bool isDownloaded)
 
 void PlaybackPage::onMovieSelected(QListWidgetItem* current, QListWidgetItem* previous)
 {
-    // 👑 状态锁拦截：如果正在下载，强行剥夺用户的切换能力，直到下载完成！
-    if (m_isDownloading) 
-    {
-        // 让 UI 的选中虚线强制弹回上一个选项 (保持视觉一致性)
-        if (previous) {
-            m_movieList->setCurrentItem(previous);
-        }
-        return;
-    }
-
     if (previous) {
         QWidget* preWidget = m_movieList->itemWidget(previous);
         preWidget->setProperty("selected", false);
@@ -315,6 +305,12 @@ void PlaybackPage::onMovieSelected(QListWidgetItem* current, QListWidgetItem* pr
         curWidget->setProperty("selected", true);
         curWidget->style()->unpolish(curWidget);
         curWidget->style()->polish(curWidget);
+
+        // 👑 状态锁拦截：如果正在下载，强行剥夺用户的切换能力，直到下载完成！
+        if (m_isDownloading)
+        {
+            return;
+        }
 
         // 提取影片数据
         m_selectedMovieName = current->data(Qt::UserRole + 1).toString();
