@@ -239,105 +239,68 @@
     padding-top: 4px;                                                               /* 产生向下按压的物理视觉反馈 */
 }
 
+/* ============================================================================== */
+/* 账号管理弹窗 (AccountWidget) 专属样式                                    */
+/* ============================================================================== */
 
-/* ==========================================================
-   [模块 3]：AccountInfoWidget - 账户信息面板
-   ========================================================== */
-
-/* 3.1 面板主容器 */
-AccountInfoWidget QWidget#accountPanel {
-    background-color: rgba(20, 40, 70, 200);   /* 科技深蓝底色 */
-    border: 2px solid rgba(0, 180, 220, 150);  /* 外部发光边框 */
-    border-radius: 4px;
-    font-weight: bold;                         /* 字体加粗 */
-}
-
-/* 3.2 顶部标题栏 */
-AccountInfoWidget QLabel#accountTitle {
-    background-color: rgba(0, 150, 220, 100);  /* 标题栏稍微高亮 */
-    color: #ffffff;
-    font-size: 16px;
-    font-weight: bold;
-    font-family: "Microsoft YaHei";
-    border-bottom: 2px solid #00e5ff;          /* 标题底部的青色粗线 */
+/* ============================================================================== */
+/* 弹窗全局背景板 (#accountPanel)                                         */
+/* ============================================================================== */
+#accountPanel {                                                                 /* 弹窗核心底板 */
+    background-color: #1A1F29;                                                  /* 深灰蓝主底色 */
+    border: 1px solid rgba(255, 255, 255, 0.1);                                 /* 极其微弱的玻璃边缘光 */
+    border-radius: 10px;                                                        /* 现代感大圆角 */
 }
 
-/* 3.3 每一行的行容器 (添加下划线分割) */
-AccountInfoWidget QWidget#accountRow {
-    background: transparent;
-    border-bottom: 1px solid rgba(0, 229, 255, 50); /* 微弱的青色分割线 */
+/* ============================================================================== */
+/* 弹窗顶部标题 (#titleLabel)                                             */
+/* ============================================================================== */
+QLabel#titleLabel {                                                             /* 顶部主标题 */
+    color: #FFFFFF;                                                             /* 纯白文字 */
+    font-size: 18px;                                                            /* 标题放大 */
+    font-weight: 900;                                                           /* 极限加粗 */
+    letter-spacing: 2px;                                                        /* 增加字间距拉伸高级感 */
 }
 
-/* 3.4 基础文字与图标 */
-AccountInfoWidget QLabel#accountText {
-    color: #ffffff;
-    font-size: 14px;
-    font-family: "Microsoft YaHei";
-}
-AccountInfoWidget QLabel#accountIcon {
-    color: #00e5ff;
-    font-size: 16px;
-    padding-right: 5px;
+/* ============================================================================== */
+/* 表单文本标签 (#keyLabel / #valueLabel)                                 */
+/* ============================================================================== */
+QLabel#keyLabel {                                                               /* 表单键 (如：当前在线) */
+    color: #8A95A5;                                                             /* 暗灰蓝色，降低层级 */
+    font-size: 16px;                                                            /* 常规说明字号 */
+    font-weight: bold;                                                          /* 基础加粗 */
 }
 
-/* 3.5 下拉框 */
-AccountInfoWidget QComboBox#accountCombo {
-    background-color: rgba(0, 100, 200, 150);
-    color: #ffffff;
-    border: 1px solid #00e5ff;
-    padding-left: 10px;
-    font-weight: bold;
-}
-AccountInfoWidget QComboBox#accountCombo::drop-down {
-    border: none;
-    width: 25px;
-    background-color: rgba(0, 150, 220, 100);
-}
-AccountInfoWidget QComboBox#accountCombo::down-arrow {
-    image: none;                               /* 如果有切图可以换成箭头图标 */
+QLabel#valueLabel {                                                             /* 表单值 (如：玩家账号名) */
+    color: #00C3FF;                                                             /* 👑 科技蓝高亮玩家账号 */
+    font-size: 18px;                                                            /* 字号略大，突出数据 */
+    font-weight: bold;                                                          /* 基础加粗 */
 }
 
-/* 3.6 操作按钮 (退出 / 确定) */
-AccountInfoWidget QPushButton#accountBtn {
-    background-color: rgba(10, 30, 50, 200);
-    border: 1px solid #00e5ff;
-    color: #00e5ff;
-    font-weight: bold;
-    font-size: 14px;
-    border-radius: 2px;
-}
-AccountInfoWidget QPushButton#accountBtn:hover {
-    background-color: rgba(0, 150, 220, 100);
-    color: #ffffff;
-}
-AccountInfoWidget QPushButton#accountBtn:pressed {
-    background-color: rgba(0, 229, 255, 150);
+/* ============================================================================== */
+/* 危险操作大按钮 (#switchBtn)                                            */
+/* ============================================================================== */
+QPushButton#switchBtn {                                                         /* 切换/退出账号按钮 */
+    background-color: rgba(230, 57, 70, 0.08);                                  /* 静默态为幽灵警告红 */
+    color: #E63946;                                                             /* 红色文字 */
+    border: 1px solid rgba(230, 57, 70, 0.3);                                   /* 红色半透边框 */
+    border-radius: 6px;                                                         /* 按钮小圆角 */
+    font-family: "Microsoft YaHei", Arial, sans-serif;                          /* 强行指定字体 */
+    font-size: 14px;                                                            /* 适中字号 */
+    font-weight: bold;                                                          /* 字体加粗 */
+    padding: 10px 0px;                                                          /* 撑大上下点击区域 */
 }
 
-/* 3.7 电量输入框 */
-AccountInfoWidget QLineEdit#accountInput {
-    background-color: rgba(10, 30, 50, 200);
-    border: 1px solid #00e5ff;
-    color: #ffffff;
-    padding: 2px;
-    font-weight: bold;
-    text-align: center;
-}
-AccountInfoWidget QLineEdit#accountInput:focus {
-    background-color: rgba(30, 60, 100, 255);
+QPushButton#switchBtn:hover {                                                   /* 按钮悬浮态 */
+    background-color: #E63946;                                                  /* 悬浮瞬间填满工业红 */
+    color: #FFFFFF;                                                             /* 文字变纯白 */
 }
 
-/* 3.8 底部翻页箭头 */
-AccountInfoWidget QPushButton#accountArrowBtn {
-    background: transparent;
-    color: #00e5ff;
-    border: none;
-    font-size: 18px;
-    font-weight: bold;
+QPushButton#switchBtn:pressed {                                                 /* 按钮物理按下态 */
+    background-color: #B32431;                                                  /* 物理按下颜色加深 */
+    padding-top: 2px;                                                           /* 真实下陷物理反馈 */
 }
-AccountInfoWidget QPushButton#accountArrowBtn:hover {
-    color: #ffffff;
-}
+
 
 /* ============================================================================== */
 /* 中控窗口全局底板兜底                                                                     */
