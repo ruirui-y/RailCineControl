@@ -34,7 +34,7 @@ void AccountWidget::BuildUI()
     // ====================================================================
     QFormLayout* form = new QFormLayout();
     form->setContentsMargins(10, 10, 10, 0);
-    form->setSpacing(15);
+    form->setSpacing(0);
 
     QLabel* keyLabel = new QLabel(u8"当前在线:", panel);
     keyLabel->setObjectName("keyLabel");
@@ -73,7 +73,10 @@ void AccountWidget::SlotLoginOut()
     if (CinemaMessageBox::ShowQuestion(this, u8"提示", u8"确定要退出当前账号吗？"))
     {
         // 用户确认请求下线
-        ThreadPool::Instance()->GetTCPMgr()->AccountLoginOut();
+        ThreadPool::Instance()->PostTask(ThreadPool::Instance()->GetTCPMgr(), [](TCPMgr* tcp)
+            {
+                tcp->AccountLoginOut();
+            });
     }
 }
 
