@@ -22,6 +22,8 @@ mainWindow::mainWindow(QWidget *parent)
 {
     ui.setupUi(this);
 
+    MoveManagerToThread();
+
     m_pages = new QStackedWidget(this);
     setCentralWidget(m_pages);
 
@@ -33,8 +35,6 @@ mainWindow::mainWindow(QWidget *parent)
     setFixedSize(_LoginWidget->size());
 
     setWindowTitle("Demand Station");
-
-    MoveManagerToThread();
 }
 
 mainWindow::~mainWindow()

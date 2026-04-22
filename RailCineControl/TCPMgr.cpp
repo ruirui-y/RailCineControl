@@ -411,12 +411,16 @@ void TCPMgr::SendProtoMsg(ServerApi::MsgId msgId, const google::protobuf::Messag
 
     // 5. 跨线程安全的发送机制
     // 不管你在哪个子线程调用 TCPMgr::Instance()->SendProtoMsg，它都会安全地切回主线程去调用 socket 写入
-    QMetaObject::invokeMethod(this, [this, finalPacket]() {
-        if (m_TcpSocket && m_TcpSocket->state() == QAbstractSocket::ConnectedState) {
+    QMetaObject::invokeMethod(this, [this, finalPacket, msgId]() {
+        if (m_TcpSocket && m_TcpSocket->state() == QAbstractSocket::ConnectedState)
+        {
+            if(ServerApi::MsgId ::ID_GET_MOVIE_LIST_REQ == msgId)
+                qDebug() << "ID_GET_MOVIE_LIST_REQ";
             m_TcpSocket->write(finalPacket);
             m_TcpSocket->flush();
         }
-        else {
+        else 
+        {
             qDebug() << u8"[TCPMgr] 发送失败，TCP 未连接！MsgId:" << finalPacket.mid(6, 2).toHex();
         }
         }, Qt::QueuedConnection);

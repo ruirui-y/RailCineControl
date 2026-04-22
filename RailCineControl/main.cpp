@@ -11,6 +11,8 @@
 #include "Struct.h"
 #include "Enum.h"
 #include "ThreadPool.h"
+#include "common.pb.h"
+#include "server_msg.pb.h"
 #include <QVBoxLayout>
 
 
@@ -32,7 +34,26 @@ void LoadStyle(QApplication* app)
 
 void RegisterMetaTypes()
 {
+    // 1. 注册核心枚举 (必须注册，否则信号槽无法传递)
+    qRegisterMetaType<ServerApi::MsgId>("ServerApi::MsgId");
 
+    // 2. 注册【影片业务】相关响应
+    qRegisterMetaType<ServerApi::GetMovieListRsp>("ServerApi::GetMovieListRsp"); // 影片列表
+    qRegisterMetaType<ServerApi::DownloadCoverRsp>("ServerApi::DownloadCoverRsp"); // 海报下载
+    qRegisterMetaType<ServerApi::UploadMovieRsp>("ServerApi::UploadMovieRsp");     // 影片上传结果
+
+    // 3. 注册【播放记录】相关响应
+    qRegisterMetaType<ServerApi::GetRecordsRsp>("ServerApi::GetRecordsRsp");     // 查询记录结果
+    qRegisterMetaType<ServerApi::AddRecordRsp>("ServerApi::AddRecordRsp");       // 添加记录结果
+    qRegisterMetaType<ServerApi::DeleteRecordRsp>("ServerApi::DeleteRecordRsp"); // 删除记录结果
+
+    // 4. 注册【登录与上传进度】相关响应
+    qRegisterMetaType<ServerApi::LoginRsp>("ServerApi::LoginRsp");               // 登录响应
+    qRegisterMetaType<ServerApi::UploadChunkRsp>("ServerApi::UploadChunkRsp");   // 视频分片上传确认
+
+    // 💡 提示：如果你的信号里直接传递了列表里的单条数据（例如 MovieInfo 或 PlayRecord），也需要注册：
+    qRegisterMetaType<ServerApi::MovieInfo>("ServerApi::MovieInfo");
+    qRegisterMetaType<ServerApi::PlayRecord>("ServerApi::PlayRecord");
 }
 
 int main(int argc, char *argv[])
