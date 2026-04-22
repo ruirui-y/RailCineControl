@@ -12,6 +12,7 @@
 #include <QCoreApplication>
 #include <QPointer>
 #include <QCryptographicHash>
+#include <QBuffer>
 #include "ThreadPool.h"
 #include "TCPMgr.h"
 #include "VideoSecurityTool.h"
@@ -416,14 +417,33 @@ void UploadPage::submitMetadataToTcp()
     req.set_encrypt_key(m_currentEncryptKey.toStdString());
     req.set_duration_sec(m_currentDurationSec);
 
-    // 👑 绝杀：直接读取海报图片的二进制数据！
+    // =========================================================================
+    // 👑 绝杀：源头管控！读取原图 -> 内存中强制缩放/压缩 -> 转储二进制发给服务器
+    // =========================================================================
     QFileInfo coverInfo(m_coverPathEdit->text());
-    QFile coverFile(coverInfo.absoluteFilePath());
-    if (coverFile.open(QIODevice::ReadOnly)) {
-        QByteArray coverData = coverFile.readAll();                                             // 图片通常才几百KB，一口气读完没问题
-        req.set_cover_data(coverData.data(), coverData.size());
-        req.set_cover_suffix(coverInfo.suffix().prepend(".").toStdString());                    // 比如 ".jpg"
-        coverFile.close();
+    QImage coverImage;
+
+    if (coverImage.load(coverInfo.absoluteFilePath()))
+    {
+        // 1. 先缩放：保持宽高比，扩大到 160x220
+        coverImage = coverImage.scaled(160, 220, Qt::KeepAspectRatioByExpanding, Qt::SmoothTransformation);
+
+        // 2. 内存压缩：通过 QBuffer 直接将图片以 JPG 格式输出到内存字节流中
+        QByteArray compressedData;
+        QBuffer buffer(&compressedData);
+        buffer.open(QIODevice::WriteOnly);
+
+        // 强制转换为 JPG 格式，并使用 80% 的压缩质量 (人眼看不出区别，但体积骤降 90%)
+        coverImage.save(&buffer, "JPG", 80);
+        buffer.close();
+
+        // 3. 将极限压缩后的数据发给服务器
+        req.set_cover_data(compressedData.data(), compressedData.size());
+        req.set_cover_suffix(".jpg");                                           // 既然压成了 JPG，后缀名强行统一规范！
+    }
+    else
+    {
+        qDebug() << u8"[UploadPage] 海报加载失败，可能文件已损坏或被占用";
     }
 
     // 最终一击：把配置表单扔给服务器

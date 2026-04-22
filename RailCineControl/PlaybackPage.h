@@ -12,6 +12,24 @@
 #include "common.pb.h"          
 #include "server_msg.pb.h"
 
+// =========================================================================================
+// 卡片UI数据：用于在子线程进行耗时 IO 计算后，将纯净的数据打包跳跃回主线程进行 UI 渲染
+// =========================================================================================
+struct MovieUIPayload
+{
+    uint64_t id;                                                                                // 影片全局唯一 ID (源自云端数据库)
+    QString name;                                                                               // 影片展示名称 (用于卡片 UI 渲染)
+    QString localCoverPath;                                                                     // 本地海报的物理路径 (若本地缺失则在子线程中被赋为空串)
+    QString localVideoPath;                                                                     // 本地视频的物理路径 (基于 MD5 纯静态推导生成)
+    bool isVideoDownloaded;                                                                     // 视频是否已完整下载 (用于精准控制 [播放] 与 [下载] 按钮的互斥显示)
+    int status;                                                                                 // 影片当前业务状态 (如：0=空闲, 1=播放中，影响UI状态角标)
+    QString fileMd5;                                                                            // 影片核心标识 MD5 (大文件分片下载、海报请求的唯一网络凭证)
+    uint64_t expectedSize;                                                                      // 影片理论总字节数 (用于在子线程与本地 QFile 做完整性校验)
+    QString encryptKey;                                                                         // 影片专属加密密钥 (播放时传入播放器底层进行内存级实时解密)
+    bool needFetchCover;                                                                        // 网络请求标记位：通知主线程是否需要向云端发起海报下载请求 (TCP 发包)
+    QImage coverImage;                                                                          // 性能核心载体：子线程利用 QImageReader 预解码并降采样好的海报图像
+};
+
 class PlaybackPage : public QWidget
 {
     Q_OBJECT
@@ -51,13 +69,14 @@ private:
     void LoadMoviesFromJson();                                                                  // 加载视频配置文件
     void LoadMoviesFromServer();                                                                // 从服务器获取视频列表
     void AddMovieCard(uint64_t id, const QString& name, const QString& coverUrl,
-        const QString& localPath, bool isDownloaded, int playStatus,
-        const QString& fileMd5, uint64_t expectedSize, const QString& encryptKey);              // 创建海报card
+        const QString& localPath, bool isDownloaded, int playStatus,const QString& fileMd5, 
+        uint64_t expectedSize, const QString& encryptKey, QImage coverImage);                   // 创建海报card
     void SwitchControlPanelState(bool isDownloaded);                                            // 根据下载状态，整体切换底部播控面板的按钮显隐
                         
 private:
     QListWidget* m_movieList;                                                                   // 影片列表
     QLabel* m_countdownLabel;                                                                   // 倒计时LCD
+    QPushButton* m_btnFetch;                                                                    // 拉取影片
     QPushButton* m_btnPlay;                                                                     // 播放按钮(控制显隐)
     QPushButton* m_btnDownload;                                                                 // 下载按钮
     QPushButton* m_btnPause;                                                                    // 暂停按钮

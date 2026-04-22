@@ -11,12 +11,16 @@
 #include <QDir>
 #include <filesystem> 
 #include <QTimer>
+#include <QPointer>
+#include <QElapsedTimer>
+#include <QImageReader>
 #include <QDebug>
 #include "TCPMgr.h"
 #include "Global.h"
 #include "JsonTool.h"
 #include "LocalStreamServer.h"
 #include "CinemaMessageBox.h"
+#include "ThreadPool.h"
 
 PlaybackPage::PlaybackPage(QWidget* parent) : QWidget(parent)
 {
@@ -55,7 +59,7 @@ PlaybackPage::PlaybackPage(QWidget* parent) : QWidget(parent)
     connect(TCPMgr::Instance().get(), &TCPMgr::SigDownloadFinished, this, &PlaybackPage::onDownloadFinished);
 
     // 页面初始化时，自动拉取一次
-    LoadMoviesFromServer();
+    RefreshMovies();
 }
 
 PlaybackPage::~PlaybackPage() {}
@@ -82,6 +86,11 @@ void PlaybackPage::BuildUI()
     m_countdownLabel = new QLabel("00:00:00", controlPanel);
     m_countdownLabel->setObjectName("statusLcd");
 
+    // 👑全局拉取/刷新影片按钮 (紧挨着时钟，常驻显示)
+    m_btnFetch = new QPushButton(u8"🔄 刷新影片库", controlPanel);
+    m_btnFetch->setObjectName("controlBtn");                                    // 完美复用你之前写好的高级半透磨砂 QSS
+    m_btnFetch->setFixedSize(120, 45);                                          // 稍微宽一点
+
     auto createCtrlBtn = [&](const QString& text) -> QPushButton* {
         QPushButton* btn = new QPushButton(text, controlPanel);
         btn->setObjectName("controlBtn");
@@ -105,8 +114,13 @@ void PlaybackPage::BuildUI()
     m_btnForward->hide();
     m_btnStop->hide();
 
+    // 重新组装底部 Layout
     controlLayout->addWidget(m_countdownLabel);
+    controlLayout->addSpacing(20);                                              // 时钟和刷新按钮拉开一点间距
+    controlLayout->addWidget(m_btnFetch);                                       // 👑 放入刷新按钮
+
     controlLayout->addStretch();
+
     controlLayout->addWidget(m_btnRewind);
     controlLayout->addWidget(m_btnPlay);
     controlLayout->addWidget(m_btnDownload);                                                    // 下载按钮 (和播放按钮互斥显示)
@@ -124,6 +138,7 @@ void PlaybackPage::BuildUI()
     connect(m_btnStop, &QPushButton::clicked, this, &PlaybackPage::onStopClicked);
     connect(m_btnForward, &QPushButton::clicked, this, &PlaybackPage::onForwardClicked);
     connect(m_btnRewind, &QPushButton::clicked, this, &PlaybackPage::onRewindClicked);
+    connect(m_btnFetch, &QPushButton::clicked, this, &PlaybackPage::RefreshMovies);
 
     // ================= 3. 最底部：全局下载进度条 =================
     m_downloadProgress = new QProgressBar(this);
@@ -182,7 +197,7 @@ void PlaybackPage::RefreshMovies()
 
 void PlaybackPage::AddMovieCard(uint64_t id, const QString& name, const QString& coverUrl,
     const QString& localPath, bool isDownloaded, int playStatus,
-    const QString& fileMd5, uint64_t expectedSize, const QString& encryptKey)
+    const QString& fileMd5, uint64_t expectedSize, const QString& encryptKey, QImage coverImage)
 {
     QFrame* card = new QFrame();
     card->setObjectName("gameCard");
@@ -194,16 +209,17 @@ void PlaybackPage::AddMovieCard(uint64_t id, const QString& name, const QString&
     QLabel* cover = new QLabel(card);
     cover->setObjectName("cardCover");
     cover->setFixedSize(160, 220);
+    cover->setAlignment(Qt::AlignCenter);
     // (注：这里假设单机同硬盘测试，如果是跨网，海报也需要一套本地校验与异步下载)
-    QPixmap pixmap(coverUrl);
-    if (!pixmap.isNull()) {
-        cover->setPixmap(pixmap.scaled(160, 220, Qt::KeepAspectRatioByExpanding, Qt::SmoothTransformation));
-    }
-    else {
+    QPixmap pixmap = QPixmap::fromImage(coverImage);
+    if (pixmap.isNull()) {
         cover->setText(u8"海报加载中...");
-        cover->setAlignment(Qt::AlignCenter);
     }
-
+    else 
+    {
+        cover->setPixmap(pixmap);
+    }
+    
     // 2. 标题
     QLabel* title = new QLabel(name, card);
     title->setObjectName("cardTitle");
@@ -468,56 +484,98 @@ void PlaybackPage::onMediaStatusChanged(QMediaPlayer::MediaStatus status)
 // 视频列表拉取成功
 void PlaybackPage::onMovieListReceived(const ServerApi::GetMovieListRsp& rsp)
 {
-    m_movieList->clear();
-    // 确保海报和视频目录一定存在
-    QDir().mkpath(MovieCoverPath);
-    QDir().mkpath(MovieVideoPath);
+    int totalMovies = rsp.movies_size();
+    if (totalMovies == 0) return;
 
-    for (int i = 0; i < rsp.movies_size(); ++i) {
-        const ServerApi::MovieInfo& movie = rsp.movies(i);
+    // 2. 准备跨线程共享资源 (使用 shared_ptr 保证生命周期直到最后一个线程结束)
+    // 预分配数组大小，实现无锁并发写入！
+    auto payloadList = std::make_shared<std::vector<MovieUIPayload>>(totalMovies);
+    auto completedCount = std::make_shared<std::atomic<int>>(0);
 
-        uint64_t id = movie.movie_id();
-        QString name = QString::fromStdString(movie.movie_name());
-        QString coverUrl = QString::fromStdString(movie.cover_url());
-        QFileInfo cover_file_info(coverUrl);
-        QString cover_name = cover_file_info.fileName();
-        int status = movie.play_status();
-        
-        // 提取纯净的下载要素
-        QString fileMd5 = QString::fromStdString(movie.file_md5());
-        uint64_t expectedSize = movie.file_size();
+    // 获取当前对象的安全指针，防止异步回调时 UI 已经被销毁
+    QPointer<PlaybackPage> safeThis(this);
 
-        // 获取影片密钥
-        QString encryptKey = QString::fromStdString(movie.encrypt_key());
+    // 3. Map 阶段：将所有耗时 IO 投递给你的高并发线程池
+    for (int i = 0; i < totalMovies; ++i)
+    {
+        // 拷贝一份当前影片的 Protobuf 数据，供 Lambda 捕获
+        ServerApi::MovieInfo movie = rsp.movies(i);
 
-        // 物理路径推导 (纯粹用 MD5 命名)
-        QString localVideoPath = MovieVideoPath + "/" + fileMd5 + ".mp4";
-        QString localCoverPath = MovieCoverPath + "/" + cover_name;
+        ThreadPool::Instance()->DispatchToWorker([safeThis, movie, i, totalMovies, payloadList, completedCount]()
+            {
+                // ================= 这里是子线程空间，尽情榨干 CPU，毫无 UI 卡顿 =================
+                MovieUIPayload payload;
+                payload.id = movie.movie_id();
+                payload.name = QString::fromStdString(movie.movie_name());
+                payload.status = movie.play_status();
+                payload.fileMd5 = QString::fromStdString(movie.file_md5());
+                payload.expectedSize = movie.file_size();
+                payload.encryptKey = QString::fromStdString(movie.encrypt_key());
 
-        // 视频校验：看物理文件在不在，大小对不对
-        bool isVideoDownloaded = false;
-        QFile localVideo(localVideoPath);
-        if (localVideo.exists() && localVideo.size() == expectedSize)
-        {
-            isVideoDownloaded = true;
-        }
+                QString coverUrl = QString::fromStdString(movie.cover_url());
+                QString cover_name = QFileInfo(coverUrl).fileName();
 
-        // 海报路径校验
-        QFile localCover(localCoverPath);
-        if (!localCover.exists() || localCover.size() == 0) 
-        {
-            // 💡 如果本地没有海报，直接向服务器发起海报下载请求！
-            ServerApi::DownloadCoverReq coverReq;
-            coverReq.set_file_md5(fileMd5.toStdString());
-            TCPMgr::Instance()->SendProtoMsg(ServerApi::MsgId::ID_DOWNLOAD_COVER_REQ, coverReq);
+                payload.localVideoPath = MovieVideoPath + "/" + payload.fileMd5 + ".mp4";
+                payload.localCoverPath = MovieCoverPath + "/" + cover_name;
 
-            // 注意：此时传给 AddMovieCard 的路径可以是个空字符串，
-            // AddMovieCard 里如果发现为空，就显示 "加载中..." 的灰色占位图
-            localCoverPath = "";
-        }
+                QElapsedTimer timer;
+                timer.start();
 
-        // 渲染卡片
-        AddMovieCard(id, name, localCoverPath, localVideoPath, isVideoDownloaded, status, fileMd5, expectedSize, encryptKey);
+                // 耗时磁盘 IO 1：视频校验
+                QFile localVideo(payload.localVideoPath);
+                payload.isVideoDownloaded = (localVideo.exists() && localVideo.size() == payload.expectedSize);
+
+                qint64 videoCheckTime = timer.elapsed();
+                timer.restart();
+
+                // 耗时磁盘 IO 2：海报校验
+                QFile localCover(payload.localCoverPath);
+                if (!localCover.exists() || localCover.size() == 0)
+                {
+                    payload.needFetchCover = true;
+                    payload.localCoverPath = "";                                    // 需要下载时，路径赋空
+                }
+                else
+                {
+                    payload.needFetchCover = false;
+                    payload.coverImage.load(payload.localCoverPath);
+                }
+
+                // 👑 绝杀：无锁并发写入！因为每个线程操作的是专属的独立索引 [i]，绝对线程安全
+                (*payloadList)[i] = std::move(payload);
+                // ================= Reduce 阶段：检查是不是最后一个完成的兄弟？ =================
+                if (++(*completedCount) == totalMovies)
+                {
+                    // 如果是最后一个，它将负责通知主线程开始渲染
+                    QMetaObject::invokeMethod(safeThis.data(), [safeThis, payloadList]()
+                        {
+                            if (!safeThis) return;                                      // 跨线程跳跃落地检查：防止页面已经被关掉
+
+                            // 👑 绝杀：冻结整个列表的重绘！告诉底层引擎“我还没塞完，你不准画！”
+                            safeThis->m_movieList->setUpdatesEnabled(false);
+
+                            // ================= 这里回到了主线程，安全且极速地操作 UI =================
+                            for (const auto& data : *payloadList)
+                            {
+                                // 1. 统一发射缺少的网络请求 (TCP 这种带有 Socket 的操作最好在主线程触发)
+                                if (data.needFetchCover)
+                                {
+                                    ServerApi::DownloadCoverReq coverReq;
+                                    coverReq.set_file_md5(data.fileMd5.toStdString());
+                                    TCPMgr::Instance()->SendProtoMsg(ServerApi::MsgId::ID_DOWNLOAD_COVER_REQ, coverReq);
+                                }
+
+                                // 2. 统一渲染 UI (完美保持了服务器发来的顺序)
+                                safeThis->AddMovieCard(data.id, data.name, data.localCoverPath, data.localVideoPath,
+                                    data.isVideoDownloaded, data.status, data.fileMd5,
+                                    data.expectedSize, data.encryptKey, data.coverImage);
+                            }
+
+                            // 👑 解冻渲染：5个卡片瞬间同时出现在屏幕上，0 延迟！
+                            safeThis->m_movieList->setUpdatesEnabled(true);
+                        }, Qt::QueuedConnection);
+                }
+            });
     }
 }
 
