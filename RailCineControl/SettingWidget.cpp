@@ -5,9 +5,6 @@
 #include <QButtonGroup>
 #include <QStackedWidget>
 #include <QLabel>
-#include "ParamSettingWidget.h"
-#include "DeveloperOptionWidget.h"
-#include "AccountInfoWidget.h"
 
 SettingWidget::SettingWidget(QWidget* parent)
 	: QWidget(parent)
@@ -55,33 +52,11 @@ void SettingWidget::BuildUI()
 		return btn;
 		};
 
-	QPushButton* paramBtn = createNavBtn(u8"参数设置", 0);
-	QPushButton* devBtn = createNavBtn(u8"开发者选项", 1);
-	QPushButton* accBtn = createNavBtn(u8"账户信息", 2);
-
-	leftNavLayout->addWidget(paramBtn);
-	leftNavLayout->addWidget(devBtn);
-	leftNavLayout->addStretch(1);															// 弹簧：把账户信息顶到最下面
-	leftNavLayout->addWidget(accBtn);
-
-	paramBtn->setChecked(true);																// 默认选中第一个
-
 	// ==========================================================
 	// 2. 右侧堆栈窗口 (管理你的三个子页面)
 	// ==========================================================
 	m_stackedWidget = new QStackedWidget(this);
 	m_stackedWidget->setObjectName("settingStackedWidget");
-
-	ParamSettingWidget* paramWidget = new ParamSettingWidget(this);							// 0. 参数设置
-	DeveloperOptionWidget* devWidget = new DeveloperOptionWidget(this);						// 1. 开发者选项
-
-	AccountInfoWidget* accWidget = new AccountInfoWidget(this);								// 2. 账户信息
-	// --------------------------------------------------------
-
-	// 严格按顺序塞入堆栈
-	m_stackedWidget->addWidget(paramWidget);												// Index 0
-	m_stackedWidget->addWidget(devWidget);													// Index 1
-	m_stackedWidget->addWidget(accWidget);													// Index 2
 
 	// ==========================================================
 	// 3. 将左右部件装入根布局

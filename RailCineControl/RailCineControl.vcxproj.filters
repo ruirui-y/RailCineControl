@@ -208,15 +208,6 @@
     <ClCompile Include="ThreadPool.cpp">
       <Filter>Source Files\ThreadPool</Filter>
     </ClCompile>
-    <ClCompile Include="ParamSettingWidget.cpp">
-      <Filter>Source Files\SELF_UI\StackPage\Setting</Filter>
-    </ClCompile>
-    <ClCompile Include="DeveloperOptionWidget.cpp">
-      <Filter>Source Files\SELF_UI\StackPage\Setting</Filter>
-    </ClCompile>
-    <ClCompile Include="DeviceRowWidget.cpp">
-      <Filter>Source Files\SELF_UI\StackPage\Setting</Filter>
-    </ClCompile>
     <ClCompile Include="WorkerThread.cpp">
       <Filter>Source Files\ThreadPool</Filter>
     </ClCompile>
@@ -231,9 +222,6 @@
     </ClCompile>
     <ClCompile Include="common.pb.cc">
       <Filter>Source Files\Pb</Filter>
-    </ClCompile>
-    <ClCompile Include="AccountInfoWidget.cpp">
-      <Filter>Source Files\SELF_UI\StackPage\Setting</Filter>
     </ClCompile>
     <ClCompile Include="MovieWidget.cpp">
       <Filter>Source Files\SELF_UI\StackPage\PlayMovie</Filter>
@@ -266,9 +254,6 @@
       <Filter>Source Files\CustomUI</Filter>
     </ClCompile>
     <ClCompile Include="CinemaDialogBase.cpp">
-      <Filter>Source Files\CustomUI</Filter>
-    </ClCompile>
-    <ClCompile Include="CinemaMessageBox.cpp">
       <Filter>Source Files\CustomUI</Filter>
     </ClCompile>
     <ClCompile Include="LocalStreamServer.cpp">
@@ -377,15 +362,6 @@
     <QtMoc Include="ThreadPool.h">
       <Filter>Header Files\ThreadPool</Filter>
     </QtMoc>
-    <QtMoc Include="ParamSettingWidget.h">
-      <Filter>Header Files\SELF_UI\StackPage\Setting</Filter>
-    </QtMoc>
-    <QtMoc Include="DeveloperOptionWidget.h">
-      <Filter>Header Files\SELF_UI\StackPage\Setting</Filter>
-    </QtMoc>
-    <QtMoc Include="DeviceRowWidget.h">
-      <Filter>Header Files\SELF_UI\StackPage\Setting</Filter>
-    </QtMoc>
     <QtMoc Include="WorkerThread.h">
       <Filter>Header Files\ThreadPool</Filter>
     </QtMoc>
@@ -396,9 +372,6 @@
       <Filter>Header Files\SELF_UI\StackPage\Setting</Filter>
     </QtMoc>
     <QtMoc Include="DeviceRowWidget.h">
-      <Filter>Header Files\SELF_UI\StackPage\Setting</Filter>
-    </QtMoc>
-    <QtMoc Include="AccountInfoWidget.h">
       <Filter>Header Files\SELF_UI\StackPage\Setting</Filter>
     </QtMoc>
     <QtMoc Include="MovieWidget.h">
