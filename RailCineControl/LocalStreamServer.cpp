@@ -3,6 +3,7 @@
 #include <QFileInfo>
 #include <QCoreApplication>
 #include <QHash>
+#include <QPointer>
 #include <QDebug>
 
 bool LocalStreamServer::StartServer(quint16 port)
@@ -47,7 +48,9 @@ void LocalStreamServer::onReadyRead()
     QTcpSocket* socket = qobject_cast<QTcpSocket*>(sender());
     if (!socket) return;
 
-    QByteArray requestData = socket->readAll();
+    QPointer<QTcpSocket> safeSocket(socket);
+
+    QByteArray requestData = safeSocket->readAll();
     QString requestStr = QString::fromUtf8(requestData);
 
     // 如果不是 GET 请求，直接丢弃
@@ -55,8 +58,8 @@ void LocalStreamServer::onReadyRead()
 
     QFile file(m_currentFilePath);
     if (!file.open(QIODevice::ReadOnly)) {
-        socket->write("HTTP/1.1 404 Not Found\r\n\r\n");
-        socket->disconnectFromHost();
+        safeSocket->write("HTTP/1.1 404 Not Found\r\n\r\n");
+        safeSocket->disconnectFromHost();
         return;
     }
 
@@ -78,8 +81,8 @@ void LocalStreamServer::onReadyRead()
 
     // 边界安全校验
     if (startRange >= totalSize || endRange >= totalSize) {
-        socket->write("HTTP/1.1 416 Range Not Satisfiable\r\n\r\n");
-        socket->disconnectFromHost();
+        safeSocket->write("HTTP/1.1 416 Range Not Satisfiable\r\n\r\n");
+        safeSocket->disconnectFromHost();
         return;
     }
 
@@ -95,7 +98,7 @@ void LocalStreamServer::onReadyRead()
         "Connection: close\r\n\r\n"
     ).arg(lengthToSend).arg(startRange).arg(endRange).arg(totalSize);
 
-    socket->write(responseHeader.toUtf8());
+    safeSocket->write(responseHeader.toUtf8());
     // 核心：把文件磁头拨到播放器想要的位置
     file.seek(startRange);
     qint64 bytesWritten = 0;
@@ -105,16 +108,22 @@ void LocalStreamServer::onReadyRead()
     const int BUF_SIZE = 64 * 1024;
     const qint64 HIGH_WATER_MARK = 5 * 1024 * 1024;
 
-    while (bytesWritten < lengthToSend) {
+    while (bytesWritten < lengthToSend)
+    {
+        if (!safeSocket) {
+            qDebug() << u8"[LocalStreamServer] 播放器已强退，Socket 尸骨无存，安全跳出！";
+            break;
+        }
+
         // 如果播放器中途断开，立刻刹车
-        if (socket->state() != QAbstractSocket::ConnectedState) break;
+        if (safeSocket->state() != QAbstractSocket::ConnectedState) break;
 
         // ====================================================================
         // 👑 真正的商业级流控：只要底层缓冲区没满 5MB，就疯狂往里塞数据！
         // 满了 5MB，说明播放器吃不消了，我们再稍作休眠等待。
         // ====================================================================
-        if (socket->bytesToWrite() > HIGH_WATER_MARK) {
-            socket->waitForBytesWritten(10); // 稍微等一下，让网卡把数据发出去
+        if (safeSocket->bytesToWrite() > HIGH_WATER_MARK) {
+            safeSocket->waitForBytesWritten(10); // 稍微等一下，让网卡把数据发出去
             QCoreApplication::processEvents(QEventLoop::AllEvents, 2);
             continue; // 继续检查水位，不要去读硬盘
         }
@@ -126,7 +135,7 @@ void LocalStreamServer::onReadyRead()
         // 在管道口，进行瞬间解密！
         DecryptStreamChunk(chunk, currentOffset);
 
-        socket->write(chunk);
+        safeSocket->write(chunk);
 
         bytesWritten += chunk.size();
         currentOffset += chunk.size(); // 偏移量递增
@@ -134,7 +143,7 @@ void LocalStreamServer::onReadyRead()
 
     file.close();
     // 数据发送完毕，挂断这个短连接
-    socket->disconnectFromHost();
+    safeSocket->disconnectFromHost();
 }
 
 void LocalStreamServer::onSocketDisconnected()
