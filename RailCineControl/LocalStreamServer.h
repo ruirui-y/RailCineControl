@@ -4,6 +4,21 @@
 #include <QObject>
 #include <QTcpServer>
 #include <QTcpSocket>
+#include <QSharedPointer>
+#include <QFile>
+
+// =========================================================================================
+// 流媒体发送状态上下文 (Stream Context)
+// 核心设计：被 QSharedPointer 包装后按值传入 Lambda。
+// 作用：利用智能指针的引用计数，跨越多次异步网卡事件共享状态，并在发送完毕后自动回收文件句柄。
+// =========================================================================================
+struct StreamState
+{
+    QSharedPointer<QFile> file;         // 核心句柄：视频文件对象。只要 Lambda 引用计数不归零，文件就不会被系统关闭或销毁
+    qint64 bytesWritten = 0;            // 进度累加器：当前已发给网卡的字节数 (当它 >= lengthToSend 时，触发断开)
+    qint64 lengthToSend = 0;            // 发送目标值：本次 HTTP 206 请求约定要发送的总字节数 (EndRange - StartRange + 1)
+    qint64 currentOffset = 0;           // 绝对磁头位置：当前在原文件中的物理偏移量 (极其重要：用于 XOR 异或解密时的错位对齐计算)
+};
 
 class LocalStreamServer : public QObject
 {

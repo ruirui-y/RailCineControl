@@ -1,5 +1,4 @@
 ﻿#include "LocalStreamServer.h"
-#include <QFile>
 #include <QFileInfo>
 #include <QCoreApplication>
 #include <QHash>
@@ -49,21 +48,23 @@ void LocalStreamServer::onReadyRead()
     if (!socket) return;
 
     QPointer<QTcpSocket> safeSocket(socket);
-
     QByteArray requestData = safeSocket->readAll();
     QString requestStr = QString::fromUtf8(requestData);
 
     // 如果不是 GET 请求，直接丢弃
     if (!requestStr.startsWith("GET")) return;
 
-    QFile file(m_currentFilePath);
-    if (!file.open(QIODevice::ReadOnly)) {
+    // 1. 初始化文件与状态上下文 (使用智能指针，Socket销毁时自动关闭文件，杜绝内存泄漏)
+    QSharedPointer<StreamState> state = QSharedPointer<StreamState>::create();
+    state->file.reset(new QFile(m_currentFilePath));
+
+    if (!state->file->open(QIODevice::ReadOnly)) {
         safeSocket->write("HTTP/1.1 404 Not Found\r\n\r\n");
         safeSocket->disconnectFromHost();
         return;
     }
 
-    qint64 totalSize = file.size();
+    qint64 totalSize = state->file->size();
     qint64 startRange = 0;
     qint64 endRange = totalSize - 1;
 
@@ -86,9 +87,11 @@ void LocalStreamServer::onReadyRead()
         return;
     }
 
-    qint64 lengthToSend = endRange - startRange + 1;
+    state->lengthToSend = endRange - startRange + 1;
+    state->currentOffset = startRange;
+    state->file->seek(startRange);
 
-    // 拼装标准的 HTTP 206 视频流响应头
+    // 拼装并发送 HTTP 响应头
     QString responseHeader = QString(
         "HTTP/1.1 206 Partial Content\r\n"
         "Content-Type: video/mp4\r\n"
@@ -96,54 +99,58 @@ void LocalStreamServer::onReadyRead()
         "Content-Length: %1\r\n"
         "Content-Range: bytes %2-%3/%4\r\n"
         "Connection: close\r\n\r\n"
-    ).arg(lengthToSend).arg(startRange).arg(endRange).arg(totalSize);
+    ).arg(state->lengthToSend).arg(startRange).arg(endRange).arg(totalSize);
 
     safeSocket->write(responseHeader.toUtf8());
-    // 核心：把文件磁头拨到播放器想要的位置
-    file.seek(startRange);
-    qint64 bytesWritten = 0;
-    qint64 currentOffset = startRange;                                                  // 记录绝对偏移量，用于加密错位计算！
 
-    // 开始抽水！每次读取 64KB 发送，防止内存撑爆
-    const int BUF_SIZE = 64 * 1024;
-    const qint64 HIGH_WATER_MARK = 5 * 1024 * 1024;
+    // ====================================================================
+    // 👑 绝杀：绑定网卡反馈信号 (终极事件驱动引擎)
+    // 只要网卡把数据发出去了，就会触发这个 Lambda，我们就在这里接着塞数据
+    // ====================================================================
+    connect(safeSocket, &QTcpSocket::bytesWritten, safeSocket, [safeSocket, state, this](qint64 /*bytes*/) {
+        // 1. 保护机制：如果中途断开，直接退出
+        if (!safeSocket || safeSocket->state() != QAbstractSocket::ConnectedState) return;
 
-    while (bytesWritten < lengthToSend)
-    {
-        if (!safeSocket) {
-            qDebug() << u8"[LocalStreamServer] 播放器已强退，Socket 尸骨无存，安全跳出！";
-            break;
+        // 2. 完成检测：发够了就主动挂断
+        if (state->bytesWritten >= state->lengthToSend) {
+            safeSocket->disconnectFromHost();
+            return;
         }
 
-        // 如果播放器中途断开，立刻刹车
-        if (safeSocket->state() != QAbstractSocket::ConnectedState) break;
+        // 3. 动态流控：如果当前缓冲区积压超过 5MB，这次就不读硬盘了。
+        // 等底层的积压数据发出去后，会自动再次触发 bytesWritten，形成自愈循环！
+        if (safeSocket->bytesToWrite() > 5 * 1024 * 1024) return;
 
-        // ====================================================================
-        // 👑 真正的商业级流控：只要底层缓冲区没满 5MB，就疯狂往里塞数据！
-        // 满了 5MB，说明播放器吃不消了，我们再稍作休眠等待。
-        // ====================================================================
-        if (safeSocket->bytesToWrite() > HIGH_WATER_MARK) {
-            safeSocket->waitForBytesWritten(10); // 稍微等一下，让网卡把数据发出去
-            QCoreApplication::processEvents(QEventLoop::AllEvents, 2);
-            continue; // 继续检查水位，不要去读硬盘
+        // 4. 读取与解密
+        qint64 toRead = qMin((qint64)(64 * 1024), state->lengthToSend - state->bytesWritten);
+        QByteArray chunk = state->file->read(toRead);
+
+        if (chunk.isEmpty()) {
+            safeSocket->disconnectFromHost();
+            return;
         }
 
-        qint64 toRead = qMin((qint64)BUF_SIZE, lengthToSend - bytesWritten);
-        QByteArray chunk = file.read(toRead);
-        if (chunk.isEmpty()) break;
+        DecryptStreamChunk(chunk, state->currentOffset);
 
-        // 在管道口，进行瞬间解密！
-        DecryptStreamChunk(chunk, currentOffset);
-
+        // 5. 写入 Socket (这句 write 会在未来网卡发完时，再次触发当前的 Lambda！)
         safeSocket->write(chunk);
 
-        bytesWritten += chunk.size();
-        currentOffset += chunk.size(); // 偏移量递增
-    }
+        state->bytesWritten += chunk.size();
+        state->currentOffset += chunk.size();
+        });
 
-    file.close();
-    // 数据发送完毕，挂断这个短连接
-    safeSocket->disconnectFromHost();
+    // ====================================================================
+    // 🚀 启动抽水泵：手动触发第一次发送，启动整个“永动机”循环！
+    // ====================================================================
+    qint64 initialRead = qMin((qint64)(64 * 1024), state->lengthToSend);
+    QByteArray firstChunk = state->file->read(initialRead);
+    DecryptStreamChunk(firstChunk, state->currentOffset);
+    safeSocket->write(firstChunk); // 这句写入后，网卡一旦消化完，就会触发上面绑定的 Lambda
+
+    state->bytesWritten += firstChunk.size();
+    state->currentOffset += firstChunk.size();
+
+    // onReadyRead 函数瞬间结束，将 CPU 完全交还给 Qt 事件循环！
 }
 
 void LocalStreamServer::onSocketDisconnected()
