@@ -17,7 +17,6 @@ GameWidget::GameWidget(QWidget* parent)
     m_gameProcess = new QProcess(this);                                 // 实例化进程管理器
 
     BuildUI();                                                          // 搭建界面
-    LoadStyleSheet();                                                   // 注入灵魂样式
 
     // 绑定游戏进程结束信号 (简化版，省去exitCode等参数)
     connect(m_gameProcess, QOverload<int, QProcess::ExitStatus>::of(&QProcess::finished),
@@ -65,12 +64,12 @@ void GameWidget::BuildUI()
 
     m_btnPlay = new QPushButton(u8"▶");                                 // 播放按钮 (图里的绿钮)
     m_btnPlay->setObjectName("btnPlay");                                // 绑定QSS
-    m_btnPlay->setFixedSize(70, 70);                                    // 固定圆形尺寸
+    m_btnPlay->setFixedSize(40, 40);                                    // 固定圆形尺寸
     m_btnPlay->setEnabled(false);                                       // 初始没选中游戏时禁用
 
     m_btnStop = new QPushButton(u8"⏹");                                // 停止按钮 (图里的红钮)
     m_btnStop->setObjectName("btnStop");                                // 绑定QSS
-    m_btnStop->setFixedSize(70, 70);                                    // 固定圆形尺寸
+    m_btnStop->setFixedSize(40, 40);                                    // 固定圆形尺寸
     m_btnStop->setEnabled(false);                                       // 初始禁用
 
     bottomLayout->addWidget(m_btnPlay);                                 // 放入绿钮
@@ -102,13 +101,14 @@ void GameWidget::AddGame(const QString& name, const QString& timeStr)
     card->setProperty("selected", false);                               // 初始状态未选中
 
     QVBoxLayout* layout = new QVBoxLayout(card);                        // 卡片内垂直布局
-    layout->setContentsMargins(10, 10, 10, 15);                         // 内边距
+    layout->setContentsMargins(8, 10, 5, 10);                           // 内边距
     layout->setSpacing(8);                                              // 图片和文字的间距
 
     // 2. 组装卡片内容
     QLabel* cover = new QLabel(card);                                   // 封面图
     cover->setObjectName("cardCover");                                  // 绑定QSS
     cover->setFixedSize(160, 160);                                      // 图里的正方形封面
+    cover->setAlignment(Qt::AlignCenter);                               // 居中显示
 
     QLabel* title = new QLabel(name, card);                             // 游戏名
     title->setObjectName("cardTitle");                                  // 绑定QSS
@@ -163,8 +163,6 @@ void GameWidget::onPlayClicked()
     m_btnPlay->setEnabled(false);                                       // 禁用播放防连点
     m_listWidget->setEnabled(false);                                    // 游戏启动时锁定列表
 
-    // 【此处调用你之前写的 CMDTools 进行解密...】
-
     m_gameProcess->setProgram("C:/Users/Mars/QTProject/RailCineControl/RailCineControl/Packs/Windows/MiNiWorld.exe");                           // 启动测试程序
     m_gameProcess->start();                                             // 发射！
 
@@ -218,13 +216,4 @@ void GameWidget::onGameProcessFinished()
     m_btnStop->setEnabled(false);                                       // 游戏退出了，红钮变暗
     m_btnPlay->setEnabled(true);                                        // 绿钮重新变亮
     m_listWidget->setEnabled(true);                                     // 列表解锁允许选别的游戏
-}
-
-void GameWidget::LoadStyleSheet()
-{
-    QFile qssFile(":/style.qss");                                       // 替换为你的真实路径
-    if (qssFile.open(QFile::ReadOnly)) {
-        this->setStyleSheet(QLatin1String(qssFile.readAll()));          // 一把梭哈应用样式
-        qssFile.close();
-    }
 }

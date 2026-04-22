@@ -17,7 +17,6 @@ public:
 
 private:
     void BuildUI();                                                     // 构建前端界面
-    void LoadStyleSheet();                                              // 加载外部样式表
     void AddGame(const QString& name, const QString& timeStr);          // 添加游戏项的工厂
 
 private slots:
