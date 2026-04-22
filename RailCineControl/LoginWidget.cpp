@@ -17,6 +17,7 @@
 #include "UserMgr.h"
 #include "JsonTool.h"
 #include "CinemaMessageBox.h"
+#include "ThreadPool.h"
 
 
 LoginWidget::LoginWidget(QWidget* parent)
@@ -30,12 +31,7 @@ LoginWidget::LoginWidget(QWidget* parent)
 
 	hide();
 	BindSlots();
-
-	QTimer::singleShot(0, this, [this]()
-		{
-			emit sig_connect_tcp();												// 与ChatServer建立稳定的TCP连接
-		}
-	);
+	emit sig_connect_tcp();
 }
 
 LoginWidget::~LoginWidget()
@@ -118,11 +114,11 @@ void LoginWidget::BuildUI()
 
 void LoginWidget::BindSlots()
 {
+	// 绑定信号槽
 	connect(m_loginBtn, &QPushButton::clicked, this, &LoginWidget::OnLoginButtonClicked);										// 登录按钮点击事件
-
-	connect(this, &LoginWidget::sig_connect_tcp, TCPMgr::Instance().get(), &TCPMgr::SlotTcpConnect);
-	connect(TCPMgr::Instance().get(), &TCPMgr::SigConnectSuccess, this, &LoginWidget::slot_tcp_con_finished);
-	connect(TCPMgr::Instance().get(), &TCPMgr::SigLoginFailed, this, &LoginWidget::slot_login_failed);
+	connect(this, &LoginWidget::sig_connect_tcp, ThreadPool::Instance()->GetTCPMgr(), &TCPMgr::SlotTcpConnect);
+	connect(ThreadPool::Instance()->GetTCPMgr(), &TCPMgr::SigConnectSuccess, this, &LoginWidget::slot_tcp_con_finished);
+	connect(ThreadPool::Instance()->GetTCPMgr(), &TCPMgr::SigLoginFailed, this, &LoginWidget::slot_login_failed);
 }
 
 bool LoginWidget::EnableBtn(bool enable)
@@ -246,7 +242,7 @@ void LoginWidget::OnLoginButtonClicked()
 	// 写入配置文件中
 	WriteLoginConfig();
 
-	TCPMgr::Instance()->Login(user, pass);												// 发送登录请求
+	ThreadPool::Instance()->GetTCPMgr()->Login(user, pass);												// 发送登录请求
 
 	QTimer::singleShot(2000, this, [this]()
 		{

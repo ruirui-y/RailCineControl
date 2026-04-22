@@ -4,14 +4,16 @@
 #include <QObject>
 #include <QTcpServer>
 #include <QTcpSocket>
-#include "singletion.h"
 
-class LocalStreamServer : public QObject, public Singleton<LocalStreamServer>
+class LocalStreamServer : public QObject
 {
     Q_OBJECT
-public:
-    friend class Singleton<LocalStreamServer>;
 
+public:
+    LocalStreamServer(QObject* parent = nullptr) : QObject(parent), m_server(new QTcpServer(this)) {}
+    ~LocalStreamServer() { m_server->close(); }
+
+public:
     // 启动本地暗网服务器，默认监听 12345 端口
     bool StartServer(quint16 port = 12345);
 
@@ -27,9 +29,6 @@ private slots:
     void onSocketDisconnected();
 
 private:
-    LocalStreamServer(QObject* parent = nullptr) : QObject(parent), m_server(new QTcpServer(this)) {}
-    ~LocalStreamServer() { m_server->close(); }
-
     // 核心流式异或引擎 (带绝对偏移量矫正，防花屏补丁)
     void DecryptStreamChunk(QByteArray& data, qint64 globalOffset);
 

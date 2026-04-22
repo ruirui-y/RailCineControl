@@ -17,6 +17,7 @@ TCPMgr::TCPMgr(QObject* parent) : QObject(parent)
     InitTcpSocket();
     InitHearbeatTimer();
     InitHandlers();                                                                     // 注册路由表
+    qDebug() << "Tcp Thread id = " << QThread::currentThread()->objectName();
 }
 
 TCPMgr::~TCPMgr()

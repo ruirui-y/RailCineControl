@@ -32,7 +32,7 @@ UploadPage::UploadPage(QWidget* parent) : QWidget(parent)
     connect(m_chunkPumpTimer, &QTimer::timeout, this, &UploadPage::pumpNextChunk);
 
     // 收到服务器的安全回执后，才真正提交海报与文字表单！
-    connect(TCPMgr::Instance().get(), &TCPMgr::SigAllChunksAcked, this, &UploadPage::submitMetadataToTcp);
+    connect(ThreadPool::Instance()->GetTCPMgr(), &TCPMgr::SigAllChunksAcked, this, &UploadPage::submitMetadataToTcp);
 
     BuildUI();
 }
@@ -383,7 +383,7 @@ void UploadPage::pumpNextChunk()
     req.set_is_last(isLast);
 
     // 3. 扔给底层发送
-    TCPMgr::Instance()->SendProtoMsg(ServerApi::MsgId::ID_UPLOAD_CHUNK_REQ, req);
+    ThreadPool::Instance()->GetTCPMgr()->SendProtoMsg(ServerApi::MsgId::ID_UPLOAD_CHUNK_REQ, req);
 
     // 4. 更新进度与指针
     m_currentOffset += chunkData.size();
@@ -447,5 +447,5 @@ void UploadPage::submitMetadataToTcp()
     }
 
     // 最终一击：把配置表单扔给服务器
-    TCPMgr::Instance()->SendProtoMsg(ServerApi::MsgId::ID_UPLOAD_MOVIE_REQ, req);
+    ThreadPool::Instance()->GetTCPMgr()->SendProtoMsg(ServerApi::MsgId::ID_UPLOAD_MOVIE_REQ, req);
 }

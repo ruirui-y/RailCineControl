@@ -260,9 +260,6 @@
       <Filter>Source Files\SELF_UI\StackPage\PlayMovie</Filter>
     </ClCompile>
     <ClCompile Include="LocalStreamServer.cpp">
-      <Filter>Header Files\Http</Filter>
-    </ClCompile>
-    <ClCompile Include="LocalStreamServer.cpp">
       <Filter>Source Files\Http</Filter>
     </ClCompile>
     <ClCompile Include="CinemaDialogBase.cpp">
@@ -273,6 +270,9 @@
     </ClCompile>
     <ClCompile Include="CinemaMessageBox.cpp">
       <Filter>Source Files\CustomUI</Filter>
+    </ClCompile>
+    <ClCompile Include="LocalStreamServer.cpp">
+      <Filter>Source Files\Http</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

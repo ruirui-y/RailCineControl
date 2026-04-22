@@ -10,9 +10,12 @@
 class UdpManager : public QObject
 {
     Q_OBJECT
-public:
-    static UdpManager* Instance();
 
+public:
+    explicit UdpManager(QObject* parent = nullptr);
+    ~UdpManager();
+
+public:
     void StartServer();                                                                 // 启动 UDP 监听服务
 
     // =====================================================================================
@@ -36,9 +39,6 @@ private slots:
     void onTimer1000ms();                                                               // 1秒精度的定时器 (处理心跳与离线)
 
 private:
-    explicit UdpManager(QObject* parent = nullptr);
-    ~UdpManager();
-
     // 核心协议封包与拆包引擎
     void ProcessDatagram(const QByteArray& data, const QHostAddress& addr, quint16 port);
     void SendPacket(quint8 type, quint8 uid, quint8 cmd, const QByteArray& params, const QHostAddress& addr, quint16 port);

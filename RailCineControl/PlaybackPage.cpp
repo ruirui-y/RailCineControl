@@ -51,12 +51,12 @@ PlaybackPage::PlaybackPage(QWidget* parent) : QWidget(parent)
     connect(m_player, &QMediaPlayer::mediaStatusChanged, this, &PlaybackPage::onMediaStatusChanged);
 
     // 跨页/跨层监听数据返回
-    connect(TCPMgr::Instance().get(), &TCPMgr::SigMovieListReceived, this, &PlaybackPage::onMovieListReceived);
+    connect(ThreadPool::Instance()->GetTCPMgr(), &TCPMgr::SigMovieListReceived, this, &PlaybackPage::onMovieListReceived);
     // 👑 绑定下载引擎的四大核心信号
-    connect(TCPMgr::Instance().get(), &TCPMgr::SigCoverDownloaded, this, &PlaybackPage::onCoverDownloaded);
-    connect(TCPMgr::Instance().get(), &TCPMgr::SigDownloadFailed, this, &PlaybackPage::onDownloadFailed);
-    connect(TCPMgr::Instance().get(), &TCPMgr::SigDownloadProgress, this, &PlaybackPage::onDownloadProgress);
-    connect(TCPMgr::Instance().get(), &TCPMgr::SigDownloadFinished, this, &PlaybackPage::onDownloadFinished);
+    connect(ThreadPool::Instance()->GetTCPMgr(), &TCPMgr::SigCoverDownloaded, this, &PlaybackPage::onCoverDownloaded);
+    connect(ThreadPool::Instance()->GetTCPMgr(), &TCPMgr::SigDownloadFailed, this, &PlaybackPage::onDownloadFailed);
+    connect(ThreadPool::Instance()->GetTCPMgr(), &TCPMgr::SigDownloadProgress, this, &PlaybackPage::onDownloadProgress);
+    connect(ThreadPool::Instance()->GetTCPMgr(), &TCPMgr::SigDownloadFinished, this, &PlaybackPage::onDownloadFinished);
 
     // 页面初始化时，自动拉取一次
     RefreshMovies();
@@ -186,7 +186,7 @@ void PlaybackPage::LoadMoviesFromServer()
     req.set_page_size(100);                                                                 // 默认拉取 100 条 (够跑满目前绝大多数场景了)
 
     // 发送拉取请求
-    TCPMgr::Instance()->SendProtoMsg(ServerApi::MsgId::ID_GET_MOVIE_LIST_REQ, req);
+    ThreadPool::Instance()->GetTCPMgr()->SendProtoMsg(ServerApi::MsgId::ID_GET_MOVIE_LIST_REQ, req);
 }
 
 void PlaybackPage::RefreshMovies()
@@ -342,10 +342,10 @@ void PlaybackPage::onPlayClicked()
     // ==============================================================================
 
     // 1. 告诉你的暗网代理：我要播这个物理文件了，这是它的解密钥匙
-    auto server = LocalStreamServer::Instance();
+    auto server = ThreadPool::Instance()->GetLocalStreamServer();
     QString safePath = m_selectedMoviePath;
     QString safeKey = m_selectedMovieEncryptKey;
-    QMetaObject::invokeMethod(server.get(), [server, safePath, safeKey]()
+    QMetaObject::invokeMethod(server, [server, safePath, safeKey]()
         {
             // 这段代码才会在 WorkerThread-2 中安全执行！
             server->SetCurrentMedia(safePath, safeKey);
@@ -353,7 +353,7 @@ void PlaybackPage::onPlayClicked()
 
     // 2. 欺骗傻白甜 QMediaPlayer：别去读硬盘了，去给我请求这个网址！
     // GetPlayUrl() 返回的其实就是 "http://127.0.0.1:12345/play_secure.mp4"
-    m_player->setMedia(QUrl(LocalStreamServer::Instance()->GetPlayUrl()));
+    m_player->setMedia(QUrl(ThreadPool::Instance()->GetLocalStreamServer()->GetPlayUrl()));
     // ==============================================================================
 
     QList<QScreen*> screens = QGuiApplication::screens();
@@ -397,7 +397,7 @@ void PlaybackPage::onDownloadClicked()
     req.set_chunk_index(0); // 🚀 泵机启动，抽第一口水
 
     // 发射给服务器
-    TCPMgr::Instance()->SendProtoMsg(ServerApi::MsgId::ID_DOWNLOAD_CHUNK_REQ, req);
+    ThreadPool::Instance()->GetTCPMgr()->SendProtoMsg(ServerApi::MsgId::ID_DOWNLOAD_CHUNK_REQ, req);
 
     qDebug() << u8"🚀 发起下载任务，请求 MD5:" << m_selectedMovieMd5 << u8"块索引: 0";
 }
@@ -558,7 +558,7 @@ void PlaybackPage::onMovieListReceived(const ServerApi::GetMovieListRsp& rsp)
                                 {
                                     ServerApi::DownloadCoverReq coverReq;
                                     coverReq.set_file_md5(data.fileMd5.toStdString());
-                                    TCPMgr::Instance()->SendProtoMsg(ServerApi::MsgId::ID_DOWNLOAD_COVER_REQ, coverReq);
+                                    ThreadPool::Instance()->GetTCPMgr()->SendProtoMsg(ServerApi::MsgId::ID_DOWNLOAD_COVER_REQ, coverReq);
                                 }
 
                                 // 2. 统一渲染 UI (完美保持了服务器发来的顺序)

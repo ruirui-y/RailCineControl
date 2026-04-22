@@ -1,7 +1,6 @@
 ﻿#include "mainWindow.h"
 #include <QStackedWidget>
 #include "LoginWidget.h"
-#include "TCPMgr.h"
 #include "ControlHubWindow.h"
 #include "Titlebar.h"
 #include "SignalSend.h"
@@ -10,7 +9,6 @@
 #include "ThreadPool.h"
 #include "Macro.h"
 #include "UserMgr.h"
-#include "UdpManager.h"
 #include "LocalStreamServer.h"
 
 // 定义固定窗口大小常量
@@ -22,10 +20,10 @@ mainWindow::mainWindow(QWidget *parent)
 {
     ui.setupUi(this);
 
-    MoveManagerToThread();
-
     m_pages = new QStackedWidget(this);
     setCentralWidget(m_pages);
+
+    BindSlots();
 
     _LoginWidget = new LoginWidget(this);
     
@@ -43,8 +41,8 @@ mainWindow::~mainWindow()
 
 void mainWindow::BindSlots()
 {
-    connect(TCPMgr::Instance().get(), &TCPMgr::SigLoginSuccess, this, &mainWindow::SlotSwitchToControlHubWidget);
-    connect(TCPMgr::Instance().get(), &TCPMgr::SigConnectClose, this, &mainWindow::SlotSwitchToLoginWidget);
+    connect(ThreadPool::Instance()->GetTCPMgr(), &TCPMgr::SigLoginSuccess, this, &mainWindow::SlotSwitchToControlHubWidget);
+    connect(ThreadPool::Instance()->GetTCPMgr(), &TCPMgr::SigConnectClose, this, &mainWindow::SlotSwitchToLoginWidget);
 }
 
 void mainWindow::SetFrameless(bool on)
@@ -59,32 +57,6 @@ void mainWindow::SetFrameless(bool on)
 
     // 重新显示以应用新 flags（很重要）
     if (isVisible()) showNormal(); else show();
-}
-
-void mainWindow::MoveManagerToThread()
-{
-    ThreadPool::Instance()->DispatchToWorker(
-        [this]()
-        {
-            TCPMgr::Instance();
-            // Tcp在线程中创建后，才允许绑定信号槽
-            QMetaObject::invokeMethod(this, &mainWindow::BindSlots, Qt::QueuedConnection);
-            qDebug() << "TCPMgr created in thread:" << QThread::currentThread();
-        });
-
-    ThreadPool::Instance()->DispatchToWorker(
-        []()
-        {
-            UdpManager::Instance();
-            qDebug() << "UdpManager created in thread:" << QThread::currentThread();
-        });
-
-    ThreadPool::Instance()->DispatchToWorker(
-        []()
-        {
-            LocalStreamServer::Instance()->StartServer(LOCAL_HTTP_SERVER_PORT);
-            qDebug() << "LocalStreamServer created in thread:" << QThread::currentThread();
-        });
 }
 
 void mainWindow::SlotSwitchToLoginWidget()
@@ -115,6 +87,7 @@ void mainWindow::SlotSwitchToLoginWidget()
 
     m_pages->setCurrentWidget(_LoginWidget);
     emit _LoginWidget->sig_connect_tcp();
+
     _LoginWidget->EnableBtn(true);
 
     setFixedSize(_LoginWidget->size());
@@ -148,6 +121,6 @@ void mainWindow::SlotSwitchToControlHubWidget()
 
 void mainWindow::CloseWidget()
 {
-    TCPMgr::Instance()->SetInitiateDisCon(true);                                                                // 主动断开连接
+    ThreadPool::Instance()->GetTCPMgr()->SetInitiateDisCon(true);                                                                // 主动断开连接
     close();
 }

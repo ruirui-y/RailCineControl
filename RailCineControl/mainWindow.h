@@ -26,7 +26,6 @@ private slots:
 
 private:
     void SetFrameless(bool on);
-    void MoveManagerToThread();                                                         // 分配Tcp和Udp线程
 
 private:
     Ui::mainWindowClass ui;

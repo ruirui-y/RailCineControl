@@ -5,7 +5,7 @@
 #include <QButtonGroup>
 #include "CinemaMessageBox.h"
 #include "UserMgr.h"
-#include "TCPMgr.h"
+#include "ThreadPool.h"
 
 MovieWidget::MovieWidget(QWidget* parent) : QWidget(parent)
 {
@@ -74,7 +74,7 @@ void MovieWidget::BuildUI()
         });
 
     // 监听底层的上传成功信号
-    connect(TCPMgr::Instance().get(), &TCPMgr::SigUploadSuccess, this, [this]()
+    connect(ThreadPool::Instance()->GetTCPMgr(), &TCPMgr::SigUploadSuccess, this, [this]()
         {
             // 1. 通知 UploadPage 恢复按钮状态，清空输入框
             m_uploadPage->ResetUI();                                                
@@ -87,7 +87,7 @@ void MovieWidget::BuildUI()
         });
 
     // 监听底层的上传失败信号
-    connect(TCPMgr::Instance().get(), &TCPMgr::SigUploadFailed, this, [this](QString errMsg) {
+    connect(ThreadPool::Instance()->GetTCPMgr(), &TCPMgr::SigUploadFailed, this, [this](QString errMsg) {
         // 恢复上传页面的按钮
         m_uploadPage->UnlockUI();
         CinemaMessageBox::ShowError(this, u8"上传失败", errMsg);

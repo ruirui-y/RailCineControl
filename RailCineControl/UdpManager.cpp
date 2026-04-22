@@ -2,12 +2,6 @@
 #include <QDateTime>
 #include <QDebug>
 
-UdpManager* UdpManager::Instance()
-{
-    static UdpManager instance;
-    return &instance;
-}
-
 UdpManager::UdpManager(QObject* parent) : QObject(parent)
 {
     m_socket = new QUdpSocket(this);

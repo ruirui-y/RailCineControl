@@ -5,7 +5,6 @@
 #include <QHash>
 #include <QDebug>
 
-
 bool LocalStreamServer::StartServer(quint16 port)
 {
     m_port = port;

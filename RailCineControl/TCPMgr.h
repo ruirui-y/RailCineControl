@@ -6,8 +6,7 @@
 #include <QTimer>
 #include <QByteArray>
 #include <QMap>
-#include <functional>
-#include "singletion.h"         
+#include <functional>     
 #include "common.pb.h"          
 #include "server_msg.pb.h"      
 
@@ -17,14 +16,12 @@
 // =========================================================================================
 using MsgHandler = std::function<void(const ServerApi::PacketHeader& header, const QByteArray& bodyData)>;
 
-class TCPMgr : public QObject, public Singleton<TCPMgr>
+class TCPMgr : public QObject
 {
     Q_OBJECT
 
 public:
-    friend class Singleton<TCPMgr>;
-
-public:
+    TCPMgr(QObject* parent = nullptr);
     ~TCPMgr();
     void Login(QString account, QString password);
     void StartHeartBeat();
@@ -67,7 +64,6 @@ signals:
     void SigRecordDeleted(const ServerApi::DeleteRecordRsp& rsp);                                   // 服务器确认播放记录已成功删除 (对应用户手动精确删除)
 
 private:
-    TCPMgr(QObject* parent = nullptr);
     void InitTcpSocket();                                                                           // 初始化TCP套接字
     void InitHearbeatTimer();                                                                       // 初始化心跳定时器
     void InitHandlers();                                                                            // 注册所有 MsgId 对应的处理 Lambda

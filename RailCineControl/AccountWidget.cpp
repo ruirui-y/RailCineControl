@@ -7,7 +7,7 @@
 #include <QPixmap>
 #include "ImageBgButton.h"
 #include "TipWidget.h"
-#include "TCPMgr.h"
+#include "ThreadPool.h"
 
 
 static QString StyleStr(R"(
@@ -67,7 +67,7 @@ void AccountWidget::SlotLoginOut()
     if (TipWidget::confirm(switchBtn, QString::fromLocal8Bit("确定要退出当前账号吗？")))
     {
         // 用户请求下线
-        TCPMgr::Instance()->AccountLoginOut();
+        ThreadPool::Instance()->GetTCPMgr()->AccountLoginOut();
     }
 }
 

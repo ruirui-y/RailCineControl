@@ -13,8 +13,11 @@ ThreadPool::~ThreadPool()
 
 void ThreadPool::Start(size_t threadNum)
 {
-	QMutexLocker locker(&mutex_);
-	if (started_) return;
+	{
+		QMutexLocker locker(&mutex_);
+		if (started_) return;
+	}
+
 	if(threadNum == 0) threadNum = QThread::idealThreadCount();
 	for (size_t i = 0; i < threadNum; ++i)
 	{
@@ -27,16 +30,31 @@ void ThreadPool::Start(size_t threadNum)
 		thread->setObjectName(QString::number(i));
 		loop.exec();																									// 等到 worker run() 里 emit Ready()
 
-		threads_.push_back(thread);
+		{
+			QMutexLocker locker(&mutex_);
+			threads_.push_back(thread); // 仅在修改容器时加锁
+		}
 	}
 	
-	started_ = true;
+	{
+		QMutexLocker locker(&mutex_);
+		started_ = true;
+	}
+
+	InitNetwork();
 }
 
 void ThreadPool::Stop()
 {
     QMutexLocker locker(&mutex_);
 	if (!started_) return;
+
+	// 清理所有网络服务
+	tcp_mgr_.reset();
+	local_stream_server_.reset();
+	udp_manager_.reset();
+
+	// 杀死所有线程
 	for (auto& thread : threads_)
 	{
 		thread->quit();
@@ -49,11 +67,28 @@ void ThreadPool::Stop()
 QSharedPointer<WorkerThread> ThreadPool::GetThread()
 {
     QMutexLocker locker(&mutex_);
-	if (!started_) return nullptr;
-	if (threads_.empty()) return nullptr;
+
+	// 如果没启动或没有线程，返回一个空的弱指针
+	if (!started_ || threads_.empty()) {
+		return nullptr;
+	}
 
 	QSharedPointer<WorkerThread> thread = threads_[currentThreadIndex_];
 	currentThreadIndex_ = (currentThreadIndex_ + 1) % threads_.size();
 
 	return thread;
+}
+
+void ThreadPool::InitNetwork()
+{
+	tcp_mgr_ = CreateQObject<TCPMgr>();
+
+	local_stream_server_ = CreateQObject<LocalStreamServer>();
+	PostTask(local_stream_server_.get(), [](LocalStreamServer* server)
+		{
+			qDebug() << "LocalStreamServer Start " << QThread::currentThread()->objectName();
+			server->StartServer();
+		});
+
+	udp_manager_ = CreateQObject<UdpManager>();
 }

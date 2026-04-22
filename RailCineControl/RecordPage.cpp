@@ -9,7 +9,7 @@
 #include <QDebug>
 #include <QDateTime>
 #include <QCalendarWidget>
-#include "TCPMgr.h"
+#include "ThreadPool.h"
 #include "CinemaMessageBox.h"
 
 
@@ -27,9 +27,9 @@ RecordPage::RecordPage(QWidget* parent) : QWidget(parent)
     // ==========================================================
     // 👑 绑定网络响应槽函数 (监听服务器返回的增删查结果)
     // ==========================================================
-    connect(TCPMgr::Instance().get(), &TCPMgr::SigRecordsReceived, this, &RecordPage::onGetRecordsRsp);
-    connect(TCPMgr::Instance().get(), &TCPMgr::SigRecordAdded, this, &RecordPage::onAddRecordRsp);
-    connect(TCPMgr::Instance().get(), &TCPMgr::SigRecordDeleted, this, &RecordPage::onDeleteRecordRsp);
+    connect(ThreadPool::Instance()->GetTCPMgr(), &TCPMgr::SigRecordsReceived, this, &RecordPage::onGetRecordsRsp);
+    connect(ThreadPool::Instance()->GetTCPMgr(), &TCPMgr::SigRecordAdded, this, &RecordPage::onAddRecordRsp);
+    connect(ThreadPool::Instance()->GetTCPMgr(), &TCPMgr::SigRecordDeleted, this, &RecordPage::onDeleteRecordRsp);
 
     // 💡 启动时：默认向服务器请求加载当天的播放记录
     RequestRecordsFromServer(QDate::currentDate().toString("yyyy-MM-dd"));
@@ -107,7 +107,7 @@ void RecordPage::RequestRecordsFromServer(const QString& targetDate)
     req.set_page_index(1);
     req.set_page_size(100);
 
-    TCPMgr::Instance()->SendProtoMsg(ServerApi::MsgId::ID_GET_RECORDS_REQ, req);
+    ThreadPool::Instance()->GetTCPMgr()->SendProtoMsg(ServerApi::MsgId::ID_GET_RECORDS_REQ, req);
     qDebug() << u8"[RecordPage] 正在向云端查询播放记录，日期:" << targetDate;
 }
 
@@ -154,7 +154,7 @@ void RecordPage::RequestAddRecord(const QString& date, const QString& name, cons
     record->set_operator_name(operatorName.toStdString());
     record->set_end_type(endType.toStdString());
 
-    TCPMgr::Instance()->SendProtoMsg(ServerApi::MsgId::ID_ADD_RECORD_REQ, req);
+    ThreadPool::Instance()->GetTCPMgr()->SendProtoMsg(ServerApi::MsgId::ID_ADD_RECORD_REQ, req);
 }
 
 // 接收服务器的添加确认
@@ -218,7 +218,7 @@ void RecordPage::onDeleteClicked()
     ServerApi::DeleteRecordReq req;
     req.set_record_id(recordId);
 
-    TCPMgr::Instance()->SendProtoMsg(ServerApi::MsgId::ID_DELETE_RECORD_REQ, req);
+    ThreadPool::Instance()->GetTCPMgr()->SendProtoMsg(ServerApi::MsgId::ID_DELETE_RECORD_REQ, req);
 }
 
 // 接收服务器的删除确认
