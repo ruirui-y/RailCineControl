@@ -45,7 +45,6 @@ private:
 
     // ================= 分片上传核心引擎变量 =================
     QFile* m_videoFile;                                                             // 当前正在读取的视频文件
-    QTimer* m_chunkPumpTimer;                                                       // 抽水泵定时器
 
     QString  m_currentFileMd5;                                                      // 当前视频的唯一标识
     uint64_t m_currentOffset;                                                       // 当前已读取的字节偏移量

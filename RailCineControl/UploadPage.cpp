@@ -26,13 +26,10 @@ UploadPage::UploadPage(QWidget* parent) : QWidget(parent)
 
     // 初始化抽水泵和文件指针
     m_videoFile = new QFile(this);
-    m_chunkPumpTimer = new QTimer(this);
-
-    // 绑定抽水泵动作：每次定时器触发，就切一块发给 TCP
-    connect(m_chunkPumpTimer, &QTimer::timeout, this, &UploadPage::pumpNextChunk);
 
     // 收到服务器的安全回执后，才真正提交海报与文字表单！
     connect(ThreadPool::Instance()->GetTCPMgr(), &TCPMgr::SigAllChunksAcked, this, &UploadPage::submitMetadataToTcp);
+    connect(ThreadPool::Instance()->GetTCPMgr(), &TCPMgr::SigChunkUploadSuccess, this, &UploadPage::pumpNextChunk);
 
     BuildUI();
 }
@@ -220,7 +217,6 @@ void UploadPage::UnlockUI()
     m_btnUpload->setText(u8"🚀 开始上传并入库");                                              // 恢复按钮文字
     
     // 如果失败了，记得关掉抽水泵和文件
-    m_chunkPumpTimer->stop();
     if (m_videoFile->isOpen()) m_videoFile->close();
 }
 
@@ -343,7 +339,7 @@ void UploadPage::startTcpChunkUpload()
                 safeThis->m_btnUpload->setText(u8"正在进行视频切片与上传 [1/2]...");
 
                 // 2. 轰鸣吧，抽水泵！
-                safeThis->m_chunkPumpTimer->start(10);
+                safeThis->pumpNextChunk();
 
                 }, Qt::QueuedConnection);
         });
@@ -355,7 +351,6 @@ void UploadPage::startTcpChunkUpload()
 void UploadPage::pumpNextChunk()
 {
     if (!m_videoFile->isOpen() || m_videoFile->atEnd()) {
-        m_chunkPumpTimer->stop();
         return;
     }
 
@@ -392,7 +387,6 @@ void UploadPage::pumpNextChunk()
 
     // 5. 如果是最后一块，关闭文件，进入管线 2：发送海报和元数据
     if (isLast) {
-        m_chunkPumpTimer->stop();
         m_videoFile->close();
         m_btnUpload->setText(u8"视频数据已发送，等待服务器校验...");
     }

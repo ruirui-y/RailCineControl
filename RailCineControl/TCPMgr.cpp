@@ -137,6 +137,10 @@ void TCPMgr::InitHandlers()
                 qDebug() << u8"[TCPMgr] 收到服务端最终分片确认 (is_complete=true)";
                 emit SigAllChunksAcked();
             }
+            else
+            {
+                emit SigChunkUploadSuccess();
+            }
         }
         };
 
@@ -231,19 +235,35 @@ void TCPMgr::InitHandlers()
                 QByteArray chunkData(rsp.chunk_data().data(), rsp.chunk_data().size());
                 bool isLast = rsp.is_last();
 
+                QDir().mkpath(MovieVideoPath);                                                  // 确保目录存在
+
                 // 1. 追加写入本地文件
                 QString videoPath = MovieVideoPath + "/" + fileMd5 + ".mp4";
                 QFile file(videoPath);
 
-                // 注意：必须用 Append 追加模式！
-                if (file.open(QIODevice::Append)) {
+                //  精准的打开模式 (解决文件残留导致的数据损坏)
+                QIODevice::OpenMode openMode;
+                if (chunkIndex == 0) {
+                    // 如果是第一块，哪怕有残留文件，也直接清空它 (Truncate) 并重新写入
+                    openMode = QIODevice::WriteOnly | QIODevice::Truncate;
+                }
+                else {
+                    // 后续的分片，使用追加模式
+                    openMode = QIODevice::Append;
+                }
+
+                // 执行打开与写入
+                if (file.open(openMode)) {
                     file.write(chunkData);
                     file.close();
                 }
-                else 
+                else
                 {
-                    qDebug() << u8"[TCPMgr] 视频下载中断，本地磁盘写入失败";
-                    emit SigDownloadFailed(u8"本地磁盘写入失败");
+                    // 👑 绝杀 3：打印真正的底层错误原因！
+                    QString errorCause = file.errorString();
+                    qDebug() << u8"[TCPMgr] 视频下载中断，本地磁盘写入失败。原因:" << errorCause << u8"路径:" << videoPath;
+
+                    emit SigDownloadFailed(u8"写入失败: " + errorCause);
                     return;
                 }
 

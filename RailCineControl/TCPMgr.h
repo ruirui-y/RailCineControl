@@ -47,6 +47,7 @@ signals:
     void SigLoginFailed(int errorCode, QString msg);                                                // 登陆失败 (带上 Protobuf 传回来的错误码和提示)
 
     // 影片上传业务
+    void SigChunkUploadSuccess();                                                                   // 切片上传成功，上传下一个切片
     void SigAllChunksAcked();                                                                       // 所有切片均已得到服务端确认
     void SigUploadFailed(QString msg);
     void SigUploadSuccess();
