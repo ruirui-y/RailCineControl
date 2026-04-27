@@ -267,6 +267,7 @@ LoginWidget QLineEdit#loginInput {
     height: 40px;                                                                   /* 锁定输入框舒适高度 */
     color: #E0E6ED;                                                                 /* 浅色高对比输入文字 */
     padding-left: 12px;                                                             /* 光标左侧内边距留白 */
+    padding-right: 40px;                                                            /* 👈 新增：给右侧的按钮留出安全空间 */
 }
 
 LoginWidget QLineEdit#loginInput:focus {
@@ -274,6 +275,26 @@ LoginWidget QLineEdit#loginInput:focus {
     background-color: #0F1319;                                                      /* 聚焦时内部底色加深 */
 }
 
+/* 密码可视化按钮样式 */
+LoginWidget QPushButton#PasswordEyeBtn {
+    background: transparent;
+    border: none;
+    border-radius: 4px;
+    /* 默认闭眼图标 (你需要准备一张图，换成你自己的路径) */
+    image: url(:/demand/Images/Login/eye_close.png); 
+}
+
+LoginWidget QPushButton#PasswordEyeBtn:hover {
+    background: rgba(255, 255, 255, 0.08); /* 悬浮时有微弱的方块底色反馈 */
+}
+
+/* 睁眼状态 (利用我们在 C++ 中动态切换的 isOpen 属性) */
+LoginWidget QPushButton#PasswordEyeBtn[isOpen="true"] {
+    /* 睁眼图标 (你需要准备一张图，换成你自己的路径) */
+    image: url(:/demand/Images/Login/eye_open.png); 
+}
+
+/* 登录提交按钮 */
 LoginWidget QPushButton#loginSubmitBtn {
     background-color: #00C3FF;                                                      /* 与系统选中的科技蓝一致 */
     color: #FFFFFF;                                                                 /* 按钮内字体强制纯白 */
@@ -309,7 +330,6 @@ LoginWidget QCheckBox#loginCheckBox::indicator:checked {
     background: #00C3FF;                                                            /* 选中时内部填充科技蓝 */
     border: 1px solid #00C3FF;                                                      /* 选中时边框同色隐形 */
 }
-
 
 /* ============================================================================== */
 /* 中控窗口全局底板兜底                                                                     */
