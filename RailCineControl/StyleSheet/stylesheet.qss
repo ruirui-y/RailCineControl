@@ -14,6 +14,58 @@
     outline: none;
 }
 
+
+/* ============================================================================== */
+/* 全局顶部标题栏 (TitleBar) - 全局通用                                           */
+/* ============================================================================== */
+TitleBar {
+    background-color: #12161E;                                                      /* 稍浅的蓝黑背景 */
+    border-bottom: 1px solid rgba(0, 0, 0, 0.8);                                    /* 底部强阴影分割线 */
+    border-top-left-radius: 8px;                                                    /* 匹配主窗体左上圆角 */
+    border-top-right-radius: 8px;                                                   /* 匹配主窗体右上圆角 */
+}
+
+TitleBar QPushButton#TitleAccountBtn {
+    border: none;                                                                   /* 移除默认边框 */
+    background: transparent;                                                        /* 背景强制透明 */
+    color: #8A95A5;                                                                 /* 默认暗灰蓝色文字 */
+    font-size: 20px;                                                                /* 账号名称大字号 */
+    font-weight: 700;                                                               /* 账号名称强加粗 */
+    text-align: left;                                                               /* 账号文字靠左对齐 */
+    padding-left: 20px;                                                             /* 左侧图标排版留白 */
+    padding-right: 20px;                                                            /* 右侧边界排版留白 */
+}
+
+TitleBar QPushButton#TitleAccountBtn:hover {
+    color: #FFFFFF;                                                                 /* 悬浮时字体发白高亮 */
+}
+
+TitleBar QPushButton#TitleAccountBtn:pressed {
+    color: #00C3FF;                                                                 /* 按下时激活科技蓝 */
+}
+
+TitleBar QPushButton#TitleMinBtn,
+TitleBar QPushButton#TitleCloseBtn {
+    border: none;                                                                   /* 移除系统按钮边框 */
+    background: transparent;                                                        /* 初始背景完全透明 */
+    border-radius: 6px;                                                             /* 系统按钮现代微圆角 */
+}
+
+TitleBar QPushButton#TitleMinBtn:hover {
+    background: rgba(255, 255, 255, 0.08);                                          /* 最小化悬浮浅色反馈 */
+}
+
+TitleBar QPushButton#TitleCloseBtn:hover {
+    background: #E81123;                                                            /* 关闭按钮悬浮警示红 */
+    border-top-right-radius: 8px;                                                   /* 完美贴合右上角边框 */
+    border-bottom-right-radius: 0px;                                                /* 底部保持直角不断层 */
+}
+
+TitleBar QPushButton#TitleCloseBtn:pressed {
+    background: #B00A1A;                                                            /* 关闭按钮按下加深红 */
+}
+
+
 /* ============================================================================== */
 /* 全局自定义弹窗系统 (CinemaDialogBase / CinemaMessageBox)                          */
 /* ============================================================================== */
@@ -180,176 +232,94 @@ QPushButton#switchBtn:pressed {                                                 
 
 
 /* ============================================================================== */
+/* 主窗体基座 (mainWindow) - 系统的物理底板，解决透明穿透与闪烁问题         */
+/* ============================================================================== */
+mainWindow {
+    background-color: #0B0E14;                                                      /* 全局极暗深蓝灰底色 */
+    border-radius: 8px;                                                             /* 外层主窗体基础圆角 */
+}
+
+
+/* ============================================================================== */
 /* 模块：LoginWidget - 登录界面专属样式 (无图纯向量渲染版)                           */
 /* ============================================================================== */
-
-/* ---------------------------------------------------------
-   [1. 登录底板与容器]
---------------------------------------------------------- */
-#LoginWidget { 
-    color: #EAF2FF; 
-    border-image: url(:/MiNi/Images/MiNiWorld/Login/Background.png);               /* 自动拉伸铺满全屏 */
+LoginWidget {
+    background: transparent;                                                        /* 背景交由 mainWindow 绘制 */
 }
 
-#LoginWidget #loginPanel { 
-    border-image: none;                                                             /* 防止继承父级背景图 */
-    background: rgba(0, 0, 0, 180);                                                 /* 高级半透明磨砂黑面板 */
-    border-radius: 16px;                                                            /* 现代圆角 */
+LoginWidget #loginPanel {
+    background-color: #1A1F29;                                                      /* 同步主堆栈页面的背景色 */
+    border-top: 1px solid rgba(255, 255, 255, 0.05);                                /* 面板顶部微光边缘线 */
+    border-radius: 8px;                                                             /* 登录表单面板微圆角 */
 }
 
-#LoginWidget #loginLogo { 
-    margin-top: 8px; 
-    margin-bottom: 8px; 
-    image: url(:/MiNi/Images/MiNiWorld/Login/Logo.png);                             /* Logo独立居中 */
+LoginWidget #fieldLabel {
+    color: #8A95A5;                                                                 /* 标题使用灰蓝色调 */
+    font-size: 13px;                                                                /* 字段标题辅助字号 */
+    font-weight: 600;                                                               /* 字段标题加粗处理 */
+    text-transform: uppercase;                                                      /* 英文字母强制大写 */
 }
 
-#LoginWidget #fieldLabel { 
-    color: #CBE1FF;                                                                 /* 浅蓝色标题 */
-    font-size: 14px; 
-    font-weight: bold;                                                              /* 强行加粗字体 */
+LoginWidget QLineEdit#loginInput {
+    background-color: #12161E;                                                      /* 标题栏级别深色凹陷感 */
+    border: 1px solid #2A2F3A;                                                      /* 工业级浅色极细边框 */
+    border-radius: 4px;                                                             /* 现代输入框标准圆角 */
+    height: 40px;                                                                   /* 锁定输入框舒适高度 */
+    color: #E0E6ED;                                                                 /* 浅色高对比输入文字 */
+    padding-left: 12px;                                                             /* 光标左侧内边距留白 */
 }
 
-/* ---------------------------------------------------------
-   [2. 通用基础控件层 (在 Login 作用域内通用)]
---------------------------------------------------------- */
-#LoginWidget QLineEdit#loginInput { 
-    height: 44px; 
-    padding: 0 14px;
-    /* 👑 绝杀修复 1：必须使用 background-color 而不是 background，防止盖住光标 */
-    background-color: rgba(255, 255, 255, 0.1);                                     /* 极简玻璃质感背景 */
-    border: 1px solid rgba(255, 255, 255, 0.15);                                    /* 极细微边框 */
-    border-radius: 8px;                                                             /* 适中圆角 */
-    color: #FFFFFF;                                                                 /* 输入的白字与白光标 */
-    font-weight: bold;                                                              /* 输入字体加粗 */
-    selection-background-color: #00C3FF;                                            /* 鼠标拖拽选中文本的底色 */
-    selection-color: #FFFFFF;                                                       /* 👑 绝杀修复 2：选中文本时的反色文字 */
+LoginWidget QLineEdit#loginInput:focus {
+    border: 1px solid #00C3FF;                                                      /* 聚焦时边框亮科技蓝 */
+    background-color: #0F1319;                                                      /* 聚焦时内部底色加深 */
 }
 
-#LoginWidget QLineEdit#loginInput:focus { 
-    border: 1px solid #00C3FF;                                                      /* 焦点科技蓝 */
-    
-    /* 光标颜色 = 文字颜色 XOR 背景底色*/
-    /* 👑 绝杀修复 3：终结光标变异！改用不透明的纯实色底板，彻底阻断背景图片的像素透视 */
-    /* 当白字(#FFFFFF) 异或 极暗深蓝(#0F1319) 时，算出的光标将是一个非常稳定的“暖白色” */
-    background-color: #0F1319;                                                      
-    color: #FFFFFF;
+LoginWidget QPushButton#loginSubmitBtn {
+    background-color: #00C3FF;                                                      /* 与系统选中的科技蓝一致 */
+    color: #FFFFFF;                                                                 /* 按钮内字体强制纯白 */
+    font-size: 16px;                                                                /* 主操作按钮大号字体 */
+    font-weight: 700;                                                               /* 按钮文字视觉强加粗 */
+    border-radius: 4px;                                                             /* 呼应输入框的标准圆角 */
+    border: none;                                                                   /* 移除基础物理边框线 */
 }
 
-#LoginWidget QCheckBox#loginCheckBox { 
-    spacing: 8px; 
-    color: #A9A9A9; 
-    font-weight: bold;
+LoginWidget QPushButton#loginSubmitBtn:hover {
+    background-color: #33D1FF;                                                      /* 鼠标悬浮时色彩提亮 */
 }
 
-#LoginWidget QCheckBox#loginCheckBox::indicator {
-    width: 18px; 
-    height: 18px; 
-    border-radius: 9px;                                                             /* 圆形多选框 */
-    border: 1px solid rgba(255, 255, 255, 0.35);
-    background: rgba(255, 255, 255, 0.08);
+LoginWidget QPushButton#loginSubmitBtn:pressed {
+    background-color: #0099CC;                                                      /* 鼠标按下时色彩加深 */
+    padding-top: 2px;                                                               /* 按压时产生物理位移 */
 }
 
-#LoginWidget QCheckBox#loginCheckBox::indicator:checked {
-    /* 既然抛弃图片，我们可以用系统底层的勾或者 QSS 直接上色 */
-    background: #31C27C;                                                            /* 极客绿填充 */
-    border: 1px solid #31C27C;
-    image: url(:/MiNi/Images/MiNiWorld/Login/BoxCheck.png);                        /* 如果你有单独的勾图可以保留，没有的话删掉这行也有纯绿底色 */
+LoginWidget QCheckBox#loginCheckBox {
+    color: #8A95A5;                                                                 /* 勾选框文字使用灰蓝 */
+    font-size: 12px;                                                                /* 辅助状态选项小字号 */
 }
 
-/* ---------------------------------------------------------
-   [3. 按钮层：通用大基底 + 专属 ID 覆盖 (极客绿)]
---------------------------------------------------------- */
-/* 基础按钮：半透明毛玻璃质感 (方便以后加别的辅助按钮) */
-#LoginWidget QPushButton {
-    background-color: rgba(255, 255, 255, 0.1);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    border-radius: 10px;
-    padding: 10px 20px;
-    font-weight: bold;
-    color: white;
+LoginWidget QCheckBox#loginCheckBox::indicator {
+    width: 16px;                                                                    /* 物理勾选框正方宽度 */
+    height: 16px;                                                                   /* 物理勾选框正方高度 */
+    border-radius: 2px;                                                             /* 勾选框边缘极小圆角 */
+    border: 1px solid #2A2F3A;                                                      /* 未选中时显示细边框 */
+    background: #12161E;                                                            /* 未选中时底色同输入框 */
 }
 
-#LoginWidget QPushButton:hover {
-    background-color: rgba(255, 255, 255, 0.25);
-    border: 1px solid rgba(255, 255, 255, 0.4);
-}
-
-/* 👑 核心覆写：登录大按钮专属 (纯色向量极客绿，彻底干掉旧贴图) */
-#LoginWidget QPushButton#loginSubmitBtn {
-    background-color: #31C27C;                                                      /* 主基调：高亮极客绿 */
-    border: none;                                                                   /* 移除基础边框 */
-    color: white;                                                                   /* 纯白文字 */
-    font-size: 20px;                                                                /* 硕大字号 */
-    font-weight: 900;                                                               /* 极限加粗 */
-    border-radius: 10px;                                                            /* 保持大圆角 */
-}
-
-#LoginWidget QPushButton#loginSubmitBtn:hover {
-    background-color: #3AD589;                                                      /* 悬浮时稍稍提亮 */
-}
-
-#LoginWidget QPushButton#loginSubmitBtn:pressed {
-    background-color: #29A368;                                                      /* 按下时加深颜色 */
-    padding-top: 4px;                                                               /* 产生向下按压的物理视觉反馈 */
+LoginWidget QCheckBox#loginCheckBox::indicator:checked {
+    background: #00C3FF;                                                            /* 选中时内部填充科技蓝 */
+    border: 1px solid #00C3FF;                                                      /* 选中时边框同色隐形 */
 }
 
 
 /* ============================================================================== */
 /* 中控窗口全局底板兜底                                                                     */
 /* ============================================================================== */
-ControlHubWindow {                                                  /* 顶层主窗体 */
-    font-weight: bold;                                              /* 字体加粗 */
-    background-color: #0B0E14;                                      /* 极暗的黑蓝色兜底 */
-    color: #E0E6ED;                                                 /* 全局标准文字色 */
+ControlHubWindow {
+    background: transparent;                                         /* 背景交由 mainWindow 绘制 */
 }
 
 /* ============================================================================== */
-/* [1] 顶部标题栏 (Title Bar) - 控制全局的“天花板”                                  */
-/* ============================================================================== */
-#MainTitleBar {                                                     /* 标题栏容器 */
-    background-color: #12161E;                                      /* 极暗的深邃蓝灰 */
-    border-bottom: 1px solid rgba(0, 0, 0, 0.8);                    /* 底部强阴影分割 */
-}
-
-#TitleAccountBtn {                                                  /* 标题栏账号按钮 */
-    border: none;                                                   /* 移除边框 */
-    background: transparent;                                        /* 背景透明 */
-    color: #8A95A5;                                                 /* 默认暗灰蓝色 */
-    font-size: 20px;                                                /* 字体放大 */
-    font-weight: 700;                                               /* 账号加粗突显 */
-    text-align: left;                                               /* 靠左对齐 */
-    padding-left: 20px;                                             /* 文本左侧留白 */
-}
-
-#TitleAccountBtn:hover {                                            /* 账号按钮悬浮 */
-    color: #FFFFFF;                                                 /* 悬浮发白高亮 */
-}
-
-#TitleAccountBtn:pressed {                                          /* 账号按钮按下 */
-    color: #00C3FF;                                                 /* 激活科技蓝 */
-}
-
-#TitleMinBtn, #TitleCloseBtn {                                      /* 右上角系统控制按钮 */
-    border: none;                                                   /* 移除边框 */
-    background: transparent;                                        /* 默认透明 */
-    border-radius: 6px;                                             /* 微圆角更现代 */
-}
-
-#TitleMinBtn:hover {                                                /* 最小化悬浮 */
-    background: rgba(255, 255, 255, 0.08);                          /* 浅浅的白底反馈 */
-}
-
-#TitleCloseBtn:hover {                                              /* 关闭按钮悬浮 */
-    background: #E81123;                                            /* 微软标准警示红 */
-}
-
-#TitleCloseBtn:pressed {                                            /* 关闭按钮按下 */
-    background: #B00A1A;                                            /* 更深的按下红 */
-}
-
-
-/* ============================================================================== */
-/* [2] 左侧导航栏 (Left Sidebar) - 系统的“中枢神经”                                 */
+/* [1] 左侧导航栏 (Left Sidebar) - 系统的“中枢神经”                                 */
 /* ============================================================================== */
 #LeftSidebar {                                                      /* 左侧列表容器 */
     background-color: #161A23;                                      /* 藏青色导航底板 */
@@ -383,14 +353,14 @@ GameItem:checked {                                                  /* 菜单项
 
 
 /* ============================================================================== */
-/* [3] 右侧堆栈内容区 (Right Stacked Content) - 核心展示的“大荧幕”                    */
+/* [2] 右侧堆栈内容区 (Right Stacked Content) - 核心展示的“大荧幕”                    */
 /* ============================================================================== */
 MovieWidget, GameWidget, SettingWidget {                            /* 右侧三大核心界面 */
     background-color: #1A1F29;                                      /* 最亮的深灰蓝底色 */
 }
 
 /* ============================================================================== */
-/* [3.1] 影片中心子模块 (MovieWidget) 专属样式                                      */
+/* [2.1] 影片中心子模块 (MovieWidget) 专属样式                                      */
 /* ============================================================================== */
 
 /* ---------------- 顶部导航按钮 (#navBtn) ---------------- */
@@ -415,7 +385,7 @@ MovieWidget, GameWidget, SettingWidget {                            /* 右侧三
 
 
 /* ============================================================================== */
-/* [3.1.1] 影片播放页 (PlaybackPage) 内部控件细节                                   */
+/* [2.1.1] 影片播放页 (PlaybackPage) 内部控件细节                                   */
 /* ============================================================================== */
 PlaybackPage {                                                      /* 影片播放页根节点 */
     background: transparent;                                        /* 彻底透明漏出主底色 */
@@ -430,7 +400,7 @@ PlaybackPage QWidget#scrollAreaWidgetContents {                     /* 滚动区
 }
 
 /* ==========================================================
-   [3.1.1.1] 科幻风垂直滚动条 (干掉原生丑陋白边)
+   [2.1.1.1] 科幻风垂直滚动条 (干掉原生丑陋白边)
    ========================================================== */
 /* 1. 滚动条整体轨道 */
 QScrollBar:vertical {
@@ -467,7 +437,7 @@ QScrollBar::sub-page:vertical {
 }
 
 /* ============================================================================== */
-/* [3.1.1.2] 核心卡片与列表窗口                                                       */
+/* [2.1.1.2] 核心卡片与列表窗口                                                       */
 /* ============================================================================== */
 
 /* 1. 移花接木：让内部的 QFrame 变成纯透明骨架，不参与绘制 */
@@ -518,7 +488,7 @@ PlaybackPage QListWidget::item:selected {                           /* 卡片选
 
 
 /* ============================================================================== */
-/* [3.1.1.3] 底部播控台样式 (#controlBtn & #statusLcd)                              */
+/* [2.1.1.3] 底部播控台样式 (#controlBtn & #statusLcd)                              */
 /* ============================================================================== */
 
 #statusLcd {                                                        /* 左下角的时间倒计时标签 */
@@ -550,7 +520,7 @@ PlaybackPage QListWidget::item:selected {                           /* 卡片选
 
 
 /* ============================================================================== */
-/* [3.1.2] 播放记录页 (RecordPage) 内部控件细节                                     */
+/* [2.1.2] 播放记录页 (RecordPage) 内部控件细节                                     */
 /* ============================================================================== */
 RecordPage {                                                        /* 播放记录页根节点 */
     background: transparent;                                        /* 彻底透明漏出主底色 */
@@ -562,7 +532,7 @@ RecordPage {                                                        /* 播放记
     font-weight: bold;                                              /* 字体加粗 */
 }
 /* ============================================================================== */
-/* [3.1.2.1] 播放记录页 - 日期筛选输入框 (#recordDateEdit) 极简向量版                  */
+/* [2.1.2.1] 播放记录页 - 日期筛选输入框 (#recordDateEdit) 极简向量版                  */
 /* ============================================================================== */
 
 /* ---------------- 1. 输入框主体 ---------------- */
@@ -612,7 +582,7 @@ RecordPage {                                                        /* 播放记
 
 
 /* ============================================================================== */
-/* [3.1.2.2] 播放记录页 - 弹出日历主面板 (#recordCalendar) 藏青色重塑版                 */
+/* [2.1.2.2] 播放记录页 - 弹出日历主面板 (#recordCalendar) 藏青色重塑版                 */
 /* ============================================================================== */
 
 /* ---------------- 1. 日历总面板与导航栏 ---------------- */
@@ -650,7 +620,7 @@ RecordPage {                                                        /* 播放记
 
 
 /* ============================================================================== */
-/* [3.1.2.3] 播放记录页 - 日历内的极微小组件 (#recordCalendar 内嵌控件)                 */
+/* [2.1.2.3] 播放记录页 - 日历内的极微小组件 (#recordCalendar 内嵌控件)                 */
 /* ============================================================================== */
 
 /* ---------------- 1. 顶部年份微调框 (QSpinBox) ---------------- */
@@ -704,7 +674,7 @@ RecordPage {                                                        /* 播放记
 }
 
 /* ============================================================================== */
-/* [3.1.2.4] 播放记录页 - 危险操作按钮 (#btnDeleteDanger) 警示红风格                 */
+/* [2.1.2.4] 播放记录页 - 危险操作按钮 (#btnDeleteDanger) 警示红风格                 */
 /* ============================================================================== */
 
 #btnDeleteDanger {                                                  /* 删除按钮专属 */
@@ -728,7 +698,7 @@ RecordPage {                                                        /* 播放记
 
 
 /* ============================================================================== */
-/* [3.1.2.5] 播放记录页 - 数据表格主体 (#recordTable) 大荧幕监控台风格               */
+/* [2.1.2.5] 播放记录页 - 数据表格主体 (#recordTable) 大荧幕监控台风格               */
 /* ============================================================================== */
 
 #recordTable {                                                      /* 表格主体 */
@@ -763,14 +733,14 @@ RecordPage {                                                        /* 播放记
 }
 
 /* ============================================================================== */
-/* [3.1.3] 资源上传页 (UploadPage) 核心容器与布局                                   */
+/* [2.1.3] 资源上传页 (UploadPage) 核心容器与布局                                   */
 /* ============================================================================== */
 UploadPage {                                                        /* 资源上传页根节点 */
     background: transparent;                                        /* 彻底透明漏出主底色 */
 }
 
 /* ============================================================================== */
-/* [3.1.3.1] 资源上传页 - 文本标签 (#uploadLabelNormal / #uploadLabelHighlight)    */
+/* [2.1.3.1] 资源上传页 - 文本标签 (#uploadLabelNormal / #uploadLabelHighlight)    */
 /* ============================================================================== */
 #uploadLabelNormal {                                                /* 普通文本标签 (如影片简介) */
     color: #8A95A5;                                                 /* 暗淡的灰蓝标准色 */
@@ -785,7 +755,7 @@ UploadPage {                                                        /* 资源上
 }
 
 /* ============================================================================== */
-/* [3.1.3.2] 资源上传页 - 海报预览区 (#coverPreviewArea)                            */
+/* [2.1.3.2] 资源上传页 - 海报预览区 (#coverPreviewArea)                            */
 /* ============================================================================== */
 #coverPreviewArea {                                                 /* 海报图片预览框 */
     background-color: rgba(0, 0, 0, 0.2);                           /* 极暗的内陷底色 */
@@ -803,7 +773,7 @@ UploadPage {                                                        /* 资源上
 }
 
 /* ============================================================================== */
-/* [3.1.3.3] 资源上传页 - 输入表单 (#uploadInput / #uploadDescInput)               */
+/* [2.1.3.3] 资源上传页 - 输入表单 (#uploadInput / #uploadDescInput)               */
 /* ============================================================================== */
 #uploadInput,                                                       /* 单行文本输入框 */
 #uploadDescInput {                                                  /* 多行文本简述框 */
@@ -836,7 +806,7 @@ UploadPage {                                                        /* 资源上
 }
 
 /* ============================================================================== */
-/* [3.1.3.4] 资源上传页 - 操作按钮 (#browseBtn / #uploadSubmitBtn)                  */
+/* [2.1.3.4] 资源上传页 - 操作按钮 (#browseBtn / #uploadSubmitBtn)                  */
 /* ============================================================================== */
 #browseBtn {                                                        /* 浏览本地文件按钮 */
     background-color: rgba(255, 255, 255, 0.08);                    /* 低调的半透底色 */
@@ -875,11 +845,11 @@ UploadPage {                                                        /* 资源上
 }
 
 /* ============================================================================== */
-/* [3.2] 游戏列表页 (GameWidget) 核心模块专属样式                                 */
+/* [2.2] 游戏列表页 (GameWidget) 核心模块专属样式                                 */
 /* ============================================================================== */
 
 /* ============================================================================== */
-/* [3.2.1] 顶部标题栏 (#logoLabel)                                                */
+/* [2.2.1] 顶部标题栏 (#logoLabel)                                                */
 /* ============================================================================== */
 #logoLabel {                                                                    /* 顶部 GAME LIST 标题 */
     color: #FFFFFF;                                                             /* 纯白高亮文字 */
@@ -889,7 +859,7 @@ UploadPage {                                                        /* 资源上
 }
 
 /* ============================================================================== */
-/* [3.2.2] 核心滚动列表 (QListWidget) 基础底板                                    */
+/* [2.2.2] 核心滚动列表 (QListWidget) 基础底板                                    */
 /* ============================================================================== */
 #GameWidget QListWidget {                                                       /* 限定作用域内的列表容器 */
     background: transparent;                                                    /* 彻底透明，露出底层深灰蓝 */
@@ -898,7 +868,7 @@ UploadPage {                                                        /* 资源上
 }
 
 /* ============================================================================== */
-/* [3.2.3] 游戏独立卡片 (#gameCard) 与内部文本结构                                */
+/* [2.2.3] 游戏独立卡片 (#gameCard) 与内部文本结构                                */
 /* ============================================================================== */
 #gameCard {                                                                     /* 卡片容器基础态 */
     background-color: rgba(255, 255, 255, 0.04);                                /* 极微弱的半透明玻璃底板 */
@@ -933,7 +903,7 @@ UploadPage {                                                        /* 资源上
 }
 
 /* ============================================================================== */
-/* [3.2.4] 右下角全局播控大按钮 (40x40 居中修正版)                                */
+/* [2.2.4] 右下角全局播控大按钮 (40x40 居中修正版)                                */
 /* ============================================================================== */
 #btnPlay {                                                                      /* 🟢 播放核心按钮 */
     background-color: #00B36B;                                                  /* 沉稳的护眼绿底色 */
@@ -989,7 +959,7 @@ UploadPage {                                                        /* 资源上
 }
 
 /* ============================================================================== */
-/* [3.3] 系统设置页 (SettingWidget) 专属样式                                      */
+/* [2.3] 系统设置页 (SettingWidget) 专属样式                                      */
 /* ============================================================================== */
 
 #SettingWidget {                                                                /* 设置主页面基底 */
@@ -997,7 +967,7 @@ UploadPage {                                                        /* 资源上
 }
 
 /* ============================================================================== */
-/* [3.3.1] 左侧导航栏容器 (#settingLeftNav)                                       */
+/* [2.3.1] 左侧导航栏容器 (#settingLeftNav)                                       */
 /* ============================================================================== */
 #settingLeftNav {                                                               /* 左侧固定宽度导航区 */
     background-color: #12161D;                                                  /* 👑 比主内容区更暗，压平视觉层级，形成立体感 */
@@ -1005,7 +975,7 @@ UploadPage {                                                        /* 资源上
 }
 
 /* ============================================================================== */
-/* [3.3.2] 导航按钮组 (#settingNavBtn)                                            */
+/* [2.3.2] 导航按钮组 (#settingNavBtn)                                            */
 /* ============================================================================== */
 #settingNavBtn {                                                                /* 导航按钮默认态 (未选中) */
     background-color: transparent;                                              /* 默认透明，彻底融入导航底色 */
@@ -1038,7 +1008,7 @@ UploadPage {                                                        /* 资源上
 }
 
 /* ============================================================================== */
-/* [3.3.3] 右侧堆栈内容区 (#settingStackedWidget)                                 */
+/* [2.3.3] 右侧堆栈内容区 (#settingStackedWidget)                                 */
 /* ============================================================================== */
 #settingStackedWidget {                                                         /* 堆栈窗口容器 */
     background-color: transparent;                                              /* 彻底透明，把涂色权交给里面的子页面 */

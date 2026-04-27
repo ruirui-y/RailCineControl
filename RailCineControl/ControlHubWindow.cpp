@@ -11,6 +11,8 @@
 #include "MovieWidget.h"
 #include "GameWidget.h"
 #include "SettingWidget.h"
+#include "UserMgr.h"
+
 
 // 假设你有一个定义侧边栏宽度的宏，如果没有可以在这里写死比如 200
 #ifndef HZ_LIST_WIDTH
@@ -34,8 +36,8 @@ ControlHubWindow::ControlHubWindow(QWidget* parent) : QWidget(parent)
 
     // 2.顶部栏
     m_title = new TitleBar(this);
-    m_title->setObjectName("MainTitleBar");
-    m_title->setAutoFillBackground(false);
+    m_title->SetMode(TitleMode::Hub);
+    m_title->SetUserName(UserMgr::Instance()->getUserInfo().UserName);
     root->addWidget(m_title);
 
     // 3.主窗口(水平布局)
