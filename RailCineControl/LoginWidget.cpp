@@ -195,11 +195,9 @@ void LoginWidget::AutoLogin()
 
 void LoginWidget::WriteLoginConfig()
 {
-	UserInfo user_info = UserMgr::Instance()->getUserInfo();
-
 	QJsonObject login_json;
-	login_json["Account"] = user_info.UserName;
-	login_json["Password"] = user_info.Password;
+	login_json["Account"] = UserMgr::Instance()->GetUserName();
+	login_json["Password"] = UserMgr::Instance()->GetPassword();
 	login_json["icon"] = "";
 
 	// 写入配置文件中
@@ -261,10 +259,8 @@ void LoginWidget::OnLoginButtonClicked()
 	QString pass = m_passEdit->text();
 
 	// 设置用户名和密码
-	UserInfo user_info;
-	user_info.UserName = user;
-	user_info.Password = pass;
-	UserMgr::Instance()->setUserInfo(user_info);
+	UserMgr::Instance()->SetUserName(user);
+	UserMgr::Instance()->SetPassword(pass);
 
 	// 禁止重复点击
 	EnableBtn(false);

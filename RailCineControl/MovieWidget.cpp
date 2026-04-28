@@ -70,7 +70,7 @@ void MovieWidget::BuildUI()
     connect(m_playbackPage, &PlaybackPage::playbackFinishedRecord,
         this, [this](QString date, QString name, QString start, QString end, QString type) 
         {
-            m_recordPage->RequestAddRecord(date, name, start, end, UserMgr::Instance()->getUserInfo().UserName, type);
+            m_recordPage->RequestAddRecord(date, name, start, end, UserMgr::Instance()->GetUserName(), type);
         });
 
     // 监听底层的上传成功信号

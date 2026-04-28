@@ -37,7 +37,7 @@ ControlHubWindow::ControlHubWindow(QWidget* parent) : QWidget(parent)
     // 2.顶部栏
     m_title = new TitleBar(this);
     m_title->SetMode(TitleMode::Hub);
-    m_title->SetUserName(UserMgr::Instance()->getUserInfo().UserName);
+    m_title->SetUserName(UserMgr::Instance()->GetUserName());
     root->addWidget(m_title);
 
     // 3.主窗口(水平布局)

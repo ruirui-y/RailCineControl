@@ -92,8 +92,13 @@ void TCPMgr::InitHandlers()
         // 1. 检查 Header 里的全局错误码
         if (header.error_code() != ServerApi::ErrorCode::ERR_SUCCESS) 
         {
+            // 登录失败，关闭连接
+            m_TcpSocket->disconnectFromHost();
+
+            // 转发登录失败信号
             qDebug() << u8"[TCPMgr] 登录失败:" << header.error_msg().c_str();
             emit SigLoginFailed(header.error_code(), QString::fromStdString(header.error_msg()));
+
             return;
         }
 

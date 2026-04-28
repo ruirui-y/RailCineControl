@@ -121,7 +121,6 @@
     <ClCompile Include="RecordPage.cpp" />
     <ClCompile Include="server_msg.pb.cc" />
     <ClCompile Include="SettingWidget.cpp" />
-    <ClCompile Include="SignalSend.cpp" />
     <ClCompile Include="StateLabel.cpp" />
     <ClCompile Include="StateWidget.cpp" />
     <ClCompile Include="TCPMgr.cpp" />
@@ -169,7 +168,6 @@
     <ClInclude Include="Macro.h" />
     <QtMoc Include="StateLabel.h" />
     <QtMoc Include="StateWidget.h" />
-    <QtMoc Include="SignalSend.h" />
     <QtMoc Include="MovieWidget.h" />
     <QtMoc Include="PlaybackPage.h" />
     <ClInclude Include="ProtocolDef.h" />
@@ -178,7 +176,6 @@
     <ClInclude Include="resource1.h" />
     <QtMoc Include="SettingWidget.h" />
     <ClInclude Include="server_msg.pb.h" />
-    <ClInclude Include="Struct.h" />
     <QtMoc Include="TCPMgr.h" />
     <QtMoc Include="LogRecord.h" />
     <QtMoc Include="CustomizeTextEdit.h" />

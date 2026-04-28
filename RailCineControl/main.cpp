@@ -8,12 +8,10 @@
 #include "Macro.h"
 #include "GameItem.h"
 #include "LogRecord.h"
-#include "Struct.h"
 #include "Enum.h"
 #include "ThreadPool.h"
 #include "common.pb.h"
 #include "server_msg.pb.h"
-#include <QVBoxLayout>
 
 
 void LoadStyle(QApplication* app)

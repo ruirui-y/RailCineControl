@@ -154,9 +154,6 @@
     <ClCompile Include="LogRecord.cpp">
       <Filter>Source Files\Global</Filter>
     </ClCompile>
-    <ClCompile Include="SignalSend.cpp">
-      <Filter>Source Files\Global</Filter>
-    </ClCompile>
     <ClCompile Include="StateLabel.cpp">
       <Filter>Source Files\Global</Filter>
     </ClCompile>
@@ -214,9 +211,6 @@
     <ClCompile Include="UdpManager.cpp">
       <Filter>Source Files\UDP</Filter>
     </ClCompile>
-    <ClCompile Include="ParamSettingWidget.cpp">
-      <Filter>Source Files\SELF_UI\StackPage\Setting</Filter>
-    </ClCompile>
     <ClCompile Include="server_msg.pb.cc">
       <Filter>Source Files\Pb</Filter>
     </ClCompile>
@@ -273,9 +267,6 @@
     <ClInclude Include="singletion.h">
       <Filter>Header Files\Global</Filter>
     </ClInclude>
-    <ClInclude Include="Struct.h">
-      <Filter>Header Files\Global</Filter>
-    </ClInclude>
     <ClInclude Include="resource.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -309,9 +300,6 @@
       <Filter>Header Files\Global</Filter>
     </QtMoc>
     <QtMoc Include="LogRecord.h">
-      <Filter>Header Files\Global</Filter>
-    </QtMoc>
-    <QtMoc Include="SignalSend.h">
       <Filter>Header Files\Global</Filter>
     </QtMoc>
     <QtMoc Include="StateLabel.h">
@@ -367,12 +355,6 @@
     </QtMoc>
     <QtMoc Include="UdpManager.h">
       <Filter>Header Files\UDP</Filter>
-    </QtMoc>
-    <QtMoc Include="DeveloperOptionWidget.h">
-      <Filter>Header Files\SELF_UI\StackPage\Setting</Filter>
-    </QtMoc>
-    <QtMoc Include="DeviceRowWidget.h">
-      <Filter>Header Files\SELF_UI\StackPage\Setting</Filter>
     </QtMoc>
     <QtMoc Include="MovieWidget.h">
       <Filter>Header Files\SELF_UI\StackPage\PlayMovie</Filter>
