@@ -40,10 +40,10 @@ private:
 
         // 1. 设置带 Emoji 的标题
         QString fullTitle;
-        if (type == Info) fullTitle = u8"💡 " + title;
-        else if (type == Warning) fullTitle = u8"⚠️ " + title;
-        else if (type == Error) fullTitle = u8"❌ " + title;
-        else fullTitle = u8"❓ " + title;                               // 👑 询问类型的 Emoji
+        if (type == Info) fullTitle = tr("💡 ") + title;
+        else if (type == Warning) fullTitle = tr("⚠️ ") + title;
+        else if (type == Error) fullTitle = tr("❌ ") + title;
+        else fullTitle = tr("❓ ") + title;                               // 👑 询问类型的 Emoji
         this->SetDialogTitle(fullTitle);
 
         QVBoxLayout* content = this->GetContentLayout();
@@ -61,11 +61,11 @@ private:
         if (type == Question)
         {
             // 👑 询问框专属逻辑：双按钮布局
-            QPushButton* btn_cancel = new QPushButton(u8"取 消", this);
+            QPushButton* btn_cancel = new QPushButton(tr("取 消"), this);
             btn_cancel->setMinimumSize(100, 38);
             btn_cancel->setObjectName("btnCinemaCancel");               // 赋予“取消按钮”专属低调样式
 
-            QPushButton* btn_confirm = new QPushButton(u8"确 定", this);
+            QPushButton* btn_confirm = new QPushButton(tr("确 定"), this);
             btn_confirm->setMinimumSize(100, 38);
             // 删除操作属于高危动作，直接复用“影院金”或“警示红”，这里用警示红更有压迫感
             btn_confirm->setObjectName("btnCinemaError");
@@ -81,7 +81,7 @@ private:
         else
         {
             // 其他常规框逻辑：单按钮布局
-            QPushButton* btn_ok = new QPushButton(u8"我知道了", this);
+            QPushButton* btn_ok = new QPushButton(tr("我知道了"), this);
             btn_ok->setMinimumSize(120, 38);
 
             if (type == Info) btn_ok->setObjectName("btnCinemaInfo");

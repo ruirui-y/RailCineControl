@@ -1,4 +1,4 @@
-#include "GameItem.h"
+ï»¿#include "GameItem.h"
 #include <QHBoxLayout>
 #include <QLabel>
 #include <QIcon>
@@ -12,26 +12,26 @@ QToolButton {
     border: none;
     padding: 4px 5px;
 
-    border-left: 4px solid transparent;			/* ×ó²àÑ¡ÖĞÌõ£¨Ä¬ÈÏÍ¸Ã÷£© */
-	spacing: 10px;								/* Í¼±êÓëÎÄ×Ö¼ä¾à */
-	qproperty-iconSize: 40px 40px;				/* Í¼±ê´óĞ¡ */
+    border-left: 4px solid transparent;			/* å·¦ä¾§é€‰ä¸­æ¡ï¼ˆé»˜è®¤é€æ˜ï¼‰ */
+	spacing: 10px;								/* å›¾æ ‡ä¸æ–‡å­—é—´è· */
+	qproperty-iconSize: 40px 40px;				/* å›¾æ ‡å¤§å° */
 }
 
-/* Ğü¸¡ */
+/* æ‚¬æµ® */
 QToolButton:hover {
     background: rgba(255,255,255,0.06);
     border-left-color: rgba(255,255,255,0.25);
 }
 
-/* °´ÏÂ */
+/* æŒ‰ä¸‹ */
 QToolButton:pressed {
     background: rgba(255,255,255,0.12);
 }
 
-/* Ñ¡ÖĞ */
+/* é€‰ä¸­ */
 QToolButton:checked {
     background: rgba(255,255,255,0.10);
-    border-left-color: #FFFFFF;				/* ×ó²à°×É«¸ßÁÁÌõ */
+    border-left-color: #FFFFFF;				/* å·¦ä¾§ç™½è‰²é«˜äº®æ¡ */
     color: #FFFFFF;
 })");
 
@@ -57,6 +57,6 @@ void GameItem::BuildUI()
 	setIcon(QIcon(m_iconPath));
 	setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
 	setCheckable(true);
-	setAutoExclusive(true);																		// Í¬¸¸¼¶Ä¿Â¼ÏÂ»¥³âÑ¡ÖĞ
+	setAutoExclusive(true);																		// åŒçˆ¶çº§ç›®å½•ä¸‹äº’æ–¥é€‰ä¸­
 	setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
 }

@@ -17,7 +17,7 @@ AccountWidget::AccountWidget(QWidget* parent)
 
 void AccountWidget::BuildUI()
 {
-    SetDialogTitle(u8"账号管理");
+    SetDialogTitle(tr("账号管理"));
 
     // ====================================================================
     // 1. 创建用于承载 QSS 样式的核心面板
@@ -36,10 +36,10 @@ void AccountWidget::BuildUI()
     form->setContentsMargins(10, 10, 10, 0);
     form->setSpacing(0);
 
-    QLabel* keyLabel = new QLabel(u8"当前在线:", panel);
+    QLabel* keyLabel = new QLabel(tr("当前在线:"), panel);
     keyLabel->setObjectName("keyLabel");
 
-    m_name = new QLabel(u8"--", panel);                                         // 默认占位符
+    m_name = new QLabel(tr("--"), panel);                                         // 默认占位符
     m_name->setObjectName("valueLabel");
 
     form->addRow(keyLabel, m_name);
@@ -47,7 +47,7 @@ void AccountWidget::BuildUI()
     // ====================================================================
     // 3. 标准化的操作按钮区
     // ====================================================================
-    switchBtn = new QPushButton(u8"切换 / 退出账号", panel);
+    switchBtn = new QPushButton(tr("切换 / 退出账号"), panel);
     switchBtn->setObjectName("switchBtn");
     switchBtn->setCursor(Qt::PointingHandCursor);
 
@@ -70,7 +70,7 @@ void AccountWidget::BuildUI()
 
 void AccountWidget::SlotLoginOut()
 {
-    if (CinemaMessageBox::ShowQuestion(this, u8"提示", u8"确定要退出当前账号吗？"))
+    if (CinemaMessageBox::ShowQuestion(this, tr("提示"), tr("确定要退出当前账号吗？")))
     {
         // 用户确认请求下线
         ThreadPool::Instance()->PostTask(ThreadPool::Instance()->GetTCPMgr(), [](TCPMgr* tcp)

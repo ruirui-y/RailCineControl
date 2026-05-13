@@ -1,4 +1,4 @@
-#ifndef IMAGE_BG_BUTTON_H
+﻿#ifndef IMAGE_BG_BUTTON_H
 #define IMAGE_BG_BUTTON_H
 
 #include <QPushButton>

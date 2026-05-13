@@ -1,4 +1,4 @@
-#include "Global.h"
+ï»¿#include "Global.h"
 #include <QDir>
 #include <QCoreApplication>
 #include "Macro.h"
@@ -6,14 +6,14 @@
 #include <QProcess>
 
 
-// ³õÊ¼»¯ÉùÃ÷µÄÈ«¾Ö±äÁ¿
+// åˆå§‹åŒ–å£°æ˜çš„å…¨å±€å˜é‡
 function<void(QWidget*)> repolish = [](QWidget* Widget)
 {
 	Widget->style()->unpolish(Widget);
 	Widget->style()->polish(Widget);
 };
 
-/* ÃÜÂë¼ÓÃÜ */
+/* å¯†ç åŠ å¯† */
 function<QString(QString)> xorString = [](QString input)
 	{
 		QString result = input;
@@ -26,28 +26,38 @@ function<QString(QString)> xorString = [](QString input)
 		return result;
 	};
 
-// ÅäÖÃÎÄ¼şÂ·¾¶
+// é…ç½®æ–‡ä»¶è·¯å¾„
 QString ConfigPath = QDir::currentPath() + "/Config/Config.ini";
 
-// ¹ÜÀíÅäÖÃÎÄ¼ş¶ÔÏó
+// ç®¡ç†é…ç½®æ–‡ä»¶å¯¹è±¡
 QSettings* ConfigSettings = new QSettings(ConfigPath, QSettings::IniFormat);
 
-// ¿Í»§¶ËÅäÖÃÎÄ¼şÂ·¾¶
+// å®¢æˆ·ç«¯é…ç½®æ–‡ä»¶è·¯å¾„
 QString ClientConfigPath = QDir(QCoreApplication::applicationDirPath()).filePath("ClientInstall/Configs/config.json");
 
-// µÇÂ¼ÅäÖÃÎÄ¼şÂ·¾¶
+// ç™»å½•é…ç½®æ–‡ä»¶è·¯å¾„
 QString LoginConfigPath = QDir(QCoreApplication::applicationDirPath()).filePath("ClientInstall/Configs/login.json");
 
-// Ó°Æ¬ÅäÖÃÎÄ¼şÂ·¾¶
+// ä¸ login.json æ”¾åœ¨åŒçº§ç›®å½•
+QString AppConfigPath = QDir(QCoreApplication::applicationDirPath()).filePath("ClientInstall/Configs/app_settings.json");
+
+// ç¿»è¯‘æ–‡ä»¶é…ç½®è·¯å¾„
+QString TranslationsPath = QDir(QCoreApplication::applicationDirPath()).filePath("ClientInstall/Translations");
+QString GetLanguageFilePath(const QString& lang_code)
+{
+	return QDir(TranslationsPath).filePath(QString("RailCineControl_%1.qm").arg(lang_code));
+}
+
+// å½±ç‰‡é…ç½®æ–‡ä»¶è·¯å¾„
 QString MovieConfigPath = QDir(QCoreApplication::applicationDirPath()).filePath("Config/movies.json");
 
-// Ó°Æ¬º£±¨Â·¾¶
+// å½±ç‰‡æµ·æŠ¥è·¯å¾„
 QString MovieCoverPath = QDir(QCoreApplication::applicationDirPath()).filePath("Movie/Cover");
 
-// Ó°Æ¬ÊÓÆµÂ·¾¶
+// å½±ç‰‡è§†é¢‘è·¯å¾„
 QString MovieVideoPath = QDir(QCoreApplication::applicationDirPath()).filePath("Movie/Video");
 
-// Ó°Æ¬²¥·Å¼ÇÂ¼ÅäÖÃÎÄ¼şÂ·¾¶
+// å½±ç‰‡æ’­æ”¾è®°å½•é…ç½®æ–‡ä»¶è·¯å¾„
 QString MovieRecordPath = QDir(QCoreApplication::applicationDirPath()).filePath("Config/movieRecord.json");
 
 const int tipOffset = 5;

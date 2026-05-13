@@ -1,4 +1,4 @@
-#ifndef CUSTOMIZEEDIT_H
+﻿#ifndef CUSTOMIZEEDIT_H
 #define CUSTOMIZEEDIT_H
 
 #include <QLineEdit>

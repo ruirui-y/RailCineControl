@@ -1,4 +1,4 @@
-#include "TipWidget.h"
+ï»¿#include "TipWidget.h"
 
 #include <QDialog>
 #include <QVBoxLayout>
@@ -24,7 +24,7 @@ TipWidget::TipWidget(QWidget *parent)
         " padding:10px 16px; font-size:14px; }");
 }
 
-// Í³Ò»µÄÃæ°å/°´Å¥ÑùÊ½
+// ç»Ÿä¸€çš„é¢æ¿/æŒ‰é’®æ ·å¼
 static QString kPanelStyle()
 {
     return QString::fromUtf8(
@@ -49,7 +49,7 @@ static void centerOnParent(QDialog* dlg, QWidget* parent)
 
     QPoint p((pr.width() - dlg->width()) / 2,
         int(pr.height() * 0.7) - dlg->height() / 2 + 15);
-    dlg->move(parent->mapToGlobal(p));                                                                    // °Ñ parent ×ø±ê×ª»»µ½ÆÁÄ»×ø±ê
+    dlg->move(parent->mapToGlobal(p));                                                                    // æŠŠ parent åæ ‡è½¬æ¢åˆ°å±å¹•åæ ‡
 }
 
 void TipWidget::showTip(QWidget* parent, const QString& text, int ms)
@@ -59,10 +59,10 @@ void TipWidget::showTip(QWidget* parent, const QString& text, int ms)
     tipWidget->m_label->adjustSize();
     tipWidget->resize(tipWidget->m_label->size());
 
-    QRect pr = parent->rect();                                                                                  // parent µÄ±¾µØ×ø±êÏµ
+    QRect pr = parent->rect();                                                                                  // parent çš„æœ¬åœ°åæ ‡ç³»
     QPoint p((pr.width() - tipWidget->width()) / 2,
         int(pr.height() * 0.7) - tipWidget->height() / 2 + 15);
-    tipWidget->move(parent->mapToGlobal(p));                                                                    // °Ñ parent ×ø±ê×ª»»µ½ÆÁÄ»×ø±ê
+    tipWidget->move(parent->mapToGlobal(p));                                                                    // æŠŠ parent åæ ‡è½¬æ¢åˆ°å±å¹•åæ ‡
     tipWidget->show();
 
     auto* ani = new QPropertyAnimation(tipWidget, "windowOpacity", tipWidget);
@@ -96,7 +96,7 @@ bool TipWidget::confirm(QWidget* parent, const QString& text, const QString& okT
     panel->setStyleSheet(kPanelStyle());
     root->addWidget(panel);
 
-    // ÒõÓ°
+    // é˜´å½±
     auto* shadow = new QGraphicsDropShadowEffect(panel);
     shadow->setBlurRadius(24);
     shadow->setColor(QColor(0, 0, 0, 180));
@@ -115,7 +115,7 @@ bool TipWidget::confirm(QWidget* parent, const QString& text, const QString& okT
     btnRow->setSpacing(12);
     btnRow->addStretch();
 
-    // °´Å¥
+    // æŒ‰é’®
     auto* btnCancel = new QPushButton(cancelText, panel);
     btnCancel->setObjectName("btnCancel");
     btnCancel->setCursor(Qt::PointingHandCursor);

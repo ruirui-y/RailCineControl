@@ -1,4 +1,4 @@
-#include "ClickedLabel.h"
+ï»¿#include "ClickedLabel.h"
 
 #include <QMouseEvent>
 #include <QDebug>
@@ -13,7 +13,7 @@ ClickedLabel::ClickedLabel(QWidget *parent)
 ClickedLabel::~ClickedLabel()
 {}
 
-/* Ë¢ĞÂÑùÊ½ */
+/* åˆ·æ–°æ ·å¼ */
 void ClickedLabel::UpdateStyleSheet(QString str)
 {
 	setProperty("state", str);
@@ -21,7 +21,7 @@ void ClickedLabel::UpdateStyleSheet(QString str)
 	update();
 }
 
-/* Êó±ê°´ÏÂÊÂ¼ş */
+/* é¼ æ ‡æŒ‰ä¸‹äº‹ä»¶ */
 void ClickedLabel::mousePressEvent(QMouseEvent * event)
 {
 	QLabel::mousePressEvent(event);
@@ -45,7 +45,7 @@ void ClickedLabel::mouseReleaseEvent(QMouseEvent* event)
 	}
 }
 
-/* Êó±êĞüÍ£½øÈëÊÂ¼ş */
+/* é¼ æ ‡æ‚¬åœè¿›å…¥äº‹ä»¶ */
 void ClickedLabel::enterEvent(QEvent* event)
 {
 	if (_CurrState == ClickLabelState::Normal)
@@ -60,7 +60,7 @@ void ClickedLabel::enterEvent(QEvent* event)
 	QLabel::enterEvent(event);
 }
 
-/* Êó±êÀë¿ªÊÂ¼ş */
+/* é¼ æ ‡ç¦»å¼€äº‹ä»¶ */
 void ClickedLabel::leaveEvent(QEvent* event)
 {
 	if (_CurrState == ClickLabelState::Normal)

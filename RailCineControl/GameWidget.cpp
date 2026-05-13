@@ -39,35 +39,35 @@ void GameWidget::BuildUI()
 
     // ================== 1. 顶部栏 ==================
     QHBoxLayout* topLayout = new QHBoxLayout();                         // 顶部横向布局
-    QLabel* logoLabel = new QLabel(u8"GAME LIST");                      // 标题文本
+    QLabel* logoLabel = new QLabel(tr("GAME LIST"));                    // 👑 使用 tr 标记标题
     logoLabel->setObjectName("logoLabel");                              // 绑定QSS
     topLayout->addWidget(logoLabel);                                    // 加入标题
     topLayout->addStretch();                                            // 中间撑开
 
     // ================== 2. 核心列表 ==================
     m_listWidget = new QListWidget(this);                               // 创建列表控件
-    m_listWidget->setViewMode(QListView::IconMode);                     // 👑开启图标(流式)模式
-    m_listWidget->setResizeMode(QListView::Adjust);                     // 👑窗口拉伸时自动重排
+    m_listWidget->setViewMode(QListView::IconMode);                     // 开启图标(流式)模式
+    m_listWidget->setResizeMode(QListView::Adjust);                     // 窗口拉伸时自动重排
     m_listWidget->setSpacing(15);                                       // 卡片之间的网格间距
     m_listWidget->setMovement(QListView::Static);                       // 禁止拖拽图标
 
-    // 批量塞入测试数据
-    AddGame(u8"赛博朋克城市", u8"最后游玩时间: 昨天");
-    AddGame(u8"奇幻森林", u8"最后游玩时间: 3天前");
-    AddGame(u8"太空战舰", u8"最后游玩时间: 1小时前");
-    AddGame(u8"元素地牢", u8"未游玩");
-    AddGame(u8"极速狂飙", u8"最后游玩时间: 刚刚");
+    // 批量塞入测试数据 (👑 核心文案全部使用 tr 包裹)
+    AddGame(tr("赛博朋克城市"), tr("最后游玩时间: 昨天"));
+    AddGame(tr("奇幻森林"), tr("最后游玩时间: 3天前"));
+    AddGame(tr("太空战舰"), tr("最后游玩时间: 1小时前"));
+    AddGame(tr("元素地牢"), tr("未游玩"));
+    AddGame(tr("极速狂飙"), tr("最后游玩时间: 刚刚"));
 
     // ================== 3. 右下角全局按钮 ==================
     QHBoxLayout* bottomLayout = new QHBoxLayout();                      // 底部按钮层
     bottomLayout->addStretch();                                         // 把按钮全挤到右边去
 
-    m_btnPlay = new QPushButton(u8"▶");                                 // 播放按钮 (图里的绿钮)
+    m_btnPlay = new QPushButton(tr("▶"));                               // 👑 即使是符号，如果不同语言有不同表达，也可以用 tr
     m_btnPlay->setObjectName("btnPlay");                                // 绑定QSS
     m_btnPlay->setFixedSize(40, 40);                                    // 固定圆形尺寸
     m_btnPlay->setEnabled(false);                                       // 初始没选中游戏时禁用
 
-    m_btnStop = new QPushButton(u8"⏹");                                // 停止按钮 (图里的红钮)
+    m_btnStop = new QPushButton(tr("⏹"));                               // 👑 替换为 tr
     m_btnStop->setObjectName("btnStop");                                // 绑定QSS
     m_btnStop->setFixedSize(40, 40);                                    // 固定圆形尺寸
     m_btnStop->setEnabled(false);                                       // 初始禁用

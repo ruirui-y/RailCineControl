@@ -44,7 +44,7 @@ void RecordPage::BuildUI()
     QHBoxLayout* filterLayout = new QHBoxLayout();
     filterLayout->setSpacing(15);                                           // 全局间距
 
-    QLabel* dateLabel = new QLabel(u8"查询日期:", this);
+    QLabel* dateLabel = new QLabel(tr("查询日期:"), this);
     dateLabel->setObjectName("recordFilterLabel");                          // 绑定 QSS
 
     m_dateEdit = new QDateEdit(QDate::currentDate(), this);
@@ -53,17 +53,17 @@ void RecordPage::BuildUI()
     m_dateEdit->calendarWidget()->setObjectName("recordCalendar");          // 弹出的日历面板 ID
     m_dateEdit->setFocusPolicy(Qt::ClickFocus);                             // 防止页面切换时被系统强制自动选中
 
-    QPushButton* btnSearch = new QPushButton(u8"🔍 查询", this);
+    QPushButton* btnSearch = new QPushButton(tr("🔍 查询"), this);
     btnSearch->setObjectName("controlBtn");
     btnSearch->setMinimumSize(90, 35);
 
-    QPushButton* btnDelete = new QPushButton(u8"🗑️ 删除", this);
+    QPushButton* btnDelete = new QPushButton(tr("🗑️ 删除"), this);
     btnDelete->setObjectName("btnDeleteDanger");                            // 绑定专属危险红色 QSS
     btnDelete->setMinimumSize(90, 35);
 
-    QPushButton* btnExport = new QPushButton(u8"📊 导出 Excel", this);
+    QPushButton* btnExport = new QPushButton(tr("📊 导出 Excel"), this);
     btnExport->setObjectName("controlBtn");
-    btnExport->setMinimumSize(120, 35);
+    btnExport->setMinimumSize(130, 35);
 
     filterLayout->addWidget(dateLabel);
     filterLayout->addWidget(m_dateEdit);
@@ -76,7 +76,12 @@ void RecordPage::BuildUI()
     m_recordTable = new QTableWidget(0, 6, this);
     m_recordTable->setObjectName("recordTable");
     m_recordTable->setHorizontalHeaderLabels({
-        u8"播放日期", u8"影片名称", u8"开始时间", u8"结束时间", u8"操作员", u8"结束类型"
+        tr("播放日期"),
+        tr("影片名称"),
+        tr("开始时间"),
+        tr("结束时间"),
+        tr("操作员"),
+        tr("结束类型")
         });
 
     m_recordTable->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
@@ -191,7 +196,7 @@ void RecordPage::InsertRowToUI(uint64_t recordId, const QString& date, const QSt
     m_recordTable->setItem(0, 4, createCenteredItem(operatorName));
 
     QTableWidgetItem* typeItem = createCenteredItem(endType);
-    if (endType == u8"强制结束") {
+    if (endType == tr("强制结束")) {
         typeItem->setForeground(QColor("#FF4757")); // 强制结束标红提示
     }
     m_recordTable->setItem(0, 5, typeItem);
@@ -204,11 +209,11 @@ void RecordPage::onDeleteClicked()
 {
     int row = m_recordTable->currentRow();
     if (row < 0) {
-        CinemaMessageBox::ShowWarning(this, u8"提示", u8"请先在表格中选中要删除的记录！");
+        CinemaMessageBox::ShowWarning(this, tr("提示"), tr("请先在表格中选中要删除的记录！"));
         return;
     }
     // 👑 用咱们自己封装的高级弹窗进行拦截
-    if (!CinemaMessageBox::ShowQuestion(this, u8"操作确认", u8"确定要永久删除这条播放记录吗？\n(云端将同步删除)")) {
+    if (!CinemaMessageBox::ShowQuestion(this, tr("操作确认"), tr("确定要永久删除这条播放记录吗？\n(云端将同步删除)"))) {
         return; // 用户点击了“取消”或按了关闭键
     }
 
@@ -242,19 +247,19 @@ void RecordPage::onExportClicked()
 {
     // 如果表格是空的，直接驳回
     if (m_recordTable->rowCount() == 0) {
-        CinemaMessageBox::ShowInfo(this, u8"提示", u8"当前没有可导出的数据！");
+        CinemaMessageBox::ShowInfo(this, tr("提示"), tr("当前没有可导出的数据！"));
         return;
     }
 
     // 默认保存文件名加上当天的日期
     QString defaultFileName = QString("MovieRecords_%1.csv").arg(QDate::currentDate().toString("yyyyMMdd"));
 
-    QString filePath = QFileDialog::getSaveFileName(this, u8"导出播放记录", defaultFileName, u8"CSV 文件 (*.csv)");
+    QString filePath = QFileDialog::getSaveFileName(this, tr("导出播放记录"), defaultFileName, tr("CSV 文件 (*.csv)"));
     if (filePath.isEmpty()) return;
 
     QFile file(filePath);
     if (!file.open(QIODevice::WriteOnly | QIODevice::Text)) {
-        CinemaMessageBox::ShowError(this, u8"错误", u8"文件创建失败，请检查文件是否被占用！");
+        CinemaMessageBox::ShowError(this, tr("错误"), tr("文件创建失败，请检查文件是否被占用！"));
         return;
     }
 
@@ -282,5 +287,5 @@ void RecordPage::onExportClicked()
     }
 
     file.close();
-    CinemaMessageBox::ShowInfo(this, u8"成功", u8"播放记录已成功导出！");
+    CinemaMessageBox::ShowInfo(this, tr("成功"), tr("播放记录已成功导出！"));
 }

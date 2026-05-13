@@ -66,6 +66,8 @@ TitleBar QPushButton#TitleCloseBtn:pressed {
 }
 
 
+
+
 /* ============================================================================== */
 /* 全局自定义弹窗系统 (CinemaDialogBase / CinemaMessageBox)                          */
 /* ============================================================================== */
@@ -525,6 +527,7 @@ PlaybackPage QListWidget::item:selected {                           /* 卡片选
     border-radius: 6px;                                             /* 圆角设计 */
     font-weight: bold;                                              /* 字体加粗 */
     font-size: 14px;                                                /* 适中的字号 */
+    padding: 0px 7px;                                              /* 钮的最终宽度 = 7px + 文字本身宽度 + 7px */
 }
 
 #controlBtn:hover {                                                 /* 播控按钮悬浮态 */

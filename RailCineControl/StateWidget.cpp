@@ -1,4 +1,4 @@
-#include "StateWidget.h"
+﻿#include "StateWidget.h"
 #include "Global.h"
 #include <QStyleOption>
 #include <QPainter>

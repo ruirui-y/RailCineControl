@@ -1,4 +1,4 @@
-#ifndef GAMEITEM_H
+﻿#ifndef GAMEITEM_H
 #define GAMEITEM_H
 
 #include <QToolButton>

@@ -46,14 +46,14 @@ void UploadPage::BuildUI()
 
     // 左侧：海报预览区
     QVBoxLayout* previewLayout = new QVBoxLayout();
-    QLabel* previewTitle = new QLabel(u8"海报预览", this);
+    QLabel* previewTitle = new QLabel(tr("海报预览"), this);
     previewTitle->setObjectName("uploadLabelNormal");                           // 👑 绑定 QSS
 
     m_coverPreview = new QLabel(this);
     m_coverPreview->setObjectName("coverPreviewArea");                          // 👑 绑定 QSS
     m_coverPreview->setFixedSize(240, 330);
     m_coverPreview->setAlignment(Qt::AlignCenter);
-    m_coverPreview->setText(u8"点击右侧选择图片");
+    m_coverPreview->setText(tr("点击右侧选择图片"));
 
     previewLayout->addWidget(previewTitle);
     previewLayout->addWidget(m_coverPreview);
@@ -81,32 +81,32 @@ void UploadPage::BuildUI()
         };
 
     // 表单项
-    m_videoPathEdit = createLineEdit(u8"请选择本地 .mp4 / .mkv 视频文件...");
+    m_videoPathEdit = createLineEdit(tr("请选择本地 .mp4 / .mkv 视频文件..."));
     m_videoPathEdit->setReadOnly(true);
-    QPushButton* btnBrowseVideo = createBrowseBtn(u8"浏览...");
+    QPushButton* btnBrowseVideo = createBrowseBtn(tr("浏览..."));
     QHBoxLayout* videoLayout = new QHBoxLayout();
     videoLayout->addWidget(m_videoPathEdit);
     videoLayout->addWidget(btnBrowseVideo);
 
-    m_coverPathEdit = createLineEdit(u8"请选择本地 .jpg / .png 海报图片...");
+    m_coverPathEdit = createLineEdit(tr("请选择本地 .jpg / .png 海报图片..."));
     m_coverPathEdit->setReadOnly(true);
-    QPushButton* btnBrowseCover = createBrowseBtn(u8"浏览...");
+    QPushButton* btnBrowseCover = createBrowseBtn(tr("浏览..."));
     QHBoxLayout* coverLayout = new QHBoxLayout();
     coverLayout->addWidget(m_coverPathEdit);
     coverLayout->addWidget(btnBrowseCover);
 
-    m_nameEdit = createLineEdit(u8"请输入影片名称 (例如: 深海浩劫 4D)");
+    m_nameEdit = createLineEdit(tr("请输入影片名称 (例如: 深海浩劫 4D)"));
 
     m_descEdit = new QTextEdit(this);
     m_descEdit->setObjectName("uploadDescInput");                               // 👑 绑定 QSS
-    m_descEdit->setPlaceholderText(u8"请输入影片简述或玩法说明...");
+    m_descEdit->setPlaceholderText(tr("请输入影片简述或玩法说明..."));
     m_descEdit->setFixedHeight(100);
 
     // 组装表单
-    QLabel* lblVideo = new QLabel(u8"视频资源 (*):", this);
-    QLabel* lblCover = new QLabel(u8"海报封面 (*):", this);
-    QLabel* lblName = new QLabel(u8"影片名称 (*):", this);
-    QLabel* lblDesc = new QLabel(u8"影片简介:", this);
+    QLabel* lblVideo = new QLabel(tr("视频资源 (*):"), this);
+    QLabel* lblCover = new QLabel(tr("海报封面 (*):"), this);
+    QLabel* lblName = new QLabel(tr("影片名称 (*):"), this);
+    QLabel* lblDesc = new QLabel(tr("影片简介:"), this);
     lblVideo->setObjectName("uploadLabelHighlight");                            // 👑 绑定 QSS
     lblCover->setObjectName("uploadLabelHighlight");
     lblName->setObjectName("uploadLabelHighlight");
@@ -134,7 +134,7 @@ void UploadPage::BuildUI()
     m_progressBar->setTextVisible(false);
 
     QHBoxLayout* btnLayout = new QHBoxLayout();
-    m_btnUpload = new QPushButton(u8"🚀 开始上传并入库", this);
+    m_btnUpload = new QPushButton(tr("🚀 开始上传并入库"), this);
     m_btnUpload->setObjectName("uploadSubmitBtn");                              // 👑 绑定 QSS
     m_btnUpload->setFixedHeight(45);
 
@@ -197,14 +197,14 @@ void UploadPage::ResetUI()
 
     // 恢复海报预览区
     m_coverPreview->clear();
-    m_coverPreview->setText(u8"点击右侧选择图片");
+    m_coverPreview->setText(tr("点击右侧选择图片"));
 
     // 进度条归零
     m_progressBar->setValue(0);
 
     // 恢复按钮状态
     m_btnUpload->setEnabled(true);
-    m_btnUpload->setText(u8"🚀 开始上传并入库");
+    m_btnUpload->setText(tr("🚀 开始上传并入库"));
 }
 
 // -------------------------------------------------------------------------
@@ -212,17 +212,17 @@ void UploadPage::ResetUI()
 // -------------------------------------------------------------------------
 void UploadPage::UnlockUI()
 {
-    m_progressBar->setValue(0);                                                             // 进度条清零
-    m_btnUpload->setEnabled(true);                                                          // 按钮重新可用
-    m_btnUpload->setText(u8"🚀 开始上传并入库");                                              // 恢复按钮文字
-    
+    m_progressBar->setValue(0);                                                                 // 进度条清零
+    m_btnUpload->setEnabled(true);                                                              // 按钮重新可用
+    m_btnUpload->setText(tr("🚀 开始上传并入库"));                                                // 恢复按钮文字
+
     // 如果失败了，记得关掉抽水泵和文件
     if (m_videoFile->isOpen()) m_videoFile->close();
 }
 
 void UploadPage::onSelectVideo()
 {
-    QString path = QFileDialog::getOpenFileName(this, u8"选择影片资源", "", u8"视频文件 (*.mp4 *.mkv *.avi)");
+    QString path = QFileDialog::getOpenFileName(this, tr("选择影片资源"), "", tr("视频文件 (*.mp4 *.mkv *.avi)"));
     if (!path.isEmpty()) {
         m_videoPathEdit->setText(path);
         // 如果名字为空，智能提取文件名作为默认影片名
@@ -235,7 +235,7 @@ void UploadPage::onSelectVideo()
 
 void UploadPage::onSelectCover()
 {
-    QString path = QFileDialog::getOpenFileName(this, u8"选择海报封面", "", u8"图片文件 (*.jpg *.png *.jpeg)");
+    QString path = QFileDialog::getOpenFileName(this, tr("选择海报封面"), "", tr("图片文件 (*.jpg *.png *.jpeg)"));
     if (!path.isEmpty()) {
         m_coverPathEdit->setText(path);
         // 实时渲染缩略图
@@ -250,12 +250,12 @@ void UploadPage::onSelectCover()
 void UploadPage::onUploadClicked()
 {
     if (m_videoPathEdit->text().isEmpty() || m_coverPathEdit->text().isEmpty() || m_nameEdit->text().isEmpty()) {
-        CinemaMessageBox::ShowWarning(this, u8"提示", u8"请填写完整的影片信息！");
+        CinemaMessageBox::ShowWarning(this, tr("提示"), tr("请填写完整的影片信息！"));
         return;
     }
 
     m_btnUpload->setEnabled(false);
-    m_btnUpload->setText(u8"正在进行视频切片与上传 [1/2]...");
+    m_btnUpload->setText(tr("正在进行视频切片与上传 [1/2]..."));
     m_progressBar->setValue(0);
 
     startTcpChunkUpload();
@@ -269,14 +269,14 @@ void UploadPage::startTcpChunkUpload()
     QString videoPath = m_videoPathEdit->text();
     if (videoPath.isEmpty()) return;
 
-    m_btnUpload->setText(u8"正在计算文件指纹，请稍候...");
+    m_btnUpload->setText(tr("正在计算文件指纹，请稍候..."));
 
     // 🛡️ 防弹装甲：使用 QPointer 弱引用保护 UI 对象
     // 如果算 MD5 的中途用户关掉了界面 (UploadPage 被析构)，QPointer 会自动变 nullptr，防止野指针崩溃！
     QPointer<UploadPage> safeThis(this);
 
     // 🚀 核心跳跃：把 MD5 计算丢进你的泛型分发引擎 (丢入子线程)
-    ThreadPool::Instance()->DispatchToWorker([safeThis, videoPath]() 
+    ThreadPool::Instance()->DispatchToWorker([safeThis, videoPath]()
         {
             // =================================================================
             // [此时在子线程]：自己建个临时的 QFile 去读，绝不碰主线程的 m_videoFile
@@ -307,7 +307,7 @@ void UploadPage::startTcpChunkUpload()
                 // A. 计算失败的情况
                 if (!calcSuccess) {
                     safeThis->UnlockUI();
-                    CinemaMessageBox::ShowError(safeThis, u8"错误", u8"文件指纹计算失败！文件可能被占用。");
+                    CinemaMessageBox::ShowError(safeThis, tr("错误"), tr("文件指纹计算失败！文件可能被占用。"));
                     return;
                 }
 
@@ -319,7 +319,7 @@ void UploadPage::startTcpChunkUpload()
                 safeThis->m_videoFile->setFileName(videoPath);
                 if (!safeThis->m_videoFile->open(QIODevice::ReadOnly)) {
                     safeThis->UnlockUI();
-                    CinemaMessageBox::ShowError(safeThis, u8"错误", u8"无法读取视频文件！");
+                    CinemaMessageBox::ShowError(safeThis, tr("错误"), tr("无法读取视频文件！"));
                     return;
                 }
 
@@ -336,7 +336,7 @@ void UploadPage::startTcpChunkUpload()
                 // ⏱️ 获取时长
                 safeThis->m_currentDurationSec = safeThis->GetVideoDurationSec(videoPath);
 
-                safeThis->m_btnUpload->setText(u8"正在进行视频切片与上传 [1/2]...");
+                safeThis->m_btnUpload->setText(tr("正在进行视频切片与上传 [1/2]..."));
 
                 // 2. 轰鸣吧，抽水泵！
                 safeThis->pumpNextChunk();
@@ -363,12 +363,12 @@ void UploadPage::pumpNextChunk()
     // ==========================================================
     // 👑 核心加密：只对第 0 块数据（包含 MP4 视频头）下毒！
     // ==========================================================
-    if (m_chunkIndex == 0 && !m_currentEncryptKey.isEmpty()) 
+    if (m_chunkIndex == 0 && !m_currentEncryptKey.isEmpty())
     {
         VideoSecurityTool::XorProcessByteArray(chunkData, m_currentEncryptKey);
         qDebug() << u8"[UploadPage] 🛡️ 头部 1MB 切片已被 XOR 混淆加密！";
     }
-     
+
     // 2. 组装 Protobuf 切片请求
     ServerApi::UploadChunkReq req;
     req.set_file_md5(m_currentFileMd5.toStdString());
@@ -388,7 +388,7 @@ void UploadPage::pumpNextChunk()
     // 5. 如果是最后一块，关闭文件，进入管线 2：发送海报和元数据
     if (isLast) {
         m_videoFile->close();
-        m_btnUpload->setText(u8"视频数据已发送，等待服务器校验...");
+        m_btnUpload->setText(tr("视频数据已发送，等待服务器校验..."));
     }
 }
 
@@ -397,7 +397,7 @@ void UploadPage::pumpNextChunk()
 // =========================================================================
 void UploadPage::submitMetadataToTcp()
 {
-    m_btnUpload->setText(u8"正在注册影片资源及海报 [2/2]...");
+    m_btnUpload->setText(tr("正在注册影片资源及海报 [2/2]..."));
     m_progressBar->setValue(100);
 
     ServerApi::UploadMovieReq req;

@@ -1,4 +1,4 @@
-#ifndef MOVIEWIDGET_H
+ï»¿#ifndef MOVIEWIDGET_H
 #define MOVIEWIDGET_H
 
 #include <QWidget>
@@ -12,19 +12,19 @@ class MovieWidget : public QWidget
     Q_OBJECT
 
 public:
-    explicit MovieWidget(QWidget* parent = nullptr);                        // ¹¹Ôìº¯Êı
+    explicit MovieWidget(QWidget* parent = nullptr);                        // æ„é€ å‡½æ•°
 
 private slots:
-    void onNavButtonClicked(int index);                                     // µ¼º½À¸ÇĞ»»
+    void onNavButtonClicked(int index);                                     // å¯¼èˆªæ åˆ‡æ¢
 
 private:
-    void BuildUI();                                                         // ¹¹½¨×Ü¿ò¼ÜUI
-    void BindAdminSignals();                                                // °ó¶¨¹ÜÀíÔ±ĞÅºÅ
+    void BuildUI();                                                         // æ„å»ºæ€»æ¡†æ¶UI
+    void BindAdminSignals();                                                // ç»‘å®šç®¡ç†å‘˜ä¿¡å·
 
-    QStackedWidget* m_stackedWidget;                                        // ¶ÑÕ»ÈİÆ÷
-    PlaybackPage* m_playbackPage;                                           // ÊÓÆµ²¥¿Ø×ÓÄ£¿é
-    RecordPage* m_recordPage;                                               // Êı¾İ¼ÇÂ¼×ÓÄ£¿é
-    UploadPage* m_uploadPage;                                               // Ó°Æ¬ÉÏ´«Ä£¿é
+    QStackedWidget* m_stackedWidget;                                        // å †æ ˆå®¹å™¨
+    PlaybackPage* m_playbackPage;                                           // è§†é¢‘æ’­æ§å­æ¨¡å—
+    RecordPage* m_recordPage;                                               // æ•°æ®è®°å½•å­æ¨¡å—
+    UploadPage* m_uploadPage;                                               // å½±ç‰‡ä¸Šä¼ æ¨¡å—
 };
 
 #endif // MOVIEWIDGET_H

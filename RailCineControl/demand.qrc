@@ -22,7 +22,9 @@
         <file>Images/GamePosters/MiNiWorld.png</file>
         <file>Images/GamePosters/Tyrannosaurus.png</file>
     </qresource>
-    <qresource prefix="/"/>
+    <qresource prefix="/translations">
+        <file>RailCineControl_en.qm</file>
+    </qresource>
     <qresource prefix="/MiNi">
         <file>Images/MiNiWorld/GameCenter.png</file>
         <file>Images/MiNiWorld/Install.png</file>

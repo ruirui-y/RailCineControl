@@ -1,4 +1,4 @@
-#include "StateLabel.h"
+﻿#include "StateLabel.h"
 #include "Global.h"
 #include <QDebug>
 

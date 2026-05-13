@@ -1,4 +1,4 @@
-#include "CMDTools.h"
+ï»¿#include "CMDTools.h"
 #include <QProcess>
 
 
@@ -14,7 +14,7 @@ bool CMDTools::RunBlocking(const QStringList & args, QString & outAll, int timeo
     QProcess p;
     p.setProgram("cmd.exe");
     p.setArguments(args);
-    // ºÏ²¢ stdout/stderr£¬ÔÄ¶Á¸ü¼òµ¥
+    // åˆå¹¶ stdout/stderrï¼Œé˜…è¯»æ›´ç®€å•
     p.setProcessChannelMode(QProcess::MergedChannels);
 
     p.start();

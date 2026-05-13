@@ -1,4 +1,4 @@
-#include "UdpManager.h"
+ï»¿#include "UdpManager.h"
 #include <QDateTime>
 #include <QDebug>
 
@@ -19,7 +19,7 @@ void UdpManager::StartServer()
 {
     if (m_socket->bind(QHostAddress::Any, UDP_SERVER_PORT)) {
         qDebug() << "UDP Server Started on port:" << UDP_SERVER_PORT;
-        m_timer->start(1000);                                                           // Æô¶¯ 1 ÃëµÎ´ğ¶¨Ê±Æ÷
+        m_timer->start(1000);                                                           // å¯åŠ¨ 1 ç§’æ»´ç­”å®šæ—¶å™¨
     }
     else {
         qDebug() << "UDP Server Bind Failed!";
@@ -27,7 +27,7 @@ void UdpManager::StartServer()
 }
 
 // =========================================================================================
-// 1. Êı¾İ½ÓÊÕÓë½âÎö²ã
+// 1. æ•°æ®æ¥æ”¶ä¸è§£æå±‚
 // =========================================================================================
 void UdpManager::onReadyRead()
 {
@@ -47,14 +47,14 @@ void UdpManager::ProcessDatagram(const QByteArray& data, const QHostAddress& add
 {
     int size = data.size();
 
-    // ×îĞ¡³¤¶ÈÏŞÖÆ: Í·(1) + ³¤¶È(2) + ÀàĞÍ(1) + UID(1) + ÃüÁî(1) + Ğ£Ñé(1) = 7×Ö½Ú
+    // æœ€å°é•¿åº¦é™åˆ¶: å¤´(1) + é•¿åº¦(2) + ç±»å‹(1) + UID(1) + å‘½ä»¤(1) + æ ¡éªŒ(1) = 7å­—èŠ‚
     if (size < 7 || (quint8)data[0] != PROTOCOL_HEAD) return;
 
-    // ³¤¶È×Ö¶ÎĞ£Ñé: ³¤¶ÈÖµ = ÀàĞÍ + UID + ÃüÁî + ²ÎÊı + Ğ£Ñé µÄ×Ö½Ú×ÜÊı
+    // é•¿åº¦å­—æ®µæ ¡éªŒ: é•¿åº¦å€¼ = ç±»å‹ + UID + å‘½ä»¤ + å‚æ•° + æ ¡éªŒ çš„å­—èŠ‚æ€»æ•°
     quint16 len = ((quint8)data[1] << 8) | (quint8)data[2];
-    if (size != len + 3) return;                                                        // ·â°ü×Ü³¤ = Í·(1) + ³¤¶È±¾Éí(2) + len
+    if (size != len + 3) return;                                                        // å°åŒ…æ€»é•¿ = å¤´(1) + é•¿åº¦æœ¬èº«(2) + len
 
-    // Ğ£ÑéºÍÑéÖ¤ (¶Ô°üÌåÄÚÈİ½øĞĞÀÛ¼Ó)
+    // æ ¡éªŒå’ŒéªŒè¯ (å¯¹åŒ…ä½“å†…å®¹è¿›è¡Œç´¯åŠ )
     quint8 receivedSum = data[size - 1];
     quint8 calcSum = CalcChecksum(data.mid(3, len - 1));
     if (receivedSum != calcSum) {
@@ -62,22 +62,22 @@ void UdpManager::ProcessDatagram(const QByteArray& data, const QHostAddress& add
         return;
     }
 
-    // ÌáÈ¡Ğ­ÒéºËĞÄ×Ö¶Î
+    // æå–åè®®æ ¸å¿ƒå­—æ®µ
     quint8 type = data[3];
     quint8 uid = data[4];
     quint8 cmd = data[5];
-    QByteArray params = data.mid(6, len - 4);                                           // ÌáÈ¡´¿²ÎÊıÇø
+    QByteArray params = data.mid(6, len - 4);                                           // æå–çº¯å‚æ•°åŒº
 
-    // Ë¢ĞÂÉè±¸»îÔ¾Ê±¼ä´Á
+    // åˆ·æ–°è®¾å¤‡æ´»è·ƒæ—¶é—´æˆ³
     if (m_devices.contains(uid)) {
         m_devices[uid].lastActiveTime = QDateTime::currentMSecsSinceEpoch();
         if (!m_devices[uid].isOnline) {
             m_devices[uid].isOnline = true;
-            emit DeviceOnlineChanged(uid, type, true);                                  // ´¥·¢ÖØÁ¬ÉÏÏßĞÅºÅ
+            emit DeviceOnlineChanged(uid, type, true);                                  // è§¦å‘é‡è¿ä¸Šçº¿ä¿¡å·
         }
     }
 
-    // ÃüÁîÒµÎñÂ·ÓÉ
+    // å‘½ä»¤ä¸šåŠ¡è·¯ç”±
     switch (cmd) {
     case Cmd_Login:
         HandleLogin(type, uid, params, addr, port);
@@ -87,12 +87,12 @@ void UdpManager::ProcessDatagram(const QByteArray& data, const QHostAddress& add
         break;
     case Cmd_TargetHit:
         if (params.size() >= 2) {
-            emit TargetHitEvent(params[0], params[1]);                              // Å×³ö»÷ÖĞÊÂ¼ş
+            emit TargetHitEvent(params[0], params[1]);                              // æŠ›å‡ºå‡»ä¸­äº‹ä»¶
         }
         break;
     case Cmd_ParkQuery:
         if (params.size() >= 2) {
-            emit ParkingEvent(params[0], params.mid(1));                            // Å×³ö²´³µÊÂ¼ş
+            emit ParkingEvent(params[0], params.mid(1));                            // æŠ›å‡ºæ³Šè½¦äº‹ä»¶
         }
         break;
     default:
@@ -101,7 +101,7 @@ void UdpManager::ProcessDatagram(const QByteArray& data, const QHostAddress& add
 }
 
 // =========================================================================================
-// 2. µÇÂ¼Óë¶¯Ì¬ UID ·ÖÅä»úÖÆ
+// 2. ç™»å½•ä¸åŠ¨æ€ UID åˆ†é…æœºåˆ¶
 // =========================================================================================
 void UdpManager::HandleLogin(quint8 type, quint8 uid, const QByteArray& params, const QHostAddress& addr, quint16 port)
 {
@@ -110,10 +110,10 @@ void UdpManager::HandleLogin(quint8 type, quint8 uid, const QByteArray& params, 
 
     quint8 assignedUid = uid;
 
-    // 0xFF ±íÊ¾ĞÂÉè±¸Ê×´ÎµÇÂ¼£¬ĞèÒªÓÉÖĞ¿Ø¶¯Ì¬·ÖÅä UID
+    // 0xFF è¡¨ç¤ºæ–°è®¾å¤‡é¦–æ¬¡ç™»å½•ï¼Œéœ€è¦ç”±ä¸­æ§åŠ¨æ€åˆ†é… UID
     if (uid == 0xFF) {
         if (type == DevType_Tank) {
-            assignedUid = AllocateTankUid();                                            // Ì¹¿Ë¶¯Ì¬·ÖÅä 1~63
+            assignedUid = AllocateTankUid();                                            // å¦å…‹åŠ¨æ€åˆ†é… 1~63
         }
         else {
             qDebug() << "Error: Prop/Ticket should have static UID.";
@@ -121,7 +121,7 @@ void UdpManager::HandleLogin(quint8 type, quint8 uid, const QByteArray& params, 
         }
     }
 
-    // ÔÚÄÚ´æÖĞ×¢²á»ò¸üĞÂÉè±¸ĞÅÏ¢
+    // åœ¨å†…å­˜ä¸­æ³¨å†Œæˆ–æ›´æ–°è®¾å¤‡ä¿¡æ¯
     DeviceInfo info;
     info.uid = assignedUid;
     info.type = type;
@@ -132,9 +132,9 @@ void UdpManager::HandleLogin(quint8 type, quint8 uid, const QByteArray& params, 
     info.isOnline = true;
 
     m_devices[assignedUid] = info;
-    emit DeviceOnlineChanged(assignedUid, type, true);                                  // Í¨ÖªUI²ãÉè±¸ÉÏÏß
+    emit DeviceOnlineChanged(assignedUid, type, true);                                  // é€šçŸ¥UIå±‚è®¾å¤‡ä¸Šçº¿
 
-    // Ïò´Ó»ú»ØÓ¦·ÖÅä³É¹¦µÄ UID
+    // å‘ä»æœºå›åº”åˆ†é…æˆåŠŸçš„ UID
     QByteArray respParams;
     respParams.append(assignedUid);
     SendPacket(DevType_Center, 0, Cmd_Login, respParams, addr, port);
@@ -142,14 +142,14 @@ void UdpManager::HandleLogin(quint8 type, quint8 uid, const QByteArray& params, 
 
 quint8 UdpManager::AllocateTankUid()
 {
-    for (quint8 i = 1; i <= 63; ++i) {                                                  // Ì¹¿Ë±àºÅ³Ø 1~63
-        if (!m_devices.contains(i)) return i;                                           // ÕÒµ½¿ÕÏĞ¿ÓÎ»¼´·µ»Ø
+    for (quint8 i = 1; i <= 63; ++i) {                                                  // å¦å…‹ç¼–å·æ±  1~63
+        if (!m_devices.contains(i)) return i;                                           // æ‰¾åˆ°ç©ºé—²å‘ä½å³è¿”å›
     }
-    return 0;                                                                           // ±àºÅ³ØÒÑÂú
+    return 0;                                                                           // ç¼–å·æ± å·²æ»¡
 }
 
 // =========================================================================================
-// 3. ĞÄÌøÏÂ·¢ÓëËÀÍö¼ì²â (1HzµÎ´ğ)
+// 3. å¿ƒè·³ä¸‹å‘ä¸æ­»äº¡æ£€æµ‹ (1Hzæ»´ç­”)
 // =========================================================================================
 void UdpManager::onTimer1000ms()
 {
@@ -159,36 +159,36 @@ void UdpManager::onTimer1000ms()
     for (auto it = m_devices.begin(); it != m_devices.end(); ++it) {
         DeviceInfo& dev = it.value();
 
-        // ³¬¹ı 5 ÃëÎ´ÊÕµ½Êı¾İ£¬ÏÂ´ïÀëÏßÅĞ¾ö
+        // è¶…è¿‡ 5 ç§’æœªæ”¶åˆ°æ•°æ®ï¼Œä¸‹è¾¾ç¦»çº¿åˆ¤å†³
         if (now - dev.lastActiveTime > 5000) {
             if (dev.isOnline) {
                 dev.isOnline = false;
-                emit DeviceOnlineChanged(dev.uid, dev.type, false);                     // Í¨ÖªUI²ãÉè±¸µôÏß
+                emit DeviceOnlineChanged(dev.uid, dev.type, false);                     // é€šçŸ¥UIå±‚è®¾å¤‡æ‰çº¿
             }
-            continue;                                                                   // ÀëÏßÉè±¸Í£Ö¹ÏÂ·¢ĞÄÌø
+            continue;                                                                   // ç¦»çº¿è®¾å¤‡åœæ­¢ä¸‹å‘å¿ƒè·³
         }
 
-        // Âú 2 ÃëÏÂ·¢Ò»´ÎÖÜÆÚĞÄÌø
+        // æ»¡ 2 ç§’ä¸‹å‘ä¸€æ¬¡å‘¨æœŸå¿ƒè·³
         if (m_heartbeatTick % 2 == 0) {
             QByteArray hbParams;
 
-            // Õë¶Ô²»Í¬Ó²¼şÀàĞÍ×é×°²îÒì»¯ĞÄÌø²ÎÊı
+            // é’ˆå¯¹ä¸åŒç¡¬ä»¶ç±»å‹ç»„è£…å·®å¼‚åŒ–å¿ƒè·³å‚æ•°
             if (dev.type == DevType_Tank) {
                 hbParams.append(dev.tankStatus);
-                hbParams.append((char)0x00);                                            // ¿ª¹Ø×´Ì¬Õ¼Î»
+                hbParams.append((char)0x00);                                            // å¼€å…³çŠ¶æ€å ä½
                 hbParams.append(dev.tankTeam);
                 hbParams.append(dev.tankHp);
                 hbParams.append(dev.tankScore);
             }
             else if (dev.type == DevType_Prop) {
                 hbParams.append(dev.propStatus);
-                hbParams.append((char)0x00);                                            // ¿ª¹Ø×´Ì¬Õ¼Î»
+                hbParams.append((char)0x00);                                            // å¼€å…³çŠ¶æ€å ä½
                 hbParams.append(dev.propLift);
             }
             else if (dev.type == DevType_Ticket) {
-                hbParams.append((char)0x00);                                            // ×´Ì¬Õ¼Î»
-                hbParams.append((char)0x00);                                            // ¿ª¹Ø×´Ì¬Õ¼Î»
-                hbParams.append(20, (char)0x00);                                        // 10Ì¨Æ±»úµÄÀÛ¼ÆÊı (Ìî³ä20×Ö½Ú)
+                hbParams.append((char)0x00);                                            // çŠ¶æ€å ä½
+                hbParams.append((char)0x00);                                            // å¼€å…³çŠ¶æ€å ä½
+                hbParams.append(20, (char)0x00);                                        // 10å°ç¥¨æœºçš„ç´¯è®¡æ•° (å¡«å……20å­—èŠ‚)
             }
 
             SendPacket(DevType_Center, dev.uid, Cmd_Heartbeat, hbParams, dev.ip, dev.port);
@@ -198,12 +198,12 @@ void UdpManager::onTimer1000ms()
 
 void UdpManager::HandleHeartbeatAck(quint8 uid, const QByteArray& params)
 {
-    // ´¦Àí´Ó»ú»Ø´«µÄĞÄÌø²ÎÊı£¬ÀıÈç¸üĞÂµçÁ¿¡¢Ê±¼äµÈ
+    // å¤„ç†ä»æœºå›ä¼ çš„å¿ƒè·³å‚æ•°ï¼Œä¾‹å¦‚æ›´æ–°ç”µé‡ã€æ—¶é—´ç­‰
     // if (m_devices[uid].type == DevType_Tank && params.size() >= 3) { ... }
 }
 
 // =========================================================================================
-// 4. API ½Ó¿ÚÓëµ×²ã×é°ü·¢ËÍÒıÇæ
+// 4. API æ¥å£ä¸åº•å±‚ç»„åŒ…å‘é€å¼•æ“
 // =========================================================================================
 void UdpManager::StartGame(quint8 uid, quint8 gameTime, quint8 hp, quint8 score, quint8 team)
 {
@@ -219,7 +219,7 @@ void UdpManager::StopGame(quint8 uid)
     if (!m_devices.contains(uid)) return;
 
     QByteArray params;
-    params.append((char)0x00);                                                          // Í£Ö¹Ö¸Áî²ÎÊıÎª0
+    params.append((char)0x00);                                                          // åœæ­¢æŒ‡ä»¤å‚æ•°ä¸º0
     SendPacket(DevType_Center, uid, Cmd_StopGame, params, m_devices[uid].ip, m_devices[uid].port);
 }
 
@@ -234,35 +234,35 @@ void UdpManager::PlaySound(quint8 uid, quint8 soundId)
 
 void UdpManager::QueryParking()
 {
-    // È«¾Ö²´³µÎ»²éÑ¯Âß¼­
+    // å…¨å±€æ³Šè½¦ä½æŸ¥è¯¢é€»è¾‘
 }
 
-// ºËĞÄ×é°üÓëÍøÂç·¢ËÍ
+// æ ¸å¿ƒç»„åŒ…ä¸ç½‘ç»œå‘é€
 void UdpManager::SendPacket(quint8 type, quint8 uid, quint8 cmd, const QByteArray& params, const QHostAddress& addr, quint16 port)
 {
     QByteArray packet;
-    packet.append(PROTOCOL_HEAD);                                                       // ÈûÈëĞ­ÒéÍ· 0xAE
+    packet.append(PROTOCOL_HEAD);                                                       // å¡å…¥åè®®å¤´ 0xAE
 
-    // ¼ÆËã°üÌå³¤¶È: ÀàĞÍ(1) + UID(1) + ÃüÁî(1) + ²ÎÊı(N) + Ğ£Ñé(1)
+    // è®¡ç®—åŒ…ä½“é•¿åº¦: ç±»å‹(1) + UID(1) + å‘½ä»¤(1) + å‚æ•°(N) + æ ¡éªŒ(1)
     quint16 len = 1 + 1 + 1 + params.size() + 1;
-    packet.append((len >> 8) & 0xFF);                                                   // Ğ´Èë³¤¶È¸ßÎ»
-    packet.append(len & 0xFF);                                                          // Ğ´Èë³¤¶ÈµÍÎ»
+    packet.append((len >> 8) & 0xFF);                                                   // å†™å…¥é•¿åº¦é«˜ä½
+    packet.append(len & 0xFF);                                                          // å†™å…¥é•¿åº¦ä½ä½
 
-    // ×é×°Ğ£ÑéÊı¾İÇø
+    // ç»„è£…æ ¡éªŒæ•°æ®åŒº
     QByteArray checkData;
     checkData.append(type).append(uid).append(cmd).append(params);
 
     packet.append(checkData);
-    packet.append(CalcChecksum(checkData));                                             // ×·¼ÓĞ£ÑéºÍ¼ÆËã½á¹û
+    packet.append(CalcChecksum(checkData));                                             // è¿½åŠ æ ¡éªŒå’Œè®¡ç®—ç»“æœ
 
-    m_socket->writeDatagram(packet, addr, port);                                        // ½«ÍêÕûÊı¾İ°ü´òÈëÍøÂç
+    m_socket->writeDatagram(packet, addr, port);                                        // å°†å®Œæ•´æ•°æ®åŒ…æ‰“å…¥ç½‘ç»œ
 }
 
 quint8 UdpManager::CalcChecksum(const QByteArray& data)
 {
     quint8 sum = 0;
     for (char c : data) {
-        sum += (quint8)c;                                                               // ×Ö½Ú¼¶ÀÛ¼Ó
+        sum += (quint8)c;                                                               // å­—èŠ‚çº§ç´¯åŠ 
     }
     return sum;
 }

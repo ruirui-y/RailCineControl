@@ -1,4 +1,4 @@
-#include "UserMgr.h"
+﻿#include "UserMgr.h"
 #include <QReadLocker>
 #include <QWriteLocker>
 

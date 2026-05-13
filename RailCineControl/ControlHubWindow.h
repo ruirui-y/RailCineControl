@@ -1,4 +1,4 @@
-#ifndef CONTROLHUBWINDOW_H
+ï»¿#ifndef CONTROLHUBWINDOW_H
 #define CONTROLHUBWINDOW_H
 
 #include <QWidget>
@@ -21,16 +21,16 @@ public:
     TitleBar* GetTitle() { return m_title; }
 
 private:
-    void AddGameItem(QString name);                                                     // Ìí¼Ó²à±ßÀ¸Ñ¡Ïî
+    void AddGameItem(QString name);                                                     // æ·»åŠ ä¾§è¾¹æ é€‰é¡¹
 
 private:
-    TitleBar* m_title = nullptr;                                                        // ±êÌâÀ¸
-    QStackedLayout* m_stack = nullptr;                                                  // Ò³Ãæ¶ÑÕ»
-    QPixmap m_bgCache;                                                                  // »º´æµÄ±³¾°Í¼
+    TitleBar* m_title = nullptr;                                                        // æ ‡é¢˜æ 
+    QStackedLayout* m_stack = nullptr;                                                  // é¡µé¢å †æ ˆ
+    QPixmap m_bgCache;                                                                  // ç¼“å­˜çš„èƒŒæ™¯å›¾
 
-    QListWidget* m_leftList_c = nullptr;                                                // ²à±ßÀ¸
-    QButtonGroup* m_leftList_btns = nullptr;                                            // ²à±ßÀ¸°´Å¥×é
-    QMap<QString, QString> m_gameItems;                                                 // Ñ¡ÏîÃû³ÆÓëÍ¼±êÂ·¾¶µÄÓ³Éä
+    QListWidget* m_leftList_c = nullptr;                                                // ä¾§è¾¹æ 
+    QButtonGroup* m_leftList_btns = nullptr;                                            // ä¾§è¾¹æ æŒ‰é’®ç»„
+    QMap<QString, QString> m_gameItems;                                                 // é€‰é¡¹åç§°ä¸å›¾æ ‡è·¯å¾„çš„æ˜ å°„
 };
 
 #endif // CONTROLHUBWINDOW_H

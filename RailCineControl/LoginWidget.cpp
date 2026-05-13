@@ -69,18 +69,18 @@ void LoginWidget::BuildUI()
 	formLayout->setSpacing(20);
 
 	// 账号部分
-	m_userLbl = new QLabel(u8"账号", m_panel);
+	m_userLbl = new QLabel(tr("账号"), m_panel);
 	m_userEdit = new QLineEdit(m_panel);
 	m_userEdit->setObjectName("loginInput");
-	m_userEdit->setPlaceholderText(u8"请输入账号");
+	m_userEdit->setPlaceholderText(tr("请输入账号"));
 
 	// ==========================================================
 	// 密码部分 (新增了可视化按钮)
 	// ==========================================================
-	m_passLbl = new QLabel(u8"访问密码", m_panel);
+	m_passLbl = new QLabel(tr("访问密码"), m_panel);
 	m_passEdit = new QLineEdit(m_panel);
 	m_passEdit->setObjectName("loginInput");
-	m_passEdit->setPlaceholderText(u8"请输入密码");
+	m_passEdit->setPlaceholderText(tr("请输入密码"));
 	m_passEdit->setEchoMode(QLineEdit::Password);
 
 	// 1. 实例化眼睛按钮 (父对象必须是 m_passEdit)
@@ -88,7 +88,7 @@ void LoginWidget::BuildUI()
 	eyeBtn->setObjectName("PasswordEyeBtn");
 	eyeBtn->setCursor(Qt::PointingHandCursor);
 	eyeBtn->setFixedSize(24, 24);
-	eyeBtn->setToolTip(u8"显示密码");
+	eyeBtn->setToolTip(tr("显示密码"));
 	eyeBtn->setProperty("isOpen", false);                                           // 自定义属性：配合 QSS 切换图标
 
 	// 2. 将按钮固定在输入框的最右侧
@@ -103,7 +103,7 @@ void LoginWidget::BuildUI()
 
 		// 切换输入框模式
 		m_passEdit->setEchoMode(isPassword ? QLineEdit::Normal : QLineEdit::Password);
-		eyeBtn->setToolTip(isPassword ? u8"隐藏密码" : u8"显示密码");
+		eyeBtn->setToolTip(isPassword ? tr("隐藏密码") : tr("显示密码"));
 
 		// 切换 QSS 状态 (动态属性)
 		eyeBtn->setProperty("isOpen", isPassword);
@@ -113,10 +113,10 @@ void LoginWidget::BuildUI()
 	// ==========================================================
 
 	// 辅助项
-	m_remember = new QCheckBox(u8"记住登录状态", m_panel);
+	m_remember = new QCheckBox(tr("记住登录状态"), m_panel);
 	m_remember->setObjectName("loginCheckBox");
 
-	m_loginBtn = new QPushButton(u8"登 录", m_panel);
+	m_loginBtn = new QPushButton(tr("登 录"), m_panel);
 	m_loginBtn->setObjectName("loginSubmitBtn");
 	m_loginBtn->setCursor(Qt::PointingHandCursor);
 	m_loginBtn->setFixedHeight(50);

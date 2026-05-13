@@ -1,4 +1,4 @@
-#include "CustomizeTextEdit.h"
+﻿#include "CustomizeTextEdit.h"
 
 CustomizeTextEdit::CustomizeTextEdit(QWidget *parent)
 	: QTextEdit(parent)

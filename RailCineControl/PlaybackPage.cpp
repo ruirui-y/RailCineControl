@@ -68,6 +68,7 @@ void PlaybackPage::BuildUI()
 {
     QVBoxLayout* layout = new QVBoxLayout(this);
     layout->setContentsMargins(0, 0, 0, 0);
+    layout->setSpacing(0);
 
     // ================= 1. 影片列表区 =================
     m_movieList = new QListWidget(this);
@@ -78,35 +79,54 @@ void PlaybackPage::BuildUI()
     connect(m_movieList, &QListWidget::currentItemChanged,
         this, &PlaybackPage::onMovieSelected);
 
-    // ================= 2. 底部播控区 =================
+    // ================= 2. 底部播控区 (经典三段式单行布局) =================
     QFrame* controlPanel = new QFrame(this);
+    controlPanel->setObjectName("controlPanel");
     controlPanel->setFixedHeight(80);
-    QHBoxLayout* controlLayout = new QHBoxLayout(controlPanel);
 
+    QHBoxLayout* mainCtrlLayout = new QHBoxLayout(controlPanel);
+    mainCtrlLayout->setContentsMargins(30, 0, 30, 0);
+
+    // ----------------- 2.1 左侧：状态信息 -----------------
     m_countdownLabel = new QLabel("00:00:00", controlPanel);
     m_countdownLabel->setObjectName("statusLcd");
+    m_countdownLabel->setMinimumWidth(80);
 
-    // 👑全局拉取/刷新影片按钮 (紧挨着时钟，常驻显示)
-    m_btnFetch = new QPushButton(u8"🔄 刷新影片库", controlPanel);
-    m_btnFetch->setObjectName("controlBtn");                                    // 完美复用你之前写好的高级半透磨砂 QSS
-    m_btnFetch->setFixedSize(120, 45);                                          // 稍微宽一点
-
-    auto createCtrlBtn = [&](const QString& text) -> QPushButton* {
-        QPushButton* btn = new QPushButton(text, controlPanel);
+    // ----------------- 👑 按钮实例化工厂 (区分纯图标与带文字) -----------------
+    // 专门用来生成中间那 4 个播放按钮 (不带文字，纯图标，带悬浮提示)
+    auto createIconBtn = [&](const QString& icon, const QString& tip) -> QPushButton* {
+        QPushButton* btn = new QPushButton(icon, controlPanel);
         btn->setObjectName("controlBtn");
-        btn->setFixedSize(100, 45);
+        btn->setFixedSize(45, 40); // 扁平小方块，极致省空间
+        btn->setToolTip(tip);      // 鼠标放上去才显示文字
+        btn->setCursor(Qt::PointingHandCursor);
         return btn;
         };
 
-    m_btnPlay = createCtrlBtn(u8"▶ 播放");
-    m_btnDownload = createCtrlBtn(u8"📥 下载到本地");
-    m_btnDownload->setFixedSize(150, 45);
-    m_btnPause = createCtrlBtn(u8"⏸ 暂停/继续");
-    m_btnRewind = createCtrlBtn(u8"⏪ 快退");
-    m_btnForward = createCtrlBtn(u8"⏩ 快进");
-    m_btnStop = createCtrlBtn(u8"⏹ 强制结束");
+    // 专门用来生成两边的辅助功能按钮 (保留文字，宽度自适应)
+    auto createTextBtn = [&](const QString& text) -> QPushButton* {
+        QPushButton* btn = new QPushButton(text, controlPanel);
+        btn->setObjectName("controlBtn");
+        btn->setFixedHeight(40);
+        btn->setMinimumWidth(80);
+        btn->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Fixed);
+        btn->setCursor(Qt::PointingHandCursor);
+        return btn;
+        };
 
-    // 💡 初始状态：什么都没选中，全部隐藏！
+    // 实例化核心播控 (全变成纯图标)
+    m_btnRewind = createIconBtn("⏪", tr("快退"));
+    m_btnPlay = createIconBtn("▶", tr("播放"));
+    m_btnPause = createIconBtn("⏸", tr("暂停/继续"));
+    m_btnForward = createIconBtn("⏩", tr("快进"));
+
+    // 实例化两边带文字的系统操作
+    m_btnDownload = createTextBtn(tr("📥 下载到本地"));
+    m_btnStop = createTextBtn(tr("⏹ 强制结束"));
+    m_btnFetch = createTextBtn(tr("🔄 刷新影片库"));
+    m_btnFetch->setStyleSheet("background-color: transparent; border: 1px solid rgba(255,255,255,0.2);");
+
+    // 初始状态隐藏
     m_btnPlay->hide();
     m_btnDownload->hide();
     m_btnPause->hide();
@@ -114,24 +134,30 @@ void PlaybackPage::BuildUI()
     m_btnForward->hide();
     m_btnStop->hide();
 
-    // 重新组装底部 Layout
-    controlLayout->addWidget(m_countdownLabel);
-    controlLayout->addSpacing(20);                                              // 时钟和刷新按钮拉开一点间距
-    controlLayout->addWidget(m_btnFetch);                                       // 👑 放入刷新按钮
+    // ----------------- 2.2 中间：核心播控区 (极其紧凑) -----------------
+    QHBoxLayout* centerLayout = new QHBoxLayout();
+    centerLayout->setSpacing(10); // 图标之间的间距可以稍微小一点
+    centerLayout->addWidget(m_btnRewind);
+    centerLayout->addWidget(m_btnPlay);
+    centerLayout->addWidget(m_btnPause);
+    centerLayout->addWidget(m_btnForward);
 
-    controlLayout->addStretch();
+    // ----------------- 2.3 右侧：辅助功能区 -----------------
+    QHBoxLayout* rightLayout = new QHBoxLayout();
+    rightLayout->setSpacing(15);
+    rightLayout->addWidget(m_btnDownload);
+    rightLayout->addWidget(m_btnStop);
+    rightLayout->addSpacing(15);
+    rightLayout->addWidget(m_btnFetch);
 
-    controlLayout->addWidget(m_btnRewind);
-    controlLayout->addWidget(m_btnPlay);
-    controlLayout->addWidget(m_btnDownload);                                                    // 下载按钮 (和播放按钮互斥显示)
-    controlLayout->addWidget(m_btnPause);
-    controlLayout->addWidget(m_btnForward);
-    controlLayout->addSpacing(20);
-    controlLayout->addWidget(m_btnStop);
+    // ----------------- 终极组装：双弹簧完美居中 -----------------
+    mainCtrlLayout->addWidget(m_countdownLabel, 0, Qt::AlignVCenter);
+    mainCtrlLayout->addStretch(1);
+    mainCtrlLayout->addLayout(centerLayout);
+    mainCtrlLayout->addStretch(1);
+    mainCtrlLayout->addLayout(rightLayout);
 
-    layout->addWidget(m_movieList, 1);
-    layout->addWidget(controlPanel);
-
+    // 信号绑定
     connect(m_btnPlay, &QPushButton::clicked, this, &PlaybackPage::onPlayClicked);
     connect(m_btnDownload, &QPushButton::clicked, this, &PlaybackPage::onDownloadClicked);
     connect(m_btnPause, &QPushButton::clicked, this, &PlaybackPage::onPauseClicked);
@@ -147,13 +173,12 @@ void PlaybackPage::BuildUI()
     m_downloadProgress->setRange(0, 100);
     m_downloadProgress->setValue(0);
     m_downloadProgress->setTextVisible(false);
-    m_downloadProgress->hide();                                                                 // 默认隐藏，开始下载时显示
+    m_downloadProgress->hide();
 
-    // 组装总 Layout
-    layout->setContentsMargins(0, 0, 0, 0);
+    // ================= 4. 最终组装 =================
     layout->addWidget(m_movieList, 1);
     layout->addWidget(controlPanel);
-    layout->addWidget(m_downloadProgress);                                                      // 放在最底下
+    layout->addWidget(m_downloadProgress);
 }
 
 void PlaybackPage::LoadMoviesFromJson()
@@ -215,7 +240,7 @@ void PlaybackPage::AddMovieCard(uint64_t id, const QString& name, const QString&
     // (注：这里假设单机同硬盘测试，如果是跨网，海报也需要一套本地校验与异步下载)
     QPixmap pixmap = QPixmap::fromImage(coverImage);
     if (pixmap.isNull()) {
-        cover->setText(u8"海报加载中...");
+        cover->setText(tr("海报加载中..."));
     }
     else 
     {
@@ -229,14 +254,14 @@ void PlaybackPage::AddMovieCard(uint64_t id, const QString& name, const QString&
     // 3. 状态子标题 (动态组合状态)
     QString statusText;
     if (isDownloaded) {
-        statusText = u8"🟢 已下载";
+        statusText = tr("🟢 已下载");
     }
     else {
-        statusText = u8"☁️ 未下载";
+        statusText = tr("☁️ 未下载");
     }
 
     if (playStatus == 1) {
-        statusText += u8" | ▶️ 播放中";
+        statusText += tr(" | ▶️ 播放中");
     }
 
     QLabel* subTitle = new QLabel(statusText, card);
@@ -289,7 +314,7 @@ void PlaybackPage::SwitchControlPanelState(bool isDownloaded)
 
         m_btnDownload->show();
         m_btnDownload->setEnabled(true);
-        m_btnDownload->setText(u8"📥 下载到本地"); // 确保复位文字
+        m_btnDownload->setText(tr("📥 下载到本地"));
     }
 }
 
@@ -380,7 +405,7 @@ void PlaybackPage::onDownloadClicked()
     m_currentDownloadBytes = 0;
     m_isDownloading = true;
     m_btnDownload->setEnabled(false);
-    m_btnDownload->setText(u8"正在建立传输通道...");
+    m_btnDownload->setText(tr("正在建立传输通道..."));
 
     m_downloadProgress->setValue(0);
     m_downloadProgress->show();
@@ -388,7 +413,7 @@ void PlaybackPage::onDownloadClicked()
     // 2. 准备本地文件 (创建或清空旧的残缺文件)
     QFile localFile(m_selectedMoviePath);
     if (!localFile.open(QIODevice::WriteOnly)) {
-        m_btnDownload->setText(u8"本地磁盘错误");
+        m_btnDownload->setText(tr("本地磁盘错误"));
         return;
     }
     localFile.close(); // 清空完毕，马上关闭，等待接收数据时用 Append 模式写入
@@ -451,7 +476,7 @@ void PlaybackPage::onStopClicked()
         QString startStr = m_playStartTime.toString("HH:mm:ss");
         QString endStr = endTime.toString("HH:mm:ss");
 
-        emit playbackFinishedRecord(dateStr, m_selectedMovieName, startStr, endStr, u8"强制结束");
+        emit playbackFinishedRecord(dateStr, m_selectedMovieName, startStr, endStr, tr("强制结束"));
         m_isPlayingRecord = false;                                          // 💡 结算完成，标志位复位
     }
 }
@@ -611,14 +636,14 @@ void PlaybackPage::onCoverDownloaded(const QString& fileMd5, const QString& loca
 // =========================================================================================
 void PlaybackPage::onDownloadFailed(const QString& errMsg)
 {
-    CinemaMessageBox::ShowWarning(this, u8"下载失败", errMsg);
+    CinemaMessageBox::ShowWarning(this, tr("下载失败"), errMsg);
 
     // 恢复 UI 状态，允许用户重试
     m_downloadProgress->hide();
-    m_btnDownload->setText(u8"📥 下载到本地");
+    m_btnDownload->setText(tr("📥 下载到本地"));
     m_btnDownload->setEnabled(true);
 }
-
+ 
 // =========================================================================================
 // 🔄 下载进度条更新逻辑
 // =========================================================================================
@@ -636,7 +661,9 @@ void PlaybackPage::onDownloadProgress(const QString& fileMd5, qint64 chunkSize)
         m_downloadProgress->setValue(percent);
 
         // 顺便在按钮上显示下进度
-        m_btnDownload->setText(QString(u8"正在下载... %1%").arg(percent));
+        m_btnDownload->setText(
+            tr("📥 正在下载... %1%").arg(percent)
+        );
     }
 }
 
@@ -673,7 +700,7 @@ void PlaybackPage::onDownloadFinished(const QString& fileMd5)
             if (cardWidget) {
                 QLabel* subTitle = cardWidget->findChild<QLabel*>("cardSub");
                 if (subTitle) {
-                    subTitle->setText(u8"🟢 已下载");
+                    subTitle->setText(tr("🟢 已下载"));
                     subTitle->setStyleSheet("color: #4CAF50; font-weight: bold;");
                 }
             }
@@ -683,7 +710,12 @@ void PlaybackPage::onDownloadFinished(const QString& fileMd5)
 
     // 👑 绝杀防御：将 MessageBox 扔到下一个事件循环去执行！
         // 彻底避免网络 Socket 被 UI 弹窗阻塞导致的界面塌陷 Bug
-    QTimer::singleShot(100, this, [this]() {
-        CinemaMessageBox::ShowInfo(this, u8"下载完成", u8"影片已准备就绪，可以开始播放！");
+    QTimer::singleShot(100, this, [this]() 
+        {
+            CinemaMessageBox::ShowInfo(
+                this,
+                tr("📥 下载完成"),
+                tr("🎬 影片已准备就绪，可以开始播放！")
+            );
         });
 }

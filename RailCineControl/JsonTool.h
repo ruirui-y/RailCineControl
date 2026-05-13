@@ -1,4 +1,4 @@
-#ifndef JSONTOOL_H
+﻿#ifndef JSONTOOL_H
 #define JSONTOOL_H
 
 #include <QObject>

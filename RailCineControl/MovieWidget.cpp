@@ -36,8 +36,8 @@ void MovieWidget::BuildUI()
         return btn;
         };
 
-    QToolButton* playPageBtn = createNavBtn(u8"影片播放", 0);
-    QToolButton* recordPageBtn = createNavBtn(u8"播放记录", 1);
+    QToolButton* playPageBtn = createNavBtn(tr("影片播放"), 0);
+    QToolButton* recordPageBtn = createNavBtn(tr("播放记录"), 1);
     navLayout->addWidget(playPageBtn);
     navLayout->addWidget(recordPageBtn);
 
@@ -46,7 +46,7 @@ void MovieWidget::BuildUI()
     QToolButton* uploadPageBtn = nullptr;
     if (bIsAdmin)
     {
-        uploadPageBtn = createNavBtn(u8"资源上传", 2);
+        uploadPageBtn = createNavBtn(tr("资源上传"), 2);
         navLayout->addWidget(uploadPageBtn);
     }
 
@@ -98,14 +98,14 @@ void MovieWidget::BindAdminSignals()
             m_playbackPage->RefreshMovies();
 
             // 3. 弹窗提示，并切回播放页面
-            CinemaMessageBox::ShowInfo(this, u8"成功", u8"影片已成功录入云端！");
+            CinemaMessageBox::ShowInfo(this, tr("成功"), tr("影片已成功录入云端！"));
         });
 
     connect(ThreadPool::Instance()->GetTCPMgr(), &TCPMgr::SigUploadFailed, this, [this](QString errMsg)
         {
             // 恢复上传页面的按钮
             m_uploadPage->UnlockUI();
-            CinemaMessageBox::ShowError(this, u8"上传失败", errMsg);
+            CinemaMessageBox::ShowError(this, tr("上传失败"), errMsg);
         });
 }
 

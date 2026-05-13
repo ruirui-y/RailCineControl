@@ -28,7 +28,7 @@ void CinemaDialogBase::SetupBaseUI()
     QHBoxLayout* title_layout = new QHBoxLayout(title_bar);
     title_layout->setContentsMargins(15, 0, 10, 0);
 
-    lbl_title_ = new QLabel(u8"对话框", title_bar);
+    lbl_title_ = new QLabel(tr("对话框"), title_bar);
     lbl_title_->setObjectName("DialogTitleLabel");                      // 👑 标题文本 ID
 
     QPushButton* btn_close = new QPushButton(u8"✕", title_bar);

@@ -1,4 +1,4 @@
-#include "CustomizeEdit.h"
+﻿#include "CustomizeEdit.h"
 
 CustomizeEdit::CustomizeEdit(QWidget *parent)
 	: QLineEdit(parent), _maxLen(0)

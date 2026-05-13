@@ -1,4 +1,4 @@
-#ifndef UDPMANAGER_H
+ï»¿#ifndef UDPMANAGER_H
 #define UDPMANAGER_H
 
 #include <QObject>
@@ -16,47 +16,47 @@ public:
     ~UdpManager();
 
 public:
-    void StartServer();                                                                 // Æô¶¯ UDP ¼àÌı·şÎñ
+    void StartServer();                                                                 // å¯åŠ¨ UDP ç›‘å¬æœåŠ¡
 
     // =====================================================================================
-    // ¶ÔÍâ±©Â¶µÄ¿ØÖÆ½Ó¿Ú (UI²ãµ÷ÓÃ)
+    // å¯¹å¤–æš´éœ²çš„æ§åˆ¶æ¥å£ (UIå±‚è°ƒç”¨)
     // =====================================================================================
-    void StartGame(quint8 uid, quint8 gameTime, quint8 hp, quint8 score, quint8 team);  // ÏÂ·¢¿ªÊ¼ÓÎÏ·
-    void StopGame(quint8 uid);                                                          // ÏÂ·¢Í£Ö¹ÓÎÏ·
-    void PlaySound(quint8 uid, quint8 soundId);                                         // ´¥·¢ÒôĞ§²¥·Å
-    void QueryParking();                                                                // È«¾Ö²´³µ²éÑ¯
+    void StartGame(quint8 uid, quint8 gameTime, quint8 hp, quint8 score, quint8 team);  // ä¸‹å‘å¼€å§‹æ¸¸æˆ
+    void StopGame(quint8 uid);                                                          // ä¸‹å‘åœæ­¢æ¸¸æˆ
+    void PlaySound(quint8 uid, quint8 soundId);                                         // è§¦å‘éŸ³æ•ˆæ’­æ”¾
+    void QueryParking();                                                                // å…¨å±€æ³Šè½¦æŸ¥è¯¢
 
 signals:
     // =====================================================================================
-    // ÏòÉÏ²ãUI·¢ËÍµÄÊÂ¼şĞÅºÅ
+    // å‘ä¸Šå±‚UIå‘é€çš„äº‹ä»¶ä¿¡å·
     // =====================================================================================
-    void DeviceOnlineChanged(quint8 uid, quint8 type, bool isOnline);                   // Éè±¸ÔÚÏß/ÀëÏß×´Ì¬¸Ä±ä
-    void TargetHitEvent(quint8 tankUid, quint8 weaponType);                             // ±ê°Ğ±»»÷ÖĞÊÂ¼ş
-    void ParkingEvent(quint8 parkId, QByteArray rfid);                                  // ²´³µ×´Ì¬¸Ä±äÊÂ¼ş
+    void DeviceOnlineChanged(quint8 uid, quint8 type, bool isOnline);                   // è®¾å¤‡åœ¨çº¿/ç¦»çº¿çŠ¶æ€æ”¹å˜
+    void TargetHitEvent(quint8 tankUid, quint8 weaponType);                             // æ ‡é¶è¢«å‡»ä¸­äº‹ä»¶
+    void ParkingEvent(quint8 parkId, QByteArray rfid);                                  // æ³Šè½¦çŠ¶æ€æ”¹å˜äº‹ä»¶
 
 private slots:
-    void onReadyRead();                                                                 // Socket Êı¾İ½ÓÊÕ²Û
-    void onTimer1000ms();                                                               // 1Ãë¾«¶ÈµÄ¶¨Ê±Æ÷ (´¦ÀíĞÄÌøÓëÀëÏß)
+    void onReadyRead();                                                                 // Socket æ•°æ®æ¥æ”¶æ§½
+    void onTimer1000ms();                                                               // 1ç§’ç²¾åº¦çš„å®šæ—¶å™¨ (å¤„ç†å¿ƒè·³ä¸ç¦»çº¿)
 
 private:
-    // ºËĞÄĞ­Òé·â°üÓë²ğ°üÒıÇæ
+    // æ ¸å¿ƒåè®®å°åŒ…ä¸æ‹†åŒ…å¼•æ“
     void ProcessDatagram(const QByteArray& data, const QHostAddress& addr, quint16 port);
     void SendPacket(quint8 type, quint8 uid, quint8 cmd, const QByteArray& params, const QHostAddress& addr, quint16 port);
-    quint8 CalcChecksum(const QByteArray& data);                                        // ¼ÆËãÍ¨ĞÅĞ£ÑéºÍ
+    quint8 CalcChecksum(const QByteArray& data);                                        // è®¡ç®—é€šä¿¡æ ¡éªŒå’Œ
 
-    // ¾ßÌåÒµÎñÃüÁî´¦Àí
+    // å…·ä½“ä¸šåŠ¡å‘½ä»¤å¤„ç†
     void HandleLogin(quint8 type, quint8 uid, const QByteArray& params, const QHostAddress& addr, quint16 port);
-    void HandleHeartbeatAck(quint8 uid, const QByteArray& params);                      // ´¦Àí´Ó»úĞÄÌø»ØÓ¦
+    void HandleHeartbeatAck(quint8 uid, const QByteArray& params);                      // å¤„ç†ä»æœºå¿ƒè·³å›åº”
 
-    // »úÖÆ¸¨Öúº¯Êı
-    quint8 AllocateTankUid();                                                           // Ì¹¿Ë¶¯Ì¬·ÖÅäUID²ßÂÔ
+    // æœºåˆ¶è¾…åŠ©å‡½æ•°
+    quint8 AllocateTankUid();                                                           // å¦å…‹åŠ¨æ€åˆ†é…UIDç­–ç•¥
 
 private:
-    QUdpSocket* m_socket;                                                               // ºËĞÄÍ¨ĞÅÌ×½Ó×Ö
-    QTimer* m_timer;                                                                    // ÂÖÑ¯¶¨Ê±Æ÷
-    int m_heartbeatTick = 0;                                                            // ĞÄÌøÖÜÆÚ¼ÆÊıÆ÷
+    QUdpSocket* m_socket;                                                               // æ ¸å¿ƒé€šä¿¡å¥—æ¥å­—
+    QTimer* m_timer;                                                                    // è½®è¯¢å®šæ—¶å™¨
+    int m_heartbeatTick = 0;                                                            // å¿ƒè·³å‘¨æœŸè®¡æ•°å™¨
 
-    QMap<quint8, DeviceInfo> m_devices;                                                 // ÖĞ¿ØÎ¬»¤µÄËùÓĞÉè±¸Ó³Éä±í
+    QMap<quint8, DeviceInfo> m_devices;                                                 // ä¸­æ§ç»´æŠ¤çš„æ‰€æœ‰è®¾å¤‡æ˜ å°„è¡¨
 };
 
 #endif // UDPMANAGER_H

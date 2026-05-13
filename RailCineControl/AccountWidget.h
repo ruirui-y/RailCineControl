@@ -1,4 +1,4 @@
-#ifndef ACCOUNT_WIDGET_H
+ï»¿#ifndef ACCOUNT_WIDGET_H
 #define ACCOUNT_WIDGET_H
 
 #include "CinemaDialogBase.h"                                                   
@@ -18,11 +18,11 @@ private:
     void BuildUI();
 
 private slots:
-    void SlotLoginOut();                                                        // µÇ³ö´¥·¢²Û
+    void SlotLoginOut();                                                        // ç™»å‡ºè§¦å‘æ§½
 
 private:
-    QLabel* m_name = nullptr;                                                   // ÕËºÅÃû³Æ¶¯Ì¬±êÇ©
-    QPushButton* switchBtn = nullptr;                                           // ÇĞ»»/µÇ³öºËĞÄ°´Å¥
+    QLabel* m_name = nullptr;                                                   // è´¦å·åç§°åŠ¨æ€æ ‡ç­¾
+    QPushButton* switchBtn = nullptr;                                           // åˆ‡æ¢/ç™»å‡ºæ ¸å¿ƒæŒ‰é’®
 };
 
 #endif // !ACCOUNT_WIDGET_H

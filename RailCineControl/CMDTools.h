@@ -1,4 +1,4 @@
-#ifndef CMDTOOLS_H
+﻿#ifndef CMDTOOLS_H
 #define CMDTOOLS_H
 
 #include <QObject>

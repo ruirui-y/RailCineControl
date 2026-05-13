@@ -1,4 +1,4 @@
-#ifndef TIP_WIDGET_H
+Ôªø#ifndef TIP_WIDGET_H
 #define TIP_WIDGET_H
 #include <QWidget>
 #include <QLabel>
@@ -15,8 +15,8 @@ public:
 
     static bool confirm(QWidget* parent,
         const QString& text,
-        const QString& okText = QString::fromLocal8Bit("»∑∂®"),
-        const QString& cancelText = QString::fromLocal8Bit("»°œ˚"));
+        const QString& okText = QString::fromLocal8Bit("Á°ÆÂÆö"),
+        const QString& cancelText = QString::fromLocal8Bit("ÂèñÊ∂à"));
 
 private:
     explicit TipWidget(QWidget* parent);
