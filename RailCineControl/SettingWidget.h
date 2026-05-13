@@ -3,8 +3,7 @@
 
 #include <QWidget>
 
-class QStackedWidget;
-class QButtonGroup;
+class QComboBox;
 
 class SettingWidget : public QWidget
 {
@@ -20,8 +19,7 @@ private:
 	void BindSignals();
 
 private:
-	QButtonGroup* m_navGroup = nullptr;														// 导航按钮组
-	QStackedWidget* m_stackedWidget = nullptr;												// 堆栈窗口
+	QComboBox* m_langBox = nullptr;    // 语言选择下拉框
 };
 
 #endif // SETTINGWIDGET_H

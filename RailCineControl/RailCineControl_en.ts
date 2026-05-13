@@ -240,7 +240,7 @@
     </message>
     <message>
         <source>播放</source>
-        <translation type="vanished">Play</translation>
+        <translation>Play</translation>
     </message>
     <message>
         <source>下载到本地</source>
@@ -248,19 +248,19 @@
     </message>
     <message>
         <source>暂停/继续</source>
-        <translation type="vanished">Pause / Resume</translation>
+        <translation>Pause / Resume</translation>
     </message>
     <message>
         <source>快退</source>
-        <translation type="vanished">Rewind</translation>
+        <translation>Rewind</translation>
     </message>
     <message>
         <source>快进</source>
-        <translation type="vanished">Fast Forward</translation>
+        <translation>Fast Forward</translation>
     </message>
     <message>
         <source>强制结束</source>
-        <translation type="vanished">Force Stop</translation>
+        <translation>Force Stop</translation>
     </message>
     <message>
         <source>海报加载中...</source>
@@ -454,6 +454,29 @@
     <message>
         <source>📊 导出 Excel</source>
         <translation>📊 Export to Excel</translation>
+    </message>
+</context>
+<context>
+    <name>SettingWidget</name>
+    <message>
+        <source>系统设置</source>
+        <translation>System Settings</translation>
+    </message>
+    <message>
+        <source>常规设置</source>
+        <translation>General Settings</translation>
+    </message>
+    <message>
+        <source>界面语言:</source>
+        <translation>Interface Language:</translation>
+    </message>
+    <message>
+        <source>提示</source>
+        <translation>Notice</translation>
+    </message>
+    <message>
+        <source>语言设置已保存，将在下次启动软件时生效。</source>
+        <translation>Language settings saved. Changes will take effect on the next startup.</translation>
     </message>
 </context>
 <context>
