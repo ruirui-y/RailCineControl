@@ -118,7 +118,7 @@ void ClientSession::InitHandlers()
         std::weak_ptr<ClientSession> weakSelf = weak_from_this();
 
         // 1. 构造查询语句 (查出我们需要风控的所有字段)
-        QString sql = "SELECT id, password, shop_name, expire_time, status, last_heartbeat_time FROM sys_account WHERE username = ?";
+        QString sql = "SELECT id, password, shop_name, expire_time, status, last_heartbeat_time, user_permissions FROM sys_account WHERE username = ?";
         QList<QVariant> params;
         params << loginUser;
 
@@ -129,7 +129,7 @@ void ClientSession::InitHandlers()
             auto strongSelf = weakSelf.lock();
             if (!strongSelf) return;
 
-            ServerApi::LoginRsp emptyRsp; // 准备一个空包体用于发送失败回执
+            ServerApi::LoginRsp emptyRsp;                                                                                           // 准备一个空包体用于发送失败回执
 
             // A. 账号不存在
             if (results.isEmpty()) {
@@ -144,6 +144,7 @@ void ClientSession::InitHandlers()
             QString shopName = row["shop_name"].toString();                                                                         // 门店名
             QDateTime expireTime = row["expire_time"].toDateTime();                                                                 // 过期时间
             int status = row["status"].toInt();                                                                                     // 账号状态
+            int userPermissions = row["user_permissions"].toInt();                                                                  // 用户权限
 
             // 提取最后一次心跳时间，并计算在线状态
             QDateTime lastHeartbeat = row["last_heartbeat_time"].toDateTime();
@@ -185,13 +186,14 @@ void ClientSession::InitHandlers()
             ServerApi::LoginRsp successRsp;
             successRsp.set_server_time(QDateTime::currentMSecsSinceEpoch());
             successRsp.set_shop_name(shopName.toStdString());
+            successRsp.set_permission(userPermissions);
 
             strongSelf->SendProtoMsg(ServerApi::ID_LOGIN_RSP, successRsp, seq_id, ServerApi::ERR_SUCCESS, "");
             qDebug() << u8"[ClientSession] 账号登录成功:" << loginUser << u8"门店:" << shopName;
 
             // 4. 异步更新设备为“在线”状态，并刷新最后登录时间
             // 登录成功即刻赋活心跳时间！(注意数据库要支持 NOW() 函数)
-            QString updateSql = "UPDATE sys_account SET last_login_time = NOW() WHERE id = ?";
+            QString updateSql = "UPDATE sys_account SET last_heartbeat_time = NOW(), last_login_time = NOW() WHERE id = ?";
             QList<QVariant> updateParams;
             updateParams << strongSelf->m_accountId;
 

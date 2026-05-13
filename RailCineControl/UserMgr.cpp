@@ -34,13 +34,20 @@ void UserMgr::SetId(const int32_t& id)
     id_ = id;
 }
 
-void UserMgr::SetUserInfo(const QString& user_name, const QString& password, const QString& token, const int32_t& id)
+void UserMgr::SetPermission(int32_t permission)
+{
+    QWriteLocker locker(&rw_lock_);
+    permission_ = permission == 0 ? Role::NORMAL : Role::ADMIN;
+}
+
+void UserMgr::SetUserInfo(const QString& user_name, const QString& password, const QString& token, const int32_t& id, int32_t permission)
 {
     QWriteLocker locker(&rw_lock_);
     user_name_ = user_name;
     password_ = password;
     token_ = token;
     id_ = id;
+    permission_ = permission == 0 ? Role::NORMAL : Role::ADMIN;
 }
 
 QString UserMgr::GetUserName() const
@@ -67,6 +74,12 @@ int32_t UserMgr::GetId() const
     return id_;
 }
 
+UserMgr::Role UserMgr::GetPermission() const
+{
+    QReadLocker locker(&rw_lock_);
+    return permission_;
+}
+
 void UserMgr::ClearUser()
 {
     QWriteLocker locker(&rw_lock_);
@@ -74,4 +87,5 @@ void UserMgr::ClearUser()
     password_.clear();
     token_.clear();
     id_ = -1;
+    permission_ = Role::NORMAL;
 }

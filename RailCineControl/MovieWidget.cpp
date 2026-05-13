@@ -38,12 +38,19 @@ void MovieWidget::BuildUI()
 
     QToolButton* playPageBtn = createNavBtn(u8"影片播放", 0);
     QToolButton* recordPageBtn = createNavBtn(u8"播放记录", 1);
-    QToolButton* uploadPageBtn = createNavBtn(u8"资源上传", 2);
-    playPageBtn->setChecked(true);
-
     navLayout->addWidget(playPageBtn);
     navLayout->addWidget(recordPageBtn);
-    navLayout->addWidget(uploadPageBtn);
+
+    // 👑 权限硬拦截：只有管理员能看到“资源上传”按钮
+    bool bIsAdmin = UserMgr::Instance()->GetPermission() == UserMgr::Role::ADMIN;
+    QToolButton* uploadPageBtn = nullptr;
+    if (bIsAdmin)
+    {
+        uploadPageBtn = createNavBtn(u8"资源上传", 2);
+        navLayout->addWidget(uploadPageBtn);
+    }
+
+    playPageBtn->setChecked(true);
     navLayout->addStretch();
 
     // ================= 2. 堆栈装配与信号跨接 =================
@@ -51,11 +58,15 @@ void MovieWidget::BuildUI()
 
     m_playbackPage = new PlaybackPage(this);                                // 实例化播控台
     m_recordPage = new RecordPage(this);                                    // 实例化记录台
-    m_uploadPage = new UploadPage(this);                                    // 实例化影片上传窗口
-
     m_stackedWidget->addWidget(m_playbackPage);
     m_stackedWidget->addWidget(m_recordPage);
-    m_stackedWidget->addWidget(m_uploadPage);
+
+    if (bIsAdmin)
+    {
+        m_uploadPage = new UploadPage(this);                                // 实例化影片上传窗口
+        m_stackedWidget->addWidget(m_uploadPage);
+        BindAdminSignals();                                                 // 绑定管理员权限的信号
+    }
 
     rootLayout->addLayout(navLayout);
     rootLayout->addWidget(m_stackedWidget, 1);
@@ -72,12 +83,16 @@ void MovieWidget::BuildUI()
         {
             m_recordPage->RequestAddRecord(date, name, start, end, UserMgr::Instance()->GetUserName(), type);
         });
+}
 
-    // 监听底层的上传成功信号
-    connect(ThreadPool::Instance()->GetTCPMgr(), &TCPMgr::SigUploadSuccess, this, [this]()
+void MovieWidget::BindAdminSignals()
+{
+    if (!m_uploadPage) return;
+
+    connect(ThreadPool::Instance()->GetTCPMgr(), &TCPMgr::SigUploadSuccess, this, [this]() 
         {
             // 1. 通知 UploadPage 恢复按钮状态，清空输入框
-            m_uploadPage->ResetUI();                                                
+            m_uploadPage->ResetUI();
 
             // 2. 通知 PlaybackPage 重新去服务器拉取最新的影片列表
             m_playbackPage->RefreshMovies();
@@ -86,11 +101,11 @@ void MovieWidget::BuildUI()
             CinemaMessageBox::ShowInfo(this, u8"成功", u8"影片已成功录入云端！");
         });
 
-    // 监听底层的上传失败信号
-    connect(ThreadPool::Instance()->GetTCPMgr(), &TCPMgr::SigUploadFailed, this, [this](QString errMsg) {
-        // 恢复上传页面的按钮
-        m_uploadPage->UnlockUI();
-        CinemaMessageBox::ShowError(this, u8"上传失败", errMsg);
+    connect(ThreadPool::Instance()->GetTCPMgr(), &TCPMgr::SigUploadFailed, this, [this](QString errMsg)
+        {
+            // 恢复上传页面的按钮
+            m_uploadPage->UnlockUI();
+            CinemaMessageBox::ShowError(this, u8"上传失败", errMsg);
         });
 }
 

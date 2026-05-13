@@ -19,6 +19,7 @@ private slots:
 
 private:
     void BuildUI();                                                         // 构建总框架UI
+    void BindAdminSignals();                                                // 绑定管理员信号
 
     QStackedWidget* m_stackedWidget;                                        // 堆栈容器
     PlaybackPage* m_playbackPage;                                           // 视频播控子模块

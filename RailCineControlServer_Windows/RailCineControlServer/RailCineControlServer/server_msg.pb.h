@@ -1818,6 +1818,7 @@ class LoginRsp final : public ::google::protobuf::Message
   enum : int {
     kShopNameFieldNumber = 2,
     kServerTimeFieldNumber = 1,
+    kPermissionFieldNumber = 3,
   };
   // string shop_name = 2;
   void clear_shop_name() ;
@@ -1845,12 +1846,22 @@ class LoginRsp final : public ::google::protobuf::Message
   void _internal_set_server_time(::int64_t value);
 
   public:
+  // int32 permission = 3;
+  void clear_permission() ;
+  ::int32_t permission() const;
+  void set_permission(::int32_t value);
+
+  private:
+  ::int32_t _internal_permission() const;
+  void _internal_set_permission(::int32_t value);
+
+  public:
   // @@protoc_insertion_point(class_scope:ServerApi.LoginRsp)
  private:
   class _Internal;
   friend class ::google::protobuf::internal::TcParser;
   static const ::google::protobuf::internal::TcParseTable<
-      1, 2, 0,
+      2, 3, 0,
       36, 2>
       _table_;
 
@@ -1870,6 +1881,7 @@ class LoginRsp final : public ::google::protobuf::Message
                           const LoginRsp& from_msg);
     ::google::protobuf::internal::ArenaStringPtr shop_name_;
     ::int64_t server_time_;
+    ::int32_t permission_;
     ::google::protobuf::internal::CachedSize _cached_size_;
     PROTOBUF_TSAN_DECLARE_MEMBER
   };
@@ -4933,6 +4945,28 @@ inline void LoginRsp::set_allocated_shop_name(std::string* value) {
     _impl_.shop_name_.Set("", GetArena());
   }
   // @@protoc_insertion_point(field_set_allocated:ServerApi.LoginRsp.shop_name)
+}
+
+// int32 permission = 3;
+inline void LoginRsp::clear_permission() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.permission_ = 0;
+}
+inline ::int32_t LoginRsp::permission() const {
+  // @@protoc_insertion_point(field_get:ServerApi.LoginRsp.permission)
+  return _internal_permission();
+}
+inline void LoginRsp::set_permission(::int32_t value) {
+  _internal_set_permission(value);
+  // @@protoc_insertion_point(field_set:ServerApi.LoginRsp.permission)
+}
+inline ::int32_t LoginRsp::_internal_permission() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.permission_;
+}
+inline void LoginRsp::_internal_set_permission(::int32_t value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.permission_ = value;
 }
 
 // -------------------------------------------------------------------

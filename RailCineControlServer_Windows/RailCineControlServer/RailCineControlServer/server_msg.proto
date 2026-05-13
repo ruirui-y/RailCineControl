@@ -13,6 +13,7 @@ message LoginReq {
 message LoginRsp {
     int64  server_time = 1;                                                     // 服务器同步时间戳
     string shop_name   = 2;                                                     // 账号绑定的门店名称，用于UI显示
+    int32  permission  = 3;                                                     // 权限：0=普通用户, 1=管理员 (👑 新增)
 }
 
 message Heartbeat {

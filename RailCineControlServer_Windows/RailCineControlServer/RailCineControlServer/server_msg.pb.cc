@@ -244,6 +244,7 @@ inline constexpr LoginRsp::Impl_::Impl_(
             &::google::protobuf::internal::fixed_address_empty_string,
             ::_pbi::ConstantInitialized()),
         server_time_{::int64_t{0}},
+        permission_{0},
         _cached_size_{0} {}
 
 template <typename>
@@ -674,6 +675,7 @@ const ::uint32_t
         ~0u,  // no sizeof(Split)
         PROTOBUF_FIELD_OFFSET(::ServerApi::LoginRsp, _impl_.server_time_),
         PROTOBUF_FIELD_OFFSET(::ServerApi::LoginRsp, _impl_.shop_name_),
+        PROTOBUF_FIELD_OFFSET(::ServerApi::LoginRsp, _impl_.permission_),
         ~0u,  // no _has_bits_
         PROTOBUF_FIELD_OFFSET(::ServerApi::Heartbeat, _internal_metadata_),
         ~0u,  // no _extensions_
@@ -886,25 +888,25 @@ static const ::_pbi::MigrationSchema
     schemas[] ABSL_ATTRIBUTE_SECTION_VARIABLE(protodesc_cold) = {
         {0, -1, -1, sizeof(::ServerApi::LoginReq)},
         {10, -1, -1, sizeof(::ServerApi::LoginRsp)},
-        {20, -1, -1, sizeof(::ServerApi::Heartbeat)},
-        {29, -1, -1, sizeof(::ServerApi::UploadChunkReq)},
-        {42, -1, -1, sizeof(::ServerApi::UploadChunkRsp)},
-        {53, -1, -1, sizeof(::ServerApi::UploadMovieReq)},
-        {68, -1, -1, sizeof(::ServerApi::UploadMovieRsp)},
-        {77, -1, -1, sizeof(::ServerApi::MovieInfo)},
-        {92, -1, -1, sizeof(::ServerApi::GetMovieListReq)},
-        {102, -1, -1, sizeof(::ServerApi::GetMovieListRsp)},
-        {111, -1, -1, sizeof(::ServerApi::DownloadChunkReq)},
-        {121, -1, -1, sizeof(::ServerApi::DownloadChunkRsp)},
-        {133, -1, -1, sizeof(::ServerApi::DownloadCoverReq)},
-        {142, -1, -1, sizeof(::ServerApi::DownloadCoverRsp)},
-        {153, -1, -1, sizeof(::ServerApi::PlayRecord)},
-        {168, 177, -1, sizeof(::ServerApi::AddRecordReq)},
-        {178, -1, -1, sizeof(::ServerApi::AddRecordRsp)},
-        {187, -1, -1, sizeof(::ServerApi::GetRecordsReq)},
-        {198, -1, -1, sizeof(::ServerApi::GetRecordsRsp)},
-        {208, -1, -1, sizeof(::ServerApi::DeleteRecordReq)},
-        {217, -1, -1, sizeof(::ServerApi::DeleteRecordRsp)},
+        {21, -1, -1, sizeof(::ServerApi::Heartbeat)},
+        {30, -1, -1, sizeof(::ServerApi::UploadChunkReq)},
+        {43, -1, -1, sizeof(::ServerApi::UploadChunkRsp)},
+        {54, -1, -1, sizeof(::ServerApi::UploadMovieReq)},
+        {69, -1, -1, sizeof(::ServerApi::UploadMovieRsp)},
+        {78, -1, -1, sizeof(::ServerApi::MovieInfo)},
+        {93, -1, -1, sizeof(::ServerApi::GetMovieListReq)},
+        {103, -1, -1, sizeof(::ServerApi::GetMovieListRsp)},
+        {112, -1, -1, sizeof(::ServerApi::DownloadChunkReq)},
+        {122, -1, -1, sizeof(::ServerApi::DownloadChunkRsp)},
+        {134, -1, -1, sizeof(::ServerApi::DownloadCoverReq)},
+        {143, -1, -1, sizeof(::ServerApi::DownloadCoverRsp)},
+        {154, -1, -1, sizeof(::ServerApi::PlayRecord)},
+        {169, 178, -1, sizeof(::ServerApi::AddRecordReq)},
+        {179, -1, -1, sizeof(::ServerApi::AddRecordRsp)},
+        {188, -1, -1, sizeof(::ServerApi::GetRecordsReq)},
+        {199, -1, -1, sizeof(::ServerApi::GetRecordsRsp)},
+        {209, -1, -1, sizeof(::ServerApi::DeleteRecordReq)},
+        {218, -1, -1, sizeof(::ServerApi::DeleteRecordRsp)},
 };
 static const ::_pb::Message* const file_default_instances[] = {
     &::ServerApi::_LoginReq_default_instance_._instance,
@@ -932,51 +934,52 @@ static const ::_pb::Message* const file_default_instances[] = {
 const char descriptor_table_protodef_server_5fmsg_2eproto[] ABSL_ATTRIBUTE_SECTION_VARIABLE(
     protodesc_cold) = {
     "\n\020server_msg.proto\022\tServerApi\".\n\010LoginRe"
-    "q\022\020\n\010username\030\001 \001(\t\022\020\n\010password\030\002 \001(\t\"2\n"
+    "q\022\020\n\010username\030\001 \001(\t\022\020\n\010password\030\002 \001(\t\"F\n"
     "\010LoginRsp\022\023\n\013server_time\030\001 \001(\003\022\021\n\tshop_n"
-    "ame\030\002 \001(\t\"\036\n\tHeartbeat\022\021\n\ttimestamp\030\001 \001("
-    "\003\"r\n\016UploadChunkReq\022\020\n\010file_md5\030\001 \001(\t\022\023\n"
-    "\013chunk_index\030\002 \001(\r\022\024\n\014chunk_offset\030\003 \001(\004"
-    "\022\022\n\nchunk_data\030\004 \001(\014\022\017\n\007is_last\030\005 \001(\010\"L\n"
-    "\016UploadChunkRsp\022\020\n\010file_md5\030\001 \001(\t\022\023\n\013chu"
-    "nk_index\030\002 \001(\r\022\023\n\013is_complete\030\003 \001(\010\"\241\001\n\016"
-    "UploadMovieReq\022\022\n\nmovie_name\030\001 \001(\t\022\023\n\013de"
-    "scription\030\002 \001(\t\022\022\n\ncover_data\030\003 \001(\014\022\024\n\014c"
-    "over_suffix\030\004 \001(\t\022\021\n\tvideo_md5\030\005 \001(\t\022\023\n\013"
-    "encrypt_key\030\006 \001(\t\022\024\n\014duration_sec\030\007 \001(\r\""
-    "&\n\016UploadMovieRsp\022\024\n\014new_movie_id\030\001 \001(\004\""
-    "\223\001\n\tMovieInfo\022\020\n\010movie_id\030\001 \001(\004\022\022\n\nmovie"
-    "_name\030\002 \001(\t\022\021\n\tcover_url\030\003 \001(\t\022\023\n\013play_s"
-    "tatus\030\004 \001(\005\022\020\n\010file_md5\030\005 \001(\t\022\021\n\tfile_si"
-    "ze\030\006 \001(\004\022\023\n\013encrypt_key\030\007 \001(\t\"8\n\017GetMovi"
-    "eListReq\022\022\n\npage_index\030\001 \001(\r\022\021\n\tpage_siz"
-    "e\030\002 \001(\r\"7\n\017GetMovieListRsp\022$\n\006movies\030\001 \003"
-    "(\0132\024.ServerApi.MovieInfo\"9\n\020DownloadChun"
-    "kReq\022\020\n\010file_md5\030\001 \001(\t\022\023\n\013chunk_index\030\002 "
-    "\001(\r\"^\n\020DownloadChunkRsp\022\020\n\010file_md5\030\001 \001("
-    "\t\022\023\n\013chunk_index\030\002 \001(\r\022\022\n\nchunk_data\030\003 \001"
-    "(\014\022\017\n\007is_last\030\004 \001(\010\"$\n\020DownloadCoverReq\022"
-    "\020\n\010file_md5\030\001 \001(\t\"L\n\020DownloadCoverRsp\022\020\n"
-    "\010file_md5\030\001 \001(\t\022\022\n\ncover_name\030\002 \001(\t\022\022\n\nc"
-    "over_data\030\003 \001(\014\"\225\001\n\nPlayRecord\022\021\n\trecord"
-    "_id\030\001 \001(\004\022\022\n\nmovie_name\030\002 \001(\t\022\021\n\tplay_da"
-    "te\030\003 \001(\t\022\022\n\nstart_time\030\004 \001(\t\022\020\n\010end_time"
-    "\030\005 \001(\t\022\025\n\roperator_name\030\006 \001(\t\022\020\n\010end_typ"
-    "e\030\007 \001(\t\"5\n\014AddRecordReq\022%\n\006record\030\001 \001(\0132"
-    "\025.ServerApi.PlayRecord\"%\n\014AddRecordRsp\022\025"
-    "\n\rnew_record_id\030\001 \001(\004\"K\n\rGetRecordsReq\022\023"
-    "\n\013target_date\030\001 \001(\t\022\022\n\npage_index\030\002 \001(\r\022"
-    "\021\n\tpage_size\030\003 \001(\r\"L\n\rGetRecordsRsp\022&\n\007r"
-    "ecords\030\001 \003(\0132\025.ServerApi.PlayRecord\022\023\n\013t"
-    "otal_count\030\002 \001(\r\"$\n\017DeleteRecordReq\022\021\n\tr"
-    "ecord_id\030\001 \001(\004\"%\n\017DeleteRecordRsp\022\022\n\ndel"
-    "eted_id\030\001 \001(\004b\006proto3"
+    "ame\030\002 \001(\t\022\022\n\npermission\030\003 \001(\005\"\036\n\tHeartbe"
+    "at\022\021\n\ttimestamp\030\001 \001(\003\"r\n\016UploadChunkReq\022"
+    "\020\n\010file_md5\030\001 \001(\t\022\023\n\013chunk_index\030\002 \001(\r\022\024"
+    "\n\014chunk_offset\030\003 \001(\004\022\022\n\nchunk_data\030\004 \001(\014"
+    "\022\017\n\007is_last\030\005 \001(\010\"L\n\016UploadChunkRsp\022\020\n\010f"
+    "ile_md5\030\001 \001(\t\022\023\n\013chunk_index\030\002 \001(\r\022\023\n\013is"
+    "_complete\030\003 \001(\010\"\241\001\n\016UploadMovieReq\022\022\n\nmo"
+    "vie_name\030\001 \001(\t\022\023\n\013description\030\002 \001(\t\022\022\n\nc"
+    "over_data\030\003 \001(\014\022\024\n\014cover_suffix\030\004 \001(\t\022\021\n"
+    "\tvideo_md5\030\005 \001(\t\022\023\n\013encrypt_key\030\006 \001(\t\022\024\n"
+    "\014duration_sec\030\007 \001(\r\"&\n\016UploadMovieRsp\022\024\n"
+    "\014new_movie_id\030\001 \001(\004\"\223\001\n\tMovieInfo\022\020\n\010mov"
+    "ie_id\030\001 \001(\004\022\022\n\nmovie_name\030\002 \001(\t\022\021\n\tcover"
+    "_url\030\003 \001(\t\022\023\n\013play_status\030\004 \001(\005\022\020\n\010file_"
+    "md5\030\005 \001(\t\022\021\n\tfile_size\030\006 \001(\004\022\023\n\013encrypt_"
+    "key\030\007 \001(\t\"8\n\017GetMovieListReq\022\022\n\npage_ind"
+    "ex\030\001 \001(\r\022\021\n\tpage_size\030\002 \001(\r\"7\n\017GetMovieL"
+    "istRsp\022$\n\006movies\030\001 \003(\0132\024.ServerApi.Movie"
+    "Info\"9\n\020DownloadChunkReq\022\020\n\010file_md5\030\001 \001"
+    "(\t\022\023\n\013chunk_index\030\002 \001(\r\"^\n\020DownloadChunk"
+    "Rsp\022\020\n\010file_md5\030\001 \001(\t\022\023\n\013chunk_index\030\002 \001"
+    "(\r\022\022\n\nchunk_data\030\003 \001(\014\022\017\n\007is_last\030\004 \001(\010\""
+    "$\n\020DownloadCoverReq\022\020\n\010file_md5\030\001 \001(\t\"L\n"
+    "\020DownloadCoverRsp\022\020\n\010file_md5\030\001 \001(\t\022\022\n\nc"
+    "over_name\030\002 \001(\t\022\022\n\ncover_data\030\003 \001(\014\"\225\001\n\n"
+    "PlayRecord\022\021\n\trecord_id\030\001 \001(\004\022\022\n\nmovie_n"
+    "ame\030\002 \001(\t\022\021\n\tplay_date\030\003 \001(\t\022\022\n\nstart_ti"
+    "me\030\004 \001(\t\022\020\n\010end_time\030\005 \001(\t\022\025\n\roperator_n"
+    "ame\030\006 \001(\t\022\020\n\010end_type\030\007 \001(\t\"5\n\014AddRecord"
+    "Req\022%\n\006record\030\001 \001(\0132\025.ServerApi.PlayReco"
+    "rd\"%\n\014AddRecordRsp\022\025\n\rnew_record_id\030\001 \001("
+    "\004\"K\n\rGetRecordsReq\022\023\n\013target_date\030\001 \001(\t\022"
+    "\022\n\npage_index\030\002 \001(\r\022\021\n\tpage_size\030\003 \001(\r\"L"
+    "\n\rGetRecordsRsp\022&\n\007records\030\001 \003(\0132\025.Serve"
+    "rApi.PlayRecord\022\023\n\013total_count\030\002 \001(\r\"$\n\017"
+    "DeleteRecordReq\022\021\n\trecord_id\030\001 \001(\004\"%\n\017De"
+    "leteRecordRsp\022\022\n\ndeleted_id\030\001 \001(\004b\006proto"
+    "3"
 };
 static ::absl::once_flag descriptor_table_server_5fmsg_2eproto_once;
 PROTOBUF_CONSTINIT const ::_pbi::DescriptorTable descriptor_table_server_5fmsg_2eproto = {
     false,
     false,
-    1581,
+    1601,
     descriptor_table_protodef_server_5fmsg_2eproto,
     "server_msg.proto",
     &descriptor_table_server_5fmsg_2eproto_once,
@@ -1284,7 +1287,13 @@ LoginRsp::LoginRsp(
   _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
       from._internal_metadata_);
   new (&_impl_) Impl_(internal_visibility(), arena, from._impl_, from);
-  _impl_.server_time_ = from._impl_.server_time_;
+  ::memcpy(reinterpret_cast<char *>(&_impl_) +
+               offsetof(Impl_, server_time_),
+           reinterpret_cast<const char *>(&from._impl_) +
+               offsetof(Impl_, server_time_),
+           offsetof(Impl_, permission_) -
+               offsetof(Impl_, server_time_) +
+               sizeof(Impl_::permission_));
 
   // @@protoc_insertion_point(copy_constructor:ServerApi.LoginRsp)
 }
@@ -1296,7 +1305,12 @@ inline PROTOBUF_NDEBUG_INLINE LoginRsp::Impl_::Impl_(
 
 inline void LoginRsp::SharedCtor(::_pb::Arena* arena) {
   new (&_impl_) Impl_(internal_visibility(), arena);
-  _impl_.server_time_ = {};
+  ::memset(reinterpret_cast<char *>(&_impl_) +
+               offsetof(Impl_, server_time_),
+           0,
+           offsetof(Impl_, permission_) -
+               offsetof(Impl_, server_time_) +
+               sizeof(Impl_::permission_));
 }
 LoginRsp::~LoginRsp() {
   // @@protoc_insertion_point(destructor:ServerApi.LoginRsp)
@@ -1346,15 +1360,15 @@ const ::google::protobuf::internal::ClassData* LoginRsp::GetClassData() const {
   return _class_data_.base();
 }
 PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
-const ::_pbi::TcParseTable<1, 2, 0, 36, 2> LoginRsp::_table_ = {
+const ::_pbi::TcParseTable<2, 3, 0, 36, 2> LoginRsp::_table_ = {
   {
     0,  // no _has_bits_
     0, // no _extensions_
-    2, 8,  // max_field_number, fast_idx_mask
+    3, 24,  // max_field_number, fast_idx_mask
     offsetof(decltype(_table_), field_lookup_table),
-    4294967292,  // skipmap
+    4294967288,  // skipmap
     offsetof(decltype(_table_), field_entries),
-    2,  // num_field_entries
+    3,  // num_field_entries
     0,  // num_aux_entries
     offsetof(decltype(_table_), field_names),  // no aux_entries
     _class_data_.base(),
@@ -1364,12 +1378,16 @@ const ::_pbi::TcParseTable<1, 2, 0, 36, 2> LoginRsp::_table_ = {
     ::_pbi::TcParser::GetTable<::ServerApi::LoginRsp>(),  // to_prefetch
     #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
   }, {{
-    // string shop_name = 2;
-    {::_pbi::TcParser::FastUS1,
-     {18, 63, 0, PROTOBUF_FIELD_OFFSET(LoginRsp, _impl_.shop_name_)}},
+    {::_pbi::TcParser::MiniParse, {}},
     // int64 server_time = 1;
     {::_pbi::TcParser::SingularVarintNoZag1<::uint64_t, offsetof(LoginRsp, _impl_.server_time_), 63>(),
      {8, 63, 0, PROTOBUF_FIELD_OFFSET(LoginRsp, _impl_.server_time_)}},
+    // string shop_name = 2;
+    {::_pbi::TcParser::FastUS1,
+     {18, 63, 0, PROTOBUF_FIELD_OFFSET(LoginRsp, _impl_.shop_name_)}},
+    // int32 permission = 3;
+    {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(LoginRsp, _impl_.permission_), 63>(),
+     {24, 63, 0, PROTOBUF_FIELD_OFFSET(LoginRsp, _impl_.permission_)}},
   }}, {{
     65535, 65535
   }}, {{
@@ -1379,6 +1397,9 @@ const ::_pbi::TcParseTable<1, 2, 0, 36, 2> LoginRsp::_table_ = {
     // string shop_name = 2;
     {PROTOBUF_FIELD_OFFSET(LoginRsp, _impl_.shop_name_), 0, 0,
     (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
+    // int32 permission = 3;
+    {PROTOBUF_FIELD_OFFSET(LoginRsp, _impl_.permission_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kInt32)},
   }},
   // no aux_entries
   {{
@@ -1396,7 +1417,9 @@ PROTOBUF_NOINLINE void LoginRsp::Clear() {
   (void) cached_has_bits;
 
   _impl_.shop_name_.ClearToEmpty();
-  _impl_.server_time_ = ::int64_t{0};
+  ::memset(&_impl_.server_time_, 0, static_cast<::size_t>(
+      reinterpret_cast<char*>(&_impl_.permission_) -
+      reinterpret_cast<char*>(&_impl_.server_time_)) + sizeof(_impl_.permission_));
   _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
 }
 
@@ -1428,6 +1451,13 @@ PROTOBUF_NOINLINE void LoginRsp::Clear() {
             ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
                 _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "ServerApi.LoginRsp.shop_name");
             target = stream->WriteStringMaybeAliased(2, _s, target);
+          }
+
+          // int32 permission = 3;
+          if (this_._internal_permission() != 0) {
+            target = ::google::protobuf::internal::WireFormatLite::
+                WriteInt32ToArrayWithField<3>(
+                    stream, this_._internal_permission(), target);
           }
 
           if (PROTOBUF_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
@@ -1465,6 +1495,11 @@ PROTOBUF_NOINLINE void LoginRsp::Clear() {
               total_size += ::_pbi::WireFormatLite::Int64SizePlusOne(
                   this_._internal_server_time());
             }
+            // int32 permission = 3;
+            if (this_._internal_permission() != 0) {
+              total_size += ::_pbi::WireFormatLite::Int32SizePlusOne(
+                  this_._internal_permission());
+            }
           }
           return this_.MaybeComputeUnknownFieldsSize(total_size,
                                                      &this_._impl_._cached_size_);
@@ -1484,6 +1519,9 @@ void LoginRsp::MergeImpl(::google::protobuf::MessageLite& to_msg, const ::google
   if (from._internal_server_time() != 0) {
     _this->_impl_.server_time_ = from._impl_.server_time_;
   }
+  if (from._internal_permission() != 0) {
+    _this->_impl_.permission_ = from._impl_.permission_;
+  }
   _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
 }
 
@@ -1501,7 +1539,12 @@ void LoginRsp::InternalSwap(LoginRsp* PROTOBUF_RESTRICT other) {
   ABSL_DCHECK_EQ(arena, other->GetArena());
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
   ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.shop_name_, &other->_impl_.shop_name_, arena);
-        swap(_impl_.server_time_, other->_impl_.server_time_);
+  ::google::protobuf::internal::memswap<
+      PROTOBUF_FIELD_OFFSET(LoginRsp, _impl_.permission_)
+      + sizeof(LoginRsp::_impl_.permission_)
+      - PROTOBUF_FIELD_OFFSET(LoginRsp, _impl_.server_time_)>(
+          reinterpret_cast<char*>(&_impl_.server_time_),
+          reinterpret_cast<char*>(&other->_impl_.server_time_));
 }
 
 ::google::protobuf::Metadata LoginRsp::GetMetadata() const {

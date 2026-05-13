@@ -12,6 +12,13 @@ class UserMgr : public QObject, public Singleton<UserMgr>
         friend class Singleton<UserMgr>;
 
 public:
+    enum class Role : int32_t 
+    {
+        NORMAL = 0,                                                             // 普通门店客户端 (仅浏览/播放)
+        ADMIN = 1                                                               // 超级管理员 (允许上传)
+    };
+
+public:
     ~UserMgr();
 
     // --- 线程安全的 Setter ---
@@ -19,15 +26,17 @@ public:
     void SetPassword(const QString& password);
     void SetToken(const QString& token);
     void SetId(const int32_t& id);
+    void SetPermission(int32_t permission);
 
     // 一次性设置所有信息
-    void SetUserInfo(const QString& user_name, const QString& password, const QString& token, const int32_t& id);
+    void SetUserInfo(const QString& user_name, const QString& password, const QString& token, const int32_t& id, int32_t permission);
 
     // --- 线程安全的 Getter ---
     QString GetUserName() const;
     QString GetPassword() const;
     QString GetToken() const;
     int32_t GetId() const;
+    Role GetPermission() const;
 
     // 清空用户信息
     void ClearUser();
@@ -41,6 +50,7 @@ private:
     QString password_;
     QString token_;
     int32_t id_;
+    Role permission_ = Role::NORMAL;                                            // 普通用户
 
     // 读写锁
     mutable QReadWriteLock rw_lock_;

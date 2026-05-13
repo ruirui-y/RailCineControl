@@ -8,6 +8,8 @@
 #include <QFileInfo>
 #include "Macro.h"
 #include "Global.h"
+#include "UserMgr.h"
+
 
 TCPMgr::TCPMgr(QObject* parent) : QObject(parent)
 {
@@ -106,6 +108,9 @@ void TCPMgr::InitHandlers()
         ServerApi::LoginRsp rsp;
         if (rsp.ParseFromArray(bodyData.data(), bodyData.size()))
         {
+            // 更新用户权限信息
+            UserMgr::Instance()->SetPermission(rsp.permission());
+
             qDebug() << u8"[TCPMgr] 登录成功! 服务器时间:" << rsp.server_time();
 
             StartHeartBeat();                                                           // 登录成功后启动心跳保活
