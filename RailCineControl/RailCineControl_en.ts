@@ -82,58 +82,224 @@
     </message>
 </context>
 <context>
+    <name>GameLauncherPage</name>
+    <message>
+        <source>▶ 启动游戏</source>
+        <translation>▶ Launch Game</translation>
+    </message>
+    <message>
+        <source>📥 下载 / 更新</source>
+        <translation>📥 Download / Update</translation>
+    </message>
+    <message>
+        <source>⏹ 强制结束</source>
+        <translation>⏹ Force Stop</translation>
+    </message>
+    <message>
+        <source>🔄 刷新游戏库</source>
+        <translation>🔄 Refresh Game Library</translation>
+    </message>
+    <message>
+        <source>海报加载中...</source>
+        <translation>Loading poster...</translation>
+    </message>
+    <message>
+        <source>🟢 已就绪 | </source>
+        <translation>🟢 Ready | </translation>
+    </message>
+    <message>
+        <source>☁️ 未安装 | </source>
+        <translation>☁️ Not Installed | </translation>
+    </message>
+    <message>
+        <source>📥 下载游戏</source>
+        <translation>📥 Download Game</translation>
+    </message>
+    <message>
+        <source>正在建立传输通道...</source>
+        <translation>Establishing transmission channel...</translation>
+    </message>
+    <message>
+        <source>本地磁盘错误</source>
+        <translation>Local Disk Error</translation>
+    </message>
+    <message>
+        <source>错误</source>
+        <translation>Error</translation>
+    </message>
+    <message>
+        <source>游戏启动失败！请检查路径:</source>
+        <translation>Game launch failed! Please check the path:</translation>
+    </message>
+    <message>
+        <source>📦 下载完成，正在解压...</source>
+        <translation>📦 Download complete, extracting...</translation>
+    </message>
+    <message>
+        <source>完成</source>
+        <translation>Complete</translation>
+    </message>
+    <message>
+        <source>游戏安装就绪，随时可以启动！</source>
+        <translation>Game installation ready. You can launch it now!</translation>
+    </message>
+    <message>
+        <source>下载失败</source>
+        <translation>Download Failed</translation>
+    </message>
+    <message>
+        <source>📥 正在下载... %1%</source>
+        <translation>📥 Downloading... %1%</translation>
+    </message>
+</context>
+<context>
+    <name>GameUploadPage</name>
+    <message>
+        <source>游戏包传输中断</source>
+        <translation>Game package transmission interrupted</translation>
+    </message>
+    <message>
+        <source>游戏登记失败</source>
+        <translation>Game registration failed</translation>
+    </message>
+    <message>
+        <source>海报预览</source>
+        <translation>Poster Preview</translation>
+    </message>
+    <message>
+        <source>点击右侧选择图片</source>
+        <translation>Click right to select an image</translation>
+    </message>
+    <message>
+        <source>请选择打包好的 UE 游戏根目录...</source>
+        <translation>Please select the packaged UE game root directory...</translation>
+    </message>
+    <message>
+        <source>浏览...</source>
+        <translation>Browse...</translation>
+    </message>
+    <message>
+        <source>请选择本地海报图片...</source>
+        <translation>Please select a local poster image...</translation>
+    </message>
+    <message>
+        <source>请选择游戏启动程序 (.exe)...</source>
+        <translation>Please select the game launcher (.exe)...</translation>
+    </message>
+    <message>
+        <source>游戏名称</source>
+        <translation>Game Name</translation>
+    </message>
+    <message>
+        <source>版本号 (例如: v1.0.1)</source>
+        <translation>Version (e.g., v1.0.1)</translation>
+    </message>
+    <message>
+        <source>游戏目录 (*):</source>
+        <translation>Game Directory (*):</translation>
+    </message>
+    <message>
+        <source>海报封面 (*):</source>
+        <translation>Poster Cover (*):</translation>
+    </message>
+    <message>
+        <source>启动路径 (*):</source>
+        <translation>Launch Path (*):</translation>
+    </message>
+    <message>
+        <source>游戏名称 (*):</source>
+        <translation>Game Name (*):</translation>
+    </message>
+    <message>
+        <source>游戏版本 (*):</source>
+        <translation>Game Version (*):</translation>
+    </message>
+    <message>
+        <source>更新日志 :</source>
+        <translation>Changelog:</translation>
+    </message>
+    <message>
+        <source>🚀 压缩并上传入库</source>
+        <translation>🚀 Compress and Upload to Library</translation>
+    </message>
+    <message>
+        <source>选择游戏根目录</source>
+        <translation>Select Game Root Directory</translation>
+    </message>
+    <message>
+        <source>选择海报</source>
+        <translation>Select Poster</translation>
+    </message>
+    <message>
+        <source>Images (*.png *.jpg)</source>
+        <translation>Images (*.png *.jpg)</translation>
+    </message>
+    <message>
+        <source>提示</source>
+        <translation>Notice</translation>
+    </message>
+    <message>
+        <source>请先选择上方的【游戏目录】！</source>
+        <translation>Please select the [Game Directory] above first!</translation>
+    </message>
+    <message>
+        <source>选择游戏启动程序</source>
+        <translation>Select Game Launcher</translation>
+    </message>
+    <message>
+        <source>Executable Files (*.exe)</source>
+        <translation>Executable Files (*.exe)</translation>
+    </message>
+    <message>
+        <source>错误</source>
+        <translation>Error</translation>
+    </message>
+    <message>
+        <source>启动程序必须在选定的【游戏目录】内部！</source>
+        <translation>The launcher must be inside the selected [Game Directory]!</translation>
+    </message>
+    <message>
+        <source>请填完所有带星号的必填项！</source>
+        <translation>Please fill in all mandatory fields marked with an asterisk!</translation>
+    </message>
+    <message>
+        <source>📦 [1/3] 正在静默打包整个游戏目录...</source>
+        <translation>📦 [1/3] Silently packaging the entire game directory...</translation>
+    </message>
+    <message>
+        <source>系统打包失败！</source>
+        <translation>System packaging failed!</translation>
+    </message>
+    <message>
+        <source>🔍 [2/3] 正在计算压缩包指纹...</source>
+        <translation>🔍 [2/3] Calculating archive fingerprint...</translation>
+    </message>
+    <message>
+        <source>🚀 [3/3] 正在高速上传分片...</source>
+        <translation>🚀 [3/3] Uploading chunks at high speed...</translation>
+    </message>
+    <message>
+        <source>正在注册游戏档案与海报...</source>
+        <translation>Registering game profile and poster...</translation>
+    </message>
+</context>
+<context>
     <name>GameWidget</name>
     <message>
-        <source>GAME LIST</source>
-        <translation>GAME LIST</translation>
+        <source>游戏启动</source>
+        <translation>Game Launcher</translation>
     </message>
     <message>
-        <source>赛博朋克城市</source>
-        <translation>Cyberpunk City</translation>
+        <source>游戏上传</source>
+        <translation>Game Upload</translation>
     </message>
     <message>
-        <source>最后游玩时间: 昨天</source>
-        <translation>Last played: Yesterday</translation>
+        <source>成功</source>
+        <translation>Success</translation>
     </message>
     <message>
-        <source>奇幻森林</source>
-        <translation>Fantasy Forest</translation>
-    </message>
-    <message>
-        <source>最后游玩时间: 3天前</source>
-        <translation>Last played: 3 days ago</translation>
-    </message>
-    <message>
-        <source>太空战舰</source>
-        <translation>Space Battleship</translation>
-    </message>
-    <message>
-        <source>最后游玩时间: 1小时前</source>
-        <translation>Last played: 1 hour ago</translation>
-    </message>
-    <message>
-        <source>元素地牢</source>
-        <translation>Elemental Dungeon</translation>
-    </message>
-    <message>
-        <source>未游玩</source>
-        <translation>Not played yet</translation>
-    </message>
-    <message>
-        <source>极速狂飙</source>
-        <translation>Speed Racing</translation>
-    </message>
-    <message>
-        <source>最后游玩时间: 刚刚</source>
-        <translation>Last played: Just now</translation>
-    </message>
-    <message>
-        <source>▶</source>
-        <translation>▶</translation>
-    </message>
-    <message>
-        <source>⏹</source>
-        <translation>⏹</translation>
+        <source>游戏已成功录入云端！</source>
+        <translation>Game successfully uploaded to the cloud!</translation>
     </message>
 </context>
 <context>
@@ -229,7 +395,15 @@
     </message>
     <message>
         <source>上传失败</source>
-        <translation>Upload Failed</translation>
+        <translation type="vanished">Upload Failed</translation>
+    </message>
+    <message>
+        <source>影片登记失败</source>
+        <translation>Movie registration failed</translation>
+    </message>
+    <message>
+        <source>视频传输中断</source>
+        <translation>Video transmission interrupted</translation>
     </message>
 </context>
 <context>
@@ -584,6 +758,14 @@
     <message>
         <source>🚀 开始上传并入库</source>
         <translation>🚀 Start Upload and Add to Library</translation>
+    </message>
+    <message>
+        <source>视频传输中断</source>
+        <translation>Video transmission interrupted</translation>
+    </message>
+    <message>
+        <source>影片登记失败</source>
+        <translation>Movie registration failed</translation>
     </message>
 </context>
 <context>
