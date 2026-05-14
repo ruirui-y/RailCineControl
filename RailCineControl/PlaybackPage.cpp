@@ -526,84 +526,112 @@ void PlaybackPage::onMediaStatusChanged(QMediaPlayer::MediaStatus status)
 void PlaybackPage::onMovieListReceived(const ServerApi::GetMovieListRsp& rsp)
 {
     int totalMovies = rsp.movies_size();
-    if (totalMovies == 0) return;
 
-    // 2. 准备跨线程共享资源 (使用 shared_ptr 保证生命周期直到最后一个线程结束)
-    // 预分配数组大小，实现无锁并发写入！
-    auto payloadList = std::make_shared<std::vector<MovieUIPayload>>(totalMovies);
-    auto completedCount = std::make_shared<std::atomic<int>>(0);
+    // =========================================================================
+    // 1. 提取云端下发的“合法凭证库” (提取合法的 MD5 和 海报文件名)
+    // =========================================================================
+    QSet<QString> validMd5s;
+    QSet<QString> validCovers;
+    for (int i = 0; i < totalMovies; ++i) {
+        ServerApi::MovieInfo movie = rsp.movies(i);
+        validMd5s.insert(QString::fromStdString(movie.file_md5()));
+        validCovers.insert(QFileInfo(QString::fromStdString(movie.cover_url())).fileName());
+    }
 
-    // 获取当前对象的安全指针，防止异步回调时 UI 已经被销毁
     QPointer<PlaybackPage> safeThis(this);
 
-    // 3. Map 阶段：将所有耗时 IO 投递给你的高并发线程池
-    for (int i = 0; i < totalMovies; ++i)
-    {
-        // 拷贝一份当前影片的 Protobuf 数据，供 Lambda 捕获
-        ServerApi::MovieInfo movie = rsp.movies(i);
+    // =========================================================================
+    // 🌊 第一阶段：将耗时的“本地磁盘清理工作”丢入后台线程，防止 UI 卡死
+    // =========================================================================
+    ThreadPool::Instance()->DispatchToWorker([safeThis, rsp, validMd5s, validCovers, totalMovies]() {
 
-        ThreadPool::Instance()->DispatchToWorker([safeThis, movie, i, totalMovies, payloadList, completedCount]()
+        // --- 1.1 清理本地已废弃的海报 ---
+        QDir coverDir(MovieCoverPath);
+        for (const QFileInfo& info : coverDir.entryInfoList(QDir::Files)) {
+            if (!validCovers.contains(info.fileName())) {
+                QFile::remove(info.absoluteFilePath());
+            }
+        }
+
+        // --- 1.2 清理本地已废弃的影片实体 (.mp4) ---
+        QDir videoDir(MovieVideoPath);
+        for (const QFileInfo& info : videoDir.entryInfoList(QDir::Files)) {
+            // 如果后缀是 mp4，且它的文件名 (MD5) 不在合法列表里，删！
+            if (info.suffix() == "mp4" && !validMd5s.contains(info.baseName())) {
+                QFile::remove(info.absoluteFilePath());
+            }
+        }
+
+        // 如果云端返回 0 部影片 (说明服务器被清空了)，清理完本地后直接结束，无需走 UI 渲染
+        if (totalMovies == 0) return;
+
+        // =========================================================================
+        // 🌊 第二阶段：清理完毕后，安全回到主线程发起“并发数据组装”
+        // =========================================================================
+        QMetaObject::invokeMethod(safeThis.data(), [safeThis, rsp, totalMovies]() {
+            if (!safeThis) return;
+
+            // 预分配数组大小，实现无锁并发写入
+            auto payloadList = std::make_shared<std::vector<MovieUIPayload>>(totalMovies);
+            auto completedCount = std::make_shared<std::atomic<int>>(0);
+
+            for (int i = 0; i < totalMovies; ++i)
             {
-                // ================= 这里是子线程空间，尽情榨干 CPU，毫无 UI 卡顿 =================
-                MovieUIPayload payload;
-                payload.id = movie.movie_id();
-                payload.name = QString::fromStdString(movie.movie_name());
-                payload.status = movie.play_status();
-                payload.fileMd5 = QString::fromStdString(movie.file_md5());
-                payload.expectedSize = movie.file_size();
-                payload.encryptKey = QString::fromStdString(movie.encrypt_key());
+                ServerApi::MovieInfo movie = rsp.movies(i);
 
-                QString coverUrl = QString::fromStdString(movie.cover_url());
-                QString cover_name = QFileInfo(coverUrl).fileName();
+                ThreadPool::Instance()->DispatchToWorker([safeThis, movie, i, totalMovies, payloadList, completedCount]() {
 
-                payload.localVideoPath = MovieVideoPath + "/" + payload.fileMd5 + ".mp4";
-                payload.localCoverPath = MovieCoverPath + "/" + cover_name;
+                    // ================= 这里是子线程空间，尽情榨干 CPU =================
+                    MovieUIPayload payload;
+                    payload.id = movie.movie_id();
+                    payload.name = QString::fromStdString(movie.movie_name());
+                    payload.status = movie.play_status();
+                    payload.fileMd5 = QString::fromStdString(movie.file_md5());
+                    payload.expectedSize = movie.file_size();
+                    payload.encryptKey = QString::fromStdString(movie.encrypt_key());
 
-                QElapsedTimer timer;
-                timer.start();
+                    QString coverUrl = QString::fromStdString(movie.cover_url());
+                    QString cover_name = QFileInfo(coverUrl).fileName();
 
-                // 耗时磁盘 IO 1：视频校验
-                QFile localVideo(payload.localVideoPath);
-                payload.isVideoDownloaded = (localVideo.exists() && localVideo.size() == payload.expectedSize);
+                    payload.localVideoPath = MovieVideoPath + "/" + payload.fileMd5 + ".mp4";
+                    payload.localCoverPath = MovieCoverPath + "/" + cover_name;
 
-                qint64 videoCheckTime = timer.elapsed();
-                timer.restart();
+                    // 耗时磁盘 IO 1：视频校验
+                    QFile localVideo(payload.localVideoPath);
+                    payload.isVideoDownloaded = (localVideo.exists() && localVideo.size() == payload.expectedSize);
 
-                // 耗时磁盘 IO 2：海报校验
-                QFile localCover(payload.localCoverPath);
-                if (!localCover.exists() || localCover.size() == 0)
-                {
-                    payload.needFetchCover = true;
-                    payload.localCoverPath = "";                                    // 需要下载时，路径赋空
-                }
-                else
-                {
-                    payload.needFetchCover = false;
-                    payload.coverImage.load(payload.localCoverPath);
-                }
+                    // 耗时磁盘 IO 2：海报校验
+                    QFile localCover(payload.localCoverPath);
+                    if (!localCover.exists() || localCover.size() == 0) {
+                        payload.needFetchCover = true;
+                        payload.localCoverPath = "";
+                    }
+                    else {
+                        payload.needFetchCover = false;
+                        payload.coverImage.load(payload.localCoverPath);
+                    }
 
-                // 👑 绝杀：无锁并发写入！因为每个线程操作的是专属的独立索引 [i]，绝对线程安全
-                (*payloadList)[i] = std::move(payload);
-                // ================= Reduce 阶段：检查是不是最后一个完成的兄弟？ =================
-                if (++(*completedCount) == totalMovies)
-                {
-                    // 如果是最后一个，它将负责通知主线程开始渲染
-                    QMetaObject::invokeMethod(safeThis.data(), [safeThis, payloadList]()
-                        {
-                            if (!safeThis) return;                                      // 跨线程跳跃落地检查：防止页面已经被关掉
+                    // 👑 绝杀：无锁并发写入！
+                    (*payloadList)[i] = std::move(payload);
 
-                            // 👑 绝杀：冻结整个列表的重绘！告诉底层引擎“我还没塞完，你不准画！”
+                    // =========================================================================
+                    // 🌊 第三阶段：所有线程组装完毕，统一回主线程渲染 UI
+                    // =========================================================================
+                    if (++(*completedCount) == totalMovies)
+                    {
+                        QMetaObject::invokeMethod(safeThis.data(), [safeThis, payloadList]() {
+                            if (!safeThis) return;
+
+                            // 👑 绝杀：冻结整个列表的重绘
                             safeThis->m_movieList->setUpdatesEnabled(false);
 
-                            // ================= 这里回到了主线程，安全且极速地操作 UI =================
                             for (const auto& data : *payloadList)
                             {
-                                // 1. 统一发射缺少的网络请求 (TCP 这种带有 Socket 的操作最好在主线程触发)
-                                if (data.needFetchCover)
-                                {
+                                // 1. 统一发射缺少的网络请求
+                                if (data.needFetchCover) {
                                     ServerApi::DownloadCoverReq coverReq;
                                     coverReq.set_file_md5(data.fileMd5.toStdString());
-                                    coverReq.set_file_type(ServerApi::FILE_MOVIE);
+                                    coverReq.set_file_type(ServerApi::FILE_MOVIE); // 👑 挂上影片类型的枚举
                                     ThreadPool::Instance()->GetTCPMgr()->SendProtoMsg(ServerApi::MsgId::ID_DOWNLOAD_COVER_REQ, coverReq);
                                 }
 
@@ -613,12 +641,15 @@ void PlaybackPage::onMovieListReceived(const ServerApi::GetMovieListRsp& rsp)
                                     data.expectedSize, data.encryptKey, data.coverImage);
                             }
 
-                            // 👑 解冻渲染：5个卡片瞬间同时出现在屏幕上，0 延迟！
+                            // 👑 解冻渲染：卡片瞬间同时出现在屏幕上，0 延迟！
                             safeThis->m_movieList->setUpdatesEnabled(true);
-                        }, Qt::QueuedConnection);
-                }
-            });
-    }
+
+                            }, Qt::QueuedConnection);
+                    }
+                    });
+            }
+            }, Qt::QueuedConnection);
+        });
 }
 
 // =========================================================================================

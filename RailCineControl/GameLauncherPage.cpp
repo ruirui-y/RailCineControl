@@ -142,68 +142,128 @@ void GameLauncherPage::RefreshGames()
 void GameLauncherPage::onGameListReceived(const ServerApi::GetGameListRsp& rsp)
 {
     int total = rsp.games_size();
-    if (total == 0) return;
 
-    auto payloadList = std::make_shared<std::vector<GameUIPayload>>(total);
-    auto completedCount = std::make_shared<std::atomic<int>>(0);
-    QPointer<GameLauncherPage> safeThis(this);
-
+    // =========================================================================
+    // 1. 提取云端下发的“合法凭证库” (提取合法的 MD5 和 海报文件名)
+    // =========================================================================
+    QSet<QString> validMd5s;
+    QSet<QString> validCovers;
     for (int i = 0; i < total; ++i) {
         ServerApi::GameInfo game = rsp.games(i);
-        ThreadPool::Instance()->DispatchToWorker([safeThis, game, i, total, payloadList, completedCount]() {
-            // 将rsp转换成游戏卡片结构体信息
-            GameUIPayload payload;
-            payload.id = game.game_id();
-            payload.name = QString::fromStdString(game.game_name());
-            payload.version = QString::fromStdString(game.version());
-            payload.fileMd5 = QString::fromStdString(game.package_md5());
-            payload.expectedSize = game.package_size();
-            payload.exeRelativePath = QString::fromStdString(game.exe_path());                                  // 启动程序的相对路径
-
-            QString coverName = QFileInfo(QString::fromStdString(game.cover_url())).fileName();
-            payload.localCoverPath = GameCoverPath + "/" + coverName;                                           // 游戏海报路径
-            payload.localTarPath = GameTarPath + "/" + payload.fileMd5 + ".tar";                                // 游戏压缩包路径
-            payload.localInstallDir = GameInstallPath + "/" + payload.fileMd5;                                  // 用MD5做独立文件夹, 后面用来对比游戏版本
-
-            // 检查是否已经解压就绪 (存在 EXE 就算就绪)
-            QString absoluteExePath = payload.localInstallDir + "/" + payload.exeRelativePath;                  // exe的绝对路径
-            payload.isDownloaded = QFile::exists(absoluteExePath);
-
-            // 检查海报是否存在
-            QFile localCover(payload.localCoverPath);
-            if (!localCover.exists() || localCover.size() == 0) {
-                payload.needFetchCover = true;
-                payload.localCoverPath = "";
-            }
-            else {
-                payload.needFetchCover = false;
-                payload.coverImage.load(payload.localCoverPath);
-            }
-
-            (*payloadList)[i] = std::move(payload);
-
-            if (++(*completedCount) == total) 
-            {
-                // 异步回主线程，如果海报为空就请求去下载海报，最后渲染UI
-                QMetaObject::invokeMethod(safeThis.data(), [safeThis, payloadList]() {
-                    if (!safeThis) return;
-                    safeThis->m_gameList->setUpdatesEnabled(false);
-                    for (const auto& data : *payloadList) {
-                        if (data.needFetchCover) {
-                            ServerApi::DownloadCoverReq req;
-                            req.set_file_md5(data.fileMd5.toStdString());
-                            req.set_file_type(ServerApi::FILE_GAME);
-                            ThreadPool::Instance()->GetTCPMgr()->SendProtoMsg(ServerApi::MsgId::ID_DOWNLOAD_COVER_REQ, req);
-                        }
-                        safeThis->AddGameCard(data);
-                    }
-                    safeThis->m_gameList->setUpdatesEnabled(true);
-                    }, Qt::QueuedConnection);
-            }
-            });
+        validMd5s.insert(QString::fromStdString(game.package_md5()));
+        validCovers.insert(QFileInfo(QString::fromStdString(game.cover_url())).fileName());
     }
-}
 
+    QPointer<GameLauncherPage> safeThis(this);
+
+    // =========================================================================
+    // 🌊 第一阶段：将耗时的“本地磁盘清理工作”丢入后台线程，防止 UI 卡死
+    // =========================================================================
+    ThreadPool::Instance()->DispatchToWorker([safeThis, rsp, validMd5s, validCovers, total]() {
+
+        // --- 1.1 清理本地已废弃的海报 ---
+        QDir coverDir(GameCoverPath);
+        for (const QFileInfo& info : coverDir.entryInfoList(QDir::Files)) {
+            if (!validCovers.contains(info.fileName())) {
+                QFile::remove(info.absoluteFilePath());
+            }
+        }
+
+        // --- 1.2 清理本地已废弃的压缩包 (.tar) ---
+        QDir tarDir(GameTarPath);
+        for (const QFileInfo& info : tarDir.entryInfoList(QDir::Files)) {
+            // 如果后缀是 tar，且它的文件名 (MD5) 不在合法列表里，删！
+            if (info.suffix() == "tar" && !validMd5s.contains(info.baseName())) {
+                QFile::remove(info.absoluteFilePath());
+            }
+        }
+
+        // --- 1.3 👑 清理本地已废弃的游戏解压目录 (核心排雷) ---
+        QDir installDir(GameInstallPath);
+        for (const QFileInfo& info : installDir.entryInfoList(QDir::Dirs | QDir::NoDotAndDotDot)) {
+            // 游戏解压目录名就是 MD5
+            if (!validMd5s.contains(info.fileName())) {
+                QDir dirToRemove(info.absoluteFilePath());
+                dirToRemove.removeRecursively(); // 递归强删几十GB的文件夹
+            }
+        }
+
+        // 如果云端返回 0 个游戏 (说明服务器被清空了)，清理完本地后直接结束，无需走 UI 渲染
+        if (total == 0) return;
+
+        // =========================================================================
+        // 🌊 第二阶段：清理完毕后，安全回到主线程发起“并发数据组装”
+        // =========================================================================
+        QMetaObject::invokeMethod(safeThis.data(), [safeThis, rsp, total]() {
+            if (!safeThis) return;
+
+            auto payloadList = std::make_shared<std::vector<GameUIPayload>>(total);
+            auto completedCount = std::make_shared<std::atomic<int>>(0);
+
+            for (int i = 0; i < total; ++i) {
+                ServerApi::GameInfo game = rsp.games(i);
+
+                // 并发执行每个游戏卡片的数据加载与图片读取
+                ThreadPool::Instance()->DispatchToWorker([safeThis, game, i, total, payloadList, completedCount]() {
+
+                    // 将rsp转换成游戏卡片结构体信息
+                    GameUIPayload payload;
+                    payload.id = game.game_id();
+                    payload.name = QString::fromStdString(game.game_name());
+                    payload.version = QString::fromStdString(game.version());
+                    payload.fileMd5 = QString::fromStdString(game.package_md5());
+                    payload.expectedSize = game.package_size();
+                    payload.exeRelativePath = QString::fromStdString(game.exe_path());
+
+                    QString coverName = QFileInfo(QString::fromStdString(game.cover_url())).fileName();
+                    payload.localCoverPath = GameCoverPath + "/" + coverName;
+                    payload.localTarPath = GameTarPath + "/" + payload.fileMd5 + ".tar";
+                    payload.localInstallDir = GameInstallPath + "/" + payload.fileMd5;
+
+                    // 检查是否已经解压就绪 (存在 EXE 就算就绪)
+                    QString absoluteExePath = payload.localInstallDir + "/" + payload.exeRelativePath;
+                    payload.isDownloaded = QFile::exists(absoluteExePath);
+
+                    // 检查海报是否存在
+                    QFile localCover(payload.localCoverPath);
+                    if (!localCover.exists() || localCover.size() == 0) {
+                        payload.needFetchCover = true;
+                        payload.localCoverPath = "";
+                    }
+                    else {
+                        payload.needFetchCover = false;
+                        payload.coverImage.load(payload.localCoverPath);
+                    }
+
+                    (*payloadList)[i] = std::move(payload);
+
+                    // =========================================================================
+                    // 🌊 第三阶段：所有线程组装完毕，最后统一回主线程渲染 UI
+                    // =========================================================================
+                    if (++(*completedCount) == total)
+                    {
+                        QMetaObject::invokeMethod(safeThis.data(), [safeThis, payloadList]() {
+                            if (!safeThis) return;
+                            safeThis->m_gameList->setUpdatesEnabled(false);
+
+                            for (const auto& data : *payloadList) {
+                                if (data.needFetchCover) {
+                                    ServerApi::DownloadCoverReq req;
+                                    req.set_file_md5(data.fileMd5.toStdString());
+                                    req.set_file_type(ServerApi::FILE_GAME); // 👑 注意这里带上了你的游戏类型标签
+                                    ThreadPool::Instance()->GetTCPMgr()->SendProtoMsg(ServerApi::MsgId::ID_DOWNLOAD_COVER_REQ, req);
+                                }
+                                safeThis->AddGameCard(data);
+                            }
+
+                            safeThis->m_gameList->setUpdatesEnabled(true);
+                            }, Qt::QueuedConnection);
+                    }
+                    });
+            }
+            }, Qt::QueuedConnection);
+        });
+}
 void GameLauncherPage::AddGameCard(const GameUIPayload& data)
 {
     QFrame* card = new QFrame();
