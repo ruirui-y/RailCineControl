@@ -88,7 +88,7 @@ const char descriptor_table_protodef_common_2eproto[] ABSL_ATTRIBUTE_SECTION_VAR
     "\n\014common.proto\022\tServerApi\"}\n\014PacketHeade"
     "r\022 \n\006msg_id\030\001 \001(\0162\020.ServerApi.MsgId\022\016\n\006s"
     "eq_id\030\002 \001(\004\022(\n\nerror_code\030\003 \001(\0162\024.Server"
-    "Api.ErrorCode\022\021\n\terror_msg\030\004 \001(\t*\367\003\n\005Msg"
+    "Api.ErrorCode\022\021\n\terror_msg\030\004 \001(\t*\221\005\n\005Msg"
     "Id\022\016\n\nID_UNKNOWN\020\000\022\020\n\014ID_HEARTBEAT\020\001\022\021\n\014"
     "ID_LOGIN_REQ\020\351\007\022\021\n\014ID_LOGIN_RSP\020\352\007\022\030\n\023ID"
     "_UPLOAD_MOVIE_REQ\020\321\017\022\030\n\023ID_UPLOAD_MOVIE_"
@@ -101,18 +101,22 @@ const char descriptor_table_protodef_common_2eproto[] ABSL_ATTRIBUTE_SECTION_VAR
     "ORD_REQ\020\271\027\022\026\n\021ID_ADD_RECORD_RSP\020\272\027\022\027\n\022ID"
     "_GET_RECORDS_REQ\020\273\027\022\027\n\022ID_GET_RECORDS_RS"
     "P\020\274\027\022\031\n\024ID_DELETE_RECORD_REQ\020\275\027\022\031\n\024ID_DE"
-    "LETE_RECORD_RSP\020\276\027*\275\001\n\tErrorCode\022\017\n\013ERR_"
-    "SUCCESS\020\000\022\027\n\023ERR_SERVER_INTERNAL\020\001\022\021\n\rER"
-    "R_WRONG_PWD\020\002\022\026\n\022ERR_ACCOUNT_IN_USE\020\003\022\027\n"
-    "\023ERR_ACCOUNT_EXPIRED\020\004\022\024\n\020ERR_MOVIE_EXIS"
-    "TS\020\005\022\026\n\022ERR_FILE_IO_FAILED\020\006\022\024\n\020ERR_MD5_"
-    "MISMATCH\020\007b\006proto3"
+    "LETE_RECORD_RSP\020\276\027\022\027\n\022ID_UPLOAD_GAME_REQ"
+    "\020\241\037\022\027\n\022ID_UPLOAD_GAME_RSP\020\242\037\022\031\n\024ID_GET_G"
+    "AME_LIST_REQ\020\243\037\022\031\n\024ID_GET_GAME_LIST_RSP\020"
+    "\244\037\022\027\n\022ID_DELETE_GAME_REQ\020\245\037\022\027\n\022ID_DELETE"
+    "_GAME_RSP\020\246\037*\322\001\n\tErrorCode\022\017\n\013ERR_SUCCES"
+    "S\020\000\022\027\n\023ERR_SERVER_INTERNAL\020\001\022\021\n\rERR_WRON"
+    "G_PWD\020\002\022\026\n\022ERR_ACCOUNT_IN_USE\020\003\022\027\n\023ERR_A"
+    "CCOUNT_EXPIRED\020\004\022\024\n\020ERR_MOVIE_EXISTS\020\005\022\026"
+    "\n\022ERR_FILE_IO_FAILED\020\006\022\024\n\020ERR_MD5_MISMAT"
+    "CH\020\007\022\023\n\017ERR_GAME_EXISTS\020\010b\006proto3"
 };
 static ::absl::once_flag descriptor_table_common_2eproto_once;
 PROTOBUF_CONSTINIT const ::_pbi::DescriptorTable descriptor_table_common_2eproto = {
     false,
     false,
-    858,
+    1033,
     descriptor_table_protodef_common_2eproto,
     "common.proto",
     &descriptor_table_common_2eproto_once,
@@ -131,7 +135,7 @@ const ::google::protobuf::EnumDescriptor* MsgId_descriptor() {
   return file_level_enum_descriptors_common_2eproto[0];
 }
 PROTOBUF_CONSTINIT const uint32_t MsgId_internal_data_[] = {
-    131072u, 1179648u, 2201u, 2101u, 3003u, 2002u, 2103u, 3001u, 3005u, 1002u, 2004u, 2102u, 2104u, 2202u, 3002u, 3004u, 3006u, 1001u, 2001u, 2003u, };
+    131072u, 1572864u, 3004u, 2102u, 4003u, 2002u, 2202u, 4001u, 4005u, 1002u, 2004u, 2104u, 3002u, 3006u, 4002u, 4004u, 4006u, 1001u, 2001u, 2003u, 2101u, 2103u, 2201u, 3001u, 3003u, 3005u, };
 bool MsgId_IsValid(int value) {
   return ::_pbi::ValidateEnum(value, MsgId_internal_data_);
 }
@@ -140,9 +144,9 @@ const ::google::protobuf::EnumDescriptor* ErrorCode_descriptor() {
   return file_level_enum_descriptors_common_2eproto[1];
 }
 PROTOBUF_CONSTINIT const uint32_t ErrorCode_internal_data_[] = {
-    524288u, 0u, };
+    589824u, 0u, };
 bool ErrorCode_IsValid(int value) {
-  return 0 <= value && value <= 7;
+  return 0 <= value && value <= 8;
 }
 // ===================================================================
 

@@ -84,6 +84,12 @@ enum MsgId : int {
   ID_GET_RECORDS_RSP = 3004,
   ID_DELETE_RECORD_REQ = 3005,
   ID_DELETE_RECORD_RSP = 3006,
+  ID_UPLOAD_GAME_REQ = 4001,
+  ID_UPLOAD_GAME_RSP = 4002,
+  ID_GET_GAME_LIST_REQ = 4003,
+  ID_GET_GAME_LIST_RSP = 4004,
+  ID_DELETE_GAME_REQ = 4005,
+  ID_DELETE_GAME_RSP = 4006,
   MsgId_INT_MIN_SENTINEL_DO_NOT_USE_ =
       std::numeric_limits<::int32_t>::min(),
   MsgId_INT_MAX_SENTINEL_DO_NOT_USE_ =
@@ -93,8 +99,8 @@ enum MsgId : int {
 bool MsgId_IsValid(int value);
 extern const uint32_t MsgId_internal_data_[];
 constexpr MsgId MsgId_MIN = static_cast<MsgId>(0);
-constexpr MsgId MsgId_MAX = static_cast<MsgId>(3006);
-constexpr int MsgId_ARRAYSIZE = 3006 + 1;
+constexpr MsgId MsgId_MAX = static_cast<MsgId>(4006);
+constexpr int MsgId_ARRAYSIZE = 4006 + 1;
 const ::google::protobuf::EnumDescriptor*
 MsgId_descriptor();
 template <typename T>
@@ -117,6 +123,7 @@ enum ErrorCode : int {
   ERR_MOVIE_EXISTS = 5,
   ERR_FILE_IO_FAILED = 6,
   ERR_MD5_MISMATCH = 7,
+  ERR_GAME_EXISTS = 8,
   ErrorCode_INT_MIN_SENTINEL_DO_NOT_USE_ =
       std::numeric_limits<::int32_t>::min(),
   ErrorCode_INT_MAX_SENTINEL_DO_NOT_USE_ =
@@ -126,8 +133,8 @@ enum ErrorCode : int {
 bool ErrorCode_IsValid(int value);
 extern const uint32_t ErrorCode_internal_data_[];
 constexpr ErrorCode ErrorCode_MIN = static_cast<ErrorCode>(0);
-constexpr ErrorCode ErrorCode_MAX = static_cast<ErrorCode>(7);
-constexpr int ErrorCode_ARRAYSIZE = 7 + 1;
+constexpr ErrorCode ErrorCode_MAX = static_cast<ErrorCode>(8);
+constexpr int ErrorCode_ARRAYSIZE = 8 + 1;
 const ::google::protobuf::EnumDescriptor*
 ErrorCode_descriptor();
 template <typename T>
@@ -140,7 +147,7 @@ const std::string& ErrorCode_Name(T value) {
 template <>
 inline const std::string& ErrorCode_Name(ErrorCode value) {
   return ::google::protobuf::internal::NameOfDenseEnum<ErrorCode_descriptor,
-                                                 0, 7>(
+                                                 0, 8>(
       static_cast<int>(value));
 }
 inline bool ErrorCode_Parse(absl::string_view name, ErrorCode* value) {

@@ -160,3 +160,61 @@ message DeleteRecordReq {
 message DeleteRecordRsp {
     uint64 deleted_id = 1;
 }
+
+
+// =========================================================================================
+// 8. 游戏库业务 (复用 TCP 分片上传/下载底层引擎)
+// =========================================================================================
+
+// 基础游戏数据结构 (用于列表展示和本地运行配置)
+message GameInfo {
+    uint64 game_id      = 1;                                                    // 游戏 ID
+    string game_name    = 2;                                                    // 游戏名称
+    string version      = 3;                                                    // 当前版本号 (例: "v1.0.5")
+    string cover_url    = 4;                                                    // 海报存放路径或直链
+    string package_md5  = 5;                                                    // 压缩包的 MD5，用于请求 TCP 分片下载
+    uint64 package_size = 6;                                                    // 压缩包总大小 (用于进度条)
+    string exe_path     = 7;                                                    // 相对启动路径 (解压后直接拼装运行)
+    string description  = 8;                                                    // 游戏玩法介绍
+}
+
+// ---------------------------------------------------------
+// [管理员端] 登记新游戏/更新游戏 (上传完 .tar 压缩包后调用)
+// ---------------------------------------------------------
+message UploadGameReq {
+    string game_name    = 1;
+    string version      = 2;                                                    
+    string description  = 3;
+    bytes  cover_data   = 4;                                                    // 海报图片的二进制流 (走 TCP 直传)
+    string cover_suffix = 5;                                                    // 海报后缀 (如 ".jpg")
+    string package_md5  = 6;                                                    // 刚才用 TCP 传完的压缩包的 MD5，通知服务器绑定关联
+    string exe_path     = 7;                                                    // 填写的相对启动路径
+}
+
+message UploadGameRsp {
+    uint64 game_id = 1;                                                         // 返回成功入库/更新后的游戏 ID
+}
+
+// ---------------------------------------------------------
+// [客户端] 分页拉取游戏列表
+// ---------------------------------------------------------
+message GetGameListReq {
+    uint32 page_index = 1;                                                      // 页码 (从 1 开始)
+    uint32 page_size  = 2;                                                      // 每页数量
+}
+
+message GetGameListRsp {
+    repeated GameInfo games = 1;                                                // 游戏列表数组
+    uint32 total_count      = 2;                                                // 游戏总数 (用于前端分页)
+}
+
+// ---------------------------------------------------------
+// [管理员端] 删除游戏 (可选扩展)
+// ---------------------------------------------------------
+message DeleteGameReq {
+    uint64 game_id = 1;
+}
+
+message DeleteGameRsp {
+    uint64 deleted_id = 1;
+}
