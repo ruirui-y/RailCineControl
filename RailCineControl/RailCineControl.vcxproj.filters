@@ -253,6 +253,18 @@
     <ClCompile Include="LocalStreamServer.cpp">
       <Filter>Source Files\Http</Filter>
     </ClCompile>
+    <ClCompile Include="GameLauncherPage.cpp">
+      <Filter>Source Files\SELF_UI\StackPage\GameWidget</Filter>
+    </ClCompile>
+    <ClCompile Include="GameUploadPage.cpp">
+      <Filter>Source Files\SELF_UI\StackPage\GameWidget</Filter>
+    </ClCompile>
+    <ClCompile Include="GameLauncherPage.cpp">
+      <Filter>Source Files\SELF_UI\StackPage\GameWidget</Filter>
+    </ClCompile>
+    <ClCompile Include="GameUploadPage.cpp">
+      <Filter>Source Files\SELF_UI\StackPage\GameWidget</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Enum.h">
@@ -380,6 +392,12 @@
     <QtMoc Include="CinemaMessageBox.h">
       <Filter>Header Files\CustomUI</Filter>
     </QtMoc>
+    <QtMoc Include="GameLauncherPage.h">
+      <Filter>Header Files\SELF_UI\StackPage\GameWidget</Filter>
+    </QtMoc>
+    <QtMoc Include="GameUploadPage.h">
+      <Filter>Header Files\SELF_UI\StackPage\GameWidget</Filter>
+    </QtMoc>
   </ItemGroup>
   <ItemGroup>
     <QtRcc Include="demand.qrc">
@@ -393,6 +411,9 @@
     </None>
     <None Include="common.proto">
       <Filter>Header Files\Proto</Filter>
+    </None>
+    <None Include="build_proto.bat">
+      <Filter>Source Files</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>

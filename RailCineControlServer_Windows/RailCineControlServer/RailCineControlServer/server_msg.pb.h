@@ -29,6 +29,7 @@
 #include "google/protobuf/repeated_field.h"  // IWYU pragma: export
 #include "google/protobuf/extension_set.h"  // IWYU pragma: export
 #include "google/protobuf/unknown_field_set.h"
+#include "common.pb.h"
 // @@protoc_insertion_point(includes)
 
 // Must be included last.
@@ -1280,6 +1281,7 @@ class UploadChunkRsp final : public ::google::protobuf::Message
     kFileMd5FieldNumber = 1,
     kChunkIndexFieldNumber = 2,
     kIsCompleteFieldNumber = 3,
+    kFileTypeFieldNumber = 4,
   };
   // string file_md5 = 1;
   void clear_file_md5() ;
@@ -1317,12 +1319,22 @@ class UploadChunkRsp final : public ::google::protobuf::Message
   void _internal_set_is_complete(bool value);
 
   public:
+  // .ServerApi.FileType file_type = 4;
+  void clear_file_type() ;
+  ::ServerApi::FileType file_type() const;
+  void set_file_type(::ServerApi::FileType value);
+
+  private:
+  ::ServerApi::FileType _internal_file_type() const;
+  void _internal_set_file_type(::ServerApi::FileType value);
+
+  public:
   // @@protoc_insertion_point(class_scope:ServerApi.UploadChunkRsp)
  private:
   class _Internal;
   friend class ::google::protobuf::internal::TcParser;
   static const ::google::protobuf::internal::TcParseTable<
-      2, 3, 0,
+      2, 4, 0,
       41, 2>
       _table_;
 
@@ -1343,6 +1355,7 @@ class UploadChunkRsp final : public ::google::protobuf::Message
     ::google::protobuf::internal::ArenaStringPtr file_md5_;
     ::uint32_t chunk_index_;
     bool is_complete_;
+    int file_type_;
     ::google::protobuf::internal::CachedSize _cached_size_;
     PROTOBUF_TSAN_DECLARE_MEMBER
   };
@@ -1502,6 +1515,7 @@ class UploadChunkReq final : public ::google::protobuf::Message
     kChunkOffsetFieldNumber = 3,
     kChunkIndexFieldNumber = 2,
     kIsLastFieldNumber = 5,
+    kFileTypeFieldNumber = 6,
   };
   // string file_md5 = 1;
   void clear_file_md5() ;
@@ -1565,12 +1579,22 @@ class UploadChunkReq final : public ::google::protobuf::Message
   void _internal_set_is_last(bool value);
 
   public:
+  // .ServerApi.FileType file_type = 6;
+  void clear_file_type() ;
+  ::ServerApi::FileType file_type() const;
+  void set_file_type(::ServerApi::FileType value);
+
+  private:
+  ::ServerApi::FileType _internal_file_type() const;
+  void _internal_set_file_type(::ServerApi::FileType value);
+
+  public:
   // @@protoc_insertion_point(class_scope:ServerApi.UploadChunkReq)
  private:
   class _Internal;
   friend class ::google::protobuf::internal::TcParser;
   static const ::google::protobuf::internal::TcParseTable<
-      3, 5, 0,
+      3, 6, 0,
       41, 2>
       _table_;
 
@@ -1593,6 +1617,7 @@ class UploadChunkReq final : public ::google::protobuf::Message
     ::uint64_t chunk_offset_;
     ::uint32_t chunk_index_;
     bool is_last_;
+    int file_type_;
     ::google::protobuf::internal::CachedSize _cached_size_;
     PROTOBUF_TSAN_DECLARE_MEMBER
   };
@@ -3892,6 +3917,7 @@ class DownloadCoverRsp final : public ::google::protobuf::Message
     kFileMd5FieldNumber = 1,
     kCoverNameFieldNumber = 2,
     kCoverDataFieldNumber = 3,
+    kFileTypeFieldNumber = 4,
   };
   // string file_md5 = 1;
   void clear_file_md5() ;
@@ -3941,12 +3967,22 @@ class DownloadCoverRsp final : public ::google::protobuf::Message
   std::string* _internal_mutable_cover_data();
 
   public:
+  // .ServerApi.FileType file_type = 4;
+  void clear_file_type() ;
+  ::ServerApi::FileType file_type() const;
+  void set_file_type(::ServerApi::FileType value);
+
+  private:
+  ::ServerApi::FileType _internal_file_type() const;
+  void _internal_set_file_type(::ServerApi::FileType value);
+
+  public:
   // @@protoc_insertion_point(class_scope:ServerApi.DownloadCoverRsp)
  private:
   class _Internal;
   friend class ::google::protobuf::internal::TcParser;
   static const ::google::protobuf::internal::TcParseTable<
-      2, 3, 0,
+      2, 4, 0,
       53, 2>
       _table_;
 
@@ -3967,6 +4003,7 @@ class DownloadCoverRsp final : public ::google::protobuf::Message
     ::google::protobuf::internal::ArenaStringPtr file_md5_;
     ::google::protobuf::internal::ArenaStringPtr cover_name_;
     ::google::protobuf::internal::ArenaStringPtr cover_data_;
+    int file_type_;
     ::google::protobuf::internal::CachedSize _cached_size_;
     PROTOBUF_TSAN_DECLARE_MEMBER
   };
@@ -4122,6 +4159,7 @@ class DownloadCoverReq final : public ::google::protobuf::Message
   // accessors -------------------------------------------------------
   enum : int {
     kFileMd5FieldNumber = 1,
+    kFileTypeFieldNumber = 2,
   };
   // string file_md5 = 1;
   void clear_file_md5() ;
@@ -4139,12 +4177,22 @@ class DownloadCoverReq final : public ::google::protobuf::Message
   std::string* _internal_mutable_file_md5();
 
   public:
+  // .ServerApi.FileType file_type = 2;
+  void clear_file_type() ;
+  ::ServerApi::FileType file_type() const;
+  void set_file_type(::ServerApi::FileType value);
+
+  private:
+  ::ServerApi::FileType _internal_file_type() const;
+  void _internal_set_file_type(::ServerApi::FileType value);
+
+  public:
   // @@protoc_insertion_point(class_scope:ServerApi.DownloadCoverReq)
  private:
   class _Internal;
   friend class ::google::protobuf::internal::TcParser;
   static const ::google::protobuf::internal::TcParseTable<
-      0, 1, 0,
+      1, 2, 0,
       43, 2>
       _table_;
 
@@ -4163,6 +4211,7 @@ class DownloadCoverReq final : public ::google::protobuf::Message
                           ::google::protobuf::Arena* arena, const Impl_& from,
                           const DownloadCoverReq& from_msg);
     ::google::protobuf::internal::ArenaStringPtr file_md5_;
+    int file_type_;
     ::google::protobuf::internal::CachedSize _cached_size_;
     PROTOBUF_TSAN_DECLARE_MEMBER
   };
@@ -4321,6 +4370,7 @@ class DownloadChunkRsp final : public ::google::protobuf::Message
     kChunkDataFieldNumber = 3,
     kChunkIndexFieldNumber = 2,
     kIsLastFieldNumber = 4,
+    kFileTypeFieldNumber = 5,
   };
   // string file_md5 = 1;
   void clear_file_md5() ;
@@ -4374,12 +4424,22 @@ class DownloadChunkRsp final : public ::google::protobuf::Message
   void _internal_set_is_last(bool value);
 
   public:
+  // .ServerApi.FileType file_type = 5;
+  void clear_file_type() ;
+  ::ServerApi::FileType file_type() const;
+  void set_file_type(::ServerApi::FileType value);
+
+  private:
+  ::ServerApi::FileType _internal_file_type() const;
+  void _internal_set_file_type(::ServerApi::FileType value);
+
+  public:
   // @@protoc_insertion_point(class_scope:ServerApi.DownloadChunkRsp)
  private:
   class _Internal;
   friend class ::google::protobuf::internal::TcParser;
   static const ::google::protobuf::internal::TcParseTable<
-      2, 4, 0,
+      3, 5, 0,
       43, 2>
       _table_;
 
@@ -4401,6 +4461,7 @@ class DownloadChunkRsp final : public ::google::protobuf::Message
     ::google::protobuf::internal::ArenaStringPtr chunk_data_;
     ::uint32_t chunk_index_;
     bool is_last_;
+    int file_type_;
     ::google::protobuf::internal::CachedSize _cached_size_;
     PROTOBUF_TSAN_DECLARE_MEMBER
   };
@@ -4557,6 +4618,7 @@ class DownloadChunkReq final : public ::google::protobuf::Message
   enum : int {
     kFileMd5FieldNumber = 1,
     kChunkIndexFieldNumber = 2,
+    kFileTypeFieldNumber = 3,
   };
   // string file_md5 = 1;
   void clear_file_md5() ;
@@ -4584,12 +4646,22 @@ class DownloadChunkReq final : public ::google::protobuf::Message
   void _internal_set_chunk_index(::uint32_t value);
 
   public:
+  // .ServerApi.FileType file_type = 3;
+  void clear_file_type() ;
+  ::ServerApi::FileType file_type() const;
+  void set_file_type(::ServerApi::FileType value);
+
+  private:
+  ::ServerApi::FileType _internal_file_type() const;
+  void _internal_set_file_type(::ServerApi::FileType value);
+
+  public:
   // @@protoc_insertion_point(class_scope:ServerApi.DownloadChunkReq)
  private:
   class _Internal;
   friend class ::google::protobuf::internal::TcParser;
   static const ::google::protobuf::internal::TcParseTable<
-      1, 2, 0,
+      2, 3, 0,
       43, 2>
       _table_;
 
@@ -4609,6 +4681,7 @@ class DownloadChunkReq final : public ::google::protobuf::Message
                           const DownloadChunkReq& from_msg);
     ::google::protobuf::internal::ArenaStringPtr file_md5_;
     ::uint32_t chunk_index_;
+    int file_type_;
     ::google::protobuf::internal::CachedSize _cached_size_;
     PROTOBUF_TSAN_DECLARE_MEMBER
   };
@@ -6777,6 +6850,28 @@ inline void UploadChunkReq::_internal_set_is_last(bool value) {
   _impl_.is_last_ = value;
 }
 
+// .ServerApi.FileType file_type = 6;
+inline void UploadChunkReq::clear_file_type() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.file_type_ = 0;
+}
+inline ::ServerApi::FileType UploadChunkReq::file_type() const {
+  // @@protoc_insertion_point(field_get:ServerApi.UploadChunkReq.file_type)
+  return _internal_file_type();
+}
+inline void UploadChunkReq::set_file_type(::ServerApi::FileType value) {
+  _internal_set_file_type(value);
+  // @@protoc_insertion_point(field_set:ServerApi.UploadChunkReq.file_type)
+}
+inline ::ServerApi::FileType UploadChunkReq::_internal_file_type() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return static_cast<::ServerApi::FileType>(_impl_.file_type_);
+}
+inline void UploadChunkReq::_internal_set_file_type(::ServerApi::FileType value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.file_type_ = value;
+}
+
 // -------------------------------------------------------------------
 
 // UploadChunkRsp
@@ -6871,6 +6966,28 @@ inline bool UploadChunkRsp::_internal_is_complete() const {
 inline void UploadChunkRsp::_internal_set_is_complete(bool value) {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.is_complete_ = value;
+}
+
+// .ServerApi.FileType file_type = 4;
+inline void UploadChunkRsp::clear_file_type() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.file_type_ = 0;
+}
+inline ::ServerApi::FileType UploadChunkRsp::file_type() const {
+  // @@protoc_insertion_point(field_get:ServerApi.UploadChunkRsp.file_type)
+  return _internal_file_type();
+}
+inline void UploadChunkRsp::set_file_type(::ServerApi::FileType value) {
+  _internal_set_file_type(value);
+  // @@protoc_insertion_point(field_set:ServerApi.UploadChunkRsp.file_type)
+}
+inline ::ServerApi::FileType UploadChunkRsp::_internal_file_type() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return static_cast<::ServerApi::FileType>(_impl_.file_type_);
+}
+inline void UploadChunkRsp::_internal_set_file_type(::ServerApi::FileType value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.file_type_ = value;
 }
 
 // -------------------------------------------------------------------
@@ -7650,6 +7767,28 @@ inline void DownloadChunkReq::_internal_set_chunk_index(::uint32_t value) {
   _impl_.chunk_index_ = value;
 }
 
+// .ServerApi.FileType file_type = 3;
+inline void DownloadChunkReq::clear_file_type() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.file_type_ = 0;
+}
+inline ::ServerApi::FileType DownloadChunkReq::file_type() const {
+  // @@protoc_insertion_point(field_get:ServerApi.DownloadChunkReq.file_type)
+  return _internal_file_type();
+}
+inline void DownloadChunkReq::set_file_type(::ServerApi::FileType value) {
+  _internal_set_file_type(value);
+  // @@protoc_insertion_point(field_set:ServerApi.DownloadChunkReq.file_type)
+}
+inline ::ServerApi::FileType DownloadChunkReq::_internal_file_type() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return static_cast<::ServerApi::FileType>(_impl_.file_type_);
+}
+inline void DownloadChunkReq::_internal_set_file_type(::ServerApi::FileType value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.file_type_ = value;
+}
+
 // -------------------------------------------------------------------
 
 // DownloadChunkRsp
@@ -7794,6 +7933,28 @@ inline void DownloadChunkRsp::_internal_set_is_last(bool value) {
   _impl_.is_last_ = value;
 }
 
+// .ServerApi.FileType file_type = 5;
+inline void DownloadChunkRsp::clear_file_type() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.file_type_ = 0;
+}
+inline ::ServerApi::FileType DownloadChunkRsp::file_type() const {
+  // @@protoc_insertion_point(field_get:ServerApi.DownloadChunkRsp.file_type)
+  return _internal_file_type();
+}
+inline void DownloadChunkRsp::set_file_type(::ServerApi::FileType value) {
+  _internal_set_file_type(value);
+  // @@protoc_insertion_point(field_set:ServerApi.DownloadChunkRsp.file_type)
+}
+inline ::ServerApi::FileType DownloadChunkRsp::_internal_file_type() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return static_cast<::ServerApi::FileType>(_impl_.file_type_);
+}
+inline void DownloadChunkRsp::_internal_set_file_type(::ServerApi::FileType value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.file_type_ = value;
+}
+
 // -------------------------------------------------------------------
 
 // DownloadCoverReq
@@ -7844,6 +8005,28 @@ inline void DownloadCoverReq::set_allocated_file_md5(std::string* value) {
     _impl_.file_md5_.Set("", GetArena());
   }
   // @@protoc_insertion_point(field_set_allocated:ServerApi.DownloadCoverReq.file_md5)
+}
+
+// .ServerApi.FileType file_type = 2;
+inline void DownloadCoverReq::clear_file_type() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.file_type_ = 0;
+}
+inline ::ServerApi::FileType DownloadCoverReq::file_type() const {
+  // @@protoc_insertion_point(field_get:ServerApi.DownloadCoverReq.file_type)
+  return _internal_file_type();
+}
+inline void DownloadCoverReq::set_file_type(::ServerApi::FileType value) {
+  _internal_set_file_type(value);
+  // @@protoc_insertion_point(field_set:ServerApi.DownloadCoverReq.file_type)
+}
+inline ::ServerApi::FileType DownloadCoverReq::_internal_file_type() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return static_cast<::ServerApi::FileType>(_impl_.file_type_);
+}
+inline void DownloadCoverReq::_internal_set_file_type(::ServerApi::FileType value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.file_type_ = value;
 }
 
 // -------------------------------------------------------------------
@@ -7992,6 +8175,28 @@ inline void DownloadCoverRsp::set_allocated_cover_data(std::string* value) {
     _impl_.cover_data_.Set("", GetArena());
   }
   // @@protoc_insertion_point(field_set_allocated:ServerApi.DownloadCoverRsp.cover_data)
+}
+
+// .ServerApi.FileType file_type = 4;
+inline void DownloadCoverRsp::clear_file_type() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.file_type_ = 0;
+}
+inline ::ServerApi::FileType DownloadCoverRsp::file_type() const {
+  // @@protoc_insertion_point(field_get:ServerApi.DownloadCoverRsp.file_type)
+  return _internal_file_type();
+}
+inline void DownloadCoverRsp::set_file_type(::ServerApi::FileType value) {
+  _internal_set_file_type(value);
+  // @@protoc_insertion_point(field_set:ServerApi.DownloadCoverRsp.file_type)
+}
+inline ::ServerApi::FileType DownloadCoverRsp::_internal_file_type() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return static_cast<::ServerApi::FileType>(_impl_.file_type_);
+}
+inline void DownloadCoverRsp::_internal_set_file_type(::ServerApi::FileType value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.file_type_ = value;
 }
 
 // -------------------------------------------------------------------

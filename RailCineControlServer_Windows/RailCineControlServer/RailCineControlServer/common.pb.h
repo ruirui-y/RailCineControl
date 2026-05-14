@@ -154,6 +154,40 @@ inline bool ErrorCode_Parse(absl::string_view name, ErrorCode* value) {
   return ::google::protobuf::internal::ParseNamedEnum<ErrorCode>(
       ErrorCode_descriptor(), name, value);
 }
+enum FileType : int {
+  FILE_UNKNOWN = 0,
+  FILE_MOVIE = 1,
+  FILE_GAME = 2,
+  FileType_INT_MIN_SENTINEL_DO_NOT_USE_ =
+      std::numeric_limits<::int32_t>::min(),
+  FileType_INT_MAX_SENTINEL_DO_NOT_USE_ =
+      std::numeric_limits<::int32_t>::max(),
+};
+
+bool FileType_IsValid(int value);
+extern const uint32_t FileType_internal_data_[];
+constexpr FileType FileType_MIN = static_cast<FileType>(0);
+constexpr FileType FileType_MAX = static_cast<FileType>(2);
+constexpr int FileType_ARRAYSIZE = 2 + 1;
+const ::google::protobuf::EnumDescriptor*
+FileType_descriptor();
+template <typename T>
+const std::string& FileType_Name(T value) {
+  static_assert(std::is_same<T, FileType>::value ||
+                    std::is_integral<T>::value,
+                "Incorrect type passed to FileType_Name().");
+  return FileType_Name(static_cast<FileType>(value));
+}
+template <>
+inline const std::string& FileType_Name(FileType value) {
+  return ::google::protobuf::internal::NameOfDenseEnum<FileType_descriptor,
+                                                 0, 2>(
+      static_cast<int>(value));
+}
+inline bool FileType_Parse(absl::string_view name, FileType* value) {
+  return ::google::protobuf::internal::ParseNamedEnum<FileType>(
+      FileType_descriptor(), name, value);
+}
 
 // ===================================================================
 
@@ -543,6 +577,12 @@ struct is_proto_enum<::ServerApi::ErrorCode> : std::true_type {};
 template <>
 inline const EnumDescriptor* GetEnumDescriptor<::ServerApi::ErrorCode>() {
   return ::ServerApi::ErrorCode_descriptor();
+}
+template <>
+struct is_proto_enum<::ServerApi::FileType> : std::true_type {};
+template <>
+inline const EnumDescriptor* GetEnumDescriptor<::ServerApi::FileType>() {
+  return ::ServerApi::FileType_descriptor();
 }
 
 }  // namespace protobuf

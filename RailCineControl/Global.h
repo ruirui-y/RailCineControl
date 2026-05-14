@@ -34,17 +34,16 @@ extern QString AppConfigPath;
 extern QString TranslationsPath;
 extern QString GetLanguageFilePath(const QString& lang_code);                                                   // 获取语言文件路径
 
-// 影片配置文件路径
-extern QString MovieConfigPath;
+// 影片配置文件
+extern QString MovieConfigPath;                                                                                 // 影片配置文件路径
+extern QString MovieCoverPath;                                                                                  // 影片海报路径
+extern QString MovieVideoPath;                                                                                  // 影片视频路径
+extern QString MovieRecordPath;                                                                                 // 影片播放记录配置文件路径
 
-// 影片海报路径
-extern QString MovieCoverPath;
-
-// 影片视频路径
-extern QString MovieVideoPath;
-
-// 影片播放记录配置文件路径
-extern QString MovieRecordPath;
+// 游戏配置路径
+extern QString GameCoverPath;                                                                                   // 游戏海报缓存路径
+extern QString GameTarPath;                                                                                     // 游戏下载的压缩包临时路径
+extern QString GameInstallPath;                                                                                 // 游戏解压后的最终运行目录
 
 extern const int tipOffset;								                                                        // 提示框偏移量
 

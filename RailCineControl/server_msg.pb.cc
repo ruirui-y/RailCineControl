@@ -171,6 +171,7 @@ inline constexpr UploadChunkRsp::Impl_::Impl_(
             ::_pbi::ConstantInitialized()),
         chunk_index_{0u},
         is_complete_{false},
+        file_type_{static_cast< ::ServerApi::FileType >(0)},
         _cached_size_{0} {}
 
 template <typename>
@@ -204,6 +205,7 @@ inline constexpr UploadChunkReq::Impl_::Impl_(
         chunk_offset_{::uint64_t{0u}},
         chunk_index_{0u},
         is_last_{false},
+        file_type_{static_cast< ::ServerApi::FileType >(0)},
         _cached_size_{0} {}
 
 template <typename>
@@ -528,6 +530,7 @@ inline constexpr DownloadCoverRsp::Impl_::Impl_(
         cover_data_(
             &::google::protobuf::internal::fixed_address_empty_string,
             ::_pbi::ConstantInitialized()),
+        file_type_{static_cast< ::ServerApi::FileType >(0)},
         _cached_size_{0} {}
 
 template <typename>
@@ -555,6 +558,7 @@ inline constexpr DownloadCoverReq::Impl_::Impl_(
       : file_md5_(
             &::google::protobuf::internal::fixed_address_empty_string,
             ::_pbi::ConstantInitialized()),
+        file_type_{static_cast< ::ServerApi::FileType >(0)},
         _cached_size_{0} {}
 
 template <typename>
@@ -587,6 +591,7 @@ inline constexpr DownloadChunkRsp::Impl_::Impl_(
             ::_pbi::ConstantInitialized()),
         chunk_index_{0u},
         is_last_{false},
+        file_type_{static_cast< ::ServerApi::FileType >(0)},
         _cached_size_{0} {}
 
 template <typename>
@@ -615,6 +620,7 @@ inline constexpr DownloadChunkReq::Impl_::Impl_(
             &::google::protobuf::internal::fixed_address_empty_string,
             ::_pbi::ConstantInitialized()),
         chunk_index_{0u},
+        file_type_{static_cast< ::ServerApi::FileType >(0)},
         _cached_size_{0} {}
 
 template <typename>
@@ -914,6 +920,7 @@ const ::uint32_t
         PROTOBUF_FIELD_OFFSET(::ServerApi::UploadChunkReq, _impl_.chunk_offset_),
         PROTOBUF_FIELD_OFFSET(::ServerApi::UploadChunkReq, _impl_.chunk_data_),
         PROTOBUF_FIELD_OFFSET(::ServerApi::UploadChunkReq, _impl_.is_last_),
+        PROTOBUF_FIELD_OFFSET(::ServerApi::UploadChunkReq, _impl_.file_type_),
         ~0u,  // no _has_bits_
         PROTOBUF_FIELD_OFFSET(::ServerApi::UploadChunkRsp, _internal_metadata_),
         ~0u,  // no _extensions_
@@ -925,6 +932,7 @@ const ::uint32_t
         PROTOBUF_FIELD_OFFSET(::ServerApi::UploadChunkRsp, _impl_.file_md5_),
         PROTOBUF_FIELD_OFFSET(::ServerApi::UploadChunkRsp, _impl_.chunk_index_),
         PROTOBUF_FIELD_OFFSET(::ServerApi::UploadChunkRsp, _impl_.is_complete_),
+        PROTOBUF_FIELD_OFFSET(::ServerApi::UploadChunkRsp, _impl_.file_type_),
         ~0u,  // no _has_bits_
         PROTOBUF_FIELD_OFFSET(::ServerApi::UploadMovieReq, _internal_metadata_),
         ~0u,  // no _extensions_
@@ -993,6 +1001,7 @@ const ::uint32_t
         ~0u,  // no sizeof(Split)
         PROTOBUF_FIELD_OFFSET(::ServerApi::DownloadChunkReq, _impl_.file_md5_),
         PROTOBUF_FIELD_OFFSET(::ServerApi::DownloadChunkReq, _impl_.chunk_index_),
+        PROTOBUF_FIELD_OFFSET(::ServerApi::DownloadChunkReq, _impl_.file_type_),
         ~0u,  // no _has_bits_
         PROTOBUF_FIELD_OFFSET(::ServerApi::DownloadChunkRsp, _internal_metadata_),
         ~0u,  // no _extensions_
@@ -1005,6 +1014,7 @@ const ::uint32_t
         PROTOBUF_FIELD_OFFSET(::ServerApi::DownloadChunkRsp, _impl_.chunk_index_),
         PROTOBUF_FIELD_OFFSET(::ServerApi::DownloadChunkRsp, _impl_.chunk_data_),
         PROTOBUF_FIELD_OFFSET(::ServerApi::DownloadChunkRsp, _impl_.is_last_),
+        PROTOBUF_FIELD_OFFSET(::ServerApi::DownloadChunkRsp, _impl_.file_type_),
         ~0u,  // no _has_bits_
         PROTOBUF_FIELD_OFFSET(::ServerApi::DownloadCoverReq, _internal_metadata_),
         ~0u,  // no _extensions_
@@ -1014,6 +1024,7 @@ const ::uint32_t
         ~0u,  // no _split_
         ~0u,  // no sizeof(Split)
         PROTOBUF_FIELD_OFFSET(::ServerApi::DownloadCoverReq, _impl_.file_md5_),
+        PROTOBUF_FIELD_OFFSET(::ServerApi::DownloadCoverReq, _impl_.file_type_),
         ~0u,  // no _has_bits_
         PROTOBUF_FIELD_OFFSET(::ServerApi::DownloadCoverRsp, _internal_metadata_),
         ~0u,  // no _extensions_
@@ -1025,6 +1036,7 @@ const ::uint32_t
         PROTOBUF_FIELD_OFFSET(::ServerApi::DownloadCoverRsp, _impl_.file_md5_),
         PROTOBUF_FIELD_OFFSET(::ServerApi::DownloadCoverRsp, _impl_.cover_name_),
         PROTOBUF_FIELD_OFFSET(::ServerApi::DownloadCoverRsp, _impl_.cover_data_),
+        PROTOBUF_FIELD_OFFSET(::ServerApi::DownloadCoverRsp, _impl_.file_type_),
         ~0u,  // no _has_bits_
         PROTOBUF_FIELD_OFFSET(::ServerApi::PlayRecord, _internal_metadata_),
         ~0u,  // no _extensions_
@@ -1184,30 +1196,30 @@ static const ::_pbi::MigrationSchema
         {10, -1, -1, sizeof(::ServerApi::LoginRsp)},
         {21, -1, -1, sizeof(::ServerApi::Heartbeat)},
         {30, -1, -1, sizeof(::ServerApi::UploadChunkReq)},
-        {43, -1, -1, sizeof(::ServerApi::UploadChunkRsp)},
-        {54, -1, -1, sizeof(::ServerApi::UploadMovieReq)},
-        {69, -1, -1, sizeof(::ServerApi::UploadMovieRsp)},
-        {78, -1, -1, sizeof(::ServerApi::MovieInfo)},
-        {93, -1, -1, sizeof(::ServerApi::GetMovieListReq)},
-        {103, -1, -1, sizeof(::ServerApi::GetMovieListRsp)},
-        {112, -1, -1, sizeof(::ServerApi::DownloadChunkReq)},
-        {122, -1, -1, sizeof(::ServerApi::DownloadChunkRsp)},
-        {134, -1, -1, sizeof(::ServerApi::DownloadCoverReq)},
-        {143, -1, -1, sizeof(::ServerApi::DownloadCoverRsp)},
-        {154, -1, -1, sizeof(::ServerApi::PlayRecord)},
-        {169, 178, -1, sizeof(::ServerApi::AddRecordReq)},
-        {179, -1, -1, sizeof(::ServerApi::AddRecordRsp)},
-        {188, -1, -1, sizeof(::ServerApi::GetRecordsReq)},
-        {199, -1, -1, sizeof(::ServerApi::GetRecordsRsp)},
-        {209, -1, -1, sizeof(::ServerApi::DeleteRecordReq)},
-        {218, -1, -1, sizeof(::ServerApi::DeleteRecordRsp)},
-        {227, -1, -1, sizeof(::ServerApi::GameInfo)},
-        {243, -1, -1, sizeof(::ServerApi::UploadGameReq)},
-        {258, -1, -1, sizeof(::ServerApi::UploadGameRsp)},
-        {267, -1, -1, sizeof(::ServerApi::GetGameListReq)},
-        {277, -1, -1, sizeof(::ServerApi::GetGameListRsp)},
-        {287, -1, -1, sizeof(::ServerApi::DeleteGameReq)},
-        {296, -1, -1, sizeof(::ServerApi::DeleteGameRsp)},
+        {44, -1, -1, sizeof(::ServerApi::UploadChunkRsp)},
+        {56, -1, -1, sizeof(::ServerApi::UploadMovieReq)},
+        {71, -1, -1, sizeof(::ServerApi::UploadMovieRsp)},
+        {80, -1, -1, sizeof(::ServerApi::MovieInfo)},
+        {95, -1, -1, sizeof(::ServerApi::GetMovieListReq)},
+        {105, -1, -1, sizeof(::ServerApi::GetMovieListRsp)},
+        {114, -1, -1, sizeof(::ServerApi::DownloadChunkReq)},
+        {125, -1, -1, sizeof(::ServerApi::DownloadChunkRsp)},
+        {138, -1, -1, sizeof(::ServerApi::DownloadCoverReq)},
+        {148, -1, -1, sizeof(::ServerApi::DownloadCoverRsp)},
+        {160, -1, -1, sizeof(::ServerApi::PlayRecord)},
+        {175, 184, -1, sizeof(::ServerApi::AddRecordReq)},
+        {185, -1, -1, sizeof(::ServerApi::AddRecordRsp)},
+        {194, -1, -1, sizeof(::ServerApi::GetRecordsReq)},
+        {205, -1, -1, sizeof(::ServerApi::GetRecordsRsp)},
+        {215, -1, -1, sizeof(::ServerApi::DeleteRecordReq)},
+        {224, -1, -1, sizeof(::ServerApi::DeleteRecordRsp)},
+        {233, -1, -1, sizeof(::ServerApi::GameInfo)},
+        {249, -1, -1, sizeof(::ServerApi::UploadGameReq)},
+        {264, -1, -1, sizeof(::ServerApi::UploadGameRsp)},
+        {273, -1, -1, sizeof(::ServerApi::GetGameListReq)},
+        {283, -1, -1, sizeof(::ServerApi::GetGameListRsp)},
+        {293, -1, -1, sizeof(::ServerApi::DeleteGameReq)},
+        {302, -1, -1, sizeof(::ServerApi::DeleteGameRsp)},
 };
 static const ::_pb::Message* const file_default_instances[] = {
     &::ServerApi::_LoginReq_default_instance_._instance,
@@ -1241,72 +1253,82 @@ static const ::_pb::Message* const file_default_instances[] = {
 };
 const char descriptor_table_protodef_server_5fmsg_2eproto[] ABSL_ATTRIBUTE_SECTION_VARIABLE(
     protodesc_cold) = {
-    "\n\020server_msg.proto\022\tServerApi\".\n\010LoginRe"
-    "q\022\020\n\010username\030\001 \001(\t\022\020\n\010password\030\002 \001(\t\"F\n"
-    "\010LoginRsp\022\023\n\013server_time\030\001 \001(\003\022\021\n\tshop_n"
-    "ame\030\002 \001(\t\022\022\n\npermission\030\003 \001(\005\"\036\n\tHeartbe"
-    "at\022\021\n\ttimestamp\030\001 \001(\003\"r\n\016UploadChunkReq\022"
-    "\020\n\010file_md5\030\001 \001(\t\022\023\n\013chunk_index\030\002 \001(\r\022\024"
-    "\n\014chunk_offset\030\003 \001(\004\022\022\n\nchunk_data\030\004 \001(\014"
-    "\022\017\n\007is_last\030\005 \001(\010\"L\n\016UploadChunkRsp\022\020\n\010f"
-    "ile_md5\030\001 \001(\t\022\023\n\013chunk_index\030\002 \001(\r\022\023\n\013is"
-    "_complete\030\003 \001(\010\"\241\001\n\016UploadMovieReq\022\022\n\nmo"
-    "vie_name\030\001 \001(\t\022\023\n\013description\030\002 \001(\t\022\022\n\nc"
-    "over_data\030\003 \001(\014\022\024\n\014cover_suffix\030\004 \001(\t\022\021\n"
-    "\tvideo_md5\030\005 \001(\t\022\023\n\013encrypt_key\030\006 \001(\t\022\024\n"
-    "\014duration_sec\030\007 \001(\r\"&\n\016UploadMovieRsp\022\024\n"
-    "\014new_movie_id\030\001 \001(\004\"\223\001\n\tMovieInfo\022\020\n\010mov"
-    "ie_id\030\001 \001(\004\022\022\n\nmovie_name\030\002 \001(\t\022\021\n\tcover"
-    "_url\030\003 \001(\t\022\023\n\013play_status\030\004 \001(\005\022\020\n\010file_"
-    "md5\030\005 \001(\t\022\021\n\tfile_size\030\006 \001(\004\022\023\n\013encrypt_"
-    "key\030\007 \001(\t\"8\n\017GetMovieListReq\022\022\n\npage_ind"
-    "ex\030\001 \001(\r\022\021\n\tpage_size\030\002 \001(\r\"7\n\017GetMovieL"
-    "istRsp\022$\n\006movies\030\001 \003(\0132\024.ServerApi.Movie"
-    "Info\"9\n\020DownloadChunkReq\022\020\n\010file_md5\030\001 \001"
-    "(\t\022\023\n\013chunk_index\030\002 \001(\r\"^\n\020DownloadChunk"
-    "Rsp\022\020\n\010file_md5\030\001 \001(\t\022\023\n\013chunk_index\030\002 \001"
-    "(\r\022\022\n\nchunk_data\030\003 \001(\014\022\017\n\007is_last\030\004 \001(\010\""
-    "$\n\020DownloadCoverReq\022\020\n\010file_md5\030\001 \001(\t\"L\n"
-    "\020DownloadCoverRsp\022\020\n\010file_md5\030\001 \001(\t\022\022\n\nc"
-    "over_name\030\002 \001(\t\022\022\n\ncover_data\030\003 \001(\014\"\225\001\n\n"
-    "PlayRecord\022\021\n\trecord_id\030\001 \001(\004\022\022\n\nmovie_n"
-    "ame\030\002 \001(\t\022\021\n\tplay_date\030\003 \001(\t\022\022\n\nstart_ti"
-    "me\030\004 \001(\t\022\020\n\010end_time\030\005 \001(\t\022\025\n\roperator_n"
-    "ame\030\006 \001(\t\022\020\n\010end_type\030\007 \001(\t\"5\n\014AddRecord"
-    "Req\022%\n\006record\030\001 \001(\0132\025.ServerApi.PlayReco"
-    "rd\"%\n\014AddRecordRsp\022\025\n\rnew_record_id\030\001 \001("
-    "\004\"K\n\rGetRecordsReq\022\023\n\013target_date\030\001 \001(\t\022"
-    "\022\n\npage_index\030\002 \001(\r\022\021\n\tpage_size\030\003 \001(\r\"L"
-    "\n\rGetRecordsRsp\022&\n\007records\030\001 \003(\0132\025.Serve"
-    "rApi.PlayRecord\022\023\n\013total_count\030\002 \001(\r\"$\n\017"
-    "DeleteRecordReq\022\021\n\trecord_id\030\001 \001(\004\"%\n\017De"
-    "leteRecordRsp\022\022\n\ndeleted_id\030\001 \001(\004\"\244\001\n\010Ga"
-    "meInfo\022\017\n\007game_id\030\001 \001(\004\022\021\n\tgame_name\030\002 \001"
-    "(\t\022\017\n\007version\030\003 \001(\t\022\021\n\tcover_url\030\004 \001(\t\022\023"
-    "\n\013package_md5\030\005 \001(\t\022\024\n\014package_size\030\006 \001("
-    "\004\022\020\n\010exe_path\030\007 \001(\t\022\023\n\013description\030\010 \001(\t"
-    "\"\231\001\n\rUploadGameReq\022\021\n\tgame_name\030\001 \001(\t\022\017\n"
-    "\007version\030\002 \001(\t\022\023\n\013description\030\003 \001(\t\022\022\n\nc"
-    "over_data\030\004 \001(\014\022\024\n\014cover_suffix\030\005 \001(\t\022\023\n"
-    "\013package_md5\030\006 \001(\t\022\020\n\010exe_path\030\007 \001(\t\" \n\r"
-    "UploadGameRsp\022\017\n\007game_id\030\001 \001(\004\"7\n\016GetGam"
-    "eListReq\022\022\n\npage_index\030\001 \001(\r\022\021\n\tpage_siz"
-    "e\030\002 \001(\r\"I\n\016GetGameListRsp\022\"\n\005games\030\001 \003(\013"
-    "2\023.ServerApi.GameInfo\022\023\n\013total_count\030\002 \001"
-    "(\r\" \n\rDeleteGameReq\022\017\n\007game_id\030\001 \001(\004\"#\n\r"
-    "DeleteGameRsp\022\022\n\ndeleted_id\030\001 \001(\004b\006proto"
-    "3"
+    "\n\020server_msg.proto\022\tServerApi\032\014common.pr"
+    "oto\".\n\010LoginReq\022\020\n\010username\030\001 \001(\t\022\020\n\010pas"
+    "sword\030\002 \001(\t\"F\n\010LoginRsp\022\023\n\013server_time\030\001"
+    " \001(\003\022\021\n\tshop_name\030\002 \001(\t\022\022\n\npermission\030\003 "
+    "\001(\005\"\036\n\tHeartbeat\022\021\n\ttimestamp\030\001 \001(\003\"\232\001\n\016"
+    "UploadChunkReq\022\020\n\010file_md5\030\001 \001(\t\022\023\n\013chun"
+    "k_index\030\002 \001(\r\022\024\n\014chunk_offset\030\003 \001(\004\022\022\n\nc"
+    "hunk_data\030\004 \001(\014\022\017\n\007is_last\030\005 \001(\010\022&\n\tfile"
+    "_type\030\006 \001(\0162\023.ServerApi.FileType\"t\n\016Uplo"
+    "adChunkRsp\022\020\n\010file_md5\030\001 \001(\t\022\023\n\013chunk_in"
+    "dex\030\002 \001(\r\022\023\n\013is_complete\030\003 \001(\010\022&\n\tfile_t"
+    "ype\030\004 \001(\0162\023.ServerApi.FileType\"\241\001\n\016Uploa"
+    "dMovieReq\022\022\n\nmovie_name\030\001 \001(\t\022\023\n\013descrip"
+    "tion\030\002 \001(\t\022\022\n\ncover_data\030\003 \001(\014\022\024\n\014cover_"
+    "suffix\030\004 \001(\t\022\021\n\tvideo_md5\030\005 \001(\t\022\023\n\013encry"
+    "pt_key\030\006 \001(\t\022\024\n\014duration_sec\030\007 \001(\r\"&\n\016Up"
+    "loadMovieRsp\022\024\n\014new_movie_id\030\001 \001(\004\"\223\001\n\tM"
+    "ovieInfo\022\020\n\010movie_id\030\001 \001(\004\022\022\n\nmovie_name"
+    "\030\002 \001(\t\022\021\n\tcover_url\030\003 \001(\t\022\023\n\013play_status"
+    "\030\004 \001(\005\022\020\n\010file_md5\030\005 \001(\t\022\021\n\tfile_size\030\006 "
+    "\001(\004\022\023\n\013encrypt_key\030\007 \001(\t\"8\n\017GetMovieList"
+    "Req\022\022\n\npage_index\030\001 \001(\r\022\021\n\tpage_size\030\002 \001"
+    "(\r\"7\n\017GetMovieListRsp\022$\n\006movies\030\001 \003(\0132\024."
+    "ServerApi.MovieInfo\"a\n\020DownloadChunkReq\022"
+    "\020\n\010file_md5\030\001 \001(\t\022\023\n\013chunk_index\030\002 \001(\r\022&"
+    "\n\tfile_type\030\003 \001(\0162\023.ServerApi.FileType\"\206"
+    "\001\n\020DownloadChunkRsp\022\020\n\010file_md5\030\001 \001(\t\022\023\n"
+    "\013chunk_index\030\002 \001(\r\022\022\n\nchunk_data\030\003 \001(\014\022\017"
+    "\n\007is_last\030\004 \001(\010\022&\n\tfile_type\030\005 \001(\0162\023.Ser"
+    "verApi.FileType\"L\n\020DownloadCoverReq\022\020\n\010f"
+    "ile_md5\030\001 \001(\t\022&\n\tfile_type\030\002 \001(\0162\023.Serve"
+    "rApi.FileType\"t\n\020DownloadCoverRsp\022\020\n\010fil"
+    "e_md5\030\001 \001(\t\022\022\n\ncover_name\030\002 \001(\t\022\022\n\ncover"
+    "_data\030\003 \001(\014\022&\n\tfile_type\030\004 \001(\0162\023.ServerA"
+    "pi.FileType\"\225\001\n\nPlayRecord\022\021\n\trecord_id\030"
+    "\001 \001(\004\022\022\n\nmovie_name\030\002 \001(\t\022\021\n\tplay_date\030\003"
+    " \001(\t\022\022\n\nstart_time\030\004 \001(\t\022\020\n\010end_time\030\005 \001"
+    "(\t\022\025\n\roperator_name\030\006 \001(\t\022\020\n\010end_type\030\007 "
+    "\001(\t\"5\n\014AddRecordReq\022%\n\006record\030\001 \001(\0132\025.Se"
+    "rverApi.PlayRecord\"%\n\014AddRecordRsp\022\025\n\rne"
+    "w_record_id\030\001 \001(\004\"K\n\rGetRecordsReq\022\023\n\013ta"
+    "rget_date\030\001 \001(\t\022\022\n\npage_index\030\002 \001(\r\022\021\n\tp"
+    "age_size\030\003 \001(\r\"L\n\rGetRecordsRsp\022&\n\007recor"
+    "ds\030\001 \003(\0132\025.ServerApi.PlayRecord\022\023\n\013total"
+    "_count\030\002 \001(\r\"$\n\017DeleteRecordReq\022\021\n\trecor"
+    "d_id\030\001 \001(\004\"%\n\017DeleteRecordRsp\022\022\n\ndeleted"
+    "_id\030\001 \001(\004\"\244\001\n\010GameInfo\022\017\n\007game_id\030\001 \001(\004\022"
+    "\021\n\tgame_name\030\002 \001(\t\022\017\n\007version\030\003 \001(\t\022\021\n\tc"
+    "over_url\030\004 \001(\t\022\023\n\013package_md5\030\005 \001(\t\022\024\n\014p"
+    "ackage_size\030\006 \001(\004\022\020\n\010exe_path\030\007 \001(\t\022\023\n\013d"
+    "escription\030\010 \001(\t\"\231\001\n\rUploadGameReq\022\021\n\tga"
+    "me_name\030\001 \001(\t\022\017\n\007version\030\002 \001(\t\022\023\n\013descri"
+    "ption\030\003 \001(\t\022\022\n\ncover_data\030\004 \001(\014\022\024\n\014cover"
+    "_suffix\030\005 \001(\t\022\023\n\013package_md5\030\006 \001(\t\022\020\n\010ex"
+    "e_path\030\007 \001(\t\" \n\rUploadGameRsp\022\017\n\007game_id"
+    "\030\001 \001(\004\"7\n\016GetGameListReq\022\022\n\npage_index\030\001"
+    " \001(\r\022\021\n\tpage_size\030\002 \001(\r\"I\n\016GetGameListRs"
+    "p\022\"\n\005games\030\001 \003(\0132\023.ServerApi.GameInfo\022\023\n"
+    "\013total_count\030\002 \001(\r\" \n\rDeleteGameReq\022\017\n\007g"
+    "ame_id\030\001 \001(\004\"#\n\rDeleteGameRsp\022\022\n\ndeleted"
+    "_id\030\001 \001(\004b\006proto3"
+};
+static const ::_pbi::DescriptorTable* const descriptor_table_server_5fmsg_2eproto_deps[1] =
+    {
+        &::descriptor_table_common_2eproto,
 };
 static ::absl::once_flag descriptor_table_server_5fmsg_2eproto_once;
 PROTOBUF_CONSTINIT const ::_pbi::DescriptorTable descriptor_table_server_5fmsg_2eproto = {
     false,
     false,
-    2161,
+    2417,
     descriptor_table_protodef_server_5fmsg_2eproto,
     "server_msg.proto",
     &descriptor_table_server_5fmsg_2eproto_once,
-    nullptr,
-    0,
+    descriptor_table_server_5fmsg_2eproto_deps,
+    1,
     28,
     schemas,
     file_default_instances,
@@ -2118,9 +2140,9 @@ UploadChunkReq::UploadChunkReq(
                offsetof(Impl_, chunk_offset_),
            reinterpret_cast<const char *>(&from._impl_) +
                offsetof(Impl_, chunk_offset_),
-           offsetof(Impl_, is_last_) -
+           offsetof(Impl_, file_type_) -
                offsetof(Impl_, chunk_offset_) +
-               sizeof(Impl_::is_last_));
+               sizeof(Impl_::file_type_));
 
   // @@protoc_insertion_point(copy_constructor:ServerApi.UploadChunkReq)
 }
@@ -2136,9 +2158,9 @@ inline void UploadChunkReq::SharedCtor(::_pb::Arena* arena) {
   ::memset(reinterpret_cast<char *>(&_impl_) +
                offsetof(Impl_, chunk_offset_),
            0,
-           offsetof(Impl_, is_last_) -
+           offsetof(Impl_, file_type_) -
                offsetof(Impl_, chunk_offset_) +
-               sizeof(Impl_::is_last_));
+               sizeof(Impl_::file_type_));
 }
 UploadChunkReq::~UploadChunkReq() {
   // @@protoc_insertion_point(destructor:ServerApi.UploadChunkReq)
@@ -2189,15 +2211,15 @@ const ::google::protobuf::internal::ClassData* UploadChunkReq::GetClassData() co
   return _class_data_.base();
 }
 PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
-const ::_pbi::TcParseTable<3, 5, 0, 41, 2> UploadChunkReq::_table_ = {
+const ::_pbi::TcParseTable<3, 6, 0, 41, 2> UploadChunkReq::_table_ = {
   {
     0,  // no _has_bits_
     0, // no _extensions_
-    5, 56,  // max_field_number, fast_idx_mask
+    6, 56,  // max_field_number, fast_idx_mask
     offsetof(decltype(_table_), field_lookup_table),
-    4294967264,  // skipmap
+    4294967232,  // skipmap
     offsetof(decltype(_table_), field_entries),
-    5,  // num_field_entries
+    6,  // num_field_entries
     0,  // num_aux_entries
     offsetof(decltype(_table_), field_names),  // no aux_entries
     _class_data_.base(),
@@ -2223,7 +2245,9 @@ const ::_pbi::TcParseTable<3, 5, 0, 41, 2> UploadChunkReq::_table_ = {
     // bool is_last = 5;
     {::_pbi::TcParser::SingularVarintNoZag1<bool, offsetof(UploadChunkReq, _impl_.is_last_), 63>(),
      {40, 63, 0, PROTOBUF_FIELD_OFFSET(UploadChunkReq, _impl_.is_last_)}},
-    {::_pbi::TcParser::MiniParse, {}},
+    // .ServerApi.FileType file_type = 6;
+    {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(UploadChunkReq, _impl_.file_type_), 63>(),
+     {48, 63, 0, PROTOBUF_FIELD_OFFSET(UploadChunkReq, _impl_.file_type_)}},
     {::_pbi::TcParser::MiniParse, {}},
   }}, {{
     65535, 65535
@@ -2243,6 +2267,9 @@ const ::_pbi::TcParseTable<3, 5, 0, 41, 2> UploadChunkReq::_table_ = {
     // bool is_last = 5;
     {PROTOBUF_FIELD_OFFSET(UploadChunkReq, _impl_.is_last_), 0, 0,
     (0 | ::_fl::kFcSingular | ::_fl::kBool)},
+    // .ServerApi.FileType file_type = 6;
+    {PROTOBUF_FIELD_OFFSET(UploadChunkReq, _impl_.file_type_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kOpenEnum)},
   }},
   // no aux_entries
   {{
@@ -2262,8 +2289,8 @@ PROTOBUF_NOINLINE void UploadChunkReq::Clear() {
   _impl_.file_md5_.ClearToEmpty();
   _impl_.chunk_data_.ClearToEmpty();
   ::memset(&_impl_.chunk_offset_, 0, static_cast<::size_t>(
-      reinterpret_cast<char*>(&_impl_.is_last_) -
-      reinterpret_cast<char*>(&_impl_.chunk_offset_)) + sizeof(_impl_.is_last_));
+      reinterpret_cast<char*>(&_impl_.file_type_) -
+      reinterpret_cast<char*>(&_impl_.chunk_offset_)) + sizeof(_impl_.file_type_));
   _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
 }
 
@@ -2317,6 +2344,13 @@ PROTOBUF_NOINLINE void UploadChunkReq::Clear() {
                 5, this_._internal_is_last(), target);
           }
 
+          // .ServerApi.FileType file_type = 6;
+          if (this_._internal_file_type() != 0) {
+            target = stream->EnsureSpace(target);
+            target = ::_pbi::WireFormatLite::WriteEnumToArray(
+                6, this_._internal_file_type(), target);
+          }
+
           if (PROTOBUF_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
             target =
                 ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
@@ -2366,6 +2400,11 @@ PROTOBUF_NOINLINE void UploadChunkReq::Clear() {
             if (this_._internal_is_last() != 0) {
               total_size += 2;
             }
+            // .ServerApi.FileType file_type = 6;
+            if (this_._internal_file_type() != 0) {
+              total_size += 1 +
+                            ::_pbi::WireFormatLite::EnumSize(this_._internal_file_type());
+            }
           }
           return this_.MaybeComputeUnknownFieldsSize(total_size,
                                                      &this_._impl_._cached_size_);
@@ -2394,6 +2433,9 @@ void UploadChunkReq::MergeImpl(::google::protobuf::MessageLite& to_msg, const ::
   if (from._internal_is_last() != 0) {
     _this->_impl_.is_last_ = from._impl_.is_last_;
   }
+  if (from._internal_file_type() != 0) {
+    _this->_impl_.file_type_ = from._impl_.file_type_;
+  }
   _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
 }
 
@@ -2413,8 +2455,8 @@ void UploadChunkReq::InternalSwap(UploadChunkReq* PROTOBUF_RESTRICT other) {
   ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.file_md5_, &other->_impl_.file_md5_, arena);
   ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.chunk_data_, &other->_impl_.chunk_data_, arena);
   ::google::protobuf::internal::memswap<
-      PROTOBUF_FIELD_OFFSET(UploadChunkReq, _impl_.is_last_)
-      + sizeof(UploadChunkReq::_impl_.is_last_)
+      PROTOBUF_FIELD_OFFSET(UploadChunkReq, _impl_.file_type_)
+      + sizeof(UploadChunkReq::_impl_.file_type_)
       - PROTOBUF_FIELD_OFFSET(UploadChunkReq, _impl_.chunk_offset_)>(
           reinterpret_cast<char*>(&_impl_.chunk_offset_),
           reinterpret_cast<char*>(&other->_impl_.chunk_offset_));
@@ -2461,9 +2503,9 @@ UploadChunkRsp::UploadChunkRsp(
                offsetof(Impl_, chunk_index_),
            reinterpret_cast<const char *>(&from._impl_) +
                offsetof(Impl_, chunk_index_),
-           offsetof(Impl_, is_complete_) -
+           offsetof(Impl_, file_type_) -
                offsetof(Impl_, chunk_index_) +
-               sizeof(Impl_::is_complete_));
+               sizeof(Impl_::file_type_));
 
   // @@protoc_insertion_point(copy_constructor:ServerApi.UploadChunkRsp)
 }
@@ -2478,9 +2520,9 @@ inline void UploadChunkRsp::SharedCtor(::_pb::Arena* arena) {
   ::memset(reinterpret_cast<char *>(&_impl_) +
                offsetof(Impl_, chunk_index_),
            0,
-           offsetof(Impl_, is_complete_) -
+           offsetof(Impl_, file_type_) -
                offsetof(Impl_, chunk_index_) +
-               sizeof(Impl_::is_complete_));
+               sizeof(Impl_::file_type_));
 }
 UploadChunkRsp::~UploadChunkRsp() {
   // @@protoc_insertion_point(destructor:ServerApi.UploadChunkRsp)
@@ -2530,15 +2572,15 @@ const ::google::protobuf::internal::ClassData* UploadChunkRsp::GetClassData() co
   return _class_data_.base();
 }
 PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
-const ::_pbi::TcParseTable<2, 3, 0, 41, 2> UploadChunkRsp::_table_ = {
+const ::_pbi::TcParseTable<2, 4, 0, 41, 2> UploadChunkRsp::_table_ = {
   {
     0,  // no _has_bits_
     0, // no _extensions_
-    3, 24,  // max_field_number, fast_idx_mask
+    4, 24,  // max_field_number, fast_idx_mask
     offsetof(decltype(_table_), field_lookup_table),
-    4294967288,  // skipmap
+    4294967280,  // skipmap
     offsetof(decltype(_table_), field_entries),
-    3,  // num_field_entries
+    4,  // num_field_entries
     0,  // num_aux_entries
     offsetof(decltype(_table_), field_names),  // no aux_entries
     _class_data_.base(),
@@ -2548,7 +2590,9 @@ const ::_pbi::TcParseTable<2, 3, 0, 41, 2> UploadChunkRsp::_table_ = {
     ::_pbi::TcParser::GetTable<::ServerApi::UploadChunkRsp>(),  // to_prefetch
     #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
   }, {{
-    {::_pbi::TcParser::MiniParse, {}},
+    // .ServerApi.FileType file_type = 4;
+    {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(UploadChunkRsp, _impl_.file_type_), 63>(),
+     {32, 63, 0, PROTOBUF_FIELD_OFFSET(UploadChunkRsp, _impl_.file_type_)}},
     // string file_md5 = 1;
     {::_pbi::TcParser::FastUS1,
      {10, 63, 0, PROTOBUF_FIELD_OFFSET(UploadChunkRsp, _impl_.file_md5_)}},
@@ -2570,6 +2614,9 @@ const ::_pbi::TcParseTable<2, 3, 0, 41, 2> UploadChunkRsp::_table_ = {
     // bool is_complete = 3;
     {PROTOBUF_FIELD_OFFSET(UploadChunkRsp, _impl_.is_complete_), 0, 0,
     (0 | ::_fl::kFcSingular | ::_fl::kBool)},
+    // .ServerApi.FileType file_type = 4;
+    {PROTOBUF_FIELD_OFFSET(UploadChunkRsp, _impl_.file_type_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kOpenEnum)},
   }},
   // no aux_entries
   {{
@@ -2588,8 +2635,8 @@ PROTOBUF_NOINLINE void UploadChunkRsp::Clear() {
 
   _impl_.file_md5_.ClearToEmpty();
   ::memset(&_impl_.chunk_index_, 0, static_cast<::size_t>(
-      reinterpret_cast<char*>(&_impl_.is_complete_) -
-      reinterpret_cast<char*>(&_impl_.chunk_index_)) + sizeof(_impl_.is_complete_));
+      reinterpret_cast<char*>(&_impl_.file_type_) -
+      reinterpret_cast<char*>(&_impl_.chunk_index_)) + sizeof(_impl_.file_type_));
   _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
 }
 
@@ -2628,6 +2675,13 @@ PROTOBUF_NOINLINE void UploadChunkRsp::Clear() {
             target = stream->EnsureSpace(target);
             target = ::_pbi::WireFormatLite::WriteBoolToArray(
                 3, this_._internal_is_complete(), target);
+          }
+
+          // .ServerApi.FileType file_type = 4;
+          if (this_._internal_file_type() != 0) {
+            target = stream->EnsureSpace(target);
+            target = ::_pbi::WireFormatLite::WriteEnumToArray(
+                4, this_._internal_file_type(), target);
           }
 
           if (PROTOBUF_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
@@ -2669,6 +2723,11 @@ PROTOBUF_NOINLINE void UploadChunkRsp::Clear() {
             if (this_._internal_is_complete() != 0) {
               total_size += 2;
             }
+            // .ServerApi.FileType file_type = 4;
+            if (this_._internal_file_type() != 0) {
+              total_size += 1 +
+                            ::_pbi::WireFormatLite::EnumSize(this_._internal_file_type());
+            }
           }
           return this_.MaybeComputeUnknownFieldsSize(total_size,
                                                      &this_._impl_._cached_size_);
@@ -2691,6 +2750,9 @@ void UploadChunkRsp::MergeImpl(::google::protobuf::MessageLite& to_msg, const ::
   if (from._internal_is_complete() != 0) {
     _this->_impl_.is_complete_ = from._impl_.is_complete_;
   }
+  if (from._internal_file_type() != 0) {
+    _this->_impl_.file_type_ = from._impl_.file_type_;
+  }
   _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
 }
 
@@ -2709,8 +2771,8 @@ void UploadChunkRsp::InternalSwap(UploadChunkRsp* PROTOBUF_RESTRICT other) {
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
   ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.file_md5_, &other->_impl_.file_md5_, arena);
   ::google::protobuf::internal::memswap<
-      PROTOBUF_FIELD_OFFSET(UploadChunkRsp, _impl_.is_complete_)
-      + sizeof(UploadChunkRsp::_impl_.is_complete_)
+      PROTOBUF_FIELD_OFFSET(UploadChunkRsp, _impl_.file_type_)
+      + sizeof(UploadChunkRsp::_impl_.file_type_)
       - PROTOBUF_FIELD_OFFSET(UploadChunkRsp, _impl_.chunk_index_)>(
           reinterpret_cast<char*>(&_impl_.chunk_index_),
           reinterpret_cast<char*>(&other->_impl_.chunk_index_));
@@ -4240,7 +4302,13 @@ DownloadChunkReq::DownloadChunkReq(
   _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
       from._internal_metadata_);
   new (&_impl_) Impl_(internal_visibility(), arena, from._impl_, from);
-  _impl_.chunk_index_ = from._impl_.chunk_index_;
+  ::memcpy(reinterpret_cast<char *>(&_impl_) +
+               offsetof(Impl_, chunk_index_),
+           reinterpret_cast<const char *>(&from._impl_) +
+               offsetof(Impl_, chunk_index_),
+           offsetof(Impl_, file_type_) -
+               offsetof(Impl_, chunk_index_) +
+               sizeof(Impl_::file_type_));
 
   // @@protoc_insertion_point(copy_constructor:ServerApi.DownloadChunkReq)
 }
@@ -4252,7 +4320,12 @@ inline PROTOBUF_NDEBUG_INLINE DownloadChunkReq::Impl_::Impl_(
 
 inline void DownloadChunkReq::SharedCtor(::_pb::Arena* arena) {
   new (&_impl_) Impl_(internal_visibility(), arena);
-  _impl_.chunk_index_ = {};
+  ::memset(reinterpret_cast<char *>(&_impl_) +
+               offsetof(Impl_, chunk_index_),
+           0,
+           offsetof(Impl_, file_type_) -
+               offsetof(Impl_, chunk_index_) +
+               sizeof(Impl_::file_type_));
 }
 DownloadChunkReq::~DownloadChunkReq() {
   // @@protoc_insertion_point(destructor:ServerApi.DownloadChunkReq)
@@ -4302,15 +4375,15 @@ const ::google::protobuf::internal::ClassData* DownloadChunkReq::GetClassData() 
   return _class_data_.base();
 }
 PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
-const ::_pbi::TcParseTable<1, 2, 0, 43, 2> DownloadChunkReq::_table_ = {
+const ::_pbi::TcParseTable<2, 3, 0, 43, 2> DownloadChunkReq::_table_ = {
   {
     0,  // no _has_bits_
     0, // no _extensions_
-    2, 8,  // max_field_number, fast_idx_mask
+    3, 24,  // max_field_number, fast_idx_mask
     offsetof(decltype(_table_), field_lookup_table),
-    4294967292,  // skipmap
+    4294967288,  // skipmap
     offsetof(decltype(_table_), field_entries),
-    2,  // num_field_entries
+    3,  // num_field_entries
     0,  // num_aux_entries
     offsetof(decltype(_table_), field_names),  // no aux_entries
     _class_data_.base(),
@@ -4320,12 +4393,16 @@ const ::_pbi::TcParseTable<1, 2, 0, 43, 2> DownloadChunkReq::_table_ = {
     ::_pbi::TcParser::GetTable<::ServerApi::DownloadChunkReq>(),  // to_prefetch
     #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
   }, {{
-    // uint32 chunk_index = 2;
-    {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(DownloadChunkReq, _impl_.chunk_index_), 63>(),
-     {16, 63, 0, PROTOBUF_FIELD_OFFSET(DownloadChunkReq, _impl_.chunk_index_)}},
+    {::_pbi::TcParser::MiniParse, {}},
     // string file_md5 = 1;
     {::_pbi::TcParser::FastUS1,
      {10, 63, 0, PROTOBUF_FIELD_OFFSET(DownloadChunkReq, _impl_.file_md5_)}},
+    // uint32 chunk_index = 2;
+    {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(DownloadChunkReq, _impl_.chunk_index_), 63>(),
+     {16, 63, 0, PROTOBUF_FIELD_OFFSET(DownloadChunkReq, _impl_.chunk_index_)}},
+    // .ServerApi.FileType file_type = 3;
+    {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(DownloadChunkReq, _impl_.file_type_), 63>(),
+     {24, 63, 0, PROTOBUF_FIELD_OFFSET(DownloadChunkReq, _impl_.file_type_)}},
   }}, {{
     65535, 65535
   }}, {{
@@ -4335,6 +4412,9 @@ const ::_pbi::TcParseTable<1, 2, 0, 43, 2> DownloadChunkReq::_table_ = {
     // uint32 chunk_index = 2;
     {PROTOBUF_FIELD_OFFSET(DownloadChunkReq, _impl_.chunk_index_), 0, 0,
     (0 | ::_fl::kFcSingular | ::_fl::kUInt32)},
+    // .ServerApi.FileType file_type = 3;
+    {PROTOBUF_FIELD_OFFSET(DownloadChunkReq, _impl_.file_type_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kOpenEnum)},
   }},
   // no aux_entries
   {{
@@ -4352,7 +4432,9 @@ PROTOBUF_NOINLINE void DownloadChunkReq::Clear() {
   (void) cached_has_bits;
 
   _impl_.file_md5_.ClearToEmpty();
-  _impl_.chunk_index_ = 0u;
+  ::memset(&_impl_.chunk_index_, 0, static_cast<::size_t>(
+      reinterpret_cast<char*>(&_impl_.file_type_) -
+      reinterpret_cast<char*>(&_impl_.chunk_index_)) + sizeof(_impl_.file_type_));
   _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
 }
 
@@ -4384,6 +4466,13 @@ PROTOBUF_NOINLINE void DownloadChunkReq::Clear() {
             target = stream->EnsureSpace(target);
             target = ::_pbi::WireFormatLite::WriteUInt32ToArray(
                 2, this_._internal_chunk_index(), target);
+          }
+
+          // .ServerApi.FileType file_type = 3;
+          if (this_._internal_file_type() != 0) {
+            target = stream->EnsureSpace(target);
+            target = ::_pbi::WireFormatLite::WriteEnumToArray(
+                3, this_._internal_file_type(), target);
           }
 
           if (PROTOBUF_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
@@ -4421,6 +4510,11 @@ PROTOBUF_NOINLINE void DownloadChunkReq::Clear() {
               total_size += ::_pbi::WireFormatLite::UInt32SizePlusOne(
                   this_._internal_chunk_index());
             }
+            // .ServerApi.FileType file_type = 3;
+            if (this_._internal_file_type() != 0) {
+              total_size += 1 +
+                            ::_pbi::WireFormatLite::EnumSize(this_._internal_file_type());
+            }
           }
           return this_.MaybeComputeUnknownFieldsSize(total_size,
                                                      &this_._impl_._cached_size_);
@@ -4440,6 +4534,9 @@ void DownloadChunkReq::MergeImpl(::google::protobuf::MessageLite& to_msg, const 
   if (from._internal_chunk_index() != 0) {
     _this->_impl_.chunk_index_ = from._impl_.chunk_index_;
   }
+  if (from._internal_file_type() != 0) {
+    _this->_impl_.file_type_ = from._impl_.file_type_;
+  }
   _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
 }
 
@@ -4457,7 +4554,12 @@ void DownloadChunkReq::InternalSwap(DownloadChunkReq* PROTOBUF_RESTRICT other) {
   ABSL_DCHECK_EQ(arena, other->GetArena());
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
   ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.file_md5_, &other->_impl_.file_md5_, arena);
-        swap(_impl_.chunk_index_, other->_impl_.chunk_index_);
+  ::google::protobuf::internal::memswap<
+      PROTOBUF_FIELD_OFFSET(DownloadChunkReq, _impl_.file_type_)
+      + sizeof(DownloadChunkReq::_impl_.file_type_)
+      - PROTOBUF_FIELD_OFFSET(DownloadChunkReq, _impl_.chunk_index_)>(
+          reinterpret_cast<char*>(&_impl_.chunk_index_),
+          reinterpret_cast<char*>(&other->_impl_.chunk_index_));
 }
 
 ::google::protobuf::Metadata DownloadChunkReq::GetMetadata() const {
@@ -4502,9 +4604,9 @@ DownloadChunkRsp::DownloadChunkRsp(
                offsetof(Impl_, chunk_index_),
            reinterpret_cast<const char *>(&from._impl_) +
                offsetof(Impl_, chunk_index_),
-           offsetof(Impl_, is_last_) -
+           offsetof(Impl_, file_type_) -
                offsetof(Impl_, chunk_index_) +
-               sizeof(Impl_::is_last_));
+               sizeof(Impl_::file_type_));
 
   // @@protoc_insertion_point(copy_constructor:ServerApi.DownloadChunkRsp)
 }
@@ -4520,9 +4622,9 @@ inline void DownloadChunkRsp::SharedCtor(::_pb::Arena* arena) {
   ::memset(reinterpret_cast<char *>(&_impl_) +
                offsetof(Impl_, chunk_index_),
            0,
-           offsetof(Impl_, is_last_) -
+           offsetof(Impl_, file_type_) -
                offsetof(Impl_, chunk_index_) +
-               sizeof(Impl_::is_last_));
+               sizeof(Impl_::file_type_));
 }
 DownloadChunkRsp::~DownloadChunkRsp() {
   // @@protoc_insertion_point(destructor:ServerApi.DownloadChunkRsp)
@@ -4573,15 +4675,15 @@ const ::google::protobuf::internal::ClassData* DownloadChunkRsp::GetClassData() 
   return _class_data_.base();
 }
 PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
-const ::_pbi::TcParseTable<2, 4, 0, 43, 2> DownloadChunkRsp::_table_ = {
+const ::_pbi::TcParseTable<3, 5, 0, 43, 2> DownloadChunkRsp::_table_ = {
   {
     0,  // no _has_bits_
     0, // no _extensions_
-    4, 24,  // max_field_number, fast_idx_mask
+    5, 56,  // max_field_number, fast_idx_mask
     offsetof(decltype(_table_), field_lookup_table),
-    4294967280,  // skipmap
+    4294967264,  // skipmap
     offsetof(decltype(_table_), field_entries),
-    4,  // num_field_entries
+    5,  // num_field_entries
     0,  // num_aux_entries
     offsetof(decltype(_table_), field_names),  // no aux_entries
     _class_data_.base(),
@@ -4591,9 +4693,7 @@ const ::_pbi::TcParseTable<2, 4, 0, 43, 2> DownloadChunkRsp::_table_ = {
     ::_pbi::TcParser::GetTable<::ServerApi::DownloadChunkRsp>(),  // to_prefetch
     #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
   }, {{
-    // bool is_last = 4;
-    {::_pbi::TcParser::SingularVarintNoZag1<bool, offsetof(DownloadChunkRsp, _impl_.is_last_), 63>(),
-     {32, 63, 0, PROTOBUF_FIELD_OFFSET(DownloadChunkRsp, _impl_.is_last_)}},
+    {::_pbi::TcParser::MiniParse, {}},
     // string file_md5 = 1;
     {::_pbi::TcParser::FastUS1,
      {10, 63, 0, PROTOBUF_FIELD_OFFSET(DownloadChunkRsp, _impl_.file_md5_)}},
@@ -4603,6 +4703,14 @@ const ::_pbi::TcParseTable<2, 4, 0, 43, 2> DownloadChunkRsp::_table_ = {
     // bytes chunk_data = 3;
     {::_pbi::TcParser::FastBS1,
      {26, 63, 0, PROTOBUF_FIELD_OFFSET(DownloadChunkRsp, _impl_.chunk_data_)}},
+    // bool is_last = 4;
+    {::_pbi::TcParser::SingularVarintNoZag1<bool, offsetof(DownloadChunkRsp, _impl_.is_last_), 63>(),
+     {32, 63, 0, PROTOBUF_FIELD_OFFSET(DownloadChunkRsp, _impl_.is_last_)}},
+    // .ServerApi.FileType file_type = 5;
+    {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(DownloadChunkRsp, _impl_.file_type_), 63>(),
+     {40, 63, 0, PROTOBUF_FIELD_OFFSET(DownloadChunkRsp, _impl_.file_type_)}},
+    {::_pbi::TcParser::MiniParse, {}},
+    {::_pbi::TcParser::MiniParse, {}},
   }}, {{
     65535, 65535
   }}, {{
@@ -4618,6 +4726,9 @@ const ::_pbi::TcParseTable<2, 4, 0, 43, 2> DownloadChunkRsp::_table_ = {
     // bool is_last = 4;
     {PROTOBUF_FIELD_OFFSET(DownloadChunkRsp, _impl_.is_last_), 0, 0,
     (0 | ::_fl::kFcSingular | ::_fl::kBool)},
+    // .ServerApi.FileType file_type = 5;
+    {PROTOBUF_FIELD_OFFSET(DownloadChunkRsp, _impl_.file_type_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kOpenEnum)},
   }},
   // no aux_entries
   {{
@@ -4637,8 +4748,8 @@ PROTOBUF_NOINLINE void DownloadChunkRsp::Clear() {
   _impl_.file_md5_.ClearToEmpty();
   _impl_.chunk_data_.ClearToEmpty();
   ::memset(&_impl_.chunk_index_, 0, static_cast<::size_t>(
-      reinterpret_cast<char*>(&_impl_.is_last_) -
-      reinterpret_cast<char*>(&_impl_.chunk_index_)) + sizeof(_impl_.is_last_));
+      reinterpret_cast<char*>(&_impl_.file_type_) -
+      reinterpret_cast<char*>(&_impl_.chunk_index_)) + sizeof(_impl_.file_type_));
   _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
 }
 
@@ -4685,6 +4796,13 @@ PROTOBUF_NOINLINE void DownloadChunkRsp::Clear() {
                 4, this_._internal_is_last(), target);
           }
 
+          // .ServerApi.FileType file_type = 5;
+          if (this_._internal_file_type() != 0) {
+            target = stream->EnsureSpace(target);
+            target = ::_pbi::WireFormatLite::WriteEnumToArray(
+                5, this_._internal_file_type(), target);
+          }
+
           if (PROTOBUF_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
             target =
                 ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
@@ -4729,6 +4847,11 @@ PROTOBUF_NOINLINE void DownloadChunkRsp::Clear() {
             if (this_._internal_is_last() != 0) {
               total_size += 2;
             }
+            // .ServerApi.FileType file_type = 5;
+            if (this_._internal_file_type() != 0) {
+              total_size += 1 +
+                            ::_pbi::WireFormatLite::EnumSize(this_._internal_file_type());
+            }
           }
           return this_.MaybeComputeUnknownFieldsSize(total_size,
                                                      &this_._impl_._cached_size_);
@@ -4754,6 +4877,9 @@ void DownloadChunkRsp::MergeImpl(::google::protobuf::MessageLite& to_msg, const 
   if (from._internal_is_last() != 0) {
     _this->_impl_.is_last_ = from._impl_.is_last_;
   }
+  if (from._internal_file_type() != 0) {
+    _this->_impl_.file_type_ = from._impl_.file_type_;
+  }
   _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
 }
 
@@ -4773,8 +4899,8 @@ void DownloadChunkRsp::InternalSwap(DownloadChunkRsp* PROTOBUF_RESTRICT other) {
   ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.file_md5_, &other->_impl_.file_md5_, arena);
   ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.chunk_data_, &other->_impl_.chunk_data_, arena);
   ::google::protobuf::internal::memswap<
-      PROTOBUF_FIELD_OFFSET(DownloadChunkRsp, _impl_.is_last_)
-      + sizeof(DownloadChunkRsp::_impl_.is_last_)
+      PROTOBUF_FIELD_OFFSET(DownloadChunkRsp, _impl_.file_type_)
+      + sizeof(DownloadChunkRsp::_impl_.file_type_)
       - PROTOBUF_FIELD_OFFSET(DownloadChunkRsp, _impl_.chunk_index_)>(
           reinterpret_cast<char*>(&_impl_.chunk_index_),
           reinterpret_cast<char*>(&other->_impl_.chunk_index_));
@@ -4817,6 +4943,7 @@ DownloadCoverReq::DownloadCoverReq(
   _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
       from._internal_metadata_);
   new (&_impl_) Impl_(internal_visibility(), arena, from._impl_, from);
+  _impl_.file_type_ = from._impl_.file_type_;
 
   // @@protoc_insertion_point(copy_constructor:ServerApi.DownloadCoverReq)
 }
@@ -4828,6 +4955,7 @@ inline PROTOBUF_NDEBUG_INLINE DownloadCoverReq::Impl_::Impl_(
 
 inline void DownloadCoverReq::SharedCtor(::_pb::Arena* arena) {
   new (&_impl_) Impl_(internal_visibility(), arena);
+  _impl_.file_type_ = {};
 }
 DownloadCoverReq::~DownloadCoverReq() {
   // @@protoc_insertion_point(destructor:ServerApi.DownloadCoverReq)
@@ -4877,15 +5005,15 @@ const ::google::protobuf::internal::ClassData* DownloadCoverReq::GetClassData() 
   return _class_data_.base();
 }
 PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
-const ::_pbi::TcParseTable<0, 1, 0, 43, 2> DownloadCoverReq::_table_ = {
+const ::_pbi::TcParseTable<1, 2, 0, 43, 2> DownloadCoverReq::_table_ = {
   {
     0,  // no _has_bits_
     0, // no _extensions_
-    1, 0,  // max_field_number, fast_idx_mask
+    2, 8,  // max_field_number, fast_idx_mask
     offsetof(decltype(_table_), field_lookup_table),
-    4294967294,  // skipmap
+    4294967292,  // skipmap
     offsetof(decltype(_table_), field_entries),
-    1,  // num_field_entries
+    2,  // num_field_entries
     0,  // num_aux_entries
     offsetof(decltype(_table_), field_names),  // no aux_entries
     _class_data_.base(),
@@ -4895,6 +5023,9 @@ const ::_pbi::TcParseTable<0, 1, 0, 43, 2> DownloadCoverReq::_table_ = {
     ::_pbi::TcParser::GetTable<::ServerApi::DownloadCoverReq>(),  // to_prefetch
     #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
   }, {{
+    // .ServerApi.FileType file_type = 2;
+    {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(DownloadCoverReq, _impl_.file_type_), 63>(),
+     {16, 63, 0, PROTOBUF_FIELD_OFFSET(DownloadCoverReq, _impl_.file_type_)}},
     // string file_md5 = 1;
     {::_pbi::TcParser::FastUS1,
      {10, 63, 0, PROTOBUF_FIELD_OFFSET(DownloadCoverReq, _impl_.file_md5_)}},
@@ -4904,6 +5035,9 @@ const ::_pbi::TcParseTable<0, 1, 0, 43, 2> DownloadCoverReq::_table_ = {
     // string file_md5 = 1;
     {PROTOBUF_FIELD_OFFSET(DownloadCoverReq, _impl_.file_md5_), 0, 0,
     (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
+    // .ServerApi.FileType file_type = 2;
+    {PROTOBUF_FIELD_OFFSET(DownloadCoverReq, _impl_.file_type_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kOpenEnum)},
   }},
   // no aux_entries
   {{
@@ -4921,6 +5055,7 @@ PROTOBUF_NOINLINE void DownloadCoverReq::Clear() {
   (void) cached_has_bits;
 
   _impl_.file_md5_.ClearToEmpty();
+  _impl_.file_type_ = 0;
   _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
 }
 
@@ -4947,6 +5082,13 @@ PROTOBUF_NOINLINE void DownloadCoverReq::Clear() {
             target = stream->WriteStringMaybeAliased(1, _s, target);
           }
 
+          // .ServerApi.FileType file_type = 2;
+          if (this_._internal_file_type() != 0) {
+            target = stream->EnsureSpace(target);
+            target = ::_pbi::WireFormatLite::WriteEnumToArray(
+                2, this_._internal_file_type(), target);
+          }
+
           if (PROTOBUF_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
             target =
                 ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
@@ -4970,11 +5112,17 @@ PROTOBUF_NOINLINE void DownloadCoverReq::Clear() {
           // Prevent compiler warnings about cached_has_bits being unused
           (void)cached_has_bits;
 
+          ::_pbi::Prefetch5LinesFrom7Lines(&this_);
            {
             // string file_md5 = 1;
             if (!this_._internal_file_md5().empty()) {
               total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
                                               this_._internal_file_md5());
+            }
+            // .ServerApi.FileType file_type = 2;
+            if (this_._internal_file_type() != 0) {
+              total_size += 1 +
+                            ::_pbi::WireFormatLite::EnumSize(this_._internal_file_type());
             }
           }
           return this_.MaybeComputeUnknownFieldsSize(total_size,
@@ -4991,6 +5139,9 @@ void DownloadCoverReq::MergeImpl(::google::protobuf::MessageLite& to_msg, const 
 
   if (!from._internal_file_md5().empty()) {
     _this->_internal_set_file_md5(from._internal_file_md5());
+  }
+  if (from._internal_file_type() != 0) {
+    _this->_impl_.file_type_ = from._impl_.file_type_;
   }
   _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
 }
@@ -5009,6 +5160,7 @@ void DownloadCoverReq::InternalSwap(DownloadCoverReq* PROTOBUF_RESTRICT other) {
   ABSL_DCHECK_EQ(arena, other->GetArena());
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
   ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.file_md5_, &other->_impl_.file_md5_, arena);
+  swap(_impl_.file_type_, other->_impl_.file_type_);
 }
 
 ::google::protobuf::Metadata DownloadCoverReq::GetMetadata() const {
@@ -5050,6 +5202,7 @@ DownloadCoverRsp::DownloadCoverRsp(
   _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
       from._internal_metadata_);
   new (&_impl_) Impl_(internal_visibility(), arena, from._impl_, from);
+  _impl_.file_type_ = from._impl_.file_type_;
 
   // @@protoc_insertion_point(copy_constructor:ServerApi.DownloadCoverRsp)
 }
@@ -5063,6 +5216,7 @@ inline PROTOBUF_NDEBUG_INLINE DownloadCoverRsp::Impl_::Impl_(
 
 inline void DownloadCoverRsp::SharedCtor(::_pb::Arena* arena) {
   new (&_impl_) Impl_(internal_visibility(), arena);
+  _impl_.file_type_ = {};
 }
 DownloadCoverRsp::~DownloadCoverRsp() {
   // @@protoc_insertion_point(destructor:ServerApi.DownloadCoverRsp)
@@ -5114,15 +5268,15 @@ const ::google::protobuf::internal::ClassData* DownloadCoverRsp::GetClassData() 
   return _class_data_.base();
 }
 PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
-const ::_pbi::TcParseTable<2, 3, 0, 53, 2> DownloadCoverRsp::_table_ = {
+const ::_pbi::TcParseTable<2, 4, 0, 53, 2> DownloadCoverRsp::_table_ = {
   {
     0,  // no _has_bits_
     0, // no _extensions_
-    3, 24,  // max_field_number, fast_idx_mask
+    4, 24,  // max_field_number, fast_idx_mask
     offsetof(decltype(_table_), field_lookup_table),
-    4294967288,  // skipmap
+    4294967280,  // skipmap
     offsetof(decltype(_table_), field_entries),
-    3,  // num_field_entries
+    4,  // num_field_entries
     0,  // num_aux_entries
     offsetof(decltype(_table_), field_names),  // no aux_entries
     _class_data_.base(),
@@ -5132,7 +5286,9 @@ const ::_pbi::TcParseTable<2, 3, 0, 53, 2> DownloadCoverRsp::_table_ = {
     ::_pbi::TcParser::GetTable<::ServerApi::DownloadCoverRsp>(),  // to_prefetch
     #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
   }, {{
-    {::_pbi::TcParser::MiniParse, {}},
+    // .ServerApi.FileType file_type = 4;
+    {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(DownloadCoverRsp, _impl_.file_type_), 63>(),
+     {32, 63, 0, PROTOBUF_FIELD_OFFSET(DownloadCoverRsp, _impl_.file_type_)}},
     // string file_md5 = 1;
     {::_pbi::TcParser::FastUS1,
      {10, 63, 0, PROTOBUF_FIELD_OFFSET(DownloadCoverRsp, _impl_.file_md5_)}},
@@ -5154,6 +5310,9 @@ const ::_pbi::TcParseTable<2, 3, 0, 53, 2> DownloadCoverRsp::_table_ = {
     // bytes cover_data = 3;
     {PROTOBUF_FIELD_OFFSET(DownloadCoverRsp, _impl_.cover_data_), 0, 0,
     (0 | ::_fl::kFcSingular | ::_fl::kBytes | ::_fl::kRepAString)},
+    // .ServerApi.FileType file_type = 4;
+    {PROTOBUF_FIELD_OFFSET(DownloadCoverRsp, _impl_.file_type_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kOpenEnum)},
   }},
   // no aux_entries
   {{
@@ -5174,6 +5333,7 @@ PROTOBUF_NOINLINE void DownloadCoverRsp::Clear() {
   _impl_.file_md5_.ClearToEmpty();
   _impl_.cover_name_.ClearToEmpty();
   _impl_.cover_data_.ClearToEmpty();
+  _impl_.file_type_ = 0;
   _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
 }
 
@@ -5212,6 +5372,13 @@ PROTOBUF_NOINLINE void DownloadCoverRsp::Clear() {
           if (!this_._internal_cover_data().empty()) {
             const std::string& _s = this_._internal_cover_data();
             target = stream->WriteBytesMaybeAliased(3, _s, target);
+          }
+
+          // .ServerApi.FileType file_type = 4;
+          if (this_._internal_file_type() != 0) {
+            target = stream->EnsureSpace(target);
+            target = ::_pbi::WireFormatLite::WriteEnumToArray(
+                4, this_._internal_file_type(), target);
           }
 
           if (PROTOBUF_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
@@ -5254,6 +5421,11 @@ PROTOBUF_NOINLINE void DownloadCoverRsp::Clear() {
               total_size += 1 + ::google::protobuf::internal::WireFormatLite::BytesSize(
                                               this_._internal_cover_data());
             }
+            // .ServerApi.FileType file_type = 4;
+            if (this_._internal_file_type() != 0) {
+              total_size += 1 +
+                            ::_pbi::WireFormatLite::EnumSize(this_._internal_file_type());
+            }
           }
           return this_.MaybeComputeUnknownFieldsSize(total_size,
                                                      &this_._impl_._cached_size_);
@@ -5276,6 +5448,9 @@ void DownloadCoverRsp::MergeImpl(::google::protobuf::MessageLite& to_msg, const 
   if (!from._internal_cover_data().empty()) {
     _this->_internal_set_cover_data(from._internal_cover_data());
   }
+  if (from._internal_file_type() != 0) {
+    _this->_impl_.file_type_ = from._impl_.file_type_;
+  }
   _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
 }
 
@@ -5295,6 +5470,7 @@ void DownloadCoverRsp::InternalSwap(DownloadCoverRsp* PROTOBUF_RESTRICT other) {
   ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.file_md5_, &other->_impl_.file_md5_, arena);
   ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.cover_name_, &other->_impl_.cover_name_, arena);
   ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.cover_data_, &other->_impl_.cover_data_, arena);
+  swap(_impl_.file_type_, other->_impl_.file_type_);
 }
 
 ::google::protobuf::Metadata DownloadCoverRsp::GetMetadata() const {

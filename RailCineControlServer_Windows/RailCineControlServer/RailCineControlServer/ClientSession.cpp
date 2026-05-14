@@ -239,34 +239,37 @@ void ClientSession::InitHandlers()
     // ------------------------------------------------------------------
     m_router[ServerApi::ID_UPLOAD_CHUNK_REQ] = [this](const ServerApi::PacketHeader& header, const QByteArray& bodyData)
         {
-            // 1. 解析请求 (使用智能指针包装，方便跨线程捕获)
             auto req = std::make_shared<ServerApi::UploadChunkReq>();
-            if (!req->ParseFromArray(bodyData.data(), bodyData.size()))
-            {
-                ServerApi::UploadChunkRsp emptyRsp;
-                SendProtoMsg(ServerApi::ID_UPLOAD_CHUNK_RSP, emptyRsp, -1,
-                    ServerApi::ERR_FILE_IO_FAILED, u8"分片上传请求解析失败");
-                return;
-            }
+            if (!req->ParseFromArray(bodyData.data(), bodyData.size())) return;
 
             uint64_t seq_id = header.seq_id();
             QString fileMd5 = QString::fromStdString(req->file_md5());
+            auto file_type = req->file_type();
             std::weak_ptr<ClientSession> weakSelf = weak_from_this();
 
-            // 💡 定义一个通用的分片落盘 Lambda 函数，用于复用
-            auto saveChunkToDisk = [weakSelf, fileMd5](std::shared_ptr<ServerApi::UploadChunkReq> req, uint64_t seq_id)
+            // 👑 1. 根据文件类型，智能分配存储目录和文件后缀
+            QString dirPath = "./UploadedAssets";
+            QString fileExt = ".bin";
+            if (file_type == ServerApi::FILE_MOVIE) {
+                dirPath += "/Movie";
+                fileExt = ".mp4";
+            }
+            else if (file_type == ServerApi::FILE_GAME) {
+                dirPath += "/Game";
+                fileExt = ".tar";
+            }
+            QDir().mkpath(dirPath);
+            QString filePath = dirPath + "/" + fileMd5 + fileExt;
+
+            // 💡 通用的分片落盘 Lambda (现在使用动态的 filePath)
+            auto saveChunkToDisk = [weakSelf, fileMd5, file_type, filePath](std::shared_ptr<ServerApi::UploadChunkReq> req, uint64_t seq_id)
                 {
                     auto strongSelf = weakSelf.lock();
                     if (!strongSelf) return;
 
-                    QString dirPath = "./UploadedAssets";
-                    QDir().mkpath(dirPath);
-                    QString filePath = dirPath + "/" + fileMd5 + ".mp4";
-
-                    // 根据是否是首块，决定是覆盖写还是追加写
                     QIODevice::OpenMode openMode;
                     if (req->chunk_index() == 0) {
-                        openMode = QIODevice::WriteOnly | QIODevice::Truncate; // 即使没删干净，也强行清零重写！
+                        openMode = QIODevice::WriteOnly | QIODevice::Truncate; // 首块强行清零重写
                     }
                     else {
                         openMode = QIODevice::Append;
@@ -276,8 +279,8 @@ void ClientSession::InitHandlers()
                     if (!file.open(openMode))
                     {
                         ServerApi::UploadChunkRsp emptyRsp;
-                        strongSelf->SendProtoMsg(ServerApi::ID_UPLOAD_CHUNK_RSP, emptyRsp, seq_id,
-                            ServerApi::ERR_FILE_IO_FAILED, u8"服务器磁盘写入失败");
+                        emptyRsp.set_file_type(file_type);
+                        strongSelf->SendProtoMsg(ServerApi::ID_UPLOAD_CHUNK_RSP, emptyRsp, seq_id, ServerApi::ERR_FILE_IO_FAILED, u8"服务器磁盘写入失败");
                         return;
                     }
 
@@ -285,75 +288,68 @@ void ClientSession::InitHandlers()
                     file.write(req->chunk_data().data(), req->chunk_data().size());
                     file.close();
 
-                    // 回复确认
                     ServerApi::UploadChunkRsp rsp;
                     rsp.set_file_md5(req->file_md5());
                     rsp.set_chunk_index(req->chunk_index());
                     rsp.set_is_complete(req->is_last());
+                    rsp.set_file_type(file_type);
                     strongSelf->SendProtoMsg(ServerApi::ID_UPLOAD_CHUNK_RSP, rsp, seq_id);
 
                     if (req->is_last()) {
-                        qDebug() << u8"[ClientSession] 视频文件接收完毕，MD5:" << fileMd5;
+                        qDebug() << u8"[ClientSession] 物理文件接收完毕，类型:" << file_type << u8"MD5:" << fileMd5;
                     }
                 };
 
             // ==========================================================
-            // 👑 核心逻辑：如果是第一块分片，先查数据库判定“秒传”
+            // 👑 2. 核心逻辑：首块分片，查表判定“秒传” (区分不同业务表)
             // ==========================================================
             if (req->chunk_index() == 0) {
-                QString sql = "SELECT id FROM t_movie_resource WHERE file_md5 = ?";
+                QString sql;
+                if (file_type == ServerApi::FILE_MOVIE) {
+                    sql = "SELECT id FROM t_movie_resource WHERE file_md5 = ?";
+                }
+                else if (file_type == ServerApi::FILE_GAME) {
+                    sql = "SELECT id FROM game_info WHERE package_md5 = ?"; // 游戏表字段叫 package_md5
+                }
+                else {
+                    return; // 未知类型直接丢弃
+                }
+
                 QList<QVariant> params;
                 params << fileMd5;
 
-                ThreadPool::Instance()->PostQueryTask(sql, [weakSelf, req, seq_id, saveChunkToDisk](const QList<QVariantMap>& results) {
+                ThreadPool::Instance()->PostQueryTask(sql, [weakSelf, req, seq_id, saveChunkToDisk, file_type, filePath](const QList<QVariantMap>& results) {
                     auto strongSelf = weakSelf.lock();
                     if (!strongSelf) return;
 
-                    // A. 命中指纹库：数据库里已经有这个 MD5 了
+                    // A. 命中指纹库：触发秒传
                     if (!results.isEmpty()) {
-                        qDebug() << u8"[ClientSession] 触发秒传机制，拦截上传，MD5:" << QString::fromStdString(req->file_md5());
+                        qDebug() << u8"[ClientSession] 触发秒传机制，拦截上传，类型:" << file_type << u8"MD5:" << QString::fromStdString(req->file_md5());
 
                         ServerApi::UploadChunkRsp rsp;
                         rsp.set_file_md5(req->file_md5());
-                        rsp.set_is_complete(true); // 强行标记为已完成
+                        rsp.set_is_complete(true);
+                        rsp.set_file_type(file_type);
 
-                        // 按照你的要求：返回错误码 ERR_MOVIE_EXISTS，并在 err_msg 填入提示
-                        // 客户端收到此错误后会停止 QTimer 抽水泵并进入下一管线
-                        strongSelf->SendProtoMsg(ServerApi::ID_UPLOAD_CHUNK_RSP, rsp, seq_id,
-                            ServerApi::ERR_MOVIE_EXISTS, u8"秒传成功：服务器已存在该资源。");
+                        // 使用对应的错误码告知客户端秒传成功
+                        auto errCode = (file_type == ServerApi::FILE_GAME) ? ServerApi::ERR_GAME_EXISTS : ServerApi::ERR_MOVIE_EXISTS;
+                        strongSelf->SendProtoMsg(ServerApi::ID_UPLOAD_CHUNK_RSP, rsp, seq_id, errCode, u8"秒传成功：服务器已存在该资源。");
                         return;
                     }
 
-                    // ==========================================================
-                   // B. 未命中：这是一次全新的上传轮回
-                   // 👑 绝杀：物理超度残留文件，防止脏数据污染！
-                   // ==========================================================
-                    QString fileMd5Str = QString::fromStdString(req->file_md5());
-
-                    // 注意：这里的 MovieVideoPath 需要是你存放上传视频的具体目录
-                    QString dirPath = "./UploadedAssets";
-                    QDir().mkpath(dirPath);
-                    QString videoPath = dirPath + fileMd5Str + ".mp4";
-                    QFile residualFile(videoPath);
-
+                    // B. 未命中：清理历史残留并全新落盘
+                    QFile residualFile(filePath);
                     if (residualFile.exists()) {
                         if (residualFile.remove()) {
-                            qDebug() << u8"[ClientSession] 清理历史残留坏文件成功，准备重新接收:" << videoPath;
-                        }
-                        else {
-                            qDebug() << u8"[ClientSession] 警告：残留文件清理失败，可能被占用:" << videoPath;
-                            // 极端情况下，如果旧文件被占用删不掉，强行写入可能会出问题。
-                            // 但为了鲁棒性，这里依然放行，依靠底层的 Truncate 去强行截断它。
+                            qDebug() << u8"[ClientSession] 清理历史残留坏文件成功:" << filePath;
                         }
                     }
 
-                    // 正常执行第一块的物理写入
                     saveChunkToDisk(req, seq_id);
 
                     }, true, params);
             }
             else {
-                // 非首块分片，直接落盘
                 saveChunkToDisk(req, seq_id);
             }
         };
@@ -375,7 +371,7 @@ void ClientSession::InitHandlers()
             QString encryptKey = QString::fromStdString(req.encrypt_key());                                 // 影片加密key
             uint32_t durationSec = req.duration_sec();                                                      // 影片总时长
 
-            QString dirPath = "./UploadedAssets";
+            QString dirPath = "./UploadedAssets/Movie";
             QDir().mkpath(dirPath);
 
             // 1. 海报图片直接落盘
@@ -535,98 +531,120 @@ void ClientSession::InitHandlers()
     // 💡 处理客户端发来的 [海报下载请求]
     // ------------------------------------------------------------------
     m_router[ServerApi::ID_DOWNLOAD_COVER_REQ] = [this](const ServerApi::PacketHeader& header, const QByteArray& bodyData)
-            {
-                uint64_t seq_id = header.seq_id();
-                ServerApi::DownloadCoverReq req;
-                if (!req.ParseFromArray(bodyData.data(), bodyData.size())) return;
+        {
+            uint64_t seq_id = header.seq_id();
+            ServerApi::DownloadCoverReq req;
+            if (!req.ParseFromArray(bodyData.data(), bodyData.size())) return;
 
-                QString fileMd5 = QString::fromStdString(req.file_md5());
+            QString fileMd5 = QString::fromStdString(req.file_md5());
+            auto file_type = req.file_type();
 
-                // 1. 去数据库查一下这张海报的真实存放路径
-                QString sql = "SELECT cover_url FROM t_movie_resource WHERE file_md5 = ?";
-                QList<QVariant> params;
-                params << fileMd5;
+            // 👑 1. 根据文件类型，智能切换要查询的数据表
+            QString sql;
+            if (file_type == ServerApi::FILE_MOVIE) {
+                sql = "SELECT cover_url FROM t_movie_resource WHERE file_md5 = ?";
+            }
+            else if (file_type == ServerApi::FILE_GAME) {
+                sql = "SELECT cover_url FROM game_info WHERE package_md5 = ?"; // 游戏表字段叫 package_md5
+            }
+            else {
+                return; // 未知类型直接抛弃
+            }
 
-                std::weak_ptr<ClientSession> weakSelf = weak_from_this();
-                ThreadPool::Instance()->PostQueryTask(sql, [weakSelf, seq_id, fileMd5](const QList<QVariantMap>& results) {
-                    auto strongSelf = weakSelf.lock();
-                    if (!strongSelf) return;
+            QList<QVariant> params;
+            params << fileMd5;
 
-                    if (results.isEmpty()) return; // 没查到就不理它
+            std::weak_ptr<ClientSession> weakSelf = weak_from_this();
+            ThreadPool::Instance()->PostQueryTask(sql, [weakSelf, seq_id, fileMd5, file_type](const QList<QVariantMap>& results) {
+                auto strongSelf = weakSelf.lock();
+                if (!strongSelf) return;
 
-                    QString coverPath = results.first()["cover_url"].toString();
+                if (results.isEmpty()) return; // 没查到就不理它
 
-                    // 👑 提取真实的文件名 (比如: "70b77e_cover.png")
-                    QString realFileName = QFileInfo(coverPath).fileName();
+                QString coverPath = results.first()["cover_url"].toString();
+                QString realFileName = QFileInfo(coverPath).fileName();
 
-                    // 2. 直接打开硬盘里的图片，一口气读完！
-                    QFile file(coverPath);
-                    if (file.open(QIODevice::ReadOnly)) {
-                        QByteArray coverData = file.readAll();
-                        file.close();
+                // 2. 直接打开硬盘里的图片，一口气读完！
+                QFile file(coverPath);
+                if (file.open(QIODevice::ReadOnly)) {
+                    QByteArray coverData = file.readAll();
+                    file.close();
 
-                        ServerApi::DownloadCoverRsp rsp;
-                        rsp.set_file_md5(fileMd5.toStdString());
-                        rsp.set_cover_name(realFileName.toStdString()); // 传回真实文件名
-                        rsp.set_cover_data(coverData.data(), coverData.size());
+                    ServerApi::DownloadCoverRsp rsp;
+                    rsp.set_file_md5(fileMd5.toStdString());
+                    rsp.set_cover_name(realFileName.toStdString());
+                    rsp.set_cover_data(coverData.data(), coverData.size());
+                    rsp.set_file_type(file_type); // 👑 带回文件类型
 
-                        strongSelf->SendProtoMsg(ServerApi::ID_DOWNLOAD_COVER_RSP, rsp, seq_id);
-                    }
-                    }, true, params);
-            };
+                    strongSelf->SendProtoMsg(ServerApi::ID_DOWNLOAD_COVER_RSP, rsp, seq_id);
+                }
+                }, true, params);
+        };
 
     // ------------------------------------------------------------------
     // 💡 处理客户端发来的 [分片下载请求]
     // ------------------------------------------------------------------
     m_router[ServerApi::ID_DOWNLOAD_CHUNK_REQ] = [this](const ServerApi::PacketHeader& header, const QByteArray& bodyData)
-            {
-                uint64_t seq_id = header.seq_id();
-                ServerApi::DownloadChunkReq req;
-                if (!req.ParseFromArray(bodyData.data(), bodyData.size())) return;
+        {
+            uint64_t seq_id = header.seq_id();
+            ServerApi::DownloadChunkReq req;
+            if (!req.ParseFromArray(bodyData.data(), bodyData.size())) return;
 
-                QString fileMd5 = QString::fromStdString(req.file_md5());
-                uint32_t chunkIndex = req.chunk_index();
+            QString fileMd5 = QString::fromStdString(req.file_md5());
+            uint32_t chunkIndex = req.chunk_index();
+            auto file_type = req.file_type();
 
-                // 1. 绝对的 O(1) 物理寻址，直接拼接路径！
-                QString filePath = "./UploadedAssets/" + fileMd5 + ".mp4";
-                QFile file(filePath);
+            // 👑 1. 根据文件类型，智能拼接不同的物理文件夹和文件后缀
+            QString filePath = "./UploadedAssets";
+            if (file_type == ServerApi::FILE_MOVIE) {
+                filePath += "/Movie/" + fileMd5 + ".mp4";
+            }
+            else if (file_type == ServerApi::FILE_GAME) {
+                filePath += "/Game/" + fileMd5 + ".tar";
+            }
+            else {
+                return; // 未知类型直接抛弃
+            }
 
-                // 2. 尝试以只读模式打开本地文件
-                if (!file.open(QIODevice::ReadOnly)) {
-                    qDebug() << u8"[ClientSession] 下载失败，找不到物理文件:" << filePath;
-                    ServerApi::DownloadChunkRsp emptyRsp;
-                    SendProtoMsg(ServerApi::ID_DOWNLOAD_CHUNK_RSP, emptyRsp, seq_id, ServerApi::ERR_SERVER_INTERNAL, u8"云端文件丢失");
-                    return;
-                }
+            QFile file(filePath);
 
-                // 3. 计算偏移量并跳转 (假设客户端和服务器约定好了每块 1MB)
-                const int CHUNK_SIZE = 1048576;                                                     // 1MB = 1024 * 1024 字节
-                uint64_t offset = (uint64_t)chunkIndex * CHUNK_SIZE;
+            // 2. 尝试以只读模式打开本地文件
+            if (!file.open(QIODevice::ReadOnly)) {
+                qDebug() << u8"[ClientSession] 下载失败，找不到物理文件:" << filePath;
+                ServerApi::DownloadChunkRsp emptyRsp;
+                emptyRsp.set_file_type(file_type); // 记得把类型带上
+                SendProtoMsg(ServerApi::ID_DOWNLOAD_CHUNK_RSP, emptyRsp, seq_id, ServerApi::ERR_SERVER_INTERNAL, u8"云端文件丢失");
+                return;
+            }
 
-                // 如果客户端乱请求，超出了文件大小，直接拦截
-                if (offset >= file.size()) {
-                    file.close();
-                    return;
-                }
+            // 3. 计算偏移量并跳转 (约定每块 1MB)
+            const int CHUNK_SIZE = 1048576;
+            uint64_t offset = (uint64_t)chunkIndex * CHUNK_SIZE;
 
-                // 👑 核心跳转：直接把硬盘磁头拨到目标位置
-                file.seek(offset);
+            if (offset >= file.size()) {
+                file.close();
+                return;
+            }
 
-                // 4. 抽出一块水 (最多读 CHUNK_SIZE，如果到文件末尾了，会自动读剩下的部分)
-                QByteArray chunkData = file.read(CHUNK_SIZE);
-                bool isLast = file.atEnd();                                                         // 判断是不是被榨干了
+            // 核心跳转：直接把硬盘磁头拨到目标位置
+            file.seek(offset);
 
-                file.close();                                                                       // 用完立刻释放句柄
+            // 4. 抽出一块水
+            QByteArray chunkData = file.read(CHUNK_SIZE);
+            bool isLast = file.atEnd();
 
-                // 5. 将这块水装进 Protobuf，通过 TCP 扔回给客户端
-                ServerApi::DownloadChunkRsp rsp;
-                rsp.set_file_md5(req.file_md5());
-                rsp.set_chunk_index(chunkIndex);
-                rsp.set_chunk_data(chunkData.data(), chunkData.size());
-                rsp.set_is_last(isLast);
+            file.close();
 
-                SendProtoMsg(ServerApi::ID_DOWNLOAD_CHUNK_RSP, rsp, seq_id);
-            };
+            // 5. 将这块水装进 Protobuf，通过 TCP 扔回给客户端
+            ServerApi::DownloadChunkRsp rsp;
+            rsp.set_file_md5(req.file_md5());
+            rsp.set_chunk_index(chunkIndex);
+            rsp.set_chunk_data(chunkData.data(), chunkData.size());
+            rsp.set_is_last(isLast);
+            rsp.set_file_type(file_type); // 👑 带回文件类型
+
+            SendProtoMsg(ServerApi::ID_DOWNLOAD_CHUNK_RSP, rsp, seq_id);
+        };
 
     // ------------------------------------------------------------------
     // 💡 处理客户端发来的 [获取播放记录请求]
@@ -754,6 +772,150 @@ void ClientSession::InitHandlers()
                     }
                     }, true, params);
             };
+
+    // ------------------------------------------------------------------
+    // 处理 [游戏上传与版本更新请求]
+    // ------------------------------------------------------------------
+    m_router[ServerApi::ID_UPLOAD_GAME_REQ] = [this](const ServerApi::PacketHeader& header, const QByteArray& bodyData)
+        {
+            uint64_t seq_id = header.seq_id();
+            ServerApi::UploadGameReq req;
+            if (!req.ParseFromArray(bodyData.data(), bodyData.size())) return;
+
+            QString gameName = QString::fromStdString(req.game_name());
+            QString version = QString::fromStdString(req.version());
+            QString desc = QString::fromStdString(req.description());
+            QString packageMd5 = QString::fromStdString(req.package_md5());
+            QString suffix = QString::fromStdString(req.cover_suffix());
+            QString exePath = QString::fromStdString(req.exe_path());
+
+            // 1. 存入游戏海报
+            QString dirPath = "./UploadedAssets/Game";
+            QDir().mkpath(dirPath);
+            QString coverPath = dirPath + "/" + packageMd5 + "_cover" + suffix;
+            QFile coverFile(coverPath);
+            if (coverFile.open(QIODevice::WriteOnly)) {
+                coverFile.write(req.cover_data().data(), req.cover_data().size());
+                coverFile.close();
+            }
+
+            // 2. 获取刚才传完的 .tar 包的大小
+            QString tarPath = dirPath + "/" + packageMd5 + ".tar";
+            qint64 packageSize = QFile(tarPath).size();
+
+            qDebug() << u8"[ClientSession] 准备录入游戏:" << gameName << u8"版本:" << version << u8"大小:" << packageSize;
+
+            std::weak_ptr<ClientSession> weakSelf = weak_from_this();
+
+            // =========================================================================
+            // 👑 神级 SQL 逻辑：利用 UNIQUE KEY (game_name) 实现热更新
+            // 如果表里没这个游戏，就插入新记录；
+            // 如果游戏名存在，就覆盖它的版本号、包MD5、大小、海报路径等，并刷新 update_time
+            // =========================================================================
+            QString sql = "INSERT INTO game_info "
+                "(game_name, version, description, cover_url, package_md5, package_size, exe_path, create_time, update_time) "
+                "VALUES (?, ?, ?, ?, ?, ?, ?, NOW(), NOW()) "
+                "ON DUPLICATE KEY UPDATE "
+                "version = VALUES(version), "
+                "description = VALUES(description), "
+                "cover_url = VALUES(cover_url), "
+                "package_md5 = VALUES(package_md5), "
+                "package_size = VALUES(package_size), "
+                "exe_path = VALUES(exe_path), "
+                "update_time = NOW()";
+
+            QList<QVariant> params;
+            params << gameName << version << desc << coverPath << packageMd5 << packageSize << exePath;
+
+            ThreadPool::Instance()->PostUpdateTask(sql, [weakSelf, seq_id, gameName](bool success) {
+                auto strongSelf = weakSelf.lock();
+                if (!strongSelf) return;
+
+                if (success) {
+                    qDebug() << u8"[ClientSession] 游戏数据入库/更新成功:" << gameName;
+
+                    ServerApi::UploadGameRsp rsp;
+                    // 注意：因为使用了 ON DUPLICATE KEY，主键ID获取比较复杂，通常客户端刷新列表即可，这里返回0即可
+                    rsp.set_game_id(0);
+
+                    strongSelf->SendProtoMsg(ServerApi::ID_UPLOAD_GAME_RSP, rsp, seq_id);
+                }
+                else {
+                    qDebug() << u8"[ClientSession] 游戏录入失败:" << gameName;
+                    strongSelf->SendProtoMsg(ServerApi::ID_UPLOAD_GAME_RSP, ServerApi::UploadGameRsp(), seq_id,
+                        ServerApi::ERR_SERVER_INTERNAL, u8"游戏配置数据写入数据库失败");
+                }
+
+                }, true, params);
+        };
+
+    // ------------------------------------------------------------------
+    // 处理 [获取游戏列表请求]
+    // ------------------------------------------------------------------
+    m_router[ServerApi::ID_GET_GAME_LIST_REQ] = [this](const ServerApi::PacketHeader& header, const QByteArray& bodyData)
+        {
+            uint64_t seq_id = header.seq_id();
+            ServerApi::GetGameListReq req;
+            if (!req.ParseFromArray(bodyData.data(), bodyData.size())) return;
+
+            // 1. 解析分页参数 (防御性编程，防止出现 0)
+            uint32_t pageIndex = req.page_index() > 0 ? req.page_index() : 1;
+            uint32_t pageSize = req.page_size() > 0 ? req.page_size() : 20;
+            uint32_t offset = (pageIndex - 1) * pageSize;
+
+            std::weak_ptr<ClientSession> weakSelf = weak_from_this();
+
+            // =========================================================================
+            // 🌊 异步瀑布流 Step 1：查询游戏总数 (total_count)
+            // =========================================================================
+            QString countSql = "SELECT COUNT(*) AS total FROM game_info";
+
+            ThreadPool::Instance()->PostQueryTask(countSql, [weakSelf, seq_id, offset, pageSize](const QList<QVariantMap>& countResults) {
+                auto strongSelf = weakSelf.lock();
+                if (!strongSelf) return;
+
+                uint32_t totalCount = 0;
+                if (!countResults.isEmpty()) {
+                    totalCount = countResults.first()["total"].toUInt();
+                }
+
+                // =========================================================================
+                // 🌊 异步瀑布流 Step 2：查具体的分页数据 (按更新时间倒序，最新的在前面)
+                // =========================================================================
+                QString dataSql = "SELECT * FROM game_info ORDER BY update_time DESC LIMIT ?, ?";
+                QList<QVariant> params;
+                params << offset << pageSize;
+
+                ThreadPool::Instance()->PostQueryTask(dataSql, [weakSelf, seq_id, totalCount](const QList<QVariantMap>& results) {
+                    auto strongSelf2 = weakSelf.lock();
+                    if (!strongSelf2) return;
+
+                    ServerApi::GetGameListRsp rsp;
+                    rsp.set_total_count(totalCount);
+
+                    // 遍历数据库结果，组装 Protobuf 数组
+                    for (const auto& row : results) {
+                        ServerApi::GameInfo* game = rsp.add_games();
+                        game->set_game_id(row["id"].toULongLong());
+                        game->set_game_name(row["game_name"].toString().toStdString());
+                        game->set_version(row["version"].toString().toStdString());
+                        game->set_description(row["description"].toString().toStdString());
+                        game->set_cover_url(row["cover_url"].toString().toStdString());
+                        game->set_package_md5(row["package_md5"].toString().toStdString());
+                        game->set_package_size(row["package_size"].toULongLong());
+                        game->set_exe_path(row["exe_path"].toString().toStdString());
+                    }
+
+                    qDebug() << u8"[ClientSession] 成功获取游戏列表，总数:" << totalCount
+                        << u8"当前页下发:" << results.size() << u8"条记录";
+
+                    // 组装完毕，发射给客户端！
+                    strongSelf2->SendProtoMsg(ServerApi::ID_GET_GAME_LIST_RSP, rsp, seq_id);
+
+                    }, true, params); // 结束 Step 2
+
+                }, true); // 结束 Step 1
+        };
 }
 
 // =========================================================================================

@@ -52,11 +52,28 @@ PlaybackPage::PlaybackPage(QWidget* parent) : QWidget(parent)
 
     // 跨页/跨层监听数据返回
     connect(ThreadPool::Instance()->GetTCPMgr(), &TCPMgr::SigMovieListReceived, this, &PlaybackPage::onMovieListReceived);
+
     // 👑 绑定下载引擎的四大核心信号
-    connect(ThreadPool::Instance()->GetTCPMgr(), &TCPMgr::SigCoverDownloaded, this, &PlaybackPage::onCoverDownloaded);
-    connect(ThreadPool::Instance()->GetTCPMgr(), &TCPMgr::SigDownloadFailed, this, &PlaybackPage::onDownloadFailed);
-    connect(ThreadPool::Instance()->GetTCPMgr(), &TCPMgr::SigDownloadProgress, this, &PlaybackPage::onDownloadProgress);
-    connect(ThreadPool::Instance()->GetTCPMgr(), &TCPMgr::SigDownloadFinished, this, &PlaybackPage::onDownloadFinished);
+    auto tcpMgr = ThreadPool::Instance()->GetTCPMgr();
+    connect(tcpMgr, &TCPMgr::SigCoverDownloaded, this, [this](ServerApi::FileType type, const QString& md5, const QString& path) 
+        {
+            if (type == ServerApi::FILE_MOVIE) this->onCoverDownloaded(md5, path);
+        });
+
+    connect(tcpMgr, &TCPMgr::SigDownloadFailed, this, [this](ServerApi::FileType type, const QString& msg)
+        {
+            if (type == ServerApi::FILE_MOVIE) this->onDownloadFailed(msg);
+        });
+
+    connect(tcpMgr, &TCPMgr::SigDownloadProgress, this, [this](ServerApi::FileType type, const QString& md5, qint64 size) 
+        {
+            if (type == ServerApi::FILE_MOVIE) this->onDownloadProgress(md5, size);
+        });
+
+    connect(tcpMgr, &TCPMgr::SigDownloadFinished, this, [this](ServerApi::FileType type, const QString& md5) 
+        {
+            if (type == ServerApi::FILE_MOVIE) this->onDownloadFinished(md5);
+        });
 
     // 页面初始化时，自动拉取一次
     RefreshMovies();
@@ -422,6 +439,7 @@ void PlaybackPage::onDownloadClicked()
     ServerApi::DownloadChunkReq req;
     req.set_file_md5(m_selectedMovieMd5.toStdString());
     req.set_chunk_index(0); // 🚀 泵机启动，抽第一口水
+    req.set_file_type(ServerApi::FILE_MOVIE);
 
     // 发射给服务器
     ThreadPool::Instance()->GetTCPMgr()->SendProtoMsg(ServerApi::MsgId::ID_DOWNLOAD_CHUNK_REQ, req);
@@ -585,6 +603,7 @@ void PlaybackPage::onMovieListReceived(const ServerApi::GetMovieListRsp& rsp)
                                 {
                                     ServerApi::DownloadCoverReq coverReq;
                                     coverReq.set_file_md5(data.fileMd5.toStdString());
+                                    coverReq.set_file_type(ServerApi::FILE_MOVIE);
                                     ThreadPool::Instance()->GetTCPMgr()->SendProtoMsg(ServerApi::MsgId::ID_DOWNLOAD_COVER_REQ, coverReq);
                                 }
 

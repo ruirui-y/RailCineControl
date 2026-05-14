@@ -56,7 +56,7 @@ struct PacketHeaderDefaultTypeInternal {
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
     PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 PacketHeaderDefaultTypeInternal _PacketHeader_default_instance_;
 }  // namespace ServerApi
-static const ::_pb::EnumDescriptor* file_level_enum_descriptors_common_2eproto[2];
+static const ::_pb::EnumDescriptor* file_level_enum_descriptors_common_2eproto[3];
 static constexpr const ::_pb::ServiceDescriptor**
     file_level_service_descriptors_common_2eproto = nullptr;
 const ::uint32_t
@@ -110,13 +110,15 @@ const char descriptor_table_protodef_common_2eproto[] ABSL_ATTRIBUTE_SECTION_VAR
     "G_PWD\020\002\022\026\n\022ERR_ACCOUNT_IN_USE\020\003\022\027\n\023ERR_A"
     "CCOUNT_EXPIRED\020\004\022\024\n\020ERR_MOVIE_EXISTS\020\005\022\026"
     "\n\022ERR_FILE_IO_FAILED\020\006\022\024\n\020ERR_MD5_MISMAT"
-    "CH\020\007\022\023\n\017ERR_GAME_EXISTS\020\010b\006proto3"
+    "CH\020\007\022\023\n\017ERR_GAME_EXISTS\020\010*;\n\010FileType\022\020\n"
+    "\014FILE_UNKNOWN\020\000\022\016\n\nFILE_MOVIE\020\001\022\r\n\tFILE_"
+    "GAME\020\002b\006proto3"
 };
 static ::absl::once_flag descriptor_table_common_2eproto_once;
 PROTOBUF_CONSTINIT const ::_pbi::DescriptorTable descriptor_table_common_2eproto = {
     false,
     false,
-    1033,
+    1094,
     descriptor_table_protodef_common_2eproto,
     "common.proto",
     &descriptor_table_common_2eproto_once,
@@ -147,6 +149,15 @@ PROTOBUF_CONSTINIT const uint32_t ErrorCode_internal_data_[] = {
     589824u, 0u, };
 bool ErrorCode_IsValid(int value) {
   return 0 <= value && value <= 8;
+}
+const ::google::protobuf::EnumDescriptor* FileType_descriptor() {
+  ::google::protobuf::internal::AssignDescriptors(&descriptor_table_common_2eproto);
+  return file_level_enum_descriptors_common_2eproto[2];
+}
+PROTOBUF_CONSTINIT const uint32_t FileType_internal_data_[] = {
+    196608u, 0u, };
+bool FileType_IsValid(int value) {
+  return 0 <= value && value <= 2;
 }
 // ===================================================================
 

@@ -129,29 +129,31 @@ void TCPMgr::InitHandlers()
     // ------------------------------------------------------------------
     // 注册 [分片上传响应 (ACK)] 的处理逻辑
     // ------------------------------------------------------------------
-    m_router[ServerApi::ID_UPLOAD_CHUNK_RSP] = [this](const ServerApi::PacketHeader& header, const QByteArray& bodyData) {
+    m_router[ServerApi::ID_UPLOAD_CHUNK_RSP] = [this](const ServerApi::PacketHeader& header, const QByteArray& bodyData) 
+        {
+            ServerApi::UploadChunkRsp rsp;
+            ServerApi::FileType fileType = ServerApi::FILE_UNKNOWN;
 
-        // 1. 如果中间某块落盘失败（比如磁盘满了），直接终止上传流程
-        if (header.error_code() != ServerApi::ErrorCode::ERR_SUCCESS) {
-            qDebug() << u8"[TCPMgr] 分片上传致命错误:" << header.error_msg().c_str();
-            emit SigUploadFailed(QString::fromStdString(header.error_msg()));
-            return;
-        }
+            // 1. 尝试解析，提取出枚举类型
+            if (rsp.ParseFromArray(bodyData.data(), bodyData.size())) {
+                fileType = rsp.file_type();
+            }
 
-        // 2. 解析确认包
-        ServerApi::UploadChunkRsp rsp;
-        if (rsp.ParseFromArray(bodyData.data(), bodyData.size())) {
+            // 2. 拦截全局错误
+            if (header.error_code() != ServerApi::ErrorCode::ERR_SUCCESS) {
+                qDebug() << u8"[TCPMgr] 分片上传致命错误:" << header.error_msg().c_str();
+                emit SigChunkUploadFailed(fileType, QString::fromStdString(header.error_msg()));
+                return;
+            }
 
-            // 3. 👑 核心：服务端确认全部收到，通知 UI 开启最终录入管线！
+            // 3. 安全业务分发
             if (rsp.is_complete()) {
-                qDebug() << u8"[TCPMgr] 收到服务端最终分片确认 (is_complete=true)";
-                emit SigAllChunksAcked();
+                qDebug() << u8"[TCPMgr] 收到服务端最终分片确认 (is_complete=true), 引擎类型:" << fileType;
+                emit SigAllChunksAcked(fileType);
             }
-            else
-            {
-                emit SigChunkUploadSuccess();
+            else {
+                emit SigChunkUploadSuccess(fileType);
             }
-        }
         };
 
     // ------------------------------------------------------------------
@@ -162,7 +164,7 @@ void TCPMgr::InitHandlers()
         // 1. 检查有没有业务报错 (比如 MD5 重复)
         if (header.error_code() != ServerApi::ErrorCode::ERR_SUCCESS) {
             qDebug() << u8"[TCPMgr] 影片录入失败:" << header.error_msg().c_str();
-            emit SigUploadFailed(QString::fromStdString(header.error_msg()));
+            emit SigMovieUploadFailed(QString::fromStdString(header.error_msg()));
             return;
         }
 
@@ -170,7 +172,7 @@ void TCPMgr::InitHandlers()
         ServerApi::UploadMovieRsp rsp;
         if (rsp.ParseFromArray(bodyData.data(), bodyData.size())) {
             qDebug() << u8"[TCPMgr] 影片完美录入云端! 数据库分配 ID:" << rsp.new_movie_id();
-            emit SigUploadSuccess();
+            emit SigMovieUploadSuccess();
         }
         };
 
@@ -205,93 +207,136 @@ void TCPMgr::InitHandlers()
             if (rsp.ParseFromArray(bodyData.data(), bodyData.size())) {
 
                 QString fileMd5 = QString::fromStdString(rsp.file_md5());
-                QString coverName = QString::fromStdString(rsp.cover_name()); // 👑 获取真实文件名
+                QString coverName = QString::fromStdString(rsp.cover_name());
                 QByteArray coverData(rsp.cover_data().data(), rsp.cover_data().size());
 
-                // 拼接真实的海报本地路径
-                QDir().mkpath(MovieCoverPath); // 确保目录存在
-                QString localCoverPath = MovieCoverPath + "/" + coverName;
+                // 👑 1. 提取出极其关键的文件类型
+                ServerApi::FileType fileType = rsp.file_type();
 
-                // 写入本地
+                // 👑 2. 动态路由：根据类型分配不同的海报缓存目录
+                QString targetDirPath;
+                if (fileType == ServerApi::FILE_MOVIE) {
+                    targetDirPath = MovieCoverPath;
+                }
+                else if (fileType == ServerApi::FILE_GAME) {
+                    targetDirPath = GameCoverPath;
+                }
+                else {
+                    qDebug() << u8"[TCPMgr] 警告：收到未知类型的海报数据，直接丢弃";
+                    return;
+                }
+
+                // 3. 拼接真实的海报本地路径
+                QDir().mkpath(targetDirPath); // 确保对应类型的目录存在
+                QString localCoverPath = targetDirPath + "/" + coverName;
+
+                // 4. 写入本地磁盘
                 QFile file(localCoverPath);
-                if (file.open(QIODevice::WriteOnly)) 
+                if (file.open(QIODevice::WriteOnly))
                 {
                     file.write(coverData);
                     file.close();
-                    qDebug() << u8"[TCPMgr] 海报异步下载完成，保存至:" << localCoverPath;
+                    qDebug() << u8"[TCPMgr] 海报异步下载完成，类型:" << fileType << u8"保存至:" << localCoverPath;
 
-                    // 💡 抛出信号，通知 PlaybackPage 刷新这个 MD5 对应的卡片海报
-                    emit SigCoverDownloaded(fileMd5, localCoverPath); 
+                    // 💡 5. 抛出带类型的信号，各自页面的 Lambda 拦截网会精确捕获
+                    emit SigCoverDownloaded(fileType, fileMd5, localCoverPath);
                 }
             }
         };
 
     // ------------------------------------------------------------------
-    // 处理[视频分片下载响应]
+    // 处理[大文件分片下载响应] (通用)
     // ------------------------------------------------------------------
     m_router[ServerApi::ID_DOWNLOAD_CHUNK_RSP] = [this](const ServerApi::PacketHeader& header, const QByteArray& bodyData)
         {
-            if (header.error_code() != ServerApi::ErrorCode::ERR_SUCCESS) {
-                qDebug() << u8"[TCPMgr] 视频下载中断:" << header.error_msg().c_str();
-                emit SigDownloadFailed(QString::fromStdString(header.error_msg()));
+            ServerApi::DownloadChunkRsp rsp;
+            ServerApi::FileType fileType = ServerApi::FILE_UNKNOWN;
+
+            // 1. 尝试解析，提取出枚举类型
+            if (rsp.ParseFromArray(bodyData.data(), bodyData.size()))
+            {
+                fileType = rsp.file_type();
+            }
+
+            // 判断当前分片是否下载成功
+            if (header.error_code() != ServerApi::ErrorCode::ERR_SUCCESS)
+            {
+                qDebug() << u8"[TCPMgr] 分片下载中断:" << header.error_msg().c_str();
+                emit SigDownloadFailed(fileType, QString::fromStdString(header.error_msg()));
                 return;
             }
 
-            ServerApi::DownloadChunkRsp rsp;
-            if (rsp.ParseFromArray(bodyData.data(), bodyData.size())) {
+            QString fileMd5 = QString::fromStdString(rsp.file_md5());
+            uint32_t chunkIndex = rsp.chunk_index();
+            QByteArray chunkData(rsp.chunk_data().data(), rsp.chunk_data().size());
+            bool isLast = rsp.is_last();
 
-                QString fileMd5 = QString::fromStdString(rsp.file_md5());
-                uint32_t chunkIndex = rsp.chunk_index();
-                QByteArray chunkData(rsp.chunk_data().data(), rsp.chunk_data().size());
-                bool isLast = rsp.is_last();
+            // ==========================================================
+            // 👑 动态路由：根据类型分配不同的保存目录和后缀名
+            // ==========================================================
+            QString targetDirPath;
+            QString fileSuffix;
 
-                QDir().mkpath(MovieVideoPath);                                                  // 确保目录存在
+            if (fileType == ServerApi::FILE_MOVIE) {
+                targetDirPath = MovieVideoPath;
+                fileSuffix = ".mp4";
+            }
+            else if (fileType == ServerApi::FILE_GAME) {
+                targetDirPath = GameTarPath;        // 存入游戏压缩包临时目录
+                fileSuffix = ".tar";
+            }
+            else {
+                qDebug() << u8"[TCPMgr] 警告：收到未知类型的分片数据，直接丢弃";
+                return;
+            }
 
-                // 1. 追加写入本地文件
-                QString videoPath = MovieVideoPath + "/" + fileMd5 + ".mp4";
-                QFile file(videoPath);
+            QDir().mkpath(targetDirPath);           // 确保动态目录存在
 
-                //  精准的打开模式 (解决文件残留导致的数据损坏)
-                QIODevice::OpenMode openMode;
-                if (chunkIndex == 0) {
-                    // 如果是第一块，哪怕有残留文件，也直接清空它 (Truncate) 并重新写入
-                    openMode = QIODevice::WriteOnly | QIODevice::Truncate;
-                }
-                else {
-                    // 后续的分片，使用追加模式
-                    openMode = QIODevice::Append;
-                }
+            // 1. 拼接绝对物理路径
+            QString targetFilePath = targetDirPath + "/" + fileMd5 + fileSuffix;
+            QFile file(targetFilePath);
 
-                // 执行打开与写入
-                if (file.open(openMode)) {
-                    file.write(chunkData);
-                    file.close();
-                }
-                else
-                {
-                    // 👑 绝杀 3：打印真正的底层错误原因！
-                    QString errorCause = file.errorString();
-                    qDebug() << u8"[TCPMgr] 视频下载中断，本地磁盘写入失败。原因:" << errorCause << u8"路径:" << videoPath;
+            //  精准的打开模式 (解决文件残留导致的数据损坏)
+            QIODevice::OpenMode openMode;
+            if (chunkIndex == 0) {
+                // 如果是第一块，哪怕有残留文件，也直接清空它 (Truncate) 并重新写入
+                openMode = QIODevice::WriteOnly | QIODevice::Truncate;
+            }
+            else {
+                // 后续的分片，使用追加模式
+                openMode = QIODevice::Append;
+            }
 
-                    emit SigDownloadFailed(u8"写入失败: " + errorCause);
-                    return;
-                }
+            // 执行打开与写入
+            if (file.open(openMode)) {
+                file.write(chunkData);
+                file.close();
+            }
+            else
+            {
+                // 打印真正的底层错误原因！
+                QString errorCause = file.errorString();
+                qDebug() << u8"[TCPMgr] 文件下载中断，本地磁盘写入失败。原因:" << errorCause << u8"路径:" << targetFilePath;
 
-                // 2. 抛出进度信号给 UI 层更新进度条
-                emit SigDownloadProgress(fileMd5, chunkData.size()); // UI 层累加大小计算百分比
+                emit SigDownloadFailed(fileType, u8"写入失败: " + errorCause);
+                return;
+            }
 
-                // 3. 核心：如果没下完，自动找服务器要下一块！(抽水泵循环)
-                if (!isLast) {
-                    ServerApi::DownloadChunkReq nextReq;
-                    nextReq.set_file_md5(fileMd5.toStdString());
-                    nextReq.set_chunk_index(chunkIndex + 1); // 索要下一块
-                    SendProtoMsg(ServerApi::MsgId::ID_DOWNLOAD_CHUNK_REQ, nextReq);
-                }
-                else {
-                    qDebug() << u8"[TCPMgr] 🎉 视频物理文件下载彻底完成! MD5:" << fileMd5;
-                    // 抛出完成信号，UI 层的进度条满 100%，【下载】按钮变成【播放】按钮
-                    emit SigDownloadFinished(fileMd5); 
-                }
+            // 2. 抛出进度信号给 UI 层更新进度条
+            emit SigDownloadProgress(fileType, fileMd5, chunkData.size()); // UI 层累加大小计算百分比
+
+            // 3. 核心：如果没下完，自动找服务器要下一块！(抽水泵循环)
+            if (!isLast) {
+                ServerApi::DownloadChunkReq nextReq;
+                nextReq.set_file_md5(fileMd5.toStdString());
+                nextReq.set_chunk_index(chunkIndex + 1); // 索要下一块
+                nextReq.set_file_type(fileType);         // 👑 循环请求时，一定要把类型再带上！
+                SendProtoMsg(ServerApi::MsgId::ID_DOWNLOAD_CHUNK_REQ, nextReq);
+            }
+            else {
+                qDebug() << u8"[TCPMgr] 🎉 物理文件下载彻底完成! 类型:" << fileType << u8"MD5:" << fileMd5;
+                // 抛出完成信号，UI 层的进度条满 100%，【下载】按钮变成【播放/启动】按钮
+                emit SigDownloadFinished(fileType, fileMd5);
             }
         };
 
@@ -350,6 +395,56 @@ void TCPMgr::InitHandlers()
 
                 // 抛出信号，通知 RecordPage 在 UI 上精确抹除这一行
                 emit SigRecordDeleted(rsp);
+            }
+        };
+
+    // ------------------------------------------------------------------
+    // 注册 [游戏元数据录入响应] 的处理逻辑
+    // ------------------------------------------------------------------
+    m_router[ServerApi::ID_UPLOAD_GAME_RSP] = [this](const ServerApi::PacketHeader& header, const QByteArray& bodyData) {
+
+        // 1. 检查全局错误码 (处理如：数据库写入失败、游戏名冲突等报错)
+        if (header.error_code() != ServerApi::ErrorCode::ERR_SUCCESS) {
+            qDebug() << u8"[TCPMgr] 游戏录入失败:" << header.error_msg().c_str();
+
+            // 抛出游戏专属的失败信号，通知 GameUploadPage 解锁 UI 并弹窗
+            emit SigGameUploadFailed(QString::fromStdString(header.error_msg()));
+            return;
+        }
+
+        // 2. 解析 Body 数据
+        ServerApi::UploadGameRsp rsp;
+        if (rsp.ParseFromArray(bodyData.data(), bodyData.size())) {
+            // 这里的 game_id 是服务器入库后返回的，用于日志追踪
+            qDebug() << u8"[TCPMgr] 游戏资源及配置录入成功! 云端处理 ID:" << rsp.game_id();
+
+            // 3. 👑 发射游戏专属成功信号
+            // 该信号会被 GameWidget 捕捉，从而触发 UploadPage 的 ResetUI 和 LauncherPage 的刷新
+            emit SigGameUploadSuccess();
+        }
+        };
+
+    // ------------------------------------------------------------------
+    // 注册 [获取游戏列表响应] 的处理逻辑
+    // ------------------------------------------------------------------
+    m_router[ServerApi::ID_GET_GAME_LIST_RSP] = [this](const ServerApi::PacketHeader& header, const QByteArray& bodyData)
+        {
+            // 1. 检查服务器返回的全局错误码
+            if (header.error_code() != ServerApi::ErrorCode::ERR_SUCCESS) {
+                qDebug() << u8"[TCPMgr] 拉取游戏列表失败:" << header.error_msg().c_str();
+                return;
+            }
+
+            // 2. 解析 Body 里的游戏列表数据
+            ServerApi::GetGameListRsp rsp;
+            if (rsp.ParseFromArray(bodyData.data(), bodyData.size()))
+            {
+                qDebug() << u8"[TCPMgr] 成功拉取游戏列表，共" << rsp.games_size()
+                    << u8"款游戏，云端总数:" << rsp.total_count();
+
+                // 3. 👑 核心：抛出信号，通知 GameLauncherPage 进行卡片渲染
+                // 注意：已经在 RegisterMetaTypes 中注册了该类型，跨线程传递是安全的
+                emit SigGameListReceived(rsp);
             }
         };
 }
@@ -442,18 +537,19 @@ void TCPMgr::SendProtoMsg(ServerApi::MsgId msgId, const google::protobuf::Messag
 
     // 5. 跨线程安全的发送机制
     // 不管你在哪个子线程调用 TCPMgr::Instance()->SendProtoMsg，它都会安全地切回主线程去调用 socket 写入
-    QMetaObject::invokeMethod(this, [this, finalPacket, msgId]() {
-        if (m_TcpSocket && m_TcpSocket->state() == QAbstractSocket::ConnectedState)
+    QMetaObject::invokeMethod(this, [this, finalPacket, msgId]() 
         {
-            if(ServerApi::MsgId ::ID_GET_MOVIE_LIST_REQ == msgId)
-                qDebug() << "ID_GET_MOVIE_LIST_REQ";
-            m_TcpSocket->write(finalPacket);
-            m_TcpSocket->flush();
-        }
-        else 
-        {
-            qDebug() << u8"[TCPMgr] 发送失败，TCP 未连接！MsgId:" << finalPacket.mid(6, 2).toHex();
-        }
+            if (m_TcpSocket && m_TcpSocket->state() == QAbstractSocket::ConnectedState)
+            {
+                if(ServerApi::MsgId ::ID_GET_MOVIE_LIST_REQ == msgId)
+                    qDebug() << "ID_GET_MOVIE_LIST_REQ";
+                m_TcpSocket->write(finalPacket);
+                m_TcpSocket->flush();
+            }
+            else 
+            {
+                qDebug() << u8"[TCPMgr] 发送失败，TCP 未连接！MsgId:" << finalPacket.mid(6, 2).toHex();
+            }
         }, Qt::QueuedConnection);
 }
 

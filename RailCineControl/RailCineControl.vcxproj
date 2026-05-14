@@ -110,6 +110,8 @@
     <ClCompile Include="CMDTools.cpp" />
     <ClCompile Include="common.pb.cc" />
     <ClCompile Include="GameItem.cpp" />
+    <ClCompile Include="GameLauncherPage.cpp" />
+    <ClCompile Include="GameUploadPage.cpp" />
     <ClCompile Include="GameWidget.cpp" />
     <ClCompile Include="Global.cpp" />
     <ClCompile Include="ControlHubWindow.cpp" />
@@ -146,6 +148,8 @@
     <QtMoc Include="LocalStreamServer.h" />
     <QtMoc Include="CinemaDialogBase.h" />
     <QtMoc Include="CinemaMessageBox.h" />
+    <QtMoc Include="GameLauncherPage.h" />
+    <QtMoc Include="GameUploadPage.h" />
     <ClInclude Include="VideoSecurityTool.h" />
     <QtMoc Include="UploadPage.h" />
     <QtMoc Include="UdpManager.h" />
@@ -187,6 +191,7 @@
     <QtRcc Include="demand.qrc" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="build_proto.bat" />
     <None Include="common.proto" />
     <None Include="server_msg.proto" />
     <None Include="StyleSheet\stylesheet.qss" />

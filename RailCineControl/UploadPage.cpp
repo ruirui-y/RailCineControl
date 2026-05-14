@@ -27,11 +27,39 @@ UploadPage::UploadPage(QWidget* parent) : QWidget(parent)
     // 初始化抽水泵和文件指针
     m_videoFile = new QFile(this);
 
-    // 收到服务器的安全回执后，才真正提交海报与文字表单！
-    connect(ThreadPool::Instance()->GetTCPMgr(), &TCPMgr::SigAllChunksAcked, this, &UploadPage::submitMetadataToTcp);
-    connect(ThreadPool::Instance()->GetTCPMgr(), &TCPMgr::SigChunkUploadSuccess, this, &UploadPage::pumpNextChunk);
+    // 绑定影片传输过程中的信号
+    BindSignals();
 
     BuildUI();
+}
+
+void UploadPage::BindSignals()
+{
+    auto tcpMgr = ThreadPool::Instance()->GetTCPMgr();
+
+    // 收到所有分片确认后 -> 自动提交元数据
+    connect(tcpMgr, &TCPMgr::SigAllChunksAcked, this, [this](ServerApi::FileType fileType) {
+        if (fileType == ServerApi::FILE_MOVIE) this->submitMetadataToTcp();
+        });
+
+    // 单个分片上传成功后 -> 抽水泵抽下一块
+    connect(tcpMgr, &TCPMgr::SigChunkUploadSuccess, this, [this](ServerApi::FileType fileType) {
+        if (fileType == ServerApi::FILE_MOVIE) this->pumpNextChunk();
+        });
+
+    // 底层分片传输失败 (如断网、磁盘满)
+    connect(tcpMgr, &TCPMgr::SigChunkUploadFailed, this, [this](ServerApi::FileType fileType, QString errMsg) {
+        if (fileType == ServerApi::FILE_MOVIE) {
+            this->UnlockUI();
+            CinemaMessageBox::ShowError(this, tr("视频传输中断"), errMsg);
+        }
+        });
+
+    // 业务元数据录入失败 (如数据库写入错误)
+    connect(tcpMgr, &TCPMgr::SigMovieUploadFailed, this, [this](QString errMsg) {
+        this->UnlockUI();
+        CinemaMessageBox::ShowError(this, tr("影片登记失败"), errMsg);
+        });
 }
 
 void UploadPage::BuildUI()
@@ -376,6 +404,7 @@ void UploadPage::pumpNextChunk()
     req.set_chunk_offset(m_currentOffset);
     req.set_chunk_data(chunkData.data(), chunkData.size());
     req.set_is_last(isLast);
+    req.set_file_type(ServerApi::FILE_MOVIE);
 
     // 3. 扔给底层发送
     ThreadPool::Instance()->GetTCPMgr()->SendProtoMsg(ServerApi::MsgId::ID_UPLOAD_CHUNK_REQ, req);

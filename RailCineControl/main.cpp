@@ -36,26 +36,32 @@ void LoadStyle(QApplication* app)
 
 void RegisterMetaTypes()
 {
-    // 1. 注册核心枚举 (必须注册，否则信号槽无法传递)
+    // 1. 注册核心枚举 (必须注册，否则信号槽跨线程传递时会丢失参数)
     qRegisterMetaType<ServerApi::MsgId>("ServerApi::MsgId");
+    qRegisterMetaType<ServerApi::FileType>("ServerApi::FileType");                  // 底层引擎文件类型过滤枚举
 
     // 2. 注册【影片业务】相关响应
     qRegisterMetaType<ServerApi::GetMovieListRsp>("ServerApi::GetMovieListRsp");    // 影片列表
     qRegisterMetaType<ServerApi::DownloadCoverRsp>("ServerApi::DownloadCoverRsp");  // 海报下载
     qRegisterMetaType<ServerApi::UploadMovieRsp>("ServerApi::UploadMovieRsp");      // 影片上传结果
 
-    // 3. 注册【播放记录】相关响应
+    // 3. 注册【游戏业务】相关响应 (👑 新增模块)
+    qRegisterMetaType<ServerApi::GetGameListRsp>("ServerApi::GetGameListRsp");      // 游戏列表
+    qRegisterMetaType<ServerApi::UploadGameRsp>("ServerApi::UploadGameRsp");        // 游戏上传结果
+
+    // 4. 注册【播放记录】相关响应
     qRegisterMetaType<ServerApi::GetRecordsRsp>("ServerApi::GetRecordsRsp");        // 查询记录结果
     qRegisterMetaType<ServerApi::AddRecordRsp>("ServerApi::AddRecordRsp");          // 添加记录结果
     qRegisterMetaType<ServerApi::DeleteRecordRsp>("ServerApi::DeleteRecordRsp");    // 删除记录结果
 
-    // 4. 注册【登录与上传进度】相关响应
+    // 5. 注册【登录与上传进度】相关响应
     qRegisterMetaType<ServerApi::LoginRsp>("ServerApi::LoginRsp");                  // 登录响应
-    qRegisterMetaType<ServerApi::UploadChunkRsp>("ServerApi::UploadChunkRsp");      // 视频分片上传确认
+    qRegisterMetaType<ServerApi::UploadChunkRsp>("ServerApi::UploadChunkRsp");      // 视频/压缩包分片上传确认
 
-    // 💡 提示：如果你的信号里直接传递了列表里的单条数据（例如 MovieInfo 或 PlayRecord），也需要注册：
+    // 💡 提示：如果你的信号里直接传递了列表里的单条数据，也需要注册：
     qRegisterMetaType<ServerApi::MovieInfo>("ServerApi::MovieInfo");
     qRegisterMetaType<ServerApi::PlayRecord>("ServerApi::PlayRecord");
+    qRegisterMetaType<ServerApi::GameInfo>("ServerApi::GameInfo");                  // 单条游戏结构体数据
 }
 
 void LoadAppLanguage()

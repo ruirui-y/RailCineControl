@@ -1,5 +1,7 @@
 ﻿syntax = "proto3";
 
+import "common.proto";
+
 package ServerApi;
 
 // =========================================================================================
@@ -31,6 +33,7 @@ message UploadChunkReq {
     uint64 chunk_offset = 3;                                                    // 👑 核心：此分片在原文件里的字节偏移量 (解决乱序写入)
     bytes  chunk_data   = 4;                                                    // 真实的二进制流数据 (如 1MB 大小的 mp4 碎片)
     bool   is_last      = 5;                                                    // 标识是否是最后一块
+    FileType  file_type = 6;                                                    // 文件类型 (1:影片, 2:游戏)
 }
 
 // 服务端 -> 客户端：切片接收确认
@@ -38,6 +41,7 @@ message UploadChunkRsp {
     string file_md5     = 1;                                                    // 对应的文件 MD5
     uint32 chunk_index  = 2;                                                    // 告诉客户端：第 index 个分片我已经安全落盘
     bool   is_complete  = 3;                                                    // 整个文件是否拼接完成
+    FileType  file_type = 4;                                                    // 回传文件类型 (1:影片, 2:游戏)
 }
 
 // =========================================================================================
@@ -86,6 +90,7 @@ message GetMovieListRsp {
     repeated MovieInfo movies = 1;                                              // repeated 数组，包含多部影片信息
 }
 
+
 // ===================================================================
 // 5. 纯 TCP 分片下载协议
 // ===================================================================
@@ -93,14 +98,16 @@ message GetMovieListRsp {
 message DownloadChunkReq {
     string file_md5    = 1;
     uint32 chunk_index = 2;                                                     // 请求的切片序号 (0, 1, 2...)
+    FileType file_type = 3;                                                     // 文件类型 (告诉服务器去哪个目录找)
 }
 
 // 服务端 -> 客户端：水来了！这是你要的数据
 message DownloadChunkRsp {
     string file_md5    = 1;
     uint32 chunk_index = 2;
-    bytes  chunk_data  = 3;                                                     // 视频的二进制数据 (比如 1MB 或 2MB)
+    bytes  chunk_data  = 3;                                                     // 视频或压缩包的二进制数据
     bool   is_last     = 4;                                                     // 是不是最后一块
+    FileType file_type = 5;                                                     // 回传文件类型 (让客户端知道是谁的数据包到了)
 }
 
 // ===================================================================
@@ -108,7 +115,8 @@ message DownloadChunkRsp {
 // ===================================================================
 // 客户端 -> 服务端：给我这张海报！
 message DownloadCoverReq {
-    string file_md5 = 1;                                                        // 拿视频的 MD5 当钥匙去取海报
+    string file_md5 = 1;                                                        // 拿文件的 MD5 当钥匙去取海报
+    FileType file_type = 2;                                                     // 区分是电影海报还是游戏海报
 }
 
 // 服务端 -> 客户端：海报来了！
@@ -116,6 +124,7 @@ message DownloadCoverRsp {
     string file_md5   = 1;
     string cover_name = 2;                                                      // 海报的真实全名 (例如 "a1b2_cover.png")
     bytes  cover_data = 3;                                                      // 图片的全部二进制数据
+    FileType file_type = 4;                                                     // 回传文件类型
 }
 
 

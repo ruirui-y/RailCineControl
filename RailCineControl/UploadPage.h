@@ -9,6 +9,7 @@
 #include <QProgressBar>
 #include <QFile>
 #include <QTimer>
+#include "common.pb.h"
 
 class UploadPage : public QWidget
 {
@@ -33,6 +34,7 @@ private slots:
 private:
     void BuildUI();
     uint32_t GetVideoDurationSec(const QString& filePath);                          // 获取文件时长
+    void BindSignals();
 
 private:
     QLineEdit* m_videoPathEdit;

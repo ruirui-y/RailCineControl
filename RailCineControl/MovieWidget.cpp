@@ -89,7 +89,12 @@ void MovieWidget::BindAdminSignals()
 {
     if (!m_uploadPage) return;
 
-    connect(ThreadPool::Instance()->GetTCPMgr(), &TCPMgr::SigUploadSuccess, this, [this]() 
+    auto tcpMgr = ThreadPool::Instance()->GetTCPMgr();
+
+    // ------------------------------------------------------------
+    // 1. 影片信息（元数据）上传成功
+    // ------------------------------------------------------------
+    connect(tcpMgr, &TCPMgr::SigMovieUploadSuccess, this, [this]()
         {
             // 1. 通知 UploadPage 恢复按钮状态，清空输入框
             m_uploadPage->ResetUI();
@@ -101,11 +106,28 @@ void MovieWidget::BindAdminSignals()
             CinemaMessageBox::ShowInfo(this, tr("成功"), tr("影片已成功录入云端！"));
         });
 
-    connect(ThreadPool::Instance()->GetTCPMgr(), &TCPMgr::SigUploadFailed, this, [this](QString errMsg)
+    // ------------------------------------------------------------
+    // 2. 影片信息（元数据）上传失败
+    // ------------------------------------------------------------
+    connect(tcpMgr, &TCPMgr::SigMovieUploadFailed, this, [this](QString errMsg)
         {
-            // 恢复上传页面的按钮
+            // 恢复上传页面的按钮和输入框可编辑状态
             m_uploadPage->UnlockUI();
-            CinemaMessageBox::ShowError(this, tr("上传失败"), errMsg);
+            CinemaMessageBox::ShowError(this, tr("影片登记失败"), errMsg);
+        });
+
+    // ------------------------------------------------------------
+    // 3. 底层分片传输失败 (网络断开/服务器磁盘满/MD5不匹配等)
+    // ------------------------------------------------------------
+    connect(tcpMgr, &TCPMgr::SigChunkUploadFailed, this, [this](ServerApi::FileType fileType, QString errMsg)
+        {
+            // 必须进行类型鉴别，只处理电影频道引发的坠毁事故
+            if (fileType == ServerApi::FileType::FILE_MOVIE)
+            {
+                // 停止切片抽水泵，关闭文件指针，恢复上传按钮
+                m_uploadPage->UnlockUI();
+                CinemaMessageBox::ShowError(this, tr("视频传输中断"), errMsg);
+            }
         });
 }
 
