@@ -90,6 +90,17 @@ enum MsgId : int {
   ID_GET_GAME_LIST_RSP = 4004,
   ID_DELETE_GAME_REQ = 4005,
   ID_DELETE_GAME_RSP = 4006,
+  ID_GET_WALLET_REQ = 5001,
+  ID_GET_WALLET_RSP = 5002,
+  ID_GET_GOODS_REQ = 5003,
+  ID_GET_GOODS_RSP = 5004,
+  ID_CREATE_ORDER_REQ = 5005,
+  ID_CREATE_ORDER_RSP = 5006,
+  ID_ORDER_NOTIFY_PUSH = 5007,
+  ID_CONSUME_POINTS_REQ = 5008,
+  ID_CONSUME_POINTS_RSP = 5009,
+  ID_GET_FLOW_REQ = 5010,
+  ID_GET_FLOW_RSP = 5011,
   MsgId_INT_MIN_SENTINEL_DO_NOT_USE_ =
       std::numeric_limits<::int32_t>::min(),
   MsgId_INT_MAX_SENTINEL_DO_NOT_USE_ =
@@ -99,8 +110,8 @@ enum MsgId : int {
 bool MsgId_IsValid(int value);
 extern const uint32_t MsgId_internal_data_[];
 constexpr MsgId MsgId_MIN = static_cast<MsgId>(0);
-constexpr MsgId MsgId_MAX = static_cast<MsgId>(4006);
-constexpr int MsgId_ARRAYSIZE = 4006 + 1;
+constexpr MsgId MsgId_MAX = static_cast<MsgId>(5011);
+constexpr int MsgId_ARRAYSIZE = 5011 + 1;
 const ::google::protobuf::EnumDescriptor*
 MsgId_descriptor();
 template <typename T>
@@ -124,6 +135,10 @@ enum ErrorCode : int {
   ERR_FILE_IO_FAILED = 6,
   ERR_MD5_MISMATCH = 7,
   ERR_GAME_EXISTS = 8,
+  ERR_INSUFFICIENT_POINTS = 9,
+  ERR_ORDER_NOT_PAID = 10,
+  ERR_ORDER_CLOSED = 11,
+  ERR_GOODS_OFFLINE = 12,
   ErrorCode_INT_MIN_SENTINEL_DO_NOT_USE_ =
       std::numeric_limits<::int32_t>::min(),
   ErrorCode_INT_MAX_SENTINEL_DO_NOT_USE_ =
@@ -133,8 +148,8 @@ enum ErrorCode : int {
 bool ErrorCode_IsValid(int value);
 extern const uint32_t ErrorCode_internal_data_[];
 constexpr ErrorCode ErrorCode_MIN = static_cast<ErrorCode>(0);
-constexpr ErrorCode ErrorCode_MAX = static_cast<ErrorCode>(8);
-constexpr int ErrorCode_ARRAYSIZE = 8 + 1;
+constexpr ErrorCode ErrorCode_MAX = static_cast<ErrorCode>(12);
+constexpr int ErrorCode_ARRAYSIZE = 12 + 1;
 const ::google::protobuf::EnumDescriptor*
 ErrorCode_descriptor();
 template <typename T>
@@ -147,7 +162,7 @@ const std::string& ErrorCode_Name(T value) {
 template <>
 inline const std::string& ErrorCode_Name(ErrorCode value) {
   return ::google::protobuf::internal::NameOfDenseEnum<ErrorCode_descriptor,
-                                                 0, 8>(
+                                                 0, 12>(
       static_cast<int>(value));
 }
 inline bool ErrorCode_Parse(absl::string_view name, ErrorCode* value) {

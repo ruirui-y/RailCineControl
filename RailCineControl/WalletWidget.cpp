@@ -5,14 +5,21 @@
 #include <QFile>
 #include "CinemaTableWidget.h"
 #include "CinemaPayDialog.h"
+#include "CinemaMessageBox.h"
+#include "ThreadPool.h"    
+#include "server_msg.pb.h"
 
 
 WalletWidget::WalletWidget(QWidget* parent)
     : QWidget(parent)
 {
     BuildUI();
-    LoadStyle();
     InitMockData(); // 注入假数据看 UI 效果
+
+    // 绑定支付信号
+    TCPMgr* tcp = ThreadPool::Instance()->GetTCPMgr();
+    connect(tcp, &TCPMgr::SigOrderCreated, this, &WalletWidget::OnOrderCreated);
+    connect(tcp, &TCPMgr::SigOrderPaid, this, &WalletWidget::OnOrderPaid);
 }
 
 WalletWidget::~WalletWidget() {}
@@ -82,11 +89,13 @@ void WalletWidget::InitMockData()
     m_lblPoints->setText("1,250");
 
     // 2. 模拟商品卡片填充
+    QList<uint64_t> goodsIds = { 1001, 1002, 1003, 1004 };
     QStringList goodsNames = { "10元", "首充 50元", "尊享 100元", "超级 500元" };
     QStringList goodsPoints = { "100 积分", "600 积分", "1500 积分", "8000 积分" };
     QStringList prices = { "￥10.00", "￥50.00", "￥100.00", "￥500.00" }; // 增加对应的真实人民币价格
 
-    for (int i = 0; i < 4; ++i) {
+    for (int i = 0; i < 4; ++i) 
+    {
         QPushButton* goodsBtn = new QPushButton();
         goodsBtn->setObjectName("GoodsCardBtn");
         goodsBtn->setFixedSize(160, 100);
@@ -104,17 +113,32 @@ void WalletWidget::InitMockData()
         btnLayout->addWidget(nLbl);
         btnLayout->setAlignment(Qt::AlignCenter);
 
-        // 每行放 3 个商品，计算行列
+        // 让标签对鼠标透明，防止阻挡按钮点击
+        pLbl->setAttribute(Qt::WA_TransparentForMouseEvents, true);
+        nLbl->setAttribute(Qt::WA_TransparentForMouseEvents, true);
+
         m_goodsLayout->addWidget(goodsBtn, i / 4, i % 4);
 
+        // 提取要用到的变量，由于 Lambda 的特性，必须按值捕获
+        uint64_t gId = goodsIds[i];
         QString name = goodsNames[i] + " (" + goodsPoints[i] + ")";
         QString price = prices[i];
-        connect(goodsBtn, &QPushButton::clicked, this, [this, name, price]() {
-            // 实例化并弹出我们的自定义支付窗口！
-            CinemaPayDialog payDialog(this, name, price);
-            payDialog.exec();
 
-            // TODO: 后续在这里处理如果 payDialog.exec() 返回成功后的刷新流水逻辑
+        // 👑 真实网络请求流：点击 -> 封包 -> 发送
+        connect(goodsBtn, &QPushButton::clicked, this, [this, gId, name, price]() {
+            // 先把当前点击的商品名称和价格暂存起来，等服务端返回二维码后再用
+            m_currentPayName = name;
+            m_currentPayPrice = price;
+
+            // 组装 Protobuf 请求
+            ServerApi::CreateOrderReq req;
+            req.set_goods_id(gId);
+            req.set_pay_method("WECHAT"); // 假定默认走微信
+
+            // 通过 TCPMgr 发送给服务器
+            ThreadPool::Instance()->GetTCPMgr()->SendProtoMsg(ServerApi::MsgId::ID_CREATE_ORDER_REQ, req);
+
+            // 可选：此时可以将主界面加个转圈圈动画，防止网络卡顿时用户狂点
             });
     }
 
@@ -133,12 +157,43 @@ void WalletWidget::InitMockData()
     m_flowTable->setItem(1, 4, new QTableWidgetItem("MOVIE_9921"));
 }
 
-void WalletWidget::LoadStyle()
+// =========================================================================================
+// 👑 核心异步网络回调处理
+// =========================================================================================
+
+// 收到服务器响应：订单创建成功，下发了二维码 URL
+void WalletWidget::OnOrderCreated(const QString& orderId, const QString& qrUrl, int expireTime)
 {
-    // 这里采用分离式 QSS 挂载，或者你直接把它加到你的全局 main.qss 里也可以
-    QFile file(":/MiNi/Style/Wallet.qss"); // 假设你放在资源文件中
-    if (file.open(QFile::ReadOnly)) {
-        this->setStyleSheet(QString::fromUtf8(file.readAll()));
-        file.close();
+    // 如果之前有残留的弹窗，先干掉
+    if (m_payDialog) {
+        m_payDialog->deleteLater();
+        m_payDialog = nullptr;
     }
+
+    // 此时才安全地弹出带有刚才保存名字的支付窗口！
+    m_payDialog = new CinemaPayDialog(this, m_currentPayName, m_currentPayPrice);
+
+    // TODO: 集成 qrencode 库后，调用类似 m_payDialog->SetQRCode(qrUrl);
+    // TODO: 可以把 expireTime 传给弹窗去跑倒计时
+
+    m_payDialog->exec(); // 阻塞弹窗，等待用户扫码
+}
+
+// 收到服务器异步推送：客户付款成功！（可能是几秒、几分钟后）
+void WalletWidget::OnOrderPaid(const QString& orderId, qint64 newPoints)
+{
+    // 1. 关闭正在展示的二维码支付弹窗
+    if (m_payDialog) {
+        m_payDialog->accept(); // 模拟用户点击了确定/正常关闭
+        m_payDialog->deleteLater();
+        m_payDialog = nullptr;
+    }
+
+    // 2. 刷新左上角的积分余额 UI
+    m_lblPoints->setText(QString::number(newPoints));
+
+    // 3. 弹个极其华丽的成功提示！
+    CinemaMessageBox::ShowInfo(this, tr("支付成功"), tr("感谢您的充值，当前可用积分: %1").arg(newPoints));
+
+    // 4. (可选) 重新拉取一次流水列表，更新下方的表格
 }

@@ -74,6 +74,10 @@ signals:
     void SigGameUploadSuccess();                                                                    // 游戏上传成功
     void SigGameUploadFailed(QString msg);                                                          // 游戏上传失败
 
+    // 支付与商业化业务信号
+    void SigOrderCreated(const QString& orderId, const QString& qrUrl, int expireTime);             // 服务端返回订单与二维码
+    void SigOrderPaid(const QString& orderId, qint64 newPoints);                                    // 微信异步回调：支付成功！
+
 private:
     void InitTcpSocket();                                                                           // 初始化TCP套接字
     void InitHearbeatTimer();                                                                       // 初始化心跳定时器

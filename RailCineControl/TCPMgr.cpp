@@ -447,6 +447,44 @@ void TCPMgr::InitHandlers()
                 emit SigGameListReceived(rsp);
             }
         };
+
+    // ------------------------------------------------------------------
+    // 💰 注册 [创建支付订单响应] 的处理逻辑 (收到二维码)
+    // ------------------------------------------------------------------
+    m_router[ServerApi::ID_CREATE_ORDER_RSP] = [this](const ServerApi::PacketHeader& header, const QByteArray& bodyData) {
+        if (header.error_code() != ServerApi::ErrorCode::ERR_SUCCESS) {
+            qDebug() << u8"[TCPMgr] 订单创建失败:" << header.error_msg().c_str();
+            // 这里可以加一个 SigOrderFailed 信号给前端弹错误框
+            return;
+        }
+
+        ServerApi::CreateOrderRsp rsp;
+        if (rsp.ParseFromArray(bodyData.data(), bodyData.size())) {
+            qDebug() << u8"[TCPMgr] 成功获取支付二维码, 订单号:" << rsp.order_id().c_str();
+            emit SigOrderCreated(
+                QString::fromStdString(rsp.order_id()),
+                QString::fromStdString(rsp.qr_code_url()),
+                rsp.expire_time()
+            );
+        }
+        };
+
+    // ------------------------------------------------------------------
+    // 💰 注册 [支付成功异步推送] 的处理逻辑 (微信打钱了！)
+    // 注意：这是服务端主动推给客户端的，不需要请求
+    // ------------------------------------------------------------------
+    m_router[ServerApi::ID_ORDER_NOTIFY_PUSH] = [this](const ServerApi::PacketHeader& header, const QByteArray& bodyData) {
+        ServerApi::OrderNotifyPush push;
+        if (push.ParseFromArray(bodyData.data(), bodyData.size())) {
+            if (push.is_success()) {
+                qDebug() << u8"[TCPMgr] 收到服务端推送: 客户已付款! 最新积分:" << push.current_points();
+                emit SigOrderPaid(
+                    QString::fromStdString(push.order_id()),
+                    push.current_points()
+                );
+            }
+        }
+        };
 }
 
 // =========================================================================================

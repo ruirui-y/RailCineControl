@@ -271,6 +271,35 @@ struct PlayRecordDefaultTypeInternal {
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
     PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 PlayRecordDefaultTypeInternal _PlayRecord_default_instance_;
 
+inline constexpr OrderNotifyPush::Impl_::Impl_(
+    ::_pbi::ConstantInitialized) noexcept
+      : order_id_(
+            &::google::protobuf::internal::fixed_address_empty_string,
+            ::_pbi::ConstantInitialized()),
+        current_points_{::int64_t{0}},
+        is_success_{false},
+        _cached_size_{0} {}
+
+template <typename>
+PROTOBUF_CONSTEXPR OrderNotifyPush::OrderNotifyPush(::_pbi::ConstantInitialized)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(_class_data_.base()),
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(),
+#endif  // PROTOBUF_CUSTOM_VTABLE
+      _impl_(::_pbi::ConstantInitialized()) {
+}
+struct OrderNotifyPushDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR OrderNotifyPushDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~OrderNotifyPushDefaultTypeInternal() {}
+  union {
+    OrderNotifyPush _instance;
+  };
+};
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 OrderNotifyPushDefaultTypeInternal _OrderNotifyPush_default_instance_;
+
 inline constexpr MovieInfo::Impl_::Impl_(
     ::_pbi::ConstantInitialized) noexcept
       : movie_name_(
@@ -394,6 +423,80 @@ struct HeartbeatDefaultTypeInternal {
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
     PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 HeartbeatDefaultTypeInternal _Heartbeat_default_instance_;
 
+inline constexpr GoodsInfo::Impl_::Impl_(
+    ::_pbi::ConstantInitialized) noexcept
+      : goods_name_(
+            &::google::protobuf::internal::fixed_address_empty_string,
+            ::_pbi::ConstantInitialized()),
+        goods_id_{::uint64_t{0u}},
+        price_cents_{0u},
+        points_reward_{0u},
+        _cached_size_{0} {}
+
+template <typename>
+PROTOBUF_CONSTEXPR GoodsInfo::GoodsInfo(::_pbi::ConstantInitialized)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(_class_data_.base()),
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(),
+#endif  // PROTOBUF_CUSTOM_VTABLE
+      _impl_(::_pbi::ConstantInitialized()) {
+}
+struct GoodsInfoDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR GoodsInfoDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~GoodsInfoDefaultTypeInternal() {}
+  union {
+    GoodsInfo _instance;
+  };
+};
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 GoodsInfoDefaultTypeInternal _GoodsInfo_default_instance_;
+
+inline constexpr GetWalletRsp::Impl_::Impl_(
+    ::_pbi::ConstantInitialized) noexcept
+      : current_points_{::int64_t{0}},
+        total_recharged_{::int64_t{0}},
+        _cached_size_{0} {}
+
+template <typename>
+PROTOBUF_CONSTEXPR GetWalletRsp::GetWalletRsp(::_pbi::ConstantInitialized)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(_class_data_.base()),
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(),
+#endif  // PROTOBUF_CUSTOM_VTABLE
+      _impl_(::_pbi::ConstantInitialized()) {
+}
+struct GetWalletRspDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR GetWalletRspDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~GetWalletRspDefaultTypeInternal() {}
+  union {
+    GetWalletRsp _instance;
+  };
+};
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 GetWalletRspDefaultTypeInternal _GetWalletRsp_default_instance_;
+              template <typename>
+PROTOBUF_CONSTEXPR GetWalletReq::GetWalletReq(::_pbi::ConstantInitialized)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::internal::ZeroFieldsBase(_class_data_.base()){}
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::internal::ZeroFieldsBase() {
+}
+#endif  // PROTOBUF_CUSTOM_VTABLE
+struct GetWalletReqDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR GetWalletReqDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~GetWalletReqDefaultTypeInternal() {}
+  union {
+    GetWalletReq _instance;
+  };
+};
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 GetWalletReqDefaultTypeInternal _GetWalletReq_default_instance_;
+
 inline constexpr GetRecordsReq::Impl_::Impl_(
     ::_pbi::ConstantInitialized) noexcept
       : target_date_(
@@ -448,6 +551,24 @@ struct GetMovieListReqDefaultTypeInternal {
 
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
     PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 GetMovieListReqDefaultTypeInternal _GetMovieListReq_default_instance_;
+              template <typename>
+PROTOBUF_CONSTEXPR GetGoodsReq::GetGoodsReq(::_pbi::ConstantInitialized)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::internal::ZeroFieldsBase(_class_data_.base()){}
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::internal::ZeroFieldsBase() {
+}
+#endif  // PROTOBUF_CUSTOM_VTABLE
+struct GetGoodsReqDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR GetGoodsReqDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~GetGoodsReqDefaultTypeInternal() {}
+  union {
+    GetGoodsReq _instance;
+  };
+};
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 GetGoodsReqDefaultTypeInternal _GetGoodsReq_default_instance_;
 
 inline constexpr GetGameListReq::Impl_::Impl_(
     ::_pbi::ConstantInitialized) noexcept
@@ -743,6 +864,117 @@ struct DeleteGameReqDefaultTypeInternal {
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
     PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 DeleteGameReqDefaultTypeInternal _DeleteGameReq_default_instance_;
 
+inline constexpr CreateOrderRsp::Impl_::Impl_(
+    ::_pbi::ConstantInitialized) noexcept
+      : order_id_(
+            &::google::protobuf::internal::fixed_address_empty_string,
+            ::_pbi::ConstantInitialized()),
+        qr_code_url_(
+            &::google::protobuf::internal::fixed_address_empty_string,
+            ::_pbi::ConstantInitialized()),
+        expire_time_{0u},
+        _cached_size_{0} {}
+
+template <typename>
+PROTOBUF_CONSTEXPR CreateOrderRsp::CreateOrderRsp(::_pbi::ConstantInitialized)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(_class_data_.base()),
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(),
+#endif  // PROTOBUF_CUSTOM_VTABLE
+      _impl_(::_pbi::ConstantInitialized()) {
+}
+struct CreateOrderRspDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR CreateOrderRspDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~CreateOrderRspDefaultTypeInternal() {}
+  union {
+    CreateOrderRsp _instance;
+  };
+};
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 CreateOrderRspDefaultTypeInternal _CreateOrderRsp_default_instance_;
+
+inline constexpr CreateOrderReq::Impl_::Impl_(
+    ::_pbi::ConstantInitialized) noexcept
+      : pay_method_(
+            &::google::protobuf::internal::fixed_address_empty_string,
+            ::_pbi::ConstantInitialized()),
+        goods_id_{::uint64_t{0u}},
+        _cached_size_{0} {}
+
+template <typename>
+PROTOBUF_CONSTEXPR CreateOrderReq::CreateOrderReq(::_pbi::ConstantInitialized)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(_class_data_.base()),
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(),
+#endif  // PROTOBUF_CUSTOM_VTABLE
+      _impl_(::_pbi::ConstantInitialized()) {
+}
+struct CreateOrderReqDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR CreateOrderReqDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~CreateOrderReqDefaultTypeInternal() {}
+  union {
+    CreateOrderReq _instance;
+  };
+};
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 CreateOrderReqDefaultTypeInternal _CreateOrderReq_default_instance_;
+
+inline constexpr ConsumePointsRsp::Impl_::Impl_(
+    ::_pbi::ConstantInitialized) noexcept
+      : points_cost_{::int64_t{0}},
+        current_points_{::int64_t{0}},
+        _cached_size_{0} {}
+
+template <typename>
+PROTOBUF_CONSTEXPR ConsumePointsRsp::ConsumePointsRsp(::_pbi::ConstantInitialized)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(_class_data_.base()),
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(),
+#endif  // PROTOBUF_CUSTOM_VTABLE
+      _impl_(::_pbi::ConstantInitialized()) {
+}
+struct ConsumePointsRspDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR ConsumePointsRspDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~ConsumePointsRspDefaultTypeInternal() {}
+  union {
+    ConsumePointsRsp _instance;
+  };
+};
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 ConsumePointsRspDefaultTypeInternal _ConsumePointsRsp_default_instance_;
+
+inline constexpr ConsumePointsReq::Impl_::Impl_(
+    ::_pbi::ConstantInitialized) noexcept
+      : target_id_{::uint64_t{0u}},
+        match_type_{static_cast< ::ServerApi::FileType >(0)},
+        _cached_size_{0} {}
+
+template <typename>
+PROTOBUF_CONSTEXPR ConsumePointsReq::ConsumePointsReq(::_pbi::ConstantInitialized)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(_class_data_.base()),
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(),
+#endif  // PROTOBUF_CUSTOM_VTABLE
+      _impl_(::_pbi::ConstantInitialized()) {
+}
+struct ConsumePointsReqDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR ConsumePointsReqDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~ConsumePointsReqDefaultTypeInternal() {}
+  union {
+    ConsumePointsReq _instance;
+  };
+};
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 ConsumePointsReqDefaultTypeInternal _ConsumePointsReq_default_instance_;
+
 inline constexpr AddRecordRsp::Impl_::Impl_(
     ::_pbi::ConstantInitialized) noexcept
       : new_record_id_{::uint64_t{0u}},
@@ -818,6 +1050,31 @@ struct GetMovieListRspDefaultTypeInternal {
 
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
     PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 GetMovieListRspDefaultTypeInternal _GetMovieListRsp_default_instance_;
+
+inline constexpr GetGoodsRsp::Impl_::Impl_(
+    ::_pbi::ConstantInitialized) noexcept
+      : goods_list_{},
+        _cached_size_{0} {}
+
+template <typename>
+PROTOBUF_CONSTEXPR GetGoodsRsp::GetGoodsRsp(::_pbi::ConstantInitialized)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(_class_data_.base()),
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(),
+#endif  // PROTOBUF_CUSTOM_VTABLE
+      _impl_(::_pbi::ConstantInitialized()) {
+}
+struct GetGoodsRspDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR GetGoodsRspDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~GetGoodsRspDefaultTypeInternal() {}
+  union {
+    GetGoodsRsp _instance;
+  };
+};
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 GetGoodsRspDefaultTypeInternal _GetGoodsRsp_default_instance_;
 
 inline constexpr GetGameListRsp::Impl_::Impl_(
     ::_pbi::ConstantInitialized) noexcept
@@ -1188,6 +1445,105 @@ const ::uint32_t
         ~0u,  // no _split_
         ~0u,  // no sizeof(Split)
         PROTOBUF_FIELD_OFFSET(::ServerApi::DeleteGameRsp, _impl_.deleted_id_),
+        ~0u,  // no _has_bits_
+        PROTOBUF_FIELD_OFFSET(::ServerApi::GetWalletReq, _internal_metadata_),
+        ~0u,  // no _extensions_
+        ~0u,  // no _oneof_case_
+        ~0u,  // no _weak_field_map_
+        ~0u,  // no _inlined_string_donated_
+        ~0u,  // no _split_
+        ~0u,  // no sizeof(Split)
+        ~0u,  // no _has_bits_
+        PROTOBUF_FIELD_OFFSET(::ServerApi::GetWalletRsp, _internal_metadata_),
+        ~0u,  // no _extensions_
+        ~0u,  // no _oneof_case_
+        ~0u,  // no _weak_field_map_
+        ~0u,  // no _inlined_string_donated_
+        ~0u,  // no _split_
+        ~0u,  // no sizeof(Split)
+        PROTOBUF_FIELD_OFFSET(::ServerApi::GetWalletRsp, _impl_.current_points_),
+        PROTOBUF_FIELD_OFFSET(::ServerApi::GetWalletRsp, _impl_.total_recharged_),
+        ~0u,  // no _has_bits_
+        PROTOBUF_FIELD_OFFSET(::ServerApi::GoodsInfo, _internal_metadata_),
+        ~0u,  // no _extensions_
+        ~0u,  // no _oneof_case_
+        ~0u,  // no _weak_field_map_
+        ~0u,  // no _inlined_string_donated_
+        ~0u,  // no _split_
+        ~0u,  // no sizeof(Split)
+        PROTOBUF_FIELD_OFFSET(::ServerApi::GoodsInfo, _impl_.goods_id_),
+        PROTOBUF_FIELD_OFFSET(::ServerApi::GoodsInfo, _impl_.goods_name_),
+        PROTOBUF_FIELD_OFFSET(::ServerApi::GoodsInfo, _impl_.price_cents_),
+        PROTOBUF_FIELD_OFFSET(::ServerApi::GoodsInfo, _impl_.points_reward_),
+        ~0u,  // no _has_bits_
+        PROTOBUF_FIELD_OFFSET(::ServerApi::GetGoodsReq, _internal_metadata_),
+        ~0u,  // no _extensions_
+        ~0u,  // no _oneof_case_
+        ~0u,  // no _weak_field_map_
+        ~0u,  // no _inlined_string_donated_
+        ~0u,  // no _split_
+        ~0u,  // no sizeof(Split)
+        ~0u,  // no _has_bits_
+        PROTOBUF_FIELD_OFFSET(::ServerApi::GetGoodsRsp, _internal_metadata_),
+        ~0u,  // no _extensions_
+        ~0u,  // no _oneof_case_
+        ~0u,  // no _weak_field_map_
+        ~0u,  // no _inlined_string_donated_
+        ~0u,  // no _split_
+        ~0u,  // no sizeof(Split)
+        PROTOBUF_FIELD_OFFSET(::ServerApi::GetGoodsRsp, _impl_.goods_list_),
+        ~0u,  // no _has_bits_
+        PROTOBUF_FIELD_OFFSET(::ServerApi::CreateOrderReq, _internal_metadata_),
+        ~0u,  // no _extensions_
+        ~0u,  // no _oneof_case_
+        ~0u,  // no _weak_field_map_
+        ~0u,  // no _inlined_string_donated_
+        ~0u,  // no _split_
+        ~0u,  // no sizeof(Split)
+        PROTOBUF_FIELD_OFFSET(::ServerApi::CreateOrderReq, _impl_.goods_id_),
+        PROTOBUF_FIELD_OFFSET(::ServerApi::CreateOrderReq, _impl_.pay_method_),
+        ~0u,  // no _has_bits_
+        PROTOBUF_FIELD_OFFSET(::ServerApi::CreateOrderRsp, _internal_metadata_),
+        ~0u,  // no _extensions_
+        ~0u,  // no _oneof_case_
+        ~0u,  // no _weak_field_map_
+        ~0u,  // no _inlined_string_donated_
+        ~0u,  // no _split_
+        ~0u,  // no sizeof(Split)
+        PROTOBUF_FIELD_OFFSET(::ServerApi::CreateOrderRsp, _impl_.order_id_),
+        PROTOBUF_FIELD_OFFSET(::ServerApi::CreateOrderRsp, _impl_.qr_code_url_),
+        PROTOBUF_FIELD_OFFSET(::ServerApi::CreateOrderRsp, _impl_.expire_time_),
+        ~0u,  // no _has_bits_
+        PROTOBUF_FIELD_OFFSET(::ServerApi::OrderNotifyPush, _internal_metadata_),
+        ~0u,  // no _extensions_
+        ~0u,  // no _oneof_case_
+        ~0u,  // no _weak_field_map_
+        ~0u,  // no _inlined_string_donated_
+        ~0u,  // no _split_
+        ~0u,  // no sizeof(Split)
+        PROTOBUF_FIELD_OFFSET(::ServerApi::OrderNotifyPush, _impl_.order_id_),
+        PROTOBUF_FIELD_OFFSET(::ServerApi::OrderNotifyPush, _impl_.is_success_),
+        PROTOBUF_FIELD_OFFSET(::ServerApi::OrderNotifyPush, _impl_.current_points_),
+        ~0u,  // no _has_bits_
+        PROTOBUF_FIELD_OFFSET(::ServerApi::ConsumePointsReq, _internal_metadata_),
+        ~0u,  // no _extensions_
+        ~0u,  // no _oneof_case_
+        ~0u,  // no _weak_field_map_
+        ~0u,  // no _inlined_string_donated_
+        ~0u,  // no _split_
+        ~0u,  // no sizeof(Split)
+        PROTOBUF_FIELD_OFFSET(::ServerApi::ConsumePointsReq, _impl_.target_id_),
+        PROTOBUF_FIELD_OFFSET(::ServerApi::ConsumePointsReq, _impl_.match_type_),
+        ~0u,  // no _has_bits_
+        PROTOBUF_FIELD_OFFSET(::ServerApi::ConsumePointsRsp, _internal_metadata_),
+        ~0u,  // no _extensions_
+        ~0u,  // no _oneof_case_
+        ~0u,  // no _weak_field_map_
+        ~0u,  // no _inlined_string_donated_
+        ~0u,  // no _split_
+        ~0u,  // no sizeof(Split)
+        PROTOBUF_FIELD_OFFSET(::ServerApi::ConsumePointsRsp, _impl_.points_cost_),
+        PROTOBUF_FIELD_OFFSET(::ServerApi::ConsumePointsRsp, _impl_.current_points_),
 };
 
 static const ::_pbi::MigrationSchema
@@ -1220,6 +1576,16 @@ static const ::_pbi::MigrationSchema
         {283, -1, -1, sizeof(::ServerApi::GetGameListRsp)},
         {293, -1, -1, sizeof(::ServerApi::DeleteGameReq)},
         {302, -1, -1, sizeof(::ServerApi::DeleteGameRsp)},
+        {311, -1, -1, sizeof(::ServerApi::GetWalletReq)},
+        {319, -1, -1, sizeof(::ServerApi::GetWalletRsp)},
+        {329, -1, -1, sizeof(::ServerApi::GoodsInfo)},
+        {341, -1, -1, sizeof(::ServerApi::GetGoodsReq)},
+        {349, -1, -1, sizeof(::ServerApi::GetGoodsRsp)},
+        {358, -1, -1, sizeof(::ServerApi::CreateOrderReq)},
+        {368, -1, -1, sizeof(::ServerApi::CreateOrderRsp)},
+        {379, -1, -1, sizeof(::ServerApi::OrderNotifyPush)},
+        {390, -1, -1, sizeof(::ServerApi::ConsumePointsReq)},
+        {400, -1, -1, sizeof(::ServerApi::ConsumePointsRsp)},
 };
 static const ::_pb::Message* const file_default_instances[] = {
     &::ServerApi::_LoginReq_default_instance_._instance,
@@ -1250,6 +1616,16 @@ static const ::_pb::Message* const file_default_instances[] = {
     &::ServerApi::_GetGameListRsp_default_instance_._instance,
     &::ServerApi::_DeleteGameReq_default_instance_._instance,
     &::ServerApi::_DeleteGameRsp_default_instance_._instance,
+    &::ServerApi::_GetWalletReq_default_instance_._instance,
+    &::ServerApi::_GetWalletRsp_default_instance_._instance,
+    &::ServerApi::_GoodsInfo_default_instance_._instance,
+    &::ServerApi::_GetGoodsReq_default_instance_._instance,
+    &::ServerApi::_GetGoodsRsp_default_instance_._instance,
+    &::ServerApi::_CreateOrderReq_default_instance_._instance,
+    &::ServerApi::_CreateOrderRsp_default_instance_._instance,
+    &::ServerApi::_OrderNotifyPush_default_instance_._instance,
+    &::ServerApi::_ConsumePointsReq_default_instance_._instance,
+    &::ServerApi::_ConsumePointsRsp_default_instance_._instance,
 };
 const char descriptor_table_protodef_server_5fmsg_2eproto[] ABSL_ATTRIBUTE_SECTION_VARIABLE(
     protodesc_cold) = {
@@ -1313,7 +1689,22 @@ const char descriptor_table_protodef_server_5fmsg_2eproto[] ABSL_ATTRIBUTE_SECTI
     "p\022\"\n\005games\030\001 \003(\0132\023.ServerApi.GameInfo\022\023\n"
     "\013total_count\030\002 \001(\r\" \n\rDeleteGameReq\022\017\n\007g"
     "ame_id\030\001 \001(\004\"#\n\rDeleteGameRsp\022\022\n\ndeleted"
-    "_id\030\001 \001(\004b\006proto3"
+    "_id\030\001 \001(\004\"\016\n\014GetWalletReq\"\?\n\014GetWalletRs"
+    "p\022\026\n\016current_points\030\001 \001(\003\022\027\n\017total_recha"
+    "rged\030\002 \001(\003\"]\n\tGoodsInfo\022\020\n\010goods_id\030\001 \001("
+    "\004\022\022\n\ngoods_name\030\002 \001(\t\022\023\n\013price_cents\030\003 \001"
+    "(\r\022\025\n\rpoints_reward\030\004 \001(\r\"\r\n\013GetGoodsReq"
+    "\"7\n\013GetGoodsRsp\022(\n\ngoods_list\030\001 \003(\0132\024.Se"
+    "rverApi.GoodsInfo\"6\n\016CreateOrderReq\022\020\n\010g"
+    "oods_id\030\001 \001(\004\022\022\n\npay_method\030\002 \001(\t\"L\n\016Cre"
+    "ateOrderRsp\022\020\n\010order_id\030\001 \001(\t\022\023\n\013qr_code"
+    "_url\030\002 \001(\t\022\023\n\013expire_time\030\003 \001(\r\"O\n\017Order"
+    "NotifyPush\022\020\n\010order_id\030\001 \001(\t\022\022\n\nis_succe"
+    "ss\030\002 \001(\010\022\026\n\016current_points\030\003 \001(\003\"N\n\020Cons"
+    "umePointsReq\022\021\n\ttarget_id\030\001 \001(\004\022\'\n\nmatch"
+    "_type\030\002 \001(\0162\023.ServerApi.FileType\"\?\n\020Cons"
+    "umePointsRsp\022\023\n\013points_cost\030\001 \001(\003\022\026\n\016cur"
+    "rent_points\030\002 \001(\003b\006proto3"
 };
 static const ::_pbi::DescriptorTable* const descriptor_table_server_5fmsg_2eproto_deps[1] =
     {
@@ -1323,13 +1714,13 @@ static ::absl::once_flag descriptor_table_server_5fmsg_2eproto_once;
 PROTOBUF_CONSTINIT const ::_pbi::DescriptorTable descriptor_table_server_5fmsg_2eproto = {
     false,
     false,
-    2417,
+    3025,
     descriptor_table_protodef_server_5fmsg_2eproto,
     "server_msg.proto",
     &descriptor_table_server_5fmsg_2eproto_once,
     descriptor_table_server_5fmsg_2eproto_deps,
     1,
-    28,
+    38,
     schemas,
     file_default_instances,
     TableStruct_server_5fmsg_2eproto::offsets,
@@ -9274,6 +9665,2333 @@ void DeleteGameRsp::InternalSwap(DeleteGameRsp* PROTOBUF_RESTRICT other) {
 }
 
 ::google::protobuf::Metadata DeleteGameRsp::GetMetadata() const {
+  return ::google::protobuf::Message::GetMetadataImpl(GetClassData()->full());
+}
+// ===================================================================
+
+class GetWalletReq::_Internal {
+ public:
+};
+
+GetWalletReq::GetWalletReq(::google::protobuf::Arena* arena)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::internal::ZeroFieldsBase(arena, _class_data_.base()) {
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::internal::ZeroFieldsBase(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  // @@protoc_insertion_point(arena_constructor:ServerApi.GetWalletReq)
+}
+GetWalletReq::GetWalletReq(
+    ::google::protobuf::Arena* arena,
+    const GetWalletReq& from)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::internal::ZeroFieldsBase(arena, _class_data_.base()) {
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::internal::ZeroFieldsBase(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  GetWalletReq* const _this = this;
+  (void)_this;
+  _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
+      from._internal_metadata_);
+
+  // @@protoc_insertion_point(copy_constructor:ServerApi.GetWalletReq)
+}
+
+inline void* GetWalletReq::PlacementNew_(const void*, void* mem,
+                                        ::google::protobuf::Arena* arena) {
+  return ::new (mem) GetWalletReq(arena);
+}
+constexpr auto GetWalletReq::InternalNewImpl_() {
+  return ::google::protobuf::internal::MessageCreator::ZeroInit(sizeof(GetWalletReq),
+                                            alignof(GetWalletReq));
+}
+PROTOBUF_CONSTINIT
+PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::google::protobuf::internal::ClassDataFull GetWalletReq::_class_data_ = {
+    ::google::protobuf::internal::ClassData{
+        &_GetWalletReq_default_instance_._instance,
+        &_table_.header,
+        nullptr,  // OnDemandRegisterArenaDtor
+        nullptr,  // IsInitialized
+        &GetWalletReq::MergeImpl,
+        ::google::protobuf::internal::ZeroFieldsBase::GetNewImpl<GetWalletReq>(),
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+        &GetWalletReq::SharedDtor,
+        ::google::protobuf::internal::ZeroFieldsBase::GetClearImpl<GetWalletReq>(), &GetWalletReq::ByteSizeLong,
+            &GetWalletReq::_InternalSerialize,
+#endif  // PROTOBUF_CUSTOM_VTABLE
+        PROTOBUF_FIELD_OFFSET(GetWalletReq, _impl_._cached_size_),
+        false,
+    },
+    &GetWalletReq::kDescriptorMethods,
+    &descriptor_table_server_5fmsg_2eproto,
+    nullptr,  // tracker
+};
+const ::google::protobuf::internal::ClassData* GetWalletReq::GetClassData() const {
+  ::google::protobuf::internal::PrefetchToLocalCache(&_class_data_);
+  ::google::protobuf::internal::PrefetchToLocalCache(_class_data_.tc_table);
+  return _class_data_.base();
+}
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::_pbi::TcParseTable<0, 0, 0, 0, 2> GetWalletReq::_table_ = {
+  {
+    0,  // no _has_bits_
+    0, // no _extensions_
+    0, 0,  // max_field_number, fast_idx_mask
+    offsetof(decltype(_table_), field_lookup_table),
+    4294967295,  // skipmap
+    offsetof(decltype(_table_), field_names),  // no field_entries
+    0,  // num_field_entries
+    0,  // num_aux_entries
+    offsetof(decltype(_table_), field_names),  // no aux_entries
+    _class_data_.base(),
+    nullptr,  // post_loop_handler
+    ::_pbi::TcParser::GenericFallback,  // fallback
+    #ifdef PROTOBUF_PREFETCH_PARSE_TABLE
+    ::_pbi::TcParser::GetTable<::ServerApi::GetWalletReq>(),  // to_prefetch
+    #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
+  }, {{
+    {::_pbi::TcParser::MiniParse, {}},
+  }}, {{
+    65535, 65535
+  }},
+  // no field_entries, or aux_entries
+  {{
+  }},
+};
+
+
+
+
+
+
+
+
+::google::protobuf::Metadata GetWalletReq::GetMetadata() const {
+  return ::google::protobuf::internal::ZeroFieldsBase::GetMetadataImpl(GetClassData()->full());
+}
+// ===================================================================
+
+class GetWalletRsp::_Internal {
+ public:
+};
+
+GetWalletRsp::GetWalletRsp(::google::protobuf::Arena* arena)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(arena, _class_data_.base()) {
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  SharedCtor(arena);
+  // @@protoc_insertion_point(arena_constructor:ServerApi.GetWalletRsp)
+}
+GetWalletRsp::GetWalletRsp(
+    ::google::protobuf::Arena* arena, const GetWalletRsp& from)
+    : GetWalletRsp(arena) {
+  MergeFrom(from);
+}
+inline PROTOBUF_NDEBUG_INLINE GetWalletRsp::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility,
+    ::google::protobuf::Arena* arena)
+      : _cached_size_{0} {}
+
+inline void GetWalletRsp::SharedCtor(::_pb::Arena* arena) {
+  new (&_impl_) Impl_(internal_visibility(), arena);
+  ::memset(reinterpret_cast<char *>(&_impl_) +
+               offsetof(Impl_, current_points_),
+           0,
+           offsetof(Impl_, total_recharged_) -
+               offsetof(Impl_, current_points_) +
+               sizeof(Impl_::total_recharged_));
+}
+GetWalletRsp::~GetWalletRsp() {
+  // @@protoc_insertion_point(destructor:ServerApi.GetWalletRsp)
+  SharedDtor(*this);
+}
+inline void GetWalletRsp::SharedDtor(MessageLite& self) {
+  GetWalletRsp& this_ = static_cast<GetWalletRsp&>(self);
+  this_._internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
+  ABSL_DCHECK(this_.GetArena() == nullptr);
+  this_._impl_.~Impl_();
+}
+
+inline void* GetWalletRsp::PlacementNew_(const void*, void* mem,
+                                        ::google::protobuf::Arena* arena) {
+  return ::new (mem) GetWalletRsp(arena);
+}
+constexpr auto GetWalletRsp::InternalNewImpl_() {
+  return ::google::protobuf::internal::MessageCreator::ZeroInit(sizeof(GetWalletRsp),
+                                            alignof(GetWalletRsp));
+}
+PROTOBUF_CONSTINIT
+PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::google::protobuf::internal::ClassDataFull GetWalletRsp::_class_data_ = {
+    ::google::protobuf::internal::ClassData{
+        &_GetWalletRsp_default_instance_._instance,
+        &_table_.header,
+        nullptr,  // OnDemandRegisterArenaDtor
+        nullptr,  // IsInitialized
+        &GetWalletRsp::MergeImpl,
+        ::google::protobuf::Message::GetNewImpl<GetWalletRsp>(),
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+        &GetWalletRsp::SharedDtor,
+        ::google::protobuf::Message::GetClearImpl<GetWalletRsp>(), &GetWalletRsp::ByteSizeLong,
+            &GetWalletRsp::_InternalSerialize,
+#endif  // PROTOBUF_CUSTOM_VTABLE
+        PROTOBUF_FIELD_OFFSET(GetWalletRsp, _impl_._cached_size_),
+        false,
+    },
+    &GetWalletRsp::kDescriptorMethods,
+    &descriptor_table_server_5fmsg_2eproto,
+    nullptr,  // tracker
+};
+const ::google::protobuf::internal::ClassData* GetWalletRsp::GetClassData() const {
+  ::google::protobuf::internal::PrefetchToLocalCache(&_class_data_);
+  ::google::protobuf::internal::PrefetchToLocalCache(_class_data_.tc_table);
+  return _class_data_.base();
+}
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::_pbi::TcParseTable<1, 2, 0, 0, 2> GetWalletRsp::_table_ = {
+  {
+    0,  // no _has_bits_
+    0, // no _extensions_
+    2, 8,  // max_field_number, fast_idx_mask
+    offsetof(decltype(_table_), field_lookup_table),
+    4294967292,  // skipmap
+    offsetof(decltype(_table_), field_entries),
+    2,  // num_field_entries
+    0,  // num_aux_entries
+    offsetof(decltype(_table_), field_names),  // no aux_entries
+    _class_data_.base(),
+    nullptr,  // post_loop_handler
+    ::_pbi::TcParser::GenericFallback,  // fallback
+    #ifdef PROTOBUF_PREFETCH_PARSE_TABLE
+    ::_pbi::TcParser::GetTable<::ServerApi::GetWalletRsp>(),  // to_prefetch
+    #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
+  }, {{
+    // int64 total_recharged = 2;
+    {::_pbi::TcParser::SingularVarintNoZag1<::uint64_t, offsetof(GetWalletRsp, _impl_.total_recharged_), 63>(),
+     {16, 63, 0, PROTOBUF_FIELD_OFFSET(GetWalletRsp, _impl_.total_recharged_)}},
+    // int64 current_points = 1;
+    {::_pbi::TcParser::SingularVarintNoZag1<::uint64_t, offsetof(GetWalletRsp, _impl_.current_points_), 63>(),
+     {8, 63, 0, PROTOBUF_FIELD_OFFSET(GetWalletRsp, _impl_.current_points_)}},
+  }}, {{
+    65535, 65535
+  }}, {{
+    // int64 current_points = 1;
+    {PROTOBUF_FIELD_OFFSET(GetWalletRsp, _impl_.current_points_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kInt64)},
+    // int64 total_recharged = 2;
+    {PROTOBUF_FIELD_OFFSET(GetWalletRsp, _impl_.total_recharged_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kInt64)},
+  }},
+  // no aux_entries
+  {{
+  }},
+};
+
+PROTOBUF_NOINLINE void GetWalletRsp::Clear() {
+// @@protoc_insertion_point(message_clear_start:ServerApi.GetWalletRsp)
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  ::uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  ::memset(&_impl_.current_points_, 0, static_cast<::size_t>(
+      reinterpret_cast<char*>(&_impl_.total_recharged_) -
+      reinterpret_cast<char*>(&_impl_.current_points_)) + sizeof(_impl_.total_recharged_));
+  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
+}
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+        ::uint8_t* GetWalletRsp::_InternalSerialize(
+            const MessageLite& base, ::uint8_t* target,
+            ::google::protobuf::io::EpsCopyOutputStream* stream) {
+          const GetWalletRsp& this_ = static_cast<const GetWalletRsp&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+        ::uint8_t* GetWalletRsp::_InternalSerialize(
+            ::uint8_t* target,
+            ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+          const GetWalletRsp& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+          // @@protoc_insertion_point(serialize_to_array_start:ServerApi.GetWalletRsp)
+          ::uint32_t cached_has_bits = 0;
+          (void)cached_has_bits;
+
+          // int64 current_points = 1;
+          if (this_._internal_current_points() != 0) {
+            target = ::google::protobuf::internal::WireFormatLite::
+                WriteInt64ToArrayWithField<1>(
+                    stream, this_._internal_current_points(), target);
+          }
+
+          // int64 total_recharged = 2;
+          if (this_._internal_total_recharged() != 0) {
+            target = ::google::protobuf::internal::WireFormatLite::
+                WriteInt64ToArrayWithField<2>(
+                    stream, this_._internal_total_recharged(), target);
+          }
+
+          if (PROTOBUF_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
+            target =
+                ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+                    this_._internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
+          }
+          // @@protoc_insertion_point(serialize_to_array_end:ServerApi.GetWalletRsp)
+          return target;
+        }
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+        ::size_t GetWalletRsp::ByteSizeLong(const MessageLite& base) {
+          const GetWalletRsp& this_ = static_cast<const GetWalletRsp&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+        ::size_t GetWalletRsp::ByteSizeLong() const {
+          const GetWalletRsp& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+          // @@protoc_insertion_point(message_byte_size_start:ServerApi.GetWalletRsp)
+          ::size_t total_size = 0;
+
+          ::uint32_t cached_has_bits = 0;
+          // Prevent compiler warnings about cached_has_bits being unused
+          (void)cached_has_bits;
+
+          ::_pbi::Prefetch5LinesFrom7Lines(&this_);
+           {
+            // int64 current_points = 1;
+            if (this_._internal_current_points() != 0) {
+              total_size += ::_pbi::WireFormatLite::Int64SizePlusOne(
+                  this_._internal_current_points());
+            }
+            // int64 total_recharged = 2;
+            if (this_._internal_total_recharged() != 0) {
+              total_size += ::_pbi::WireFormatLite::Int64SizePlusOne(
+                  this_._internal_total_recharged());
+            }
+          }
+          return this_.MaybeComputeUnknownFieldsSize(total_size,
+                                                     &this_._impl_._cached_size_);
+        }
+
+void GetWalletRsp::MergeImpl(::google::protobuf::MessageLite& to_msg, const ::google::protobuf::MessageLite& from_msg) {
+  auto* const _this = static_cast<GetWalletRsp*>(&to_msg);
+  auto& from = static_cast<const GetWalletRsp&>(from_msg);
+  // @@protoc_insertion_point(class_specific_merge_from_start:ServerApi.GetWalletRsp)
+  ABSL_DCHECK_NE(&from, _this);
+  ::uint32_t cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  if (from._internal_current_points() != 0) {
+    _this->_impl_.current_points_ = from._impl_.current_points_;
+  }
+  if (from._internal_total_recharged() != 0) {
+    _this->_impl_.total_recharged_ = from._impl_.total_recharged_;
+  }
+  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
+}
+
+void GetWalletRsp::CopyFrom(const GetWalletRsp& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:ServerApi.GetWalletRsp)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+
+void GetWalletRsp::InternalSwap(GetWalletRsp* PROTOBUF_RESTRICT other) {
+  using std::swap;
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
+  ::google::protobuf::internal::memswap<
+      PROTOBUF_FIELD_OFFSET(GetWalletRsp, _impl_.total_recharged_)
+      + sizeof(GetWalletRsp::_impl_.total_recharged_)
+      - PROTOBUF_FIELD_OFFSET(GetWalletRsp, _impl_.current_points_)>(
+          reinterpret_cast<char*>(&_impl_.current_points_),
+          reinterpret_cast<char*>(&other->_impl_.current_points_));
+}
+
+::google::protobuf::Metadata GetWalletRsp::GetMetadata() const {
+  return ::google::protobuf::Message::GetMetadataImpl(GetClassData()->full());
+}
+// ===================================================================
+
+class GoodsInfo::_Internal {
+ public:
+};
+
+GoodsInfo::GoodsInfo(::google::protobuf::Arena* arena)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(arena, _class_data_.base()) {
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  SharedCtor(arena);
+  // @@protoc_insertion_point(arena_constructor:ServerApi.GoodsInfo)
+}
+inline PROTOBUF_NDEBUG_INLINE GoodsInfo::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility, ::google::protobuf::Arena* arena,
+    const Impl_& from, const ::ServerApi::GoodsInfo& from_msg)
+      : goods_name_(arena, from.goods_name_),
+        _cached_size_{0} {}
+
+GoodsInfo::GoodsInfo(
+    ::google::protobuf::Arena* arena,
+    const GoodsInfo& from)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(arena, _class_data_.base()) {
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  GoodsInfo* const _this = this;
+  (void)_this;
+  _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
+      from._internal_metadata_);
+  new (&_impl_) Impl_(internal_visibility(), arena, from._impl_, from);
+  ::memcpy(reinterpret_cast<char *>(&_impl_) +
+               offsetof(Impl_, goods_id_),
+           reinterpret_cast<const char *>(&from._impl_) +
+               offsetof(Impl_, goods_id_),
+           offsetof(Impl_, points_reward_) -
+               offsetof(Impl_, goods_id_) +
+               sizeof(Impl_::points_reward_));
+
+  // @@protoc_insertion_point(copy_constructor:ServerApi.GoodsInfo)
+}
+inline PROTOBUF_NDEBUG_INLINE GoodsInfo::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility,
+    ::google::protobuf::Arena* arena)
+      : goods_name_(arena),
+        _cached_size_{0} {}
+
+inline void GoodsInfo::SharedCtor(::_pb::Arena* arena) {
+  new (&_impl_) Impl_(internal_visibility(), arena);
+  ::memset(reinterpret_cast<char *>(&_impl_) +
+               offsetof(Impl_, goods_id_),
+           0,
+           offsetof(Impl_, points_reward_) -
+               offsetof(Impl_, goods_id_) +
+               sizeof(Impl_::points_reward_));
+}
+GoodsInfo::~GoodsInfo() {
+  // @@protoc_insertion_point(destructor:ServerApi.GoodsInfo)
+  SharedDtor(*this);
+}
+inline void GoodsInfo::SharedDtor(MessageLite& self) {
+  GoodsInfo& this_ = static_cast<GoodsInfo&>(self);
+  this_._internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
+  ABSL_DCHECK(this_.GetArena() == nullptr);
+  this_._impl_.goods_name_.Destroy();
+  this_._impl_.~Impl_();
+}
+
+inline void* GoodsInfo::PlacementNew_(const void*, void* mem,
+                                        ::google::protobuf::Arena* arena) {
+  return ::new (mem) GoodsInfo(arena);
+}
+constexpr auto GoodsInfo::InternalNewImpl_() {
+  return ::google::protobuf::internal::MessageCreator::CopyInit(sizeof(GoodsInfo),
+                                            alignof(GoodsInfo));
+}
+PROTOBUF_CONSTINIT
+PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::google::protobuf::internal::ClassDataFull GoodsInfo::_class_data_ = {
+    ::google::protobuf::internal::ClassData{
+        &_GoodsInfo_default_instance_._instance,
+        &_table_.header,
+        nullptr,  // OnDemandRegisterArenaDtor
+        nullptr,  // IsInitialized
+        &GoodsInfo::MergeImpl,
+        ::google::protobuf::Message::GetNewImpl<GoodsInfo>(),
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+        &GoodsInfo::SharedDtor,
+        ::google::protobuf::Message::GetClearImpl<GoodsInfo>(), &GoodsInfo::ByteSizeLong,
+            &GoodsInfo::_InternalSerialize,
+#endif  // PROTOBUF_CUSTOM_VTABLE
+        PROTOBUF_FIELD_OFFSET(GoodsInfo, _impl_._cached_size_),
+        false,
+    },
+    &GoodsInfo::kDescriptorMethods,
+    &descriptor_table_server_5fmsg_2eproto,
+    nullptr,  // tracker
+};
+const ::google::protobuf::internal::ClassData* GoodsInfo::GetClassData() const {
+  ::google::protobuf::internal::PrefetchToLocalCache(&_class_data_);
+  ::google::protobuf::internal::PrefetchToLocalCache(_class_data_.tc_table);
+  return _class_data_.base();
+}
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::_pbi::TcParseTable<2, 4, 0, 38, 2> GoodsInfo::_table_ = {
+  {
+    0,  // no _has_bits_
+    0, // no _extensions_
+    4, 24,  // max_field_number, fast_idx_mask
+    offsetof(decltype(_table_), field_lookup_table),
+    4294967280,  // skipmap
+    offsetof(decltype(_table_), field_entries),
+    4,  // num_field_entries
+    0,  // num_aux_entries
+    offsetof(decltype(_table_), field_names),  // no aux_entries
+    _class_data_.base(),
+    nullptr,  // post_loop_handler
+    ::_pbi::TcParser::GenericFallback,  // fallback
+    #ifdef PROTOBUF_PREFETCH_PARSE_TABLE
+    ::_pbi::TcParser::GetTable<::ServerApi::GoodsInfo>(),  // to_prefetch
+    #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
+  }, {{
+    // uint32 points_reward = 4;
+    {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(GoodsInfo, _impl_.points_reward_), 63>(),
+     {32, 63, 0, PROTOBUF_FIELD_OFFSET(GoodsInfo, _impl_.points_reward_)}},
+    // uint64 goods_id = 1;
+    {::_pbi::TcParser::SingularVarintNoZag1<::uint64_t, offsetof(GoodsInfo, _impl_.goods_id_), 63>(),
+     {8, 63, 0, PROTOBUF_FIELD_OFFSET(GoodsInfo, _impl_.goods_id_)}},
+    // string goods_name = 2;
+    {::_pbi::TcParser::FastUS1,
+     {18, 63, 0, PROTOBUF_FIELD_OFFSET(GoodsInfo, _impl_.goods_name_)}},
+    // uint32 price_cents = 3;
+    {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(GoodsInfo, _impl_.price_cents_), 63>(),
+     {24, 63, 0, PROTOBUF_FIELD_OFFSET(GoodsInfo, _impl_.price_cents_)}},
+  }}, {{
+    65535, 65535
+  }}, {{
+    // uint64 goods_id = 1;
+    {PROTOBUF_FIELD_OFFSET(GoodsInfo, _impl_.goods_id_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kUInt64)},
+    // string goods_name = 2;
+    {PROTOBUF_FIELD_OFFSET(GoodsInfo, _impl_.goods_name_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
+    // uint32 price_cents = 3;
+    {PROTOBUF_FIELD_OFFSET(GoodsInfo, _impl_.price_cents_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kUInt32)},
+    // uint32 points_reward = 4;
+    {PROTOBUF_FIELD_OFFSET(GoodsInfo, _impl_.points_reward_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kUInt32)},
+  }},
+  // no aux_entries
+  {{
+    "\23\0\12\0\0\0\0\0"
+    "ServerApi.GoodsInfo"
+    "goods_name"
+  }},
+};
+
+PROTOBUF_NOINLINE void GoodsInfo::Clear() {
+// @@protoc_insertion_point(message_clear_start:ServerApi.GoodsInfo)
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  ::uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  _impl_.goods_name_.ClearToEmpty();
+  ::memset(&_impl_.goods_id_, 0, static_cast<::size_t>(
+      reinterpret_cast<char*>(&_impl_.points_reward_) -
+      reinterpret_cast<char*>(&_impl_.goods_id_)) + sizeof(_impl_.points_reward_));
+  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
+}
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+        ::uint8_t* GoodsInfo::_InternalSerialize(
+            const MessageLite& base, ::uint8_t* target,
+            ::google::protobuf::io::EpsCopyOutputStream* stream) {
+          const GoodsInfo& this_ = static_cast<const GoodsInfo&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+        ::uint8_t* GoodsInfo::_InternalSerialize(
+            ::uint8_t* target,
+            ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+          const GoodsInfo& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+          // @@protoc_insertion_point(serialize_to_array_start:ServerApi.GoodsInfo)
+          ::uint32_t cached_has_bits = 0;
+          (void)cached_has_bits;
+
+          // uint64 goods_id = 1;
+          if (this_._internal_goods_id() != 0) {
+            target = stream->EnsureSpace(target);
+            target = ::_pbi::WireFormatLite::WriteUInt64ToArray(
+                1, this_._internal_goods_id(), target);
+          }
+
+          // string goods_name = 2;
+          if (!this_._internal_goods_name().empty()) {
+            const std::string& _s = this_._internal_goods_name();
+            ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+                _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "ServerApi.GoodsInfo.goods_name");
+            target = stream->WriteStringMaybeAliased(2, _s, target);
+          }
+
+          // uint32 price_cents = 3;
+          if (this_._internal_price_cents() != 0) {
+            target = stream->EnsureSpace(target);
+            target = ::_pbi::WireFormatLite::WriteUInt32ToArray(
+                3, this_._internal_price_cents(), target);
+          }
+
+          // uint32 points_reward = 4;
+          if (this_._internal_points_reward() != 0) {
+            target = stream->EnsureSpace(target);
+            target = ::_pbi::WireFormatLite::WriteUInt32ToArray(
+                4, this_._internal_points_reward(), target);
+          }
+
+          if (PROTOBUF_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
+            target =
+                ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+                    this_._internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
+          }
+          // @@protoc_insertion_point(serialize_to_array_end:ServerApi.GoodsInfo)
+          return target;
+        }
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+        ::size_t GoodsInfo::ByteSizeLong(const MessageLite& base) {
+          const GoodsInfo& this_ = static_cast<const GoodsInfo&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+        ::size_t GoodsInfo::ByteSizeLong() const {
+          const GoodsInfo& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+          // @@protoc_insertion_point(message_byte_size_start:ServerApi.GoodsInfo)
+          ::size_t total_size = 0;
+
+          ::uint32_t cached_has_bits = 0;
+          // Prevent compiler warnings about cached_has_bits being unused
+          (void)cached_has_bits;
+
+          ::_pbi::Prefetch5LinesFrom7Lines(&this_);
+           {
+            // string goods_name = 2;
+            if (!this_._internal_goods_name().empty()) {
+              total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
+                                              this_._internal_goods_name());
+            }
+            // uint64 goods_id = 1;
+            if (this_._internal_goods_id() != 0) {
+              total_size += ::_pbi::WireFormatLite::UInt64SizePlusOne(
+                  this_._internal_goods_id());
+            }
+            // uint32 price_cents = 3;
+            if (this_._internal_price_cents() != 0) {
+              total_size += ::_pbi::WireFormatLite::UInt32SizePlusOne(
+                  this_._internal_price_cents());
+            }
+            // uint32 points_reward = 4;
+            if (this_._internal_points_reward() != 0) {
+              total_size += ::_pbi::WireFormatLite::UInt32SizePlusOne(
+                  this_._internal_points_reward());
+            }
+          }
+          return this_.MaybeComputeUnknownFieldsSize(total_size,
+                                                     &this_._impl_._cached_size_);
+        }
+
+void GoodsInfo::MergeImpl(::google::protobuf::MessageLite& to_msg, const ::google::protobuf::MessageLite& from_msg) {
+  auto* const _this = static_cast<GoodsInfo*>(&to_msg);
+  auto& from = static_cast<const GoodsInfo&>(from_msg);
+  // @@protoc_insertion_point(class_specific_merge_from_start:ServerApi.GoodsInfo)
+  ABSL_DCHECK_NE(&from, _this);
+  ::uint32_t cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  if (!from._internal_goods_name().empty()) {
+    _this->_internal_set_goods_name(from._internal_goods_name());
+  }
+  if (from._internal_goods_id() != 0) {
+    _this->_impl_.goods_id_ = from._impl_.goods_id_;
+  }
+  if (from._internal_price_cents() != 0) {
+    _this->_impl_.price_cents_ = from._impl_.price_cents_;
+  }
+  if (from._internal_points_reward() != 0) {
+    _this->_impl_.points_reward_ = from._impl_.points_reward_;
+  }
+  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
+}
+
+void GoodsInfo::CopyFrom(const GoodsInfo& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:ServerApi.GoodsInfo)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+
+void GoodsInfo::InternalSwap(GoodsInfo* PROTOBUF_RESTRICT other) {
+  using std::swap;
+  auto* arena = GetArena();
+  ABSL_DCHECK_EQ(arena, other->GetArena());
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
+  ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.goods_name_, &other->_impl_.goods_name_, arena);
+  ::google::protobuf::internal::memswap<
+      PROTOBUF_FIELD_OFFSET(GoodsInfo, _impl_.points_reward_)
+      + sizeof(GoodsInfo::_impl_.points_reward_)
+      - PROTOBUF_FIELD_OFFSET(GoodsInfo, _impl_.goods_id_)>(
+          reinterpret_cast<char*>(&_impl_.goods_id_),
+          reinterpret_cast<char*>(&other->_impl_.goods_id_));
+}
+
+::google::protobuf::Metadata GoodsInfo::GetMetadata() const {
+  return ::google::protobuf::Message::GetMetadataImpl(GetClassData()->full());
+}
+// ===================================================================
+
+class GetGoodsReq::_Internal {
+ public:
+};
+
+GetGoodsReq::GetGoodsReq(::google::protobuf::Arena* arena)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::internal::ZeroFieldsBase(arena, _class_data_.base()) {
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::internal::ZeroFieldsBase(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  // @@protoc_insertion_point(arena_constructor:ServerApi.GetGoodsReq)
+}
+GetGoodsReq::GetGoodsReq(
+    ::google::protobuf::Arena* arena,
+    const GetGoodsReq& from)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::internal::ZeroFieldsBase(arena, _class_data_.base()) {
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::internal::ZeroFieldsBase(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  GetGoodsReq* const _this = this;
+  (void)_this;
+  _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
+      from._internal_metadata_);
+
+  // @@protoc_insertion_point(copy_constructor:ServerApi.GetGoodsReq)
+}
+
+inline void* GetGoodsReq::PlacementNew_(const void*, void* mem,
+                                        ::google::protobuf::Arena* arena) {
+  return ::new (mem) GetGoodsReq(arena);
+}
+constexpr auto GetGoodsReq::InternalNewImpl_() {
+  return ::google::protobuf::internal::MessageCreator::ZeroInit(sizeof(GetGoodsReq),
+                                            alignof(GetGoodsReq));
+}
+PROTOBUF_CONSTINIT
+PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::google::protobuf::internal::ClassDataFull GetGoodsReq::_class_data_ = {
+    ::google::protobuf::internal::ClassData{
+        &_GetGoodsReq_default_instance_._instance,
+        &_table_.header,
+        nullptr,  // OnDemandRegisterArenaDtor
+        nullptr,  // IsInitialized
+        &GetGoodsReq::MergeImpl,
+        ::google::protobuf::internal::ZeroFieldsBase::GetNewImpl<GetGoodsReq>(),
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+        &GetGoodsReq::SharedDtor,
+        ::google::protobuf::internal::ZeroFieldsBase::GetClearImpl<GetGoodsReq>(), &GetGoodsReq::ByteSizeLong,
+            &GetGoodsReq::_InternalSerialize,
+#endif  // PROTOBUF_CUSTOM_VTABLE
+        PROTOBUF_FIELD_OFFSET(GetGoodsReq, _impl_._cached_size_),
+        false,
+    },
+    &GetGoodsReq::kDescriptorMethods,
+    &descriptor_table_server_5fmsg_2eproto,
+    nullptr,  // tracker
+};
+const ::google::protobuf::internal::ClassData* GetGoodsReq::GetClassData() const {
+  ::google::protobuf::internal::PrefetchToLocalCache(&_class_data_);
+  ::google::protobuf::internal::PrefetchToLocalCache(_class_data_.tc_table);
+  return _class_data_.base();
+}
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::_pbi::TcParseTable<0, 0, 0, 0, 2> GetGoodsReq::_table_ = {
+  {
+    0,  // no _has_bits_
+    0, // no _extensions_
+    0, 0,  // max_field_number, fast_idx_mask
+    offsetof(decltype(_table_), field_lookup_table),
+    4294967295,  // skipmap
+    offsetof(decltype(_table_), field_names),  // no field_entries
+    0,  // num_field_entries
+    0,  // num_aux_entries
+    offsetof(decltype(_table_), field_names),  // no aux_entries
+    _class_data_.base(),
+    nullptr,  // post_loop_handler
+    ::_pbi::TcParser::GenericFallback,  // fallback
+    #ifdef PROTOBUF_PREFETCH_PARSE_TABLE
+    ::_pbi::TcParser::GetTable<::ServerApi::GetGoodsReq>(),  // to_prefetch
+    #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
+  }, {{
+    {::_pbi::TcParser::MiniParse, {}},
+  }}, {{
+    65535, 65535
+  }},
+  // no field_entries, or aux_entries
+  {{
+  }},
+};
+
+
+
+
+
+
+
+
+::google::protobuf::Metadata GetGoodsReq::GetMetadata() const {
+  return ::google::protobuf::internal::ZeroFieldsBase::GetMetadataImpl(GetClassData()->full());
+}
+// ===================================================================
+
+class GetGoodsRsp::_Internal {
+ public:
+};
+
+GetGoodsRsp::GetGoodsRsp(::google::protobuf::Arena* arena)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(arena, _class_data_.base()) {
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  SharedCtor(arena);
+  // @@protoc_insertion_point(arena_constructor:ServerApi.GetGoodsRsp)
+}
+inline PROTOBUF_NDEBUG_INLINE GetGoodsRsp::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility, ::google::protobuf::Arena* arena,
+    const Impl_& from, const ::ServerApi::GetGoodsRsp& from_msg)
+      : goods_list_{visibility, arena, from.goods_list_},
+        _cached_size_{0} {}
+
+GetGoodsRsp::GetGoodsRsp(
+    ::google::protobuf::Arena* arena,
+    const GetGoodsRsp& from)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(arena, _class_data_.base()) {
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  GetGoodsRsp* const _this = this;
+  (void)_this;
+  _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
+      from._internal_metadata_);
+  new (&_impl_) Impl_(internal_visibility(), arena, from._impl_, from);
+
+  // @@protoc_insertion_point(copy_constructor:ServerApi.GetGoodsRsp)
+}
+inline PROTOBUF_NDEBUG_INLINE GetGoodsRsp::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility,
+    ::google::protobuf::Arena* arena)
+      : goods_list_{visibility, arena},
+        _cached_size_{0} {}
+
+inline void GetGoodsRsp::SharedCtor(::_pb::Arena* arena) {
+  new (&_impl_) Impl_(internal_visibility(), arena);
+}
+GetGoodsRsp::~GetGoodsRsp() {
+  // @@protoc_insertion_point(destructor:ServerApi.GetGoodsRsp)
+  SharedDtor(*this);
+}
+inline void GetGoodsRsp::SharedDtor(MessageLite& self) {
+  GetGoodsRsp& this_ = static_cast<GetGoodsRsp&>(self);
+  this_._internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
+  ABSL_DCHECK(this_.GetArena() == nullptr);
+  this_._impl_.~Impl_();
+}
+
+inline void* GetGoodsRsp::PlacementNew_(const void*, void* mem,
+                                        ::google::protobuf::Arena* arena) {
+  return ::new (mem) GetGoodsRsp(arena);
+}
+constexpr auto GetGoodsRsp::InternalNewImpl_() {
+  constexpr auto arena_bits = ::google::protobuf::internal::EncodePlacementArenaOffsets({
+      PROTOBUF_FIELD_OFFSET(GetGoodsRsp, _impl_.goods_list_) +
+          decltype(GetGoodsRsp::_impl_.goods_list_)::
+              InternalGetArenaOffset(
+                  ::google::protobuf::Message::internal_visibility()),
+  });
+  if (arena_bits.has_value()) {
+    return ::google::protobuf::internal::MessageCreator::ZeroInit(
+        sizeof(GetGoodsRsp), alignof(GetGoodsRsp), *arena_bits);
+  } else {
+    return ::google::protobuf::internal::MessageCreator(&GetGoodsRsp::PlacementNew_,
+                                 sizeof(GetGoodsRsp),
+                                 alignof(GetGoodsRsp));
+  }
+}
+PROTOBUF_CONSTINIT
+PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::google::protobuf::internal::ClassDataFull GetGoodsRsp::_class_data_ = {
+    ::google::protobuf::internal::ClassData{
+        &_GetGoodsRsp_default_instance_._instance,
+        &_table_.header,
+        nullptr,  // OnDemandRegisterArenaDtor
+        nullptr,  // IsInitialized
+        &GetGoodsRsp::MergeImpl,
+        ::google::protobuf::Message::GetNewImpl<GetGoodsRsp>(),
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+        &GetGoodsRsp::SharedDtor,
+        ::google::protobuf::Message::GetClearImpl<GetGoodsRsp>(), &GetGoodsRsp::ByteSizeLong,
+            &GetGoodsRsp::_InternalSerialize,
+#endif  // PROTOBUF_CUSTOM_VTABLE
+        PROTOBUF_FIELD_OFFSET(GetGoodsRsp, _impl_._cached_size_),
+        false,
+    },
+    &GetGoodsRsp::kDescriptorMethods,
+    &descriptor_table_server_5fmsg_2eproto,
+    nullptr,  // tracker
+};
+const ::google::protobuf::internal::ClassData* GetGoodsRsp::GetClassData() const {
+  ::google::protobuf::internal::PrefetchToLocalCache(&_class_data_);
+  ::google::protobuf::internal::PrefetchToLocalCache(_class_data_.tc_table);
+  return _class_data_.base();
+}
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::_pbi::TcParseTable<0, 1, 1, 0, 2> GetGoodsRsp::_table_ = {
+  {
+    0,  // no _has_bits_
+    0, // no _extensions_
+    1, 0,  // max_field_number, fast_idx_mask
+    offsetof(decltype(_table_), field_lookup_table),
+    4294967294,  // skipmap
+    offsetof(decltype(_table_), field_entries),
+    1,  // num_field_entries
+    1,  // num_aux_entries
+    offsetof(decltype(_table_), aux_entries),
+    _class_data_.base(),
+    nullptr,  // post_loop_handler
+    ::_pbi::TcParser::GenericFallback,  // fallback
+    #ifdef PROTOBUF_PREFETCH_PARSE_TABLE
+    ::_pbi::TcParser::GetTable<::ServerApi::GetGoodsRsp>(),  // to_prefetch
+    #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
+  }, {{
+    // repeated .ServerApi.GoodsInfo goods_list = 1;
+    {::_pbi::TcParser::FastMtR1,
+     {10, 63, 0, PROTOBUF_FIELD_OFFSET(GetGoodsRsp, _impl_.goods_list_)}},
+  }}, {{
+    65535, 65535
+  }}, {{
+    // repeated .ServerApi.GoodsInfo goods_list = 1;
+    {PROTOBUF_FIELD_OFFSET(GetGoodsRsp, _impl_.goods_list_), 0, 0,
+    (0 | ::_fl::kFcRepeated | ::_fl::kMessage | ::_fl::kTvTable)},
+  }}, {{
+    {::_pbi::TcParser::GetTable<::ServerApi::GoodsInfo>()},
+  }}, {{
+  }},
+};
+
+PROTOBUF_NOINLINE void GetGoodsRsp::Clear() {
+// @@protoc_insertion_point(message_clear_start:ServerApi.GetGoodsRsp)
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  ::uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  _impl_.goods_list_.Clear();
+  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
+}
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+        ::uint8_t* GetGoodsRsp::_InternalSerialize(
+            const MessageLite& base, ::uint8_t* target,
+            ::google::protobuf::io::EpsCopyOutputStream* stream) {
+          const GetGoodsRsp& this_ = static_cast<const GetGoodsRsp&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+        ::uint8_t* GetGoodsRsp::_InternalSerialize(
+            ::uint8_t* target,
+            ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+          const GetGoodsRsp& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+          // @@protoc_insertion_point(serialize_to_array_start:ServerApi.GetGoodsRsp)
+          ::uint32_t cached_has_bits = 0;
+          (void)cached_has_bits;
+
+          // repeated .ServerApi.GoodsInfo goods_list = 1;
+          for (unsigned i = 0, n = static_cast<unsigned>(
+                                   this_._internal_goods_list_size());
+               i < n; i++) {
+            const auto& repfield = this_._internal_goods_list().Get(i);
+            target =
+                ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
+                    1, repfield, repfield.GetCachedSize(),
+                    target, stream);
+          }
+
+          if (PROTOBUF_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
+            target =
+                ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+                    this_._internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
+          }
+          // @@protoc_insertion_point(serialize_to_array_end:ServerApi.GetGoodsRsp)
+          return target;
+        }
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+        ::size_t GetGoodsRsp::ByteSizeLong(const MessageLite& base) {
+          const GetGoodsRsp& this_ = static_cast<const GetGoodsRsp&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+        ::size_t GetGoodsRsp::ByteSizeLong() const {
+          const GetGoodsRsp& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+          // @@protoc_insertion_point(message_byte_size_start:ServerApi.GetGoodsRsp)
+          ::size_t total_size = 0;
+
+          ::uint32_t cached_has_bits = 0;
+          // Prevent compiler warnings about cached_has_bits being unused
+          (void)cached_has_bits;
+
+          ::_pbi::Prefetch5LinesFrom7Lines(&this_);
+           {
+            // repeated .ServerApi.GoodsInfo goods_list = 1;
+            {
+              total_size += 1UL * this_._internal_goods_list_size();
+              for (const auto& msg : this_._internal_goods_list()) {
+                total_size += ::google::protobuf::internal::WireFormatLite::MessageSize(msg);
+              }
+            }
+          }
+          return this_.MaybeComputeUnknownFieldsSize(total_size,
+                                                     &this_._impl_._cached_size_);
+        }
+
+void GetGoodsRsp::MergeImpl(::google::protobuf::MessageLite& to_msg, const ::google::protobuf::MessageLite& from_msg) {
+  auto* const _this = static_cast<GetGoodsRsp*>(&to_msg);
+  auto& from = static_cast<const GetGoodsRsp&>(from_msg);
+  // @@protoc_insertion_point(class_specific_merge_from_start:ServerApi.GetGoodsRsp)
+  ABSL_DCHECK_NE(&from, _this);
+  ::uint32_t cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  _this->_internal_mutable_goods_list()->MergeFrom(
+      from._internal_goods_list());
+  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
+}
+
+void GetGoodsRsp::CopyFrom(const GetGoodsRsp& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:ServerApi.GetGoodsRsp)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+
+void GetGoodsRsp::InternalSwap(GetGoodsRsp* PROTOBUF_RESTRICT other) {
+  using std::swap;
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
+  _impl_.goods_list_.InternalSwap(&other->_impl_.goods_list_);
+}
+
+::google::protobuf::Metadata GetGoodsRsp::GetMetadata() const {
+  return ::google::protobuf::Message::GetMetadataImpl(GetClassData()->full());
+}
+// ===================================================================
+
+class CreateOrderReq::_Internal {
+ public:
+};
+
+CreateOrderReq::CreateOrderReq(::google::protobuf::Arena* arena)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(arena, _class_data_.base()) {
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  SharedCtor(arena);
+  // @@protoc_insertion_point(arena_constructor:ServerApi.CreateOrderReq)
+}
+inline PROTOBUF_NDEBUG_INLINE CreateOrderReq::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility, ::google::protobuf::Arena* arena,
+    const Impl_& from, const ::ServerApi::CreateOrderReq& from_msg)
+      : pay_method_(arena, from.pay_method_),
+        _cached_size_{0} {}
+
+CreateOrderReq::CreateOrderReq(
+    ::google::protobuf::Arena* arena,
+    const CreateOrderReq& from)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(arena, _class_data_.base()) {
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  CreateOrderReq* const _this = this;
+  (void)_this;
+  _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
+      from._internal_metadata_);
+  new (&_impl_) Impl_(internal_visibility(), arena, from._impl_, from);
+  _impl_.goods_id_ = from._impl_.goods_id_;
+
+  // @@protoc_insertion_point(copy_constructor:ServerApi.CreateOrderReq)
+}
+inline PROTOBUF_NDEBUG_INLINE CreateOrderReq::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility,
+    ::google::protobuf::Arena* arena)
+      : pay_method_(arena),
+        _cached_size_{0} {}
+
+inline void CreateOrderReq::SharedCtor(::_pb::Arena* arena) {
+  new (&_impl_) Impl_(internal_visibility(), arena);
+  _impl_.goods_id_ = {};
+}
+CreateOrderReq::~CreateOrderReq() {
+  // @@protoc_insertion_point(destructor:ServerApi.CreateOrderReq)
+  SharedDtor(*this);
+}
+inline void CreateOrderReq::SharedDtor(MessageLite& self) {
+  CreateOrderReq& this_ = static_cast<CreateOrderReq&>(self);
+  this_._internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
+  ABSL_DCHECK(this_.GetArena() == nullptr);
+  this_._impl_.pay_method_.Destroy();
+  this_._impl_.~Impl_();
+}
+
+inline void* CreateOrderReq::PlacementNew_(const void*, void* mem,
+                                        ::google::protobuf::Arena* arena) {
+  return ::new (mem) CreateOrderReq(arena);
+}
+constexpr auto CreateOrderReq::InternalNewImpl_() {
+  return ::google::protobuf::internal::MessageCreator::CopyInit(sizeof(CreateOrderReq),
+                                            alignof(CreateOrderReq));
+}
+PROTOBUF_CONSTINIT
+PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::google::protobuf::internal::ClassDataFull CreateOrderReq::_class_data_ = {
+    ::google::protobuf::internal::ClassData{
+        &_CreateOrderReq_default_instance_._instance,
+        &_table_.header,
+        nullptr,  // OnDemandRegisterArenaDtor
+        nullptr,  // IsInitialized
+        &CreateOrderReq::MergeImpl,
+        ::google::protobuf::Message::GetNewImpl<CreateOrderReq>(),
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+        &CreateOrderReq::SharedDtor,
+        ::google::protobuf::Message::GetClearImpl<CreateOrderReq>(), &CreateOrderReq::ByteSizeLong,
+            &CreateOrderReq::_InternalSerialize,
+#endif  // PROTOBUF_CUSTOM_VTABLE
+        PROTOBUF_FIELD_OFFSET(CreateOrderReq, _impl_._cached_size_),
+        false,
+    },
+    &CreateOrderReq::kDescriptorMethods,
+    &descriptor_table_server_5fmsg_2eproto,
+    nullptr,  // tracker
+};
+const ::google::protobuf::internal::ClassData* CreateOrderReq::GetClassData() const {
+  ::google::protobuf::internal::PrefetchToLocalCache(&_class_data_);
+  ::google::protobuf::internal::PrefetchToLocalCache(_class_data_.tc_table);
+  return _class_data_.base();
+}
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::_pbi::TcParseTable<1, 2, 0, 43, 2> CreateOrderReq::_table_ = {
+  {
+    0,  // no _has_bits_
+    0, // no _extensions_
+    2, 8,  // max_field_number, fast_idx_mask
+    offsetof(decltype(_table_), field_lookup_table),
+    4294967292,  // skipmap
+    offsetof(decltype(_table_), field_entries),
+    2,  // num_field_entries
+    0,  // num_aux_entries
+    offsetof(decltype(_table_), field_names),  // no aux_entries
+    _class_data_.base(),
+    nullptr,  // post_loop_handler
+    ::_pbi::TcParser::GenericFallback,  // fallback
+    #ifdef PROTOBUF_PREFETCH_PARSE_TABLE
+    ::_pbi::TcParser::GetTable<::ServerApi::CreateOrderReq>(),  // to_prefetch
+    #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
+  }, {{
+    // string pay_method = 2;
+    {::_pbi::TcParser::FastUS1,
+     {18, 63, 0, PROTOBUF_FIELD_OFFSET(CreateOrderReq, _impl_.pay_method_)}},
+    // uint64 goods_id = 1;
+    {::_pbi::TcParser::SingularVarintNoZag1<::uint64_t, offsetof(CreateOrderReq, _impl_.goods_id_), 63>(),
+     {8, 63, 0, PROTOBUF_FIELD_OFFSET(CreateOrderReq, _impl_.goods_id_)}},
+  }}, {{
+    65535, 65535
+  }}, {{
+    // uint64 goods_id = 1;
+    {PROTOBUF_FIELD_OFFSET(CreateOrderReq, _impl_.goods_id_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kUInt64)},
+    // string pay_method = 2;
+    {PROTOBUF_FIELD_OFFSET(CreateOrderReq, _impl_.pay_method_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
+  }},
+  // no aux_entries
+  {{
+    "\30\0\12\0\0\0\0\0"
+    "ServerApi.CreateOrderReq"
+    "pay_method"
+  }},
+};
+
+PROTOBUF_NOINLINE void CreateOrderReq::Clear() {
+// @@protoc_insertion_point(message_clear_start:ServerApi.CreateOrderReq)
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  ::uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  _impl_.pay_method_.ClearToEmpty();
+  _impl_.goods_id_ = ::uint64_t{0u};
+  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
+}
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+        ::uint8_t* CreateOrderReq::_InternalSerialize(
+            const MessageLite& base, ::uint8_t* target,
+            ::google::protobuf::io::EpsCopyOutputStream* stream) {
+          const CreateOrderReq& this_ = static_cast<const CreateOrderReq&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+        ::uint8_t* CreateOrderReq::_InternalSerialize(
+            ::uint8_t* target,
+            ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+          const CreateOrderReq& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+          // @@protoc_insertion_point(serialize_to_array_start:ServerApi.CreateOrderReq)
+          ::uint32_t cached_has_bits = 0;
+          (void)cached_has_bits;
+
+          // uint64 goods_id = 1;
+          if (this_._internal_goods_id() != 0) {
+            target = stream->EnsureSpace(target);
+            target = ::_pbi::WireFormatLite::WriteUInt64ToArray(
+                1, this_._internal_goods_id(), target);
+          }
+
+          // string pay_method = 2;
+          if (!this_._internal_pay_method().empty()) {
+            const std::string& _s = this_._internal_pay_method();
+            ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+                _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "ServerApi.CreateOrderReq.pay_method");
+            target = stream->WriteStringMaybeAliased(2, _s, target);
+          }
+
+          if (PROTOBUF_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
+            target =
+                ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+                    this_._internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
+          }
+          // @@protoc_insertion_point(serialize_to_array_end:ServerApi.CreateOrderReq)
+          return target;
+        }
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+        ::size_t CreateOrderReq::ByteSizeLong(const MessageLite& base) {
+          const CreateOrderReq& this_ = static_cast<const CreateOrderReq&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+        ::size_t CreateOrderReq::ByteSizeLong() const {
+          const CreateOrderReq& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+          // @@protoc_insertion_point(message_byte_size_start:ServerApi.CreateOrderReq)
+          ::size_t total_size = 0;
+
+          ::uint32_t cached_has_bits = 0;
+          // Prevent compiler warnings about cached_has_bits being unused
+          (void)cached_has_bits;
+
+          ::_pbi::Prefetch5LinesFrom7Lines(&this_);
+           {
+            // string pay_method = 2;
+            if (!this_._internal_pay_method().empty()) {
+              total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
+                                              this_._internal_pay_method());
+            }
+            // uint64 goods_id = 1;
+            if (this_._internal_goods_id() != 0) {
+              total_size += ::_pbi::WireFormatLite::UInt64SizePlusOne(
+                  this_._internal_goods_id());
+            }
+          }
+          return this_.MaybeComputeUnknownFieldsSize(total_size,
+                                                     &this_._impl_._cached_size_);
+        }
+
+void CreateOrderReq::MergeImpl(::google::protobuf::MessageLite& to_msg, const ::google::protobuf::MessageLite& from_msg) {
+  auto* const _this = static_cast<CreateOrderReq*>(&to_msg);
+  auto& from = static_cast<const CreateOrderReq&>(from_msg);
+  // @@protoc_insertion_point(class_specific_merge_from_start:ServerApi.CreateOrderReq)
+  ABSL_DCHECK_NE(&from, _this);
+  ::uint32_t cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  if (!from._internal_pay_method().empty()) {
+    _this->_internal_set_pay_method(from._internal_pay_method());
+  }
+  if (from._internal_goods_id() != 0) {
+    _this->_impl_.goods_id_ = from._impl_.goods_id_;
+  }
+  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
+}
+
+void CreateOrderReq::CopyFrom(const CreateOrderReq& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:ServerApi.CreateOrderReq)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+
+void CreateOrderReq::InternalSwap(CreateOrderReq* PROTOBUF_RESTRICT other) {
+  using std::swap;
+  auto* arena = GetArena();
+  ABSL_DCHECK_EQ(arena, other->GetArena());
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
+  ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.pay_method_, &other->_impl_.pay_method_, arena);
+        swap(_impl_.goods_id_, other->_impl_.goods_id_);
+}
+
+::google::protobuf::Metadata CreateOrderReq::GetMetadata() const {
+  return ::google::protobuf::Message::GetMetadataImpl(GetClassData()->full());
+}
+// ===================================================================
+
+class CreateOrderRsp::_Internal {
+ public:
+};
+
+CreateOrderRsp::CreateOrderRsp(::google::protobuf::Arena* arena)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(arena, _class_data_.base()) {
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  SharedCtor(arena);
+  // @@protoc_insertion_point(arena_constructor:ServerApi.CreateOrderRsp)
+}
+inline PROTOBUF_NDEBUG_INLINE CreateOrderRsp::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility, ::google::protobuf::Arena* arena,
+    const Impl_& from, const ::ServerApi::CreateOrderRsp& from_msg)
+      : order_id_(arena, from.order_id_),
+        qr_code_url_(arena, from.qr_code_url_),
+        _cached_size_{0} {}
+
+CreateOrderRsp::CreateOrderRsp(
+    ::google::protobuf::Arena* arena,
+    const CreateOrderRsp& from)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(arena, _class_data_.base()) {
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  CreateOrderRsp* const _this = this;
+  (void)_this;
+  _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
+      from._internal_metadata_);
+  new (&_impl_) Impl_(internal_visibility(), arena, from._impl_, from);
+  _impl_.expire_time_ = from._impl_.expire_time_;
+
+  // @@protoc_insertion_point(copy_constructor:ServerApi.CreateOrderRsp)
+}
+inline PROTOBUF_NDEBUG_INLINE CreateOrderRsp::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility,
+    ::google::protobuf::Arena* arena)
+      : order_id_(arena),
+        qr_code_url_(arena),
+        _cached_size_{0} {}
+
+inline void CreateOrderRsp::SharedCtor(::_pb::Arena* arena) {
+  new (&_impl_) Impl_(internal_visibility(), arena);
+  _impl_.expire_time_ = {};
+}
+CreateOrderRsp::~CreateOrderRsp() {
+  // @@protoc_insertion_point(destructor:ServerApi.CreateOrderRsp)
+  SharedDtor(*this);
+}
+inline void CreateOrderRsp::SharedDtor(MessageLite& self) {
+  CreateOrderRsp& this_ = static_cast<CreateOrderRsp&>(self);
+  this_._internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
+  ABSL_DCHECK(this_.GetArena() == nullptr);
+  this_._impl_.order_id_.Destroy();
+  this_._impl_.qr_code_url_.Destroy();
+  this_._impl_.~Impl_();
+}
+
+inline void* CreateOrderRsp::PlacementNew_(const void*, void* mem,
+                                        ::google::protobuf::Arena* arena) {
+  return ::new (mem) CreateOrderRsp(arena);
+}
+constexpr auto CreateOrderRsp::InternalNewImpl_() {
+  return ::google::protobuf::internal::MessageCreator::CopyInit(sizeof(CreateOrderRsp),
+                                            alignof(CreateOrderRsp));
+}
+PROTOBUF_CONSTINIT
+PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::google::protobuf::internal::ClassDataFull CreateOrderRsp::_class_data_ = {
+    ::google::protobuf::internal::ClassData{
+        &_CreateOrderRsp_default_instance_._instance,
+        &_table_.header,
+        nullptr,  // OnDemandRegisterArenaDtor
+        nullptr,  // IsInitialized
+        &CreateOrderRsp::MergeImpl,
+        ::google::protobuf::Message::GetNewImpl<CreateOrderRsp>(),
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+        &CreateOrderRsp::SharedDtor,
+        ::google::protobuf::Message::GetClearImpl<CreateOrderRsp>(), &CreateOrderRsp::ByteSizeLong,
+            &CreateOrderRsp::_InternalSerialize,
+#endif  // PROTOBUF_CUSTOM_VTABLE
+        PROTOBUF_FIELD_OFFSET(CreateOrderRsp, _impl_._cached_size_),
+        false,
+    },
+    &CreateOrderRsp::kDescriptorMethods,
+    &descriptor_table_server_5fmsg_2eproto,
+    nullptr,  // tracker
+};
+const ::google::protobuf::internal::ClassData* CreateOrderRsp::GetClassData() const {
+  ::google::protobuf::internal::PrefetchToLocalCache(&_class_data_);
+  ::google::protobuf::internal::PrefetchToLocalCache(_class_data_.tc_table);
+  return _class_data_.base();
+}
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::_pbi::TcParseTable<2, 3, 0, 52, 2> CreateOrderRsp::_table_ = {
+  {
+    0,  // no _has_bits_
+    0, // no _extensions_
+    3, 24,  // max_field_number, fast_idx_mask
+    offsetof(decltype(_table_), field_lookup_table),
+    4294967288,  // skipmap
+    offsetof(decltype(_table_), field_entries),
+    3,  // num_field_entries
+    0,  // num_aux_entries
+    offsetof(decltype(_table_), field_names),  // no aux_entries
+    _class_data_.base(),
+    nullptr,  // post_loop_handler
+    ::_pbi::TcParser::GenericFallback,  // fallback
+    #ifdef PROTOBUF_PREFETCH_PARSE_TABLE
+    ::_pbi::TcParser::GetTable<::ServerApi::CreateOrderRsp>(),  // to_prefetch
+    #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
+  }, {{
+    {::_pbi::TcParser::MiniParse, {}},
+    // string order_id = 1;
+    {::_pbi::TcParser::FastUS1,
+     {10, 63, 0, PROTOBUF_FIELD_OFFSET(CreateOrderRsp, _impl_.order_id_)}},
+    // string qr_code_url = 2;
+    {::_pbi::TcParser::FastUS1,
+     {18, 63, 0, PROTOBUF_FIELD_OFFSET(CreateOrderRsp, _impl_.qr_code_url_)}},
+    // uint32 expire_time = 3;
+    {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(CreateOrderRsp, _impl_.expire_time_), 63>(),
+     {24, 63, 0, PROTOBUF_FIELD_OFFSET(CreateOrderRsp, _impl_.expire_time_)}},
+  }}, {{
+    65535, 65535
+  }}, {{
+    // string order_id = 1;
+    {PROTOBUF_FIELD_OFFSET(CreateOrderRsp, _impl_.order_id_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
+    // string qr_code_url = 2;
+    {PROTOBUF_FIELD_OFFSET(CreateOrderRsp, _impl_.qr_code_url_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
+    // uint32 expire_time = 3;
+    {PROTOBUF_FIELD_OFFSET(CreateOrderRsp, _impl_.expire_time_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kUInt32)},
+  }},
+  // no aux_entries
+  {{
+    "\30\10\13\0\0\0\0\0"
+    "ServerApi.CreateOrderRsp"
+    "order_id"
+    "qr_code_url"
+  }},
+};
+
+PROTOBUF_NOINLINE void CreateOrderRsp::Clear() {
+// @@protoc_insertion_point(message_clear_start:ServerApi.CreateOrderRsp)
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  ::uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  _impl_.order_id_.ClearToEmpty();
+  _impl_.qr_code_url_.ClearToEmpty();
+  _impl_.expire_time_ = 0u;
+  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
+}
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+        ::uint8_t* CreateOrderRsp::_InternalSerialize(
+            const MessageLite& base, ::uint8_t* target,
+            ::google::protobuf::io::EpsCopyOutputStream* stream) {
+          const CreateOrderRsp& this_ = static_cast<const CreateOrderRsp&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+        ::uint8_t* CreateOrderRsp::_InternalSerialize(
+            ::uint8_t* target,
+            ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+          const CreateOrderRsp& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+          // @@protoc_insertion_point(serialize_to_array_start:ServerApi.CreateOrderRsp)
+          ::uint32_t cached_has_bits = 0;
+          (void)cached_has_bits;
+
+          // string order_id = 1;
+          if (!this_._internal_order_id().empty()) {
+            const std::string& _s = this_._internal_order_id();
+            ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+                _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "ServerApi.CreateOrderRsp.order_id");
+            target = stream->WriteStringMaybeAliased(1, _s, target);
+          }
+
+          // string qr_code_url = 2;
+          if (!this_._internal_qr_code_url().empty()) {
+            const std::string& _s = this_._internal_qr_code_url();
+            ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+                _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "ServerApi.CreateOrderRsp.qr_code_url");
+            target = stream->WriteStringMaybeAliased(2, _s, target);
+          }
+
+          // uint32 expire_time = 3;
+          if (this_._internal_expire_time() != 0) {
+            target = stream->EnsureSpace(target);
+            target = ::_pbi::WireFormatLite::WriteUInt32ToArray(
+                3, this_._internal_expire_time(), target);
+          }
+
+          if (PROTOBUF_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
+            target =
+                ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+                    this_._internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
+          }
+          // @@protoc_insertion_point(serialize_to_array_end:ServerApi.CreateOrderRsp)
+          return target;
+        }
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+        ::size_t CreateOrderRsp::ByteSizeLong(const MessageLite& base) {
+          const CreateOrderRsp& this_ = static_cast<const CreateOrderRsp&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+        ::size_t CreateOrderRsp::ByteSizeLong() const {
+          const CreateOrderRsp& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+          // @@protoc_insertion_point(message_byte_size_start:ServerApi.CreateOrderRsp)
+          ::size_t total_size = 0;
+
+          ::uint32_t cached_has_bits = 0;
+          // Prevent compiler warnings about cached_has_bits being unused
+          (void)cached_has_bits;
+
+          ::_pbi::Prefetch5LinesFrom7Lines(&this_);
+           {
+            // string order_id = 1;
+            if (!this_._internal_order_id().empty()) {
+              total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
+                                              this_._internal_order_id());
+            }
+            // string qr_code_url = 2;
+            if (!this_._internal_qr_code_url().empty()) {
+              total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
+                                              this_._internal_qr_code_url());
+            }
+            // uint32 expire_time = 3;
+            if (this_._internal_expire_time() != 0) {
+              total_size += ::_pbi::WireFormatLite::UInt32SizePlusOne(
+                  this_._internal_expire_time());
+            }
+          }
+          return this_.MaybeComputeUnknownFieldsSize(total_size,
+                                                     &this_._impl_._cached_size_);
+        }
+
+void CreateOrderRsp::MergeImpl(::google::protobuf::MessageLite& to_msg, const ::google::protobuf::MessageLite& from_msg) {
+  auto* const _this = static_cast<CreateOrderRsp*>(&to_msg);
+  auto& from = static_cast<const CreateOrderRsp&>(from_msg);
+  // @@protoc_insertion_point(class_specific_merge_from_start:ServerApi.CreateOrderRsp)
+  ABSL_DCHECK_NE(&from, _this);
+  ::uint32_t cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  if (!from._internal_order_id().empty()) {
+    _this->_internal_set_order_id(from._internal_order_id());
+  }
+  if (!from._internal_qr_code_url().empty()) {
+    _this->_internal_set_qr_code_url(from._internal_qr_code_url());
+  }
+  if (from._internal_expire_time() != 0) {
+    _this->_impl_.expire_time_ = from._impl_.expire_time_;
+  }
+  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
+}
+
+void CreateOrderRsp::CopyFrom(const CreateOrderRsp& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:ServerApi.CreateOrderRsp)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+
+void CreateOrderRsp::InternalSwap(CreateOrderRsp* PROTOBUF_RESTRICT other) {
+  using std::swap;
+  auto* arena = GetArena();
+  ABSL_DCHECK_EQ(arena, other->GetArena());
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
+  ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.order_id_, &other->_impl_.order_id_, arena);
+  ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.qr_code_url_, &other->_impl_.qr_code_url_, arena);
+        swap(_impl_.expire_time_, other->_impl_.expire_time_);
+}
+
+::google::protobuf::Metadata CreateOrderRsp::GetMetadata() const {
+  return ::google::protobuf::Message::GetMetadataImpl(GetClassData()->full());
+}
+// ===================================================================
+
+class OrderNotifyPush::_Internal {
+ public:
+};
+
+OrderNotifyPush::OrderNotifyPush(::google::protobuf::Arena* arena)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(arena, _class_data_.base()) {
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  SharedCtor(arena);
+  // @@protoc_insertion_point(arena_constructor:ServerApi.OrderNotifyPush)
+}
+inline PROTOBUF_NDEBUG_INLINE OrderNotifyPush::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility, ::google::protobuf::Arena* arena,
+    const Impl_& from, const ::ServerApi::OrderNotifyPush& from_msg)
+      : order_id_(arena, from.order_id_),
+        _cached_size_{0} {}
+
+OrderNotifyPush::OrderNotifyPush(
+    ::google::protobuf::Arena* arena,
+    const OrderNotifyPush& from)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(arena, _class_data_.base()) {
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  OrderNotifyPush* const _this = this;
+  (void)_this;
+  _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
+      from._internal_metadata_);
+  new (&_impl_) Impl_(internal_visibility(), arena, from._impl_, from);
+  ::memcpy(reinterpret_cast<char *>(&_impl_) +
+               offsetof(Impl_, current_points_),
+           reinterpret_cast<const char *>(&from._impl_) +
+               offsetof(Impl_, current_points_),
+           offsetof(Impl_, is_success_) -
+               offsetof(Impl_, current_points_) +
+               sizeof(Impl_::is_success_));
+
+  // @@protoc_insertion_point(copy_constructor:ServerApi.OrderNotifyPush)
+}
+inline PROTOBUF_NDEBUG_INLINE OrderNotifyPush::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility,
+    ::google::protobuf::Arena* arena)
+      : order_id_(arena),
+        _cached_size_{0} {}
+
+inline void OrderNotifyPush::SharedCtor(::_pb::Arena* arena) {
+  new (&_impl_) Impl_(internal_visibility(), arena);
+  ::memset(reinterpret_cast<char *>(&_impl_) +
+               offsetof(Impl_, current_points_),
+           0,
+           offsetof(Impl_, is_success_) -
+               offsetof(Impl_, current_points_) +
+               sizeof(Impl_::is_success_));
+}
+OrderNotifyPush::~OrderNotifyPush() {
+  // @@protoc_insertion_point(destructor:ServerApi.OrderNotifyPush)
+  SharedDtor(*this);
+}
+inline void OrderNotifyPush::SharedDtor(MessageLite& self) {
+  OrderNotifyPush& this_ = static_cast<OrderNotifyPush&>(self);
+  this_._internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
+  ABSL_DCHECK(this_.GetArena() == nullptr);
+  this_._impl_.order_id_.Destroy();
+  this_._impl_.~Impl_();
+}
+
+inline void* OrderNotifyPush::PlacementNew_(const void*, void* mem,
+                                        ::google::protobuf::Arena* arena) {
+  return ::new (mem) OrderNotifyPush(arena);
+}
+constexpr auto OrderNotifyPush::InternalNewImpl_() {
+  return ::google::protobuf::internal::MessageCreator::CopyInit(sizeof(OrderNotifyPush),
+                                            alignof(OrderNotifyPush));
+}
+PROTOBUF_CONSTINIT
+PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::google::protobuf::internal::ClassDataFull OrderNotifyPush::_class_data_ = {
+    ::google::protobuf::internal::ClassData{
+        &_OrderNotifyPush_default_instance_._instance,
+        &_table_.header,
+        nullptr,  // OnDemandRegisterArenaDtor
+        nullptr,  // IsInitialized
+        &OrderNotifyPush::MergeImpl,
+        ::google::protobuf::Message::GetNewImpl<OrderNotifyPush>(),
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+        &OrderNotifyPush::SharedDtor,
+        ::google::protobuf::Message::GetClearImpl<OrderNotifyPush>(), &OrderNotifyPush::ByteSizeLong,
+            &OrderNotifyPush::_InternalSerialize,
+#endif  // PROTOBUF_CUSTOM_VTABLE
+        PROTOBUF_FIELD_OFFSET(OrderNotifyPush, _impl_._cached_size_),
+        false,
+    },
+    &OrderNotifyPush::kDescriptorMethods,
+    &descriptor_table_server_5fmsg_2eproto,
+    nullptr,  // tracker
+};
+const ::google::protobuf::internal::ClassData* OrderNotifyPush::GetClassData() const {
+  ::google::protobuf::internal::PrefetchToLocalCache(&_class_data_);
+  ::google::protobuf::internal::PrefetchToLocalCache(_class_data_.tc_table);
+  return _class_data_.base();
+}
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::_pbi::TcParseTable<2, 3, 0, 42, 2> OrderNotifyPush::_table_ = {
+  {
+    0,  // no _has_bits_
+    0, // no _extensions_
+    3, 24,  // max_field_number, fast_idx_mask
+    offsetof(decltype(_table_), field_lookup_table),
+    4294967288,  // skipmap
+    offsetof(decltype(_table_), field_entries),
+    3,  // num_field_entries
+    0,  // num_aux_entries
+    offsetof(decltype(_table_), field_names),  // no aux_entries
+    _class_data_.base(),
+    nullptr,  // post_loop_handler
+    ::_pbi::TcParser::GenericFallback,  // fallback
+    #ifdef PROTOBUF_PREFETCH_PARSE_TABLE
+    ::_pbi::TcParser::GetTable<::ServerApi::OrderNotifyPush>(),  // to_prefetch
+    #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
+  }, {{
+    {::_pbi::TcParser::MiniParse, {}},
+    // string order_id = 1;
+    {::_pbi::TcParser::FastUS1,
+     {10, 63, 0, PROTOBUF_FIELD_OFFSET(OrderNotifyPush, _impl_.order_id_)}},
+    // bool is_success = 2;
+    {::_pbi::TcParser::SingularVarintNoZag1<bool, offsetof(OrderNotifyPush, _impl_.is_success_), 63>(),
+     {16, 63, 0, PROTOBUF_FIELD_OFFSET(OrderNotifyPush, _impl_.is_success_)}},
+    // int64 current_points = 3;
+    {::_pbi::TcParser::SingularVarintNoZag1<::uint64_t, offsetof(OrderNotifyPush, _impl_.current_points_), 63>(),
+     {24, 63, 0, PROTOBUF_FIELD_OFFSET(OrderNotifyPush, _impl_.current_points_)}},
+  }}, {{
+    65535, 65535
+  }}, {{
+    // string order_id = 1;
+    {PROTOBUF_FIELD_OFFSET(OrderNotifyPush, _impl_.order_id_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
+    // bool is_success = 2;
+    {PROTOBUF_FIELD_OFFSET(OrderNotifyPush, _impl_.is_success_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kBool)},
+    // int64 current_points = 3;
+    {PROTOBUF_FIELD_OFFSET(OrderNotifyPush, _impl_.current_points_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kInt64)},
+  }},
+  // no aux_entries
+  {{
+    "\31\10\0\0\0\0\0\0"
+    "ServerApi.OrderNotifyPush"
+    "order_id"
+  }},
+};
+
+PROTOBUF_NOINLINE void OrderNotifyPush::Clear() {
+// @@protoc_insertion_point(message_clear_start:ServerApi.OrderNotifyPush)
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  ::uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  _impl_.order_id_.ClearToEmpty();
+  ::memset(&_impl_.current_points_, 0, static_cast<::size_t>(
+      reinterpret_cast<char*>(&_impl_.is_success_) -
+      reinterpret_cast<char*>(&_impl_.current_points_)) + sizeof(_impl_.is_success_));
+  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
+}
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+        ::uint8_t* OrderNotifyPush::_InternalSerialize(
+            const MessageLite& base, ::uint8_t* target,
+            ::google::protobuf::io::EpsCopyOutputStream* stream) {
+          const OrderNotifyPush& this_ = static_cast<const OrderNotifyPush&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+        ::uint8_t* OrderNotifyPush::_InternalSerialize(
+            ::uint8_t* target,
+            ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+          const OrderNotifyPush& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+          // @@protoc_insertion_point(serialize_to_array_start:ServerApi.OrderNotifyPush)
+          ::uint32_t cached_has_bits = 0;
+          (void)cached_has_bits;
+
+          // string order_id = 1;
+          if (!this_._internal_order_id().empty()) {
+            const std::string& _s = this_._internal_order_id();
+            ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+                _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "ServerApi.OrderNotifyPush.order_id");
+            target = stream->WriteStringMaybeAliased(1, _s, target);
+          }
+
+          // bool is_success = 2;
+          if (this_._internal_is_success() != 0) {
+            target = stream->EnsureSpace(target);
+            target = ::_pbi::WireFormatLite::WriteBoolToArray(
+                2, this_._internal_is_success(), target);
+          }
+
+          // int64 current_points = 3;
+          if (this_._internal_current_points() != 0) {
+            target = ::google::protobuf::internal::WireFormatLite::
+                WriteInt64ToArrayWithField<3>(
+                    stream, this_._internal_current_points(), target);
+          }
+
+          if (PROTOBUF_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
+            target =
+                ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+                    this_._internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
+          }
+          // @@protoc_insertion_point(serialize_to_array_end:ServerApi.OrderNotifyPush)
+          return target;
+        }
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+        ::size_t OrderNotifyPush::ByteSizeLong(const MessageLite& base) {
+          const OrderNotifyPush& this_ = static_cast<const OrderNotifyPush&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+        ::size_t OrderNotifyPush::ByteSizeLong() const {
+          const OrderNotifyPush& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+          // @@protoc_insertion_point(message_byte_size_start:ServerApi.OrderNotifyPush)
+          ::size_t total_size = 0;
+
+          ::uint32_t cached_has_bits = 0;
+          // Prevent compiler warnings about cached_has_bits being unused
+          (void)cached_has_bits;
+
+          ::_pbi::Prefetch5LinesFrom7Lines(&this_);
+           {
+            // string order_id = 1;
+            if (!this_._internal_order_id().empty()) {
+              total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
+                                              this_._internal_order_id());
+            }
+            // int64 current_points = 3;
+            if (this_._internal_current_points() != 0) {
+              total_size += ::_pbi::WireFormatLite::Int64SizePlusOne(
+                  this_._internal_current_points());
+            }
+            // bool is_success = 2;
+            if (this_._internal_is_success() != 0) {
+              total_size += 2;
+            }
+          }
+          return this_.MaybeComputeUnknownFieldsSize(total_size,
+                                                     &this_._impl_._cached_size_);
+        }
+
+void OrderNotifyPush::MergeImpl(::google::protobuf::MessageLite& to_msg, const ::google::protobuf::MessageLite& from_msg) {
+  auto* const _this = static_cast<OrderNotifyPush*>(&to_msg);
+  auto& from = static_cast<const OrderNotifyPush&>(from_msg);
+  // @@protoc_insertion_point(class_specific_merge_from_start:ServerApi.OrderNotifyPush)
+  ABSL_DCHECK_NE(&from, _this);
+  ::uint32_t cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  if (!from._internal_order_id().empty()) {
+    _this->_internal_set_order_id(from._internal_order_id());
+  }
+  if (from._internal_current_points() != 0) {
+    _this->_impl_.current_points_ = from._impl_.current_points_;
+  }
+  if (from._internal_is_success() != 0) {
+    _this->_impl_.is_success_ = from._impl_.is_success_;
+  }
+  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
+}
+
+void OrderNotifyPush::CopyFrom(const OrderNotifyPush& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:ServerApi.OrderNotifyPush)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+
+void OrderNotifyPush::InternalSwap(OrderNotifyPush* PROTOBUF_RESTRICT other) {
+  using std::swap;
+  auto* arena = GetArena();
+  ABSL_DCHECK_EQ(arena, other->GetArena());
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
+  ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.order_id_, &other->_impl_.order_id_, arena);
+  ::google::protobuf::internal::memswap<
+      PROTOBUF_FIELD_OFFSET(OrderNotifyPush, _impl_.is_success_)
+      + sizeof(OrderNotifyPush::_impl_.is_success_)
+      - PROTOBUF_FIELD_OFFSET(OrderNotifyPush, _impl_.current_points_)>(
+          reinterpret_cast<char*>(&_impl_.current_points_),
+          reinterpret_cast<char*>(&other->_impl_.current_points_));
+}
+
+::google::protobuf::Metadata OrderNotifyPush::GetMetadata() const {
+  return ::google::protobuf::Message::GetMetadataImpl(GetClassData()->full());
+}
+// ===================================================================
+
+class ConsumePointsReq::_Internal {
+ public:
+};
+
+ConsumePointsReq::ConsumePointsReq(::google::protobuf::Arena* arena)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(arena, _class_data_.base()) {
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  SharedCtor(arena);
+  // @@protoc_insertion_point(arena_constructor:ServerApi.ConsumePointsReq)
+}
+ConsumePointsReq::ConsumePointsReq(
+    ::google::protobuf::Arena* arena, const ConsumePointsReq& from)
+    : ConsumePointsReq(arena) {
+  MergeFrom(from);
+}
+inline PROTOBUF_NDEBUG_INLINE ConsumePointsReq::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility,
+    ::google::protobuf::Arena* arena)
+      : _cached_size_{0} {}
+
+inline void ConsumePointsReq::SharedCtor(::_pb::Arena* arena) {
+  new (&_impl_) Impl_(internal_visibility(), arena);
+  ::memset(reinterpret_cast<char *>(&_impl_) +
+               offsetof(Impl_, target_id_),
+           0,
+           offsetof(Impl_, match_type_) -
+               offsetof(Impl_, target_id_) +
+               sizeof(Impl_::match_type_));
+}
+ConsumePointsReq::~ConsumePointsReq() {
+  // @@protoc_insertion_point(destructor:ServerApi.ConsumePointsReq)
+  SharedDtor(*this);
+}
+inline void ConsumePointsReq::SharedDtor(MessageLite& self) {
+  ConsumePointsReq& this_ = static_cast<ConsumePointsReq&>(self);
+  this_._internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
+  ABSL_DCHECK(this_.GetArena() == nullptr);
+  this_._impl_.~Impl_();
+}
+
+inline void* ConsumePointsReq::PlacementNew_(const void*, void* mem,
+                                        ::google::protobuf::Arena* arena) {
+  return ::new (mem) ConsumePointsReq(arena);
+}
+constexpr auto ConsumePointsReq::InternalNewImpl_() {
+  return ::google::protobuf::internal::MessageCreator::ZeroInit(sizeof(ConsumePointsReq),
+                                            alignof(ConsumePointsReq));
+}
+PROTOBUF_CONSTINIT
+PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::google::protobuf::internal::ClassDataFull ConsumePointsReq::_class_data_ = {
+    ::google::protobuf::internal::ClassData{
+        &_ConsumePointsReq_default_instance_._instance,
+        &_table_.header,
+        nullptr,  // OnDemandRegisterArenaDtor
+        nullptr,  // IsInitialized
+        &ConsumePointsReq::MergeImpl,
+        ::google::protobuf::Message::GetNewImpl<ConsumePointsReq>(),
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+        &ConsumePointsReq::SharedDtor,
+        ::google::protobuf::Message::GetClearImpl<ConsumePointsReq>(), &ConsumePointsReq::ByteSizeLong,
+            &ConsumePointsReq::_InternalSerialize,
+#endif  // PROTOBUF_CUSTOM_VTABLE
+        PROTOBUF_FIELD_OFFSET(ConsumePointsReq, _impl_._cached_size_),
+        false,
+    },
+    &ConsumePointsReq::kDescriptorMethods,
+    &descriptor_table_server_5fmsg_2eproto,
+    nullptr,  // tracker
+};
+const ::google::protobuf::internal::ClassData* ConsumePointsReq::GetClassData() const {
+  ::google::protobuf::internal::PrefetchToLocalCache(&_class_data_);
+  ::google::protobuf::internal::PrefetchToLocalCache(_class_data_.tc_table);
+  return _class_data_.base();
+}
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::_pbi::TcParseTable<1, 2, 0, 0, 2> ConsumePointsReq::_table_ = {
+  {
+    0,  // no _has_bits_
+    0, // no _extensions_
+    2, 8,  // max_field_number, fast_idx_mask
+    offsetof(decltype(_table_), field_lookup_table),
+    4294967292,  // skipmap
+    offsetof(decltype(_table_), field_entries),
+    2,  // num_field_entries
+    0,  // num_aux_entries
+    offsetof(decltype(_table_), field_names),  // no aux_entries
+    _class_data_.base(),
+    nullptr,  // post_loop_handler
+    ::_pbi::TcParser::GenericFallback,  // fallback
+    #ifdef PROTOBUF_PREFETCH_PARSE_TABLE
+    ::_pbi::TcParser::GetTable<::ServerApi::ConsumePointsReq>(),  // to_prefetch
+    #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
+  }, {{
+    // .ServerApi.FileType match_type = 2;
+    {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(ConsumePointsReq, _impl_.match_type_), 63>(),
+     {16, 63, 0, PROTOBUF_FIELD_OFFSET(ConsumePointsReq, _impl_.match_type_)}},
+    // uint64 target_id = 1;
+    {::_pbi::TcParser::SingularVarintNoZag1<::uint64_t, offsetof(ConsumePointsReq, _impl_.target_id_), 63>(),
+     {8, 63, 0, PROTOBUF_FIELD_OFFSET(ConsumePointsReq, _impl_.target_id_)}},
+  }}, {{
+    65535, 65535
+  }}, {{
+    // uint64 target_id = 1;
+    {PROTOBUF_FIELD_OFFSET(ConsumePointsReq, _impl_.target_id_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kUInt64)},
+    // .ServerApi.FileType match_type = 2;
+    {PROTOBUF_FIELD_OFFSET(ConsumePointsReq, _impl_.match_type_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kOpenEnum)},
+  }},
+  // no aux_entries
+  {{
+  }},
+};
+
+PROTOBUF_NOINLINE void ConsumePointsReq::Clear() {
+// @@protoc_insertion_point(message_clear_start:ServerApi.ConsumePointsReq)
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  ::uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  ::memset(&_impl_.target_id_, 0, static_cast<::size_t>(
+      reinterpret_cast<char*>(&_impl_.match_type_) -
+      reinterpret_cast<char*>(&_impl_.target_id_)) + sizeof(_impl_.match_type_));
+  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
+}
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+        ::uint8_t* ConsumePointsReq::_InternalSerialize(
+            const MessageLite& base, ::uint8_t* target,
+            ::google::protobuf::io::EpsCopyOutputStream* stream) {
+          const ConsumePointsReq& this_ = static_cast<const ConsumePointsReq&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+        ::uint8_t* ConsumePointsReq::_InternalSerialize(
+            ::uint8_t* target,
+            ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+          const ConsumePointsReq& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+          // @@protoc_insertion_point(serialize_to_array_start:ServerApi.ConsumePointsReq)
+          ::uint32_t cached_has_bits = 0;
+          (void)cached_has_bits;
+
+          // uint64 target_id = 1;
+          if (this_._internal_target_id() != 0) {
+            target = stream->EnsureSpace(target);
+            target = ::_pbi::WireFormatLite::WriteUInt64ToArray(
+                1, this_._internal_target_id(), target);
+          }
+
+          // .ServerApi.FileType match_type = 2;
+          if (this_._internal_match_type() != 0) {
+            target = stream->EnsureSpace(target);
+            target = ::_pbi::WireFormatLite::WriteEnumToArray(
+                2, this_._internal_match_type(), target);
+          }
+
+          if (PROTOBUF_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
+            target =
+                ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+                    this_._internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
+          }
+          // @@protoc_insertion_point(serialize_to_array_end:ServerApi.ConsumePointsReq)
+          return target;
+        }
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+        ::size_t ConsumePointsReq::ByteSizeLong(const MessageLite& base) {
+          const ConsumePointsReq& this_ = static_cast<const ConsumePointsReq&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+        ::size_t ConsumePointsReq::ByteSizeLong() const {
+          const ConsumePointsReq& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+          // @@protoc_insertion_point(message_byte_size_start:ServerApi.ConsumePointsReq)
+          ::size_t total_size = 0;
+
+          ::uint32_t cached_has_bits = 0;
+          // Prevent compiler warnings about cached_has_bits being unused
+          (void)cached_has_bits;
+
+          ::_pbi::Prefetch5LinesFrom7Lines(&this_);
+           {
+            // uint64 target_id = 1;
+            if (this_._internal_target_id() != 0) {
+              total_size += ::_pbi::WireFormatLite::UInt64SizePlusOne(
+                  this_._internal_target_id());
+            }
+            // .ServerApi.FileType match_type = 2;
+            if (this_._internal_match_type() != 0) {
+              total_size += 1 +
+                            ::_pbi::WireFormatLite::EnumSize(this_._internal_match_type());
+            }
+          }
+          return this_.MaybeComputeUnknownFieldsSize(total_size,
+                                                     &this_._impl_._cached_size_);
+        }
+
+void ConsumePointsReq::MergeImpl(::google::protobuf::MessageLite& to_msg, const ::google::protobuf::MessageLite& from_msg) {
+  auto* const _this = static_cast<ConsumePointsReq*>(&to_msg);
+  auto& from = static_cast<const ConsumePointsReq&>(from_msg);
+  // @@protoc_insertion_point(class_specific_merge_from_start:ServerApi.ConsumePointsReq)
+  ABSL_DCHECK_NE(&from, _this);
+  ::uint32_t cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  if (from._internal_target_id() != 0) {
+    _this->_impl_.target_id_ = from._impl_.target_id_;
+  }
+  if (from._internal_match_type() != 0) {
+    _this->_impl_.match_type_ = from._impl_.match_type_;
+  }
+  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
+}
+
+void ConsumePointsReq::CopyFrom(const ConsumePointsReq& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:ServerApi.ConsumePointsReq)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+
+void ConsumePointsReq::InternalSwap(ConsumePointsReq* PROTOBUF_RESTRICT other) {
+  using std::swap;
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
+  ::google::protobuf::internal::memswap<
+      PROTOBUF_FIELD_OFFSET(ConsumePointsReq, _impl_.match_type_)
+      + sizeof(ConsumePointsReq::_impl_.match_type_)
+      - PROTOBUF_FIELD_OFFSET(ConsumePointsReq, _impl_.target_id_)>(
+          reinterpret_cast<char*>(&_impl_.target_id_),
+          reinterpret_cast<char*>(&other->_impl_.target_id_));
+}
+
+::google::protobuf::Metadata ConsumePointsReq::GetMetadata() const {
+  return ::google::protobuf::Message::GetMetadataImpl(GetClassData()->full());
+}
+// ===================================================================
+
+class ConsumePointsRsp::_Internal {
+ public:
+};
+
+ConsumePointsRsp::ConsumePointsRsp(::google::protobuf::Arena* arena)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(arena, _class_data_.base()) {
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  SharedCtor(arena);
+  // @@protoc_insertion_point(arena_constructor:ServerApi.ConsumePointsRsp)
+}
+ConsumePointsRsp::ConsumePointsRsp(
+    ::google::protobuf::Arena* arena, const ConsumePointsRsp& from)
+    : ConsumePointsRsp(arena) {
+  MergeFrom(from);
+}
+inline PROTOBUF_NDEBUG_INLINE ConsumePointsRsp::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility,
+    ::google::protobuf::Arena* arena)
+      : _cached_size_{0} {}
+
+inline void ConsumePointsRsp::SharedCtor(::_pb::Arena* arena) {
+  new (&_impl_) Impl_(internal_visibility(), arena);
+  ::memset(reinterpret_cast<char *>(&_impl_) +
+               offsetof(Impl_, points_cost_),
+           0,
+           offsetof(Impl_, current_points_) -
+               offsetof(Impl_, points_cost_) +
+               sizeof(Impl_::current_points_));
+}
+ConsumePointsRsp::~ConsumePointsRsp() {
+  // @@protoc_insertion_point(destructor:ServerApi.ConsumePointsRsp)
+  SharedDtor(*this);
+}
+inline void ConsumePointsRsp::SharedDtor(MessageLite& self) {
+  ConsumePointsRsp& this_ = static_cast<ConsumePointsRsp&>(self);
+  this_._internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
+  ABSL_DCHECK(this_.GetArena() == nullptr);
+  this_._impl_.~Impl_();
+}
+
+inline void* ConsumePointsRsp::PlacementNew_(const void*, void* mem,
+                                        ::google::protobuf::Arena* arena) {
+  return ::new (mem) ConsumePointsRsp(arena);
+}
+constexpr auto ConsumePointsRsp::InternalNewImpl_() {
+  return ::google::protobuf::internal::MessageCreator::ZeroInit(sizeof(ConsumePointsRsp),
+                                            alignof(ConsumePointsRsp));
+}
+PROTOBUF_CONSTINIT
+PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::google::protobuf::internal::ClassDataFull ConsumePointsRsp::_class_data_ = {
+    ::google::protobuf::internal::ClassData{
+        &_ConsumePointsRsp_default_instance_._instance,
+        &_table_.header,
+        nullptr,  // OnDemandRegisterArenaDtor
+        nullptr,  // IsInitialized
+        &ConsumePointsRsp::MergeImpl,
+        ::google::protobuf::Message::GetNewImpl<ConsumePointsRsp>(),
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+        &ConsumePointsRsp::SharedDtor,
+        ::google::protobuf::Message::GetClearImpl<ConsumePointsRsp>(), &ConsumePointsRsp::ByteSizeLong,
+            &ConsumePointsRsp::_InternalSerialize,
+#endif  // PROTOBUF_CUSTOM_VTABLE
+        PROTOBUF_FIELD_OFFSET(ConsumePointsRsp, _impl_._cached_size_),
+        false,
+    },
+    &ConsumePointsRsp::kDescriptorMethods,
+    &descriptor_table_server_5fmsg_2eproto,
+    nullptr,  // tracker
+};
+const ::google::protobuf::internal::ClassData* ConsumePointsRsp::GetClassData() const {
+  ::google::protobuf::internal::PrefetchToLocalCache(&_class_data_);
+  ::google::protobuf::internal::PrefetchToLocalCache(_class_data_.tc_table);
+  return _class_data_.base();
+}
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::_pbi::TcParseTable<1, 2, 0, 0, 2> ConsumePointsRsp::_table_ = {
+  {
+    0,  // no _has_bits_
+    0, // no _extensions_
+    2, 8,  // max_field_number, fast_idx_mask
+    offsetof(decltype(_table_), field_lookup_table),
+    4294967292,  // skipmap
+    offsetof(decltype(_table_), field_entries),
+    2,  // num_field_entries
+    0,  // num_aux_entries
+    offsetof(decltype(_table_), field_names),  // no aux_entries
+    _class_data_.base(),
+    nullptr,  // post_loop_handler
+    ::_pbi::TcParser::GenericFallback,  // fallback
+    #ifdef PROTOBUF_PREFETCH_PARSE_TABLE
+    ::_pbi::TcParser::GetTable<::ServerApi::ConsumePointsRsp>(),  // to_prefetch
+    #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
+  }, {{
+    // int64 current_points = 2;
+    {::_pbi::TcParser::SingularVarintNoZag1<::uint64_t, offsetof(ConsumePointsRsp, _impl_.current_points_), 63>(),
+     {16, 63, 0, PROTOBUF_FIELD_OFFSET(ConsumePointsRsp, _impl_.current_points_)}},
+    // int64 points_cost = 1;
+    {::_pbi::TcParser::SingularVarintNoZag1<::uint64_t, offsetof(ConsumePointsRsp, _impl_.points_cost_), 63>(),
+     {8, 63, 0, PROTOBUF_FIELD_OFFSET(ConsumePointsRsp, _impl_.points_cost_)}},
+  }}, {{
+    65535, 65535
+  }}, {{
+    // int64 points_cost = 1;
+    {PROTOBUF_FIELD_OFFSET(ConsumePointsRsp, _impl_.points_cost_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kInt64)},
+    // int64 current_points = 2;
+    {PROTOBUF_FIELD_OFFSET(ConsumePointsRsp, _impl_.current_points_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kInt64)},
+  }},
+  // no aux_entries
+  {{
+  }},
+};
+
+PROTOBUF_NOINLINE void ConsumePointsRsp::Clear() {
+// @@protoc_insertion_point(message_clear_start:ServerApi.ConsumePointsRsp)
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  ::uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  ::memset(&_impl_.points_cost_, 0, static_cast<::size_t>(
+      reinterpret_cast<char*>(&_impl_.current_points_) -
+      reinterpret_cast<char*>(&_impl_.points_cost_)) + sizeof(_impl_.current_points_));
+  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
+}
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+        ::uint8_t* ConsumePointsRsp::_InternalSerialize(
+            const MessageLite& base, ::uint8_t* target,
+            ::google::protobuf::io::EpsCopyOutputStream* stream) {
+          const ConsumePointsRsp& this_ = static_cast<const ConsumePointsRsp&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+        ::uint8_t* ConsumePointsRsp::_InternalSerialize(
+            ::uint8_t* target,
+            ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+          const ConsumePointsRsp& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+          // @@protoc_insertion_point(serialize_to_array_start:ServerApi.ConsumePointsRsp)
+          ::uint32_t cached_has_bits = 0;
+          (void)cached_has_bits;
+
+          // int64 points_cost = 1;
+          if (this_._internal_points_cost() != 0) {
+            target = ::google::protobuf::internal::WireFormatLite::
+                WriteInt64ToArrayWithField<1>(
+                    stream, this_._internal_points_cost(), target);
+          }
+
+          // int64 current_points = 2;
+          if (this_._internal_current_points() != 0) {
+            target = ::google::protobuf::internal::WireFormatLite::
+                WriteInt64ToArrayWithField<2>(
+                    stream, this_._internal_current_points(), target);
+          }
+
+          if (PROTOBUF_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
+            target =
+                ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+                    this_._internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
+          }
+          // @@protoc_insertion_point(serialize_to_array_end:ServerApi.ConsumePointsRsp)
+          return target;
+        }
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+        ::size_t ConsumePointsRsp::ByteSizeLong(const MessageLite& base) {
+          const ConsumePointsRsp& this_ = static_cast<const ConsumePointsRsp&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+        ::size_t ConsumePointsRsp::ByteSizeLong() const {
+          const ConsumePointsRsp& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+          // @@protoc_insertion_point(message_byte_size_start:ServerApi.ConsumePointsRsp)
+          ::size_t total_size = 0;
+
+          ::uint32_t cached_has_bits = 0;
+          // Prevent compiler warnings about cached_has_bits being unused
+          (void)cached_has_bits;
+
+          ::_pbi::Prefetch5LinesFrom7Lines(&this_);
+           {
+            // int64 points_cost = 1;
+            if (this_._internal_points_cost() != 0) {
+              total_size += ::_pbi::WireFormatLite::Int64SizePlusOne(
+                  this_._internal_points_cost());
+            }
+            // int64 current_points = 2;
+            if (this_._internal_current_points() != 0) {
+              total_size += ::_pbi::WireFormatLite::Int64SizePlusOne(
+                  this_._internal_current_points());
+            }
+          }
+          return this_.MaybeComputeUnknownFieldsSize(total_size,
+                                                     &this_._impl_._cached_size_);
+        }
+
+void ConsumePointsRsp::MergeImpl(::google::protobuf::MessageLite& to_msg, const ::google::protobuf::MessageLite& from_msg) {
+  auto* const _this = static_cast<ConsumePointsRsp*>(&to_msg);
+  auto& from = static_cast<const ConsumePointsRsp&>(from_msg);
+  // @@protoc_insertion_point(class_specific_merge_from_start:ServerApi.ConsumePointsRsp)
+  ABSL_DCHECK_NE(&from, _this);
+  ::uint32_t cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  if (from._internal_points_cost() != 0) {
+    _this->_impl_.points_cost_ = from._impl_.points_cost_;
+  }
+  if (from._internal_current_points() != 0) {
+    _this->_impl_.current_points_ = from._impl_.current_points_;
+  }
+  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
+}
+
+void ConsumePointsRsp::CopyFrom(const ConsumePointsRsp& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:ServerApi.ConsumePointsRsp)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+
+void ConsumePointsRsp::InternalSwap(ConsumePointsRsp* PROTOBUF_RESTRICT other) {
+  using std::swap;
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
+  ::google::protobuf::internal::memswap<
+      PROTOBUF_FIELD_OFFSET(ConsumePointsRsp, _impl_.current_points_)
+      + sizeof(ConsumePointsRsp::_impl_.current_points_)
+      - PROTOBUF_FIELD_OFFSET(ConsumePointsRsp, _impl_.points_cost_)>(
+          reinterpret_cast<char*>(&_impl_.points_cost_),
+          reinterpret_cast<char*>(&other->_impl_.points_cost_));
+}
+
+::google::protobuf::Metadata ConsumePointsRsp::GetMetadata() const {
   return ::google::protobuf::Message::GetMetadataImpl(GetClassData()->full());
 }
 // @@protoc_insertion_point(namespace_scope)

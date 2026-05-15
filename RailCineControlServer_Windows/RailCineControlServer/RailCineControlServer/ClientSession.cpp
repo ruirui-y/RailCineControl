@@ -916,6 +916,83 @@ void ClientSession::InitHandlers()
 
                 }, true); // 结束 Step 1
         };
+
+    // ------------------------------------------------------------------
+    // 💰 处理客户端发来的 [创建支付订单请求]
+    // ------------------------------------------------------------------
+    m_router[ServerApi::ID_CREATE_ORDER_REQ] = [this](const ServerApi::PacketHeader& header, const QByteArray& bodyData)
+        {
+            uint64_t seq_id = header.seq_id();
+            ServerApi::CreateOrderReq req;
+            if (!req.ParseFromArray(bodyData.data(), bodyData.size())) return;
+
+            uint64_t goods_id = req.goods_id();
+            QString pay_method = QString::fromStdString(req.pay_method());
+            std::weak_ptr<ClientSession> weakSelf = weak_from_this();
+
+            qDebug() << u8"[ClientSession] 收到拉起支付请求，商品ID:" << goods_id << u8"渠道:" << pay_method;
+
+            // =========================================================================
+            // 🌊 异步瀑布流 Step 1：校验商品信息与金额 (绝不信任客户端传的价格)
+            // =========================================================================
+            QString sqlGoods = "SELECT price_cents, points_reward FROM t_goods_sku WHERE goods_id = ? AND status = 1";
+            QList<QVariant> paramsGoods;
+            paramsGoods << goods_id;
+
+            ThreadPool::Instance()->PostQueryTask(sqlGoods, [weakSelf, seq_id, goods_id, pay_method](const QList<QVariantMap>& results) {
+                auto strongSelf = weakSelf.lock();
+                if (!strongSelf) return;
+
+                // 1. 商品不存在或已下架
+                if (results.isEmpty()) {
+                    strongSelf->SendProtoMsg(ServerApi::ID_CREATE_ORDER_RSP, ServerApi::CreateOrderRsp(), seq_id,
+                        ServerApi::ERR_SERVER_INTERNAL, u8"商品不存在或已下架");
+                    return;
+                }
+
+                int priceCents = results.first()["price_cents"].toInt();
+
+                // 2. 生成本地系统订单号 (格式: PAY + 年月日时分秒 + 账号ID)
+                QString orderId = QString("PAY%1_%2")
+                    .arg(QDateTime::currentDateTime().toString("yyyyMMddHHmmss"))
+                    .arg(strongSelf->m_accountId);
+
+                // =========================================================================
+                // 🌊 异步瀑布流 Step 2：创建本地待支付订单
+                // =========================================================================
+                QString sqlOrder = "INSERT INTO t_pay_order "
+                    "(order_id, user_id, goods_id, amount_cents, status, create_time) "
+                    "VALUES (?, ?, ?, ?, 0, NOW())";
+                QList<QVariant> paramsOrder;
+                paramsOrder << orderId << strongSelf->m_accountId << goods_id << priceCents;
+
+                ThreadPool::Instance()->PostUpdateTask(sqlOrder, [weakSelf, seq_id, orderId](bool success) {
+                    auto innerSelf = weakSelf.lock();
+                    if (!innerSelf) return;
+
+                    if (success) {
+                        qDebug() << u8"[ClientSession] 本地支付订单创建成功，订单号:" << orderId;
+
+                        // 3. 组装返回数据给客户端弹窗
+                        ServerApi::CreateOrderRsp rsp;
+                        rsp.set_order_id(orderId.toStdString());
+                        rsp.set_expire_time(300); // 二维码有效期 5 分钟
+
+                        // 💡 注意：这里先给一个 mock (测试) 的二维码 URL 数据！
+                        // TODO: 等你接入真实的微信支付 V3 API 时，在插入订单前调用微信接口获取真实 CodeUrl 填在这里
+                        QString mockQrUrl = "weixin://wxpay/bizpayurl?pr=TEST_MOCK_PAY_" + orderId;
+                        rsp.set_qr_code_url(mockQrUrl.toStdString());
+
+                        innerSelf->SendProtoMsg(ServerApi::ID_CREATE_ORDER_RSP, rsp, seq_id);
+                    }
+                    else {
+                        innerSelf->SendProtoMsg(ServerApi::ID_CREATE_ORDER_RSP, ServerApi::CreateOrderRsp(), seq_id,
+                            ServerApi::ERR_SERVER_INTERNAL, u8"系统繁忙，创建订单失败");
+                    }
+                    }, true, paramsOrder); // 结束 Step 2
+
+                }, true, paramsGoods); // 结束 Step 1
+        };
 }
 
 // =========================================================================================
