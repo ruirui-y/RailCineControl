@@ -28,6 +28,7 @@ private:
 private slots:
     void OnWalletReceived(const ServerApi::GetWalletRsp& rsp);                                              // 当用户积分余额获取成功
     void OnGoodsListReceived(const ServerApi::GetGoodsRsp& rsp);                                            // 当充值套餐获取成功
+    void OnFlowRecordsReceived(const ServerApi::GetFlowRsp& rsp);                                           // 接收流水的槽
 
     // 接收服务器返回的“订单创建成功” (准备展示二维码)
     void OnOrderCreated(const QString& orderId, const QString& qrUrl, int expireTime);

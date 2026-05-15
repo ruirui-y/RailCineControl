@@ -1051,6 +1051,71 @@ void ClientSession::InitHandlers()
                 strongSelf->SendProtoMsg(ServerApi::ID_GET_GOODS_RSP, rsp, seq_id);
                 }, true);
         };
+
+    // ------------------------------------------------------------------
+    // 📜 处理客户端发来的 [获取积分流水记录请求]
+    // ------------------------------------------------------------------
+    m_router[ServerApi::ID_GET_FLOW_REQ] = [this](const ServerApi::PacketHeader& header, const QByteArray& bodyData)
+        {
+            uint64_t seq_id = header.seq_id();
+            ServerApi::GetFlowReq req;
+            if (!req.ParseFromArray(bodyData.data(), bodyData.size())) return;
+
+            // 1. 分页安全校验
+            uint32_t pageIndex = req.page_index() > 0 ? req.page_index() : 1;
+            uint32_t pageSize = req.page_size() > 0 ? req.page_size() : 100;
+            uint32_t offset = (pageIndex - 1) * pageSize;
+
+            std::weak_ptr<ClientSession> weakSelf = weak_from_this();
+
+            // =========================================================================
+            // 🌊 异步瀑布流 Step 1：查询总条数
+            // =========================================================================
+            QString countSql = "SELECT COUNT(*) AS total FROM t_point_flow WHERE user_id = ?";
+            QList<QVariant> countParams;
+            countParams << m_accountId;
+
+            ThreadPool::Instance()->PostQueryTask(countSql, [weakSelf, seq_id, offset, pageSize](const QList<QVariantMap>& countResults) {
+                auto strongSelf = weakSelf.lock();
+                if (!strongSelf) return;
+
+                uint32_t totalCount = 0;
+                if (!countResults.isEmpty()) {
+                    totalCount = countResults.first()["total"].toUInt();
+                }
+
+                // =========================================================================
+                // 🌊 异步瀑布流 Step 2：拉取具体明细 (按时间倒序)
+                // =========================================================================
+                QString dataSql = "SELECT flow_type, points_change, balance_after, associated_id, create_time "
+                    "FROM t_point_flow WHERE user_id = ? ORDER BY create_time DESC LIMIT ?, ?";
+                QList<QVariant> dataParams;
+                dataParams << strongSelf->m_accountId << offset << pageSize;
+
+                ThreadPool::Instance()->PostQueryTask(dataSql, [weakSelf, seq_id, totalCount](const QList<QVariantMap>& results) {
+                    auto innerSelf = weakSelf.lock();
+                    if (!innerSelf) return;
+
+                    ServerApi::GetFlowRsp rsp;
+                    rsp.set_total_count(totalCount);
+
+                    for (const auto& row : results) {
+                        auto* record = rsp.add_records();
+                        record->set_flow_type(row["flow_type"].toInt());
+                        record->set_points_change(row["points_change"].toInt());
+                        record->set_balance_after(row["balance_after"].toLongLong());
+                        record->set_associated_id(row["associated_id"].toString().toStdString());
+
+                        // 将 datetime 格式化为字符串
+                        record->set_create_time(row["create_time"].toDateTime().toString("yyyy-MM-dd HH:mm:ss").toStdString());
+                    }
+
+                    innerSelf->SendProtoMsg(ServerApi::ID_GET_FLOW_RSP, rsp, seq_id);
+
+                    }, true, dataParams); // 结束 Step 2
+
+                }, true, countParams); // 结束 Step 1
+        };
 }
 
 // =========================================================================================

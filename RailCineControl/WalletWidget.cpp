@@ -17,6 +17,7 @@ WalletWidget::WalletWidget(QWidget* parent)
     // 绑定用户钱包信息和套餐以及支付记录
     connect(ThreadPool::Instance()->GetTCPMgr(), &TCPMgr::SigWalletReceived, this, &WalletWidget::OnWalletReceived);
     connect(ThreadPool::Instance()->GetTCPMgr(), &TCPMgr::SigGoodsListReceived, this, &WalletWidget::OnGoodsListReceived);
+    connect(ThreadPool::Instance()->GetTCPMgr(), &TCPMgr::SigFlowRecordsReceived, this, &WalletWidget::OnFlowRecordsReceived);
 
     // 绑定支付信号
     TCPMgr* tcp = ThreadPool::Instance()->GetTCPMgr();
@@ -37,6 +38,12 @@ void WalletWidget::showEvent(QShowEvent* event)
     // 2. 请求商品列表
     ServerApi::GetGoodsReq gReq;
     ThreadPool::Instance()->GetTCPMgr()->SendProtoMsg(ServerApi::MsgId::ID_GET_GOODS_REQ, gReq);
+
+    // 👑 3. 请求拉取资金流水 (拉最新的100条)
+    ServerApi::GetFlowReq fReq;
+    fReq.set_page_index(1);
+    fReq.set_page_size(100);
+    ThreadPool::Instance()->GetTCPMgr()->SendProtoMsg(ServerApi::MsgId::ID_GET_FLOW_REQ, fReq);
 }
 
 void WalletWidget::BuildUI()
@@ -163,6 +170,51 @@ void WalletWidget::OnGoodsListReceived(const ServerApi::GetGoodsRsp& rsp)
             req.set_pay_method("WECHAT");
             ThreadPool::Instance()->GetTCPMgr()->SendProtoMsg(ServerApi::MsgId::ID_CREATE_ORDER_REQ, req);
             });
+    }
+}
+
+// 收到服务器响应：订单流水记录
+void WalletWidget::OnFlowRecordsReceived(const ServerApi::GetFlowRsp& rsp)
+{
+    // 清空现有表格内容，并重新设置行数
+    m_flowTable->setRowCount(0);
+    m_flowTable->setRowCount(rsp.records_size());
+
+    for (int i = 0; i < rsp.records_size(); ++i) {
+        const auto& rec = rsp.records(i);
+
+        // 解析枚举类型
+        QString flowTypeStr;
+        switch (rec.flow_type()) {
+        case 1: flowTypeStr = tr("充值收入"); break;
+        case 2: flowTypeStr = tr("点播消费"); break;
+        case 3: flowTypeStr = tr("游戏消费"); break;
+        case 4: flowTypeStr = tr("系统赠送"); break;
+        default: flowTypeStr = tr("未知交易"); break;
+        }
+
+        // 处理带符号的积分变动 (比如: "+600" 或 "-50")
+        QString pointsChangeStr = (rec.points_change() > 0 ? "+" : "") + QString::number(rec.points_change());
+
+        // 装填每一列数据
+        m_flowTable->setItem(i, 0, new QTableWidgetItem(QString::fromStdString(rec.create_time())));
+        m_flowTable->setItem(i, 1, new QTableWidgetItem(flowTypeStr));
+
+        auto* changeItem = new QTableWidgetItem(pointsChangeStr);
+        // 如果想骚一点，这里可以直接改变颜色的警示度，增加就变绿，扣除就变红
+        // if(rec.points_change() < 0) changeItem->setForeground(QColor("#E81123"));
+        // else changeItem->setForeground(QColor("#00E676"));
+        m_flowTable->setItem(i, 2, changeItem);
+
+        m_flowTable->setItem(i, 3, new QTableWidgetItem(QString::number(rec.balance_after())));
+        m_flowTable->setItem(i, 4, new QTableWidgetItem(QString::fromStdString(rec.associated_id())));
+
+        // 统一让所有单元格文字居中显示，更好看
+        for (int col = 0; col < 5; ++col) {
+            if (m_flowTable->item(i, col)) {
+                m_flowTable->item(i, col)->setTextAlignment(Qt::AlignCenter);
+            }
+        }
     }
 }
 

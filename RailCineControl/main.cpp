@@ -62,12 +62,14 @@ void RegisterMetaTypes()
     qRegisterMetaType<ServerApi::GetGoodsRsp>("ServerApi::GetGoodsRsp");            // 充值套餐列表响应
     qRegisterMetaType<ServerApi::CreateOrderRsp>("ServerApi::CreateOrderRsp");      // 订单创建与二维码下发响应
     qRegisterMetaType<ServerApi::OrderNotifyPush>("ServerApi::OrderNotifyPush");    // 支付成功异步推送通知
+    qRegisterMetaType<ServerApi::GetFlowRsp>("ServerApi::GetFlowRsp");              // 资金流水列表响应
 
     // 💡 提示：如果信号里传递了列表内的单条数据或结构体，也需要注册以确保跨线程安全
     qRegisterMetaType<ServerApi::MovieInfo>("ServerApi::MovieInfo");
     qRegisterMetaType<ServerApi::PlayRecord>("ServerApi::PlayRecord");
     qRegisterMetaType<ServerApi::GameInfo>("ServerApi::GameInfo");                  // 单条游戏结构体
     qRegisterMetaType<ServerApi::GoodsInfo>("ServerApi::GoodsInfo");                // 单条充值套餐结构体
+    qRegisterMetaType<ServerApi::PointFlowRecord>("ServerApi::PointFlowRecord");    // 单条资金流水记录
 }
 
 void LoadAppLanguage()

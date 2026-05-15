@@ -505,6 +505,21 @@ void TCPMgr::InitHandlers()
             }
         }
         };
+
+    // ------------------------------------------------------------------
+    // 📜 注册 [获取资金流水记录响应] 的处理逻辑
+    // ------------------------------------------------------------------
+    m_router[ServerApi::ID_GET_FLOW_RSP] = [this](const ServerApi::PacketHeader& header, const QByteArray& bodyData) {
+        if (header.error_code() != ServerApi::ErrorCode::ERR_SUCCESS) {
+            qDebug() << u8"[TCPMgr] 获取资金流水失败:" << header.error_msg().c_str();
+            return;
+        }
+
+        ServerApi::GetFlowRsp rsp;
+        if (rsp.ParseFromArray(bodyData.data(), bodyData.size())) {
+            emit SigFlowRecordsReceived(rsp);
+        }
+        };
 }
 
 // =========================================================================================

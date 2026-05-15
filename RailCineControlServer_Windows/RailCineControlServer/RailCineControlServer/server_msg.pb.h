@@ -99,6 +99,12 @@ extern DownloadCoverRspDefaultTypeInternal _DownloadCoverRsp_default_instance_;
 class GameInfo;
 struct GameInfoDefaultTypeInternal;
 extern GameInfoDefaultTypeInternal _GameInfo_default_instance_;
+class GetFlowReq;
+struct GetFlowReqDefaultTypeInternal;
+extern GetFlowReqDefaultTypeInternal _GetFlowReq_default_instance_;
+class GetFlowRsp;
+struct GetFlowRspDefaultTypeInternal;
+extern GetFlowRspDefaultTypeInternal _GetFlowRsp_default_instance_;
 class GetGameListReq;
 struct GetGameListReqDefaultTypeInternal;
 extern GetGameListReqDefaultTypeInternal _GetGameListReq_default_instance_;
@@ -150,6 +156,9 @@ extern OrderNotifyPushDefaultTypeInternal _OrderNotifyPush_default_instance_;
 class PlayRecord;
 struct PlayRecordDefaultTypeInternal;
 extern PlayRecordDefaultTypeInternal _PlayRecord_default_instance_;
+class PointFlowRecord;
+struct PointFlowRecordDefaultTypeInternal;
+extern PointFlowRecordDefaultTypeInternal _PointFlowRecord_default_instance_;
 class UploadChunkReq;
 struct UploadChunkReqDefaultTypeInternal;
 extern UploadChunkReqDefaultTypeInternal _UploadChunkReq_default_instance_;
@@ -1649,6 +1658,256 @@ class UploadChunkReq final : public ::google::protobuf::Message
     ::uint32_t chunk_index_;
     bool is_last_;
     int file_type_;
+    ::google::protobuf::internal::CachedSize _cached_size_;
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_server_5fmsg_2eproto;
+};
+// -------------------------------------------------------------------
+
+class PointFlowRecord final : public ::google::protobuf::Message
+/* @@protoc_insertion_point(class_definition:ServerApi.PointFlowRecord) */ {
+ public:
+  inline PointFlowRecord() : PointFlowRecord(nullptr) {}
+  ~PointFlowRecord() PROTOBUF_FINAL;
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+  void operator delete(PointFlowRecord* msg, std::destroying_delete_t) {
+    SharedDtor(*msg);
+    ::google::protobuf::internal::SizedDelete(msg, sizeof(PointFlowRecord));
+  }
+#endif
+
+  template <typename = void>
+  explicit PROTOBUF_CONSTEXPR PointFlowRecord(
+      ::google::protobuf::internal::ConstantInitialized);
+
+  inline PointFlowRecord(const PointFlowRecord& from) : PointFlowRecord(nullptr, from) {}
+  inline PointFlowRecord(PointFlowRecord&& from) noexcept
+      : PointFlowRecord(nullptr, std::move(from)) {}
+  inline PointFlowRecord& operator=(const PointFlowRecord& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline PointFlowRecord& operator=(PointFlowRecord&& from) noexcept {
+    if (this == &from) return *this;
+    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields()
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::google::protobuf::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::google::protobuf::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const PointFlowRecord& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const PointFlowRecord* internal_default_instance() {
+    return reinterpret_cast<const PointFlowRecord*>(
+        &_PointFlowRecord_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages = 38;
+  friend void swap(PointFlowRecord& a, PointFlowRecord& b) { a.Swap(&b); }
+  inline void Swap(PointFlowRecord* other) {
+    if (other == this) return;
+    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(PointFlowRecord* other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  PointFlowRecord* New(::google::protobuf::Arena* arena = nullptr) const {
+    return ::google::protobuf::Message::DefaultConstruct<PointFlowRecord>(arena);
+  }
+  using ::google::protobuf::Message::CopyFrom;
+  void CopyFrom(const PointFlowRecord& from);
+  using ::google::protobuf::Message::MergeFrom;
+  void MergeFrom(const PointFlowRecord& from) { PointFlowRecord::MergeImpl(*this, from); }
+
+  private:
+  static void MergeImpl(
+      ::google::protobuf::MessageLite& to_msg,
+      const ::google::protobuf::MessageLite& from_msg);
+
+  public:
+  bool IsInitialized() const {
+    return true;
+  }
+  ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
+  #if defined(PROTOBUF_CUSTOM_VTABLE)
+  private:
+  static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
+  static ::uint8_t* _InternalSerialize(
+      const MessageLite& msg, ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream);
+
+  public:
+  ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+    return _InternalSerialize(*this, target, stream);
+  }
+  #else   // PROTOBUF_CUSTOM_VTABLE
+  ::size_t ByteSizeLong() const final;
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const final;
+  #endif  // PROTOBUF_CUSTOM_VTABLE
+  int GetCachedSize() const { return _impl_._cached_size_.Get(); }
+
+  private:
+  void SharedCtor(::google::protobuf::Arena* arena);
+  static void SharedDtor(MessageLite& self);
+  void InternalSwap(PointFlowRecord* other);
+ private:
+  template <typename T>
+  friend ::absl::string_view(
+      ::google::protobuf::internal::GetAnyMessageName)();
+  static ::absl::string_view FullMessageName() { return "ServerApi.PointFlowRecord"; }
+
+ protected:
+  explicit PointFlowRecord(::google::protobuf::Arena* arena);
+  PointFlowRecord(::google::protobuf::Arena* arena, const PointFlowRecord& from);
+  PointFlowRecord(::google::protobuf::Arena* arena, PointFlowRecord&& from) noexcept
+      : PointFlowRecord(arena) {
+    *this = ::std::move(from);
+  }
+  const ::google::protobuf::internal::ClassData* GetClassData() const PROTOBUF_FINAL;
+  static void* PlacementNew_(const void*, void* mem,
+                             ::google::protobuf::Arena* arena);
+  static constexpr auto InternalNewImpl_();
+  static const ::google::protobuf::internal::ClassDataFull _class_data_;
+
+ public:
+  ::google::protobuf::Metadata GetMetadata() const;
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+  enum : int {
+    kCreateTimeFieldNumber = 1,
+    kAssociatedIdFieldNumber = 5,
+    kFlowTypeFieldNumber = 2,
+    kPointsChangeFieldNumber = 3,
+    kBalanceAfterFieldNumber = 4,
+  };
+  // string create_time = 1;
+  void clear_create_time() ;
+  const std::string& create_time() const;
+  template <typename Arg_ = const std::string&, typename... Args_>
+  void set_create_time(Arg_&& arg, Args_... args);
+  std::string* mutable_create_time();
+  PROTOBUF_NODISCARD std::string* release_create_time();
+  void set_allocated_create_time(std::string* value);
+
+  private:
+  const std::string& _internal_create_time() const;
+  inline PROTOBUF_ALWAYS_INLINE void _internal_set_create_time(
+      const std::string& value);
+  std::string* _internal_mutable_create_time();
+
+  public:
+  // string associated_id = 5;
+  void clear_associated_id() ;
+  const std::string& associated_id() const;
+  template <typename Arg_ = const std::string&, typename... Args_>
+  void set_associated_id(Arg_&& arg, Args_... args);
+  std::string* mutable_associated_id();
+  PROTOBUF_NODISCARD std::string* release_associated_id();
+  void set_allocated_associated_id(std::string* value);
+
+  private:
+  const std::string& _internal_associated_id() const;
+  inline PROTOBUF_ALWAYS_INLINE void _internal_set_associated_id(
+      const std::string& value);
+  std::string* _internal_mutable_associated_id();
+
+  public:
+  // int32 flow_type = 2;
+  void clear_flow_type() ;
+  ::int32_t flow_type() const;
+  void set_flow_type(::int32_t value);
+
+  private:
+  ::int32_t _internal_flow_type() const;
+  void _internal_set_flow_type(::int32_t value);
+
+  public:
+  // int32 points_change = 3;
+  void clear_points_change() ;
+  ::int32_t points_change() const;
+  void set_points_change(::int32_t value);
+
+  private:
+  ::int32_t _internal_points_change() const;
+  void _internal_set_points_change(::int32_t value);
+
+  public:
+  // int64 balance_after = 4;
+  void clear_balance_after() ;
+  ::int64_t balance_after() const;
+  void set_balance_after(::int64_t value);
+
+  private:
+  ::int64_t _internal_balance_after() const;
+  void _internal_set_balance_after(::int64_t value);
+
+  public:
+  // @@protoc_insertion_point(class_scope:ServerApi.PointFlowRecord)
+ private:
+  class _Internal;
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<
+      3, 5, 0,
+      58, 2>
+      _table_;
+
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+    inline explicit constexpr Impl_(
+        ::google::protobuf::internal::ConstantInitialized) noexcept;
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena);
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena, const Impl_& from,
+                          const PointFlowRecord& from_msg);
+    ::google::protobuf::internal::ArenaStringPtr create_time_;
+    ::google::protobuf::internal::ArenaStringPtr associated_id_;
+    ::int32_t flow_type_;
+    ::int32_t points_change_;
+    ::int64_t balance_after_;
     ::google::protobuf::internal::CachedSize _cached_size_;
     PROTOBUF_TSAN_DECLARE_MEMBER
   };
@@ -4423,6 +4682,208 @@ class GetGameListReq final : public ::google::protobuf::Message
     inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
                           ::google::protobuf::Arena* arena, const Impl_& from,
                           const GetGameListReq& from_msg);
+    ::uint32_t page_index_;
+    ::uint32_t page_size_;
+    ::google::protobuf::internal::CachedSize _cached_size_;
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_server_5fmsg_2eproto;
+};
+// -------------------------------------------------------------------
+
+class GetFlowReq final : public ::google::protobuf::Message
+/* @@protoc_insertion_point(class_definition:ServerApi.GetFlowReq) */ {
+ public:
+  inline GetFlowReq() : GetFlowReq(nullptr) {}
+  ~GetFlowReq() PROTOBUF_FINAL;
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+  void operator delete(GetFlowReq* msg, std::destroying_delete_t) {
+    SharedDtor(*msg);
+    ::google::protobuf::internal::SizedDelete(msg, sizeof(GetFlowReq));
+  }
+#endif
+
+  template <typename = void>
+  explicit PROTOBUF_CONSTEXPR GetFlowReq(
+      ::google::protobuf::internal::ConstantInitialized);
+
+  inline GetFlowReq(const GetFlowReq& from) : GetFlowReq(nullptr, from) {}
+  inline GetFlowReq(GetFlowReq&& from) noexcept
+      : GetFlowReq(nullptr, std::move(from)) {}
+  inline GetFlowReq& operator=(const GetFlowReq& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline GetFlowReq& operator=(GetFlowReq&& from) noexcept {
+    if (this == &from) return *this;
+    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields()
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::google::protobuf::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::google::protobuf::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const GetFlowReq& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const GetFlowReq* internal_default_instance() {
+    return reinterpret_cast<const GetFlowReq*>(
+        &_GetFlowReq_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages = 39;
+  friend void swap(GetFlowReq& a, GetFlowReq& b) { a.Swap(&b); }
+  inline void Swap(GetFlowReq* other) {
+    if (other == this) return;
+    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(GetFlowReq* other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  GetFlowReq* New(::google::protobuf::Arena* arena = nullptr) const {
+    return ::google::protobuf::Message::DefaultConstruct<GetFlowReq>(arena);
+  }
+  using ::google::protobuf::Message::CopyFrom;
+  void CopyFrom(const GetFlowReq& from);
+  using ::google::protobuf::Message::MergeFrom;
+  void MergeFrom(const GetFlowReq& from) { GetFlowReq::MergeImpl(*this, from); }
+
+  private:
+  static void MergeImpl(
+      ::google::protobuf::MessageLite& to_msg,
+      const ::google::protobuf::MessageLite& from_msg);
+
+  public:
+  bool IsInitialized() const {
+    return true;
+  }
+  ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
+  #if defined(PROTOBUF_CUSTOM_VTABLE)
+  private:
+  static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
+  static ::uint8_t* _InternalSerialize(
+      const MessageLite& msg, ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream);
+
+  public:
+  ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+    return _InternalSerialize(*this, target, stream);
+  }
+  #else   // PROTOBUF_CUSTOM_VTABLE
+  ::size_t ByteSizeLong() const final;
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const final;
+  #endif  // PROTOBUF_CUSTOM_VTABLE
+  int GetCachedSize() const { return _impl_._cached_size_.Get(); }
+
+  private:
+  void SharedCtor(::google::protobuf::Arena* arena);
+  static void SharedDtor(MessageLite& self);
+  void InternalSwap(GetFlowReq* other);
+ private:
+  template <typename T>
+  friend ::absl::string_view(
+      ::google::protobuf::internal::GetAnyMessageName)();
+  static ::absl::string_view FullMessageName() { return "ServerApi.GetFlowReq"; }
+
+ protected:
+  explicit GetFlowReq(::google::protobuf::Arena* arena);
+  GetFlowReq(::google::protobuf::Arena* arena, const GetFlowReq& from);
+  GetFlowReq(::google::protobuf::Arena* arena, GetFlowReq&& from) noexcept
+      : GetFlowReq(arena) {
+    *this = ::std::move(from);
+  }
+  const ::google::protobuf::internal::ClassData* GetClassData() const PROTOBUF_FINAL;
+  static void* PlacementNew_(const void*, void* mem,
+                             ::google::protobuf::Arena* arena);
+  static constexpr auto InternalNewImpl_();
+  static const ::google::protobuf::internal::ClassDataFull _class_data_;
+
+ public:
+  ::google::protobuf::Metadata GetMetadata() const;
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+  enum : int {
+    kPageIndexFieldNumber = 1,
+    kPageSizeFieldNumber = 2,
+  };
+  // uint32 page_index = 1;
+  void clear_page_index() ;
+  ::uint32_t page_index() const;
+  void set_page_index(::uint32_t value);
+
+  private:
+  ::uint32_t _internal_page_index() const;
+  void _internal_set_page_index(::uint32_t value);
+
+  public:
+  // uint32 page_size = 2;
+  void clear_page_size() ;
+  ::uint32_t page_size() const;
+  void set_page_size(::uint32_t value);
+
+  private:
+  ::uint32_t _internal_page_size() const;
+  void _internal_set_page_size(::uint32_t value);
+
+  public:
+  // @@protoc_insertion_point(class_scope:ServerApi.GetFlowReq)
+ private:
+  class _Internal;
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<
+      1, 2, 0,
+      0, 2>
+      _table_;
+
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+    inline explicit constexpr Impl_(
+        ::google::protobuf::internal::ConstantInitialized) noexcept;
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena);
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena, const Impl_& from,
+                          const GetFlowReq& from_msg);
     ::uint32_t page_index_;
     ::uint32_t page_size_;
     ::google::protobuf::internal::CachedSize _cached_size_;
@@ -8256,6 +8717,215 @@ class GetGameListRsp final : public ::google::protobuf::Message
                           ::google::protobuf::Arena* arena, const Impl_& from,
                           const GetGameListRsp& from_msg);
     ::google::protobuf::RepeatedPtrField< ::ServerApi::GameInfo > games_;
+    ::uint32_t total_count_;
+    ::google::protobuf::internal::CachedSize _cached_size_;
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_server_5fmsg_2eproto;
+};
+// -------------------------------------------------------------------
+
+class GetFlowRsp final : public ::google::protobuf::Message
+/* @@protoc_insertion_point(class_definition:ServerApi.GetFlowRsp) */ {
+ public:
+  inline GetFlowRsp() : GetFlowRsp(nullptr) {}
+  ~GetFlowRsp() PROTOBUF_FINAL;
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+  void operator delete(GetFlowRsp* msg, std::destroying_delete_t) {
+    SharedDtor(*msg);
+    ::google::protobuf::internal::SizedDelete(msg, sizeof(GetFlowRsp));
+  }
+#endif
+
+  template <typename = void>
+  explicit PROTOBUF_CONSTEXPR GetFlowRsp(
+      ::google::protobuf::internal::ConstantInitialized);
+
+  inline GetFlowRsp(const GetFlowRsp& from) : GetFlowRsp(nullptr, from) {}
+  inline GetFlowRsp(GetFlowRsp&& from) noexcept
+      : GetFlowRsp(nullptr, std::move(from)) {}
+  inline GetFlowRsp& operator=(const GetFlowRsp& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline GetFlowRsp& operator=(GetFlowRsp&& from) noexcept {
+    if (this == &from) return *this;
+    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields()
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::google::protobuf::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::google::protobuf::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const GetFlowRsp& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const GetFlowRsp* internal_default_instance() {
+    return reinterpret_cast<const GetFlowRsp*>(
+        &_GetFlowRsp_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages = 40;
+  friend void swap(GetFlowRsp& a, GetFlowRsp& b) { a.Swap(&b); }
+  inline void Swap(GetFlowRsp* other) {
+    if (other == this) return;
+    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(GetFlowRsp* other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  GetFlowRsp* New(::google::protobuf::Arena* arena = nullptr) const {
+    return ::google::protobuf::Message::DefaultConstruct<GetFlowRsp>(arena);
+  }
+  using ::google::protobuf::Message::CopyFrom;
+  void CopyFrom(const GetFlowRsp& from);
+  using ::google::protobuf::Message::MergeFrom;
+  void MergeFrom(const GetFlowRsp& from) { GetFlowRsp::MergeImpl(*this, from); }
+
+  private:
+  static void MergeImpl(
+      ::google::protobuf::MessageLite& to_msg,
+      const ::google::protobuf::MessageLite& from_msg);
+
+  public:
+  bool IsInitialized() const {
+    return true;
+  }
+  ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
+  #if defined(PROTOBUF_CUSTOM_VTABLE)
+  private:
+  static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
+  static ::uint8_t* _InternalSerialize(
+      const MessageLite& msg, ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream);
+
+  public:
+  ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+    return _InternalSerialize(*this, target, stream);
+  }
+  #else   // PROTOBUF_CUSTOM_VTABLE
+  ::size_t ByteSizeLong() const final;
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const final;
+  #endif  // PROTOBUF_CUSTOM_VTABLE
+  int GetCachedSize() const { return _impl_._cached_size_.Get(); }
+
+  private:
+  void SharedCtor(::google::protobuf::Arena* arena);
+  static void SharedDtor(MessageLite& self);
+  void InternalSwap(GetFlowRsp* other);
+ private:
+  template <typename T>
+  friend ::absl::string_view(
+      ::google::protobuf::internal::GetAnyMessageName)();
+  static ::absl::string_view FullMessageName() { return "ServerApi.GetFlowRsp"; }
+
+ protected:
+  explicit GetFlowRsp(::google::protobuf::Arena* arena);
+  GetFlowRsp(::google::protobuf::Arena* arena, const GetFlowRsp& from);
+  GetFlowRsp(::google::protobuf::Arena* arena, GetFlowRsp&& from) noexcept
+      : GetFlowRsp(arena) {
+    *this = ::std::move(from);
+  }
+  const ::google::protobuf::internal::ClassData* GetClassData() const PROTOBUF_FINAL;
+  static void* PlacementNew_(const void*, void* mem,
+                             ::google::protobuf::Arena* arena);
+  static constexpr auto InternalNewImpl_();
+  static const ::google::protobuf::internal::ClassDataFull _class_data_;
+
+ public:
+  ::google::protobuf::Metadata GetMetadata() const;
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+  enum : int {
+    kRecordsFieldNumber = 1,
+    kTotalCountFieldNumber = 2,
+  };
+  // repeated .ServerApi.PointFlowRecord records = 1;
+  int records_size() const;
+  private:
+  int _internal_records_size() const;
+
+  public:
+  void clear_records() ;
+  ::ServerApi::PointFlowRecord* mutable_records(int index);
+  ::google::protobuf::RepeatedPtrField<::ServerApi::PointFlowRecord>* mutable_records();
+
+  private:
+  const ::google::protobuf::RepeatedPtrField<::ServerApi::PointFlowRecord>& _internal_records() const;
+  ::google::protobuf::RepeatedPtrField<::ServerApi::PointFlowRecord>* _internal_mutable_records();
+  public:
+  const ::ServerApi::PointFlowRecord& records(int index) const;
+  ::ServerApi::PointFlowRecord* add_records();
+  const ::google::protobuf::RepeatedPtrField<::ServerApi::PointFlowRecord>& records() const;
+  // uint32 total_count = 2;
+  void clear_total_count() ;
+  ::uint32_t total_count() const;
+  void set_total_count(::uint32_t value);
+
+  private:
+  ::uint32_t _internal_total_count() const;
+  void _internal_set_total_count(::uint32_t value);
+
+  public:
+  // @@protoc_insertion_point(class_scope:ServerApi.GetFlowRsp)
+ private:
+  class _Internal;
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<
+      1, 2, 1,
+      0, 2>
+      _table_;
+
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+    inline explicit constexpr Impl_(
+        ::google::protobuf::internal::ConstantInitialized) noexcept;
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena);
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena, const Impl_& from,
+                          const GetFlowRsp& from_msg);
+    ::google::protobuf::RepeatedPtrField< ::ServerApi::PointFlowRecord > records_;
     ::uint32_t total_count_;
     ::google::protobuf::internal::CachedSize _cached_size_;
     PROTOBUF_TSAN_DECLARE_MEMBER
@@ -12362,6 +13032,295 @@ inline ::int64_t ConsumePointsRsp::_internal_current_points() const {
 inline void ConsumePointsRsp::_internal_set_current_points(::int64_t value) {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.current_points_ = value;
+}
+
+// -------------------------------------------------------------------
+
+// PointFlowRecord
+
+// string create_time = 1;
+inline void PointFlowRecord::clear_create_time() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.create_time_.ClearToEmpty();
+}
+inline const std::string& PointFlowRecord::create_time() const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:ServerApi.PointFlowRecord.create_time)
+  return _internal_create_time();
+}
+template <typename Arg_, typename... Args_>
+inline PROTOBUF_ALWAYS_INLINE void PointFlowRecord::set_create_time(Arg_&& arg,
+                                                     Args_... args) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.create_time_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
+  // @@protoc_insertion_point(field_set:ServerApi.PointFlowRecord.create_time)
+}
+inline std::string* PointFlowRecord::mutable_create_time() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  std::string* _s = _internal_mutable_create_time();
+  // @@protoc_insertion_point(field_mutable:ServerApi.PointFlowRecord.create_time)
+  return _s;
+}
+inline const std::string& PointFlowRecord::_internal_create_time() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.create_time_.Get();
+}
+inline void PointFlowRecord::_internal_set_create_time(const std::string& value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.create_time_.Set(value, GetArena());
+}
+inline std::string* PointFlowRecord::_internal_mutable_create_time() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  return _impl_.create_time_.Mutable( GetArena());
+}
+inline std::string* PointFlowRecord::release_create_time() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:ServerApi.PointFlowRecord.create_time)
+  return _impl_.create_time_.Release();
+}
+inline void PointFlowRecord::set_allocated_create_time(std::string* value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.create_time_.SetAllocated(value, GetArena());
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() && _impl_.create_time_.IsDefault()) {
+    _impl_.create_time_.Set("", GetArena());
+  }
+  // @@protoc_insertion_point(field_set_allocated:ServerApi.PointFlowRecord.create_time)
+}
+
+// int32 flow_type = 2;
+inline void PointFlowRecord::clear_flow_type() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.flow_type_ = 0;
+}
+inline ::int32_t PointFlowRecord::flow_type() const {
+  // @@protoc_insertion_point(field_get:ServerApi.PointFlowRecord.flow_type)
+  return _internal_flow_type();
+}
+inline void PointFlowRecord::set_flow_type(::int32_t value) {
+  _internal_set_flow_type(value);
+  // @@protoc_insertion_point(field_set:ServerApi.PointFlowRecord.flow_type)
+}
+inline ::int32_t PointFlowRecord::_internal_flow_type() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.flow_type_;
+}
+inline void PointFlowRecord::_internal_set_flow_type(::int32_t value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.flow_type_ = value;
+}
+
+// int32 points_change = 3;
+inline void PointFlowRecord::clear_points_change() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.points_change_ = 0;
+}
+inline ::int32_t PointFlowRecord::points_change() const {
+  // @@protoc_insertion_point(field_get:ServerApi.PointFlowRecord.points_change)
+  return _internal_points_change();
+}
+inline void PointFlowRecord::set_points_change(::int32_t value) {
+  _internal_set_points_change(value);
+  // @@protoc_insertion_point(field_set:ServerApi.PointFlowRecord.points_change)
+}
+inline ::int32_t PointFlowRecord::_internal_points_change() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.points_change_;
+}
+inline void PointFlowRecord::_internal_set_points_change(::int32_t value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.points_change_ = value;
+}
+
+// int64 balance_after = 4;
+inline void PointFlowRecord::clear_balance_after() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.balance_after_ = ::int64_t{0};
+}
+inline ::int64_t PointFlowRecord::balance_after() const {
+  // @@protoc_insertion_point(field_get:ServerApi.PointFlowRecord.balance_after)
+  return _internal_balance_after();
+}
+inline void PointFlowRecord::set_balance_after(::int64_t value) {
+  _internal_set_balance_after(value);
+  // @@protoc_insertion_point(field_set:ServerApi.PointFlowRecord.balance_after)
+}
+inline ::int64_t PointFlowRecord::_internal_balance_after() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.balance_after_;
+}
+inline void PointFlowRecord::_internal_set_balance_after(::int64_t value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.balance_after_ = value;
+}
+
+// string associated_id = 5;
+inline void PointFlowRecord::clear_associated_id() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.associated_id_.ClearToEmpty();
+}
+inline const std::string& PointFlowRecord::associated_id() const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:ServerApi.PointFlowRecord.associated_id)
+  return _internal_associated_id();
+}
+template <typename Arg_, typename... Args_>
+inline PROTOBUF_ALWAYS_INLINE void PointFlowRecord::set_associated_id(Arg_&& arg,
+                                                     Args_... args) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.associated_id_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
+  // @@protoc_insertion_point(field_set:ServerApi.PointFlowRecord.associated_id)
+}
+inline std::string* PointFlowRecord::mutable_associated_id() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  std::string* _s = _internal_mutable_associated_id();
+  // @@protoc_insertion_point(field_mutable:ServerApi.PointFlowRecord.associated_id)
+  return _s;
+}
+inline const std::string& PointFlowRecord::_internal_associated_id() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.associated_id_.Get();
+}
+inline void PointFlowRecord::_internal_set_associated_id(const std::string& value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.associated_id_.Set(value, GetArena());
+}
+inline std::string* PointFlowRecord::_internal_mutable_associated_id() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  return _impl_.associated_id_.Mutable( GetArena());
+}
+inline std::string* PointFlowRecord::release_associated_id() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:ServerApi.PointFlowRecord.associated_id)
+  return _impl_.associated_id_.Release();
+}
+inline void PointFlowRecord::set_allocated_associated_id(std::string* value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.associated_id_.SetAllocated(value, GetArena());
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() && _impl_.associated_id_.IsDefault()) {
+    _impl_.associated_id_.Set("", GetArena());
+  }
+  // @@protoc_insertion_point(field_set_allocated:ServerApi.PointFlowRecord.associated_id)
+}
+
+// -------------------------------------------------------------------
+
+// GetFlowReq
+
+// uint32 page_index = 1;
+inline void GetFlowReq::clear_page_index() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.page_index_ = 0u;
+}
+inline ::uint32_t GetFlowReq::page_index() const {
+  // @@protoc_insertion_point(field_get:ServerApi.GetFlowReq.page_index)
+  return _internal_page_index();
+}
+inline void GetFlowReq::set_page_index(::uint32_t value) {
+  _internal_set_page_index(value);
+  // @@protoc_insertion_point(field_set:ServerApi.GetFlowReq.page_index)
+}
+inline ::uint32_t GetFlowReq::_internal_page_index() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.page_index_;
+}
+inline void GetFlowReq::_internal_set_page_index(::uint32_t value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.page_index_ = value;
+}
+
+// uint32 page_size = 2;
+inline void GetFlowReq::clear_page_size() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.page_size_ = 0u;
+}
+inline ::uint32_t GetFlowReq::page_size() const {
+  // @@protoc_insertion_point(field_get:ServerApi.GetFlowReq.page_size)
+  return _internal_page_size();
+}
+inline void GetFlowReq::set_page_size(::uint32_t value) {
+  _internal_set_page_size(value);
+  // @@protoc_insertion_point(field_set:ServerApi.GetFlowReq.page_size)
+}
+inline ::uint32_t GetFlowReq::_internal_page_size() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.page_size_;
+}
+inline void GetFlowReq::_internal_set_page_size(::uint32_t value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.page_size_ = value;
+}
+
+// -------------------------------------------------------------------
+
+// GetFlowRsp
+
+// repeated .ServerApi.PointFlowRecord records = 1;
+inline int GetFlowRsp::_internal_records_size() const {
+  return _internal_records().size();
+}
+inline int GetFlowRsp::records_size() const {
+  return _internal_records_size();
+}
+inline void GetFlowRsp::clear_records() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.records_.Clear();
+}
+inline ::ServerApi::PointFlowRecord* GetFlowRsp::mutable_records(int index)
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_mutable:ServerApi.GetFlowRsp.records)
+  return _internal_mutable_records()->Mutable(index);
+}
+inline ::google::protobuf::RepeatedPtrField<::ServerApi::PointFlowRecord>* GetFlowRsp::mutable_records()
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_mutable_list:ServerApi.GetFlowRsp.records)
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  return _internal_mutable_records();
+}
+inline const ::ServerApi::PointFlowRecord& GetFlowRsp::records(int index) const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:ServerApi.GetFlowRsp.records)
+  return _internal_records().Get(index);
+}
+inline ::ServerApi::PointFlowRecord* GetFlowRsp::add_records() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  ::ServerApi::PointFlowRecord* _add = _internal_mutable_records()->Add();
+  // @@protoc_insertion_point(field_add:ServerApi.GetFlowRsp.records)
+  return _add;
+}
+inline const ::google::protobuf::RepeatedPtrField<::ServerApi::PointFlowRecord>& GetFlowRsp::records() const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_list:ServerApi.GetFlowRsp.records)
+  return _internal_records();
+}
+inline const ::google::protobuf::RepeatedPtrField<::ServerApi::PointFlowRecord>&
+GetFlowRsp::_internal_records() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.records_;
+}
+inline ::google::protobuf::RepeatedPtrField<::ServerApi::PointFlowRecord>*
+GetFlowRsp::_internal_mutable_records() {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return &_impl_.records_;
+}
+
+// uint32 total_count = 2;
+inline void GetFlowRsp::clear_total_count() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.total_count_ = 0u;
+}
+inline ::uint32_t GetFlowRsp::total_count() const {
+  // @@protoc_insertion_point(field_get:ServerApi.GetFlowRsp.total_count)
+  return _internal_total_count();
+}
+inline void GetFlowRsp::set_total_count(::uint32_t value) {
+  _internal_set_total_count(value);
+  // @@protoc_insertion_point(field_set:ServerApi.GetFlowRsp.total_count)
+}
+inline ::uint32_t GetFlowRsp::_internal_total_count() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.total_count_;
+}
+inline void GetFlowRsp::_internal_set_total_count(::uint32_t value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.total_count_ = value;
 }
 
 #ifdef __GNUC__

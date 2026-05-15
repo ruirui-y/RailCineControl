@@ -289,3 +289,26 @@ message ConsumePointsRsp {
     int64 points_cost    = 1;                                                   // 本次消费扣除了多少积分
     int64 current_points = 2;                                                   // 剩余多少积分
 }
+
+// ---------------------------------------------------------
+// 获取资金流水记录
+// ---------------------------------------------------------
+
+// 单条资金流水记录
+message PointFlowRecord {
+    string create_time   = 1;                                                   // 流水发生时间 (如 "2026-05-15 14:00:00")
+    int32  flow_type     = 2;                                                   // 流水类型: 1=充值收入, 2=看电影支出, 3=玩游戏支出, 4=系统赠送
+    int32  points_change = 3;                                                   // 变动额度 (正数代表增加，负数代表扣除)
+    int64  balance_after = 4;                                                   // 变动后的最终余额
+    string associated_id = 5;                                                   // 关联的订单号或业务ID
+}
+
+message GetFlowReq {
+    uint32 page_index = 1;                                                      // 分页页码 (默认 1)
+    uint32 page_size  = 2;                                                      // 每页条数 (默认 100)
+}
+
+message GetFlowRsp {
+    repeated PointFlowRecord records = 1;                                       // 资金流水数组
+    uint32 total_count               = 2;                                       // 流水总条数 (可用于后续分页)
+}
