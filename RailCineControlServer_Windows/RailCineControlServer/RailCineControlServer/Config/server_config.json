@@ -1,0 +1,11 @@
+{
+    "Server": {
+        "TcpPort": 5486,
+        "HttpPort": 8182
+    },
+    "WechatPay": {
+        "MchId": "1688888888",
+        "SerialNo": "1234567890ABCDEF",
+        "PrivateKey": "-----BEGIN PRIVATE KEY-----\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQDAabc...\n...\n-----END PRIVATE KEY-----"
+    }
+}
