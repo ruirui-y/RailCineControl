@@ -8,7 +8,6 @@
 #include <QThread>
 #include <QTranslator>
 #include <QLocale>
-#include "Global.h"
 #include "Macro.h"
 #include "GameItem.h"
 #include "LogRecord.h"
@@ -114,8 +113,11 @@ int main(int argc, char *argv[])
     QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
     QCoreApplication::setAttribute(Qt::AA_UseHighDpiPixmaps);
 
-    RegisterMetaTypes();
     QApplication app(argc, argv);
+
+    InitGlobalPaths();                                                                  // 初始化全局路径
+
+    RegisterMetaTypes();                                                                // 注册跨线程通信类型
 
     // 加载语言
     LoadAppLanguage();
