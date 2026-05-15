@@ -48,6 +48,24 @@ enum MsgId {
     ID_GET_GAME_LIST_RSP  = 4004;                                               // 获取游戏列表响应
     ID_DELETE_GAME_REQ    = 4005;                                               // 删除游戏请求
     ID_DELETE_GAME_RSP    = 4006;                                               // 删除游戏响应
+
+    // ---------------- 💰 支付与钱包业务 (5000 - 5099) ----------------
+    ID_GET_WALLET_REQ     = 5001;                                               // 获取钱包/积分余额请求
+    ID_GET_WALLET_RSP     = 5002;                                               // 获取钱包/积分余额响应
+    
+    ID_GET_GOODS_REQ      = 5003;                                               // 获取充值套餐列表请求
+    ID_GET_GOODS_RSP      = 5004;                                               // 获取充值套餐列表响应
+    
+    ID_CREATE_ORDER_REQ   = 5005;                                               // 创建支付订单请求 (点击充值按钮)
+    ID_CREATE_ORDER_RSP   = 5006;                                               // 创建支付订单响应 (返回支付二维码)
+    
+    ID_ORDER_NOTIFY_PUSH  = 5007;                                               // 👑 服务端主动推送：支付成功通知 (下发给客户端刷新UI)
+    
+    ID_CONSUME_POINTS_REQ = 5008;                                               // 消费积分请求 (点击看电影/玩游戏)
+    ID_CONSUME_POINTS_RSP = 5009;                                               // 消费积分响应
+    
+    ID_GET_FLOW_REQ       = 5010;                                               // 获取积分流水记录请求
+    ID_GET_FLOW_RSP       = 5011;                                               // 获取积分流水记录响应
 }
 
 // =========================================================================================
@@ -67,6 +85,12 @@ enum ErrorCode {
     ERR_FILE_IO_FAILED  = 6;                                                    // 服务器本地磁盘读写失败 (分片写入失败时返回)
     ERR_MD5_MISMATCH    = 7;                                                    // 文件损坏或分片MD5校验不一致
     ERR_GAME_EXISTS     = 8;                                                    // 🎮 游戏(或该版本)已存在
+
+    // ---------------- 支付与积分错误 ----------------
+    ERR_INSUFFICIENT_POINTS = 9;                                                // 余额/积分不足
+    ERR_ORDER_NOT_PAID      = 10;                                               // 订单未支付
+    ERR_ORDER_CLOSED        = 11;                                               // 订单已关闭或超时
+    ERR_GOODS_OFFLINE       = 12;                                               // 充值商品已下架
 }
 
 // =========================================================================================

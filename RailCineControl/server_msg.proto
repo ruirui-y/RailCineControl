@@ -227,3 +227,65 @@ message DeleteGameReq {
 message DeleteGameRsp {
     uint64 deleted_id = 1;
 }
+
+// =========================================================================================
+// 9. 💰 支付与商业化业务 (积分、充值、消费)
+// =========================================================================================
+
+// 获取钱包余额
+message GetWalletReq {}
+message GetWalletRsp {
+    int64 current_points = 1;                                                   // 当前可用积分
+    int64 total_recharged = 2;                                                  // 累计充值积分 (可用于展示VIP等级)
+}
+
+// 充值套餐商品结构
+message GoodsInfo {
+    uint64 goods_id      = 1;                                                   // 商品ID
+    string goods_name    = 2;                                                   // 套餐名称 (如: "新春特惠包")
+    uint32 price_cents   = 3;                                                   // 人民币价格 (单位：分，如 1000 代表 10.00 元)
+    uint32 points_reward = 4;                                                   // 充值后给予的积分数量
+}
+
+// 拉取充值套餐
+message GetGoodsReq {}
+message GetGoodsRsp {
+    repeated GoodsInfo goods_list = 1;                                          // 供 UI 渲染充值面板
+}
+
+// ---------------------------------------------------------
+// 👑 发起支付核心流程
+// ---------------------------------------------------------
+// 客户端 -> 服务端：我要买 goods_id 这个套餐，用微信/支付宝
+message CreateOrderReq {
+    uint64 goods_id = 1;                
+    string pay_method = 2;                                                      // 支付渠道："WECHAT" 或 "ALIPAY"
+}
+
+// 服务端 -> 客户端：订单创建成功，请扫码
+message CreateOrderRsp {
+    string order_id     = 1;                                                    // 系统内部生成的订单号 (如: "PAY202605150001")
+    string qr_code_url  = 2;                                                    // 核心：微信/支付宝返回的 URL，客户端用 QREncode 生成二维码图片展示在界面上！
+    uint32 expire_time  = 3;                                                    // 二维码过期倒计时(秒)
+}
+
+// 👑 服务端 -> 客户端：(异步推送) 微信回调说客户付钱了！
+// 注意：这个没有 Req，是服务器收到微信的回调后，通过 TCP 直接发给对应客户端的！
+message OrderNotifyPush {
+    string order_id       = 1;          
+    bool   is_success     = 2;                                                  // 是否支付成功
+    int64  current_points = 3;                                                  // 最新积分余额 (客户端收到后直接更新 UI)
+}
+
+// ---------------------------------------------------------
+// 消费积分 (看电影/启动游戏)
+// ---------------------------------------------------------
+message ConsumePointsReq {
+    uint64 target_id    = 1;                                                    // 电影 ID 或 游戏 ID
+    FileType match_type = 2;                                                    // 借用你之前定义的 FileType (1:电影, 2:游戏)
+}
+
+message ConsumePointsRsp {
+    int64 points_cost    = 1;                                                   // 本次消费扣除了多少积分
+    int64 current_points = 2;                                                   // 剩余多少积分
+}
