@@ -105,6 +105,7 @@ private:
 
 private:
 	QSharedPointer<HttpServerMgr> http_mgr;																	// Http
+	QSharedPointer<WorkerThread> http_thread_;																// Http 专属网络独立线程
 };
 
 #endif // THREADPOOL_H

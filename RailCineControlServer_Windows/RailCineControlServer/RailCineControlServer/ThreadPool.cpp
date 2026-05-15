@@ -48,8 +48,24 @@ void ThreadPool::Start(size_t threadNum)
 
 void ThreadPool::Stop()
 {
-    QMutexLocker locker(&mutex_);
+	qDebug() << "ThreadPool::Stop()";
+	QMutexLocker locker(&mutex_);
 	if (!started_) return;
+
+	// 1. 显式停止 HTTP 监听，让专属线程从 listen 阻塞中退出来
+	if (http_mgr) {
+		http_mgr->Stop();
+	}
+	http_mgr.reset(); // 安全销毁
+
+	// 2. 清理并关闭 HTTP 专属网络线程
+	if (http_thread_) {
+		http_thread_->quit();
+		http_thread_->wait();
+		http_thread_.reset();
+	}
+
+	// 3. 正常清理并关闭业务大锅饭线程池
 	for (auto& thread : threads_)
 	{
 		thread->quit();
@@ -95,10 +111,24 @@ void ThreadPool::PostTransactionTask(const QList<QString>& sqls, TransactionCall
 
 void ThreadPool::InitNetwork()
 {
-	http_mgr = CreateQObject<HttpServerMgr>();
-	PostTask(http_mgr.get(), [](HttpServerMgr* server)
+	// 1. 单独启动一个专门用于 HTTP 监听的线程，坚决不放入 threads_ 数组！
+	http_thread_ = QSharedPointer<WorkerThread>(new WorkerThread());
+
+	QEventLoop loop;
+	QObject::connect(http_thread_.get(), &WorkerThread::SigReady, &loop, &QEventLoop::quit, Qt::QueuedConnection);
+
+	http_thread_->start();
+	http_thread_->setObjectName("HttpNetworkThread");
+	loop.exec();																											// 等待专属线程就绪
+
+	// 2. 直接调用该专属线程的方法创建对象，确保对象依附在 HttpNetworkThread 上
+	http_mgr = http_thread_->CreateQObject<HttpServerMgr, QSharedPointer>();
+
+	// 3. 跨线程投递 Start 任务，只在这个专属线程里执行死循环
+	QMetaObject::invokeMethod(http_mgr.get(), [this]() 
 		{
-			qDebug() << "HttpServer Start " << QThread::currentThread()->objectName();
-			server->Start(HTTP_LISTEN_PORT);
-		});
+			qDebug() << u8"HttpServer 专属网络线程启动: " << QThread::currentThread()->objectName();
+			// 动态读取全局配置的端口号并启动
+			http_mgr->Start(GlobalConfig::Instance()->GetHttpPort());
+		}, Qt::QueuedConnection);
 }
