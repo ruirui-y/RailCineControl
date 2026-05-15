@@ -1,6 +1,8 @@
-#include "ThreadPool.h"
+Ôªø#include "ThreadPool.h"
 #include <QMutexLocker>
 #include <QEventLoop>
+
+#define HTTP_LISTEN_PORT												8182
 
 ThreadPool::ThreadPool(QObject *parent)
 	: QObject(parent)
@@ -13,9 +15,12 @@ ThreadPool::~ThreadPool()
 
 void ThreadPool::Start(size_t threadNum)
 {
-	QMutexLocker locker(&mutex_);
-	if (started_) return;
-	if(threadNum == 0) threadNum = QThread::idealThreadCount();
+	{
+		QMutexLocker locker(&mutex_);
+		if (started_) return;
+	}
+
+	if (threadNum == 0) threadNum = QThread::idealThreadCount();
 	for (size_t i = 0; i < threadNum; ++i)
 	{
 		QSharedPointer<WorkerThread> thread = QSharedPointer<WorkerThread>(new WorkerThread());
@@ -25,12 +30,20 @@ void ThreadPool::Start(size_t threadNum)
 
 		thread->start();
 		thread->setObjectName(QString::number(i));
-		loop.exec();																									// µ»µΩ worker run() ¿Ô emit Ready()
+		loop.exec();																									// Á≠âÂà∞ worker run() Èáå emit Ready()
 
-		threads_.push_back(thread);
+		{
+			QMutexLocker locker(&mutex_);
+			threads_.push_back(thread); // ‰ªÖÂú®‰øÆÊîπÂÆπÂô®Êó∂Âä†ÈîÅ
+		}
 	}
-	
-	started_ = true;
+
+	{
+		QMutexLocker locker(&mutex_);
+		started_ = true;
+	}
+
+	InitNetwork();
 }
 
 void ThreadPool::Stop()
@@ -60,7 +73,7 @@ QSharedPointer<WorkerThread> ThreadPool::GetThread()
 
 void ThreadPool::PostQueryTask(const QString& sql, QueryCallback cb, bool bIsAsync, const QList<QVariant>& params)
 {
-	// ∞¥÷µ≤∂ªÒ≤Œ ˝£¨Ωª∏¯∑÷∑¢“˝«Ê£¨‘⁄◊”œﬂ≥ÃΩ‚∞¸µ˜”√£°
+	// ÊåâÂÄºÊçïËé∑ÂèÇÊï∞Ôºå‰∫§ÁªôÂàÜÂèëÂºïÊìéÔºåÂú®Â≠êÁ∫øÁ®ãËß£ÂåÖË∞ÉÁî®ÔºÅ
 	DispatchToWorker([=](WorkerThread* worker) {
 		worker->SlotPostSqlQueryTask(sql, cb, bIsAsync, params);
 		});
@@ -77,5 +90,15 @@ void ThreadPool::PostTransactionTask(const QList<QString>& sqls, TransactionCall
 {
 	DispatchToWorker([=](WorkerThread* worker) {
 		worker->SlotPostSqlTransactionTask(sqls, cb, bIsAsync, allParams);
+		});
+}
+
+void ThreadPool::InitNetwork()
+{
+	http_mgr = CreateQObject<HttpServerMgr>();
+	PostTask(http_mgr.get(), [](HttpServerMgr* server)
+		{
+			qDebug() << "HttpServer Start " << QThread::currentThread()->objectName();
+			server->Start(HTTP_LISTEN_PORT);
 		});
 }

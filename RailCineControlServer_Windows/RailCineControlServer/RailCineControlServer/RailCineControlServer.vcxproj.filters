@@ -57,6 +57,12 @@
     <Filter Include="Source Files\Log">
       <UniqueIdentifier>{7968fd10-fa91-4afb-93f7-f0503058aee7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\HttpServer">
+      <UniqueIdentifier>{3b12e0f7-7441-4121-a24e-2bb55ab56b84}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\HttpServer">
+      <UniqueIdentifier>{5cc19d05-3d0d-47fc-87b5-d36150b56db6}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <QtRcc Include="ControlHubServer.qrc">
@@ -109,6 +115,12 @@
     <ClCompile Include="TcpServer.cpp">
       <Filter>Source Files\TCP</Filter>
     </ClCompile>
+    <ClCompile Include="HttpServerMgr.cpp">
+      <Filter>Source Files\HttpServer</Filter>
+    </ClCompile>
+    <ClCompile Include="HttpServerMgr.cpp">
+      <Filter>Source Files\HttpServer</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="WorkerThread.h">
@@ -132,6 +144,9 @@
     <QtMoc Include="LogRecord.h">
       <Filter>Header Files\Log</Filter>
     </QtMoc>
+    <QtMoc Include="HttpServerMgr.h">
+      <Filter>Header Files\HttpServer</Filter>
+    </QtMoc>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Global.h">
@@ -145,6 +160,9 @@
     </ClInclude>
     <ClInclude Include="server_msg.pb.h">
       <Filter>Header Files\Pb</Filter>
+    </ClInclude>
+    <ClInclude Include="httplib.h">
+      <Filter>Header Files\HttpServer</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -95,6 +95,7 @@
   <ItemGroup>
     <ClCompile Include="ClientSession.cpp" />
     <ClCompile Include="common.pb.cc" />
+    <ClCompile Include="HttpServerMgr.cpp" />
     <ClCompile Include="LogRecord.cpp" />
     <ClCompile Include="server_msg.pb.cc" />
     <ClCompile Include="SqlExec.cpp" />
@@ -126,6 +127,8 @@
     <QtMoc Include="ClientSession.h" />
     <ClInclude Include="common.pb.h" />
     <ClInclude Include="Global.h" />
+    <ClInclude Include="httplib.h" />
+    <QtMoc Include="HttpServerMgr.h" />
     <ClInclude Include="server_msg.pb.h" />
     <ClInclude Include="singletion.h" />
   </ItemGroup>
