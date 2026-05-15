@@ -449,6 +449,26 @@ void TCPMgr::InitHandlers()
         };
 
     // ------------------------------------------------------------------
+    // 收到钱包余额响应
+    // ------------------------------------------------------------------
+    m_router[ServerApi::ID_GET_WALLET_RSP] = [this](const ServerApi::PacketHeader& header, const QByteArray& bodyData) {
+        ServerApi::GetWalletRsp rsp;
+        if (rsp.ParseFromArray(bodyData.data(), bodyData.size())) {
+            emit SigWalletReceived(rsp);
+        }
+        };
+
+    // ------------------------------------------------------------------
+    // 收到充值套餐列表响应
+    // ------------------------------------------------------------------
+    m_router[ServerApi::ID_GET_GOODS_RSP] = [this](const ServerApi::PacketHeader& header, const QByteArray& bodyData) {
+        ServerApi::GetGoodsRsp rsp;
+        if (rsp.ParseFromArray(bodyData.data(), bodyData.size())) {
+            emit SigGoodsListReceived(rsp);
+        }
+        };
+
+    // ------------------------------------------------------------------
     // 💰 注册 [创建支付订单响应] 的处理逻辑 (收到二维码)
     // ------------------------------------------------------------------
     m_router[ServerApi::ID_CREATE_ORDER_RSP] = [this](const ServerApi::PacketHeader& header, const QByteArray& bodyData) {

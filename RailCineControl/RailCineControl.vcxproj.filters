@@ -277,12 +277,6 @@
     <ClCompile Include="WalletWidget.cpp">
       <Filter>Source Files\SELF_UI\StackPage\WalletWidget</Filter>
     </ClCompile>
-    <ClCompile Include="CinemaTableWidget.cpp">
-      <Filter>Header Files\CustomUI</Filter>
-    </ClCompile>
-    <ClCompile Include="CinemaPayDialog.cpp">
-      <Filter>Header Files\CustomUI</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Enum.h">
@@ -442,7 +436,8 @@
     <None Include="build_proto.bat">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="RailCineControl.sql" />
+    <None Include="Sql\PayData.sql" />
+    <None Include="Sql\RailCineControl.sql" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="demand.rc">

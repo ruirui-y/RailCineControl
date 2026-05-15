@@ -993,6 +993,64 @@ void ClientSession::InitHandlers()
 
                 }, true, paramsGoods); // 结束 Step 1
         };
+
+    // ------------------------------------------------------------------
+    // 💰 [获取钱包余额] 处理逻辑
+    // ------------------------------------------------------------------
+    m_router[ServerApi::ID_GET_WALLET_REQ] = [this](const ServerApi::PacketHeader& header, const QByteArray& bodyData)
+        {
+            uint64_t seq_id = header.seq_id();
+            std::weak_ptr<ClientSession> weakSelf = weak_from_this();
+
+            // 直接去 t_user_wallet 查这个人的余额
+            QString sql = "SELECT balance_points, total_recharged FROM t_user_wallet WHERE user_id = ?";
+            QList<QVariant> params;
+            params << m_accountId;
+
+            ThreadPool::Instance()->PostQueryTask(sql, [weakSelf, seq_id](const QList<QVariantMap>& results) {
+                auto strongSelf = weakSelf.lock();
+                if (!strongSelf) return;
+
+                ServerApi::GetWalletRsp rsp;
+                if (!results.isEmpty()) {
+                    rsp.set_current_points(results.first()["balance_points"].toLongLong());
+                    rsp.set_total_recharged(results.first()["total_recharged"].toLongLong());
+                }
+                else {
+                    // 如果库里没记录，说明是新用户，默认0
+                    rsp.set_current_points(0);
+                    rsp.set_total_recharged(0);
+                }
+                strongSelf->SendProtoMsg(ServerApi::ID_GET_WALLET_RSP, rsp, seq_id);
+                }, true, params);
+        };
+
+    // ------------------------------------------------------------------
+    // 📦 [获取商品套餐] 处理逻辑
+    // ------------------------------------------------------------------
+    m_router[ServerApi::ID_GET_GOODS_REQ] = [this](const ServerApi::PacketHeader& header, const QByteArray& bodyData)
+        {
+            uint64_t seq_id = header.seq_id();
+            std::weak_ptr<ClientSession> weakSelf = weak_from_this();
+
+            // 只查询上架状态(status=1)的商品
+            QString sql = "SELECT goods_id, name, price_cents, points_reward FROM t_goods_sku WHERE status = 1 ORDER BY price_cents ASC";
+
+            ThreadPool::Instance()->PostQueryTask(sql, [weakSelf, seq_id](const QList<QVariantMap>& results) {
+                auto strongSelf = weakSelf.lock();
+                if (!strongSelf) return;
+
+                ServerApi::GetGoodsRsp rsp;
+                for (const auto& row : results) {
+                    auto* info = rsp.add_goods_list();
+                    info->set_goods_id(row["goods_id"].toULongLong());
+                    info->set_goods_name(row["name"].toString().toStdString());
+                    info->set_price_cents(row["price_cents"].toUInt());
+                    info->set_points_reward(row["points_reward"].toUInt());
+                }
+                strongSelf->SendProtoMsg(ServerApi::ID_GET_GOODS_RSP, rsp, seq_id);
+                }, true);
+        };
 }
 
 // =========================================================================================

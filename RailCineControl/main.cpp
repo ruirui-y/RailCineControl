@@ -44,7 +44,7 @@ void RegisterMetaTypes()
     qRegisterMetaType<ServerApi::DownloadCoverRsp>("ServerApi::DownloadCoverRsp");  // 海报下载
     qRegisterMetaType<ServerApi::UploadMovieRsp>("ServerApi::UploadMovieRsp");      // 影片上传结果
 
-    // 3. 注册【游戏业务】相关响应 (👑 新增模块)
+    // 3. 注册【游戏业务】相关响应
     qRegisterMetaType<ServerApi::GetGameListRsp>("ServerApi::GetGameListRsp");      // 游戏列表
     qRegisterMetaType<ServerApi::UploadGameRsp>("ServerApi::UploadGameRsp");        // 游戏上传结果
 
@@ -57,10 +57,17 @@ void RegisterMetaTypes()
     qRegisterMetaType<ServerApi::LoginRsp>("ServerApi::LoginRsp");                  // 登录响应
     qRegisterMetaType<ServerApi::UploadChunkRsp>("ServerApi::UploadChunkRsp");      // 视频/压缩包分片上传确认
 
-    // 💡 提示：如果你的信号里直接传递了列表里的单条数据，也需要注册：
+    // 6. 注册【支付与商业化】相关响应 (👑 新增模块)
+    qRegisterMetaType<ServerApi::GetWalletRsp>("ServerApi::GetWalletRsp");          // 钱包余额与历史统计响应
+    qRegisterMetaType<ServerApi::GetGoodsRsp>("ServerApi::GetGoodsRsp");            // 充值套餐列表响应
+    qRegisterMetaType<ServerApi::CreateOrderRsp>("ServerApi::CreateOrderRsp");      // 订单创建与二维码下发响应
+    qRegisterMetaType<ServerApi::OrderNotifyPush>("ServerApi::OrderNotifyPush");    // 支付成功异步推送通知
+
+    // 💡 提示：如果信号里传递了列表内的单条数据或结构体，也需要注册以确保跨线程安全
     qRegisterMetaType<ServerApi::MovieInfo>("ServerApi::MovieInfo");
     qRegisterMetaType<ServerApi::PlayRecord>("ServerApi::PlayRecord");
-    qRegisterMetaType<ServerApi::GameInfo>("ServerApi::GameInfo");                  // 单条游戏结构体数据
+    qRegisterMetaType<ServerApi::GameInfo>("ServerApi::GameInfo");                  // 单条游戏结构体
+    qRegisterMetaType<ServerApi::GoodsInfo>("ServerApi::GoodsInfo");                // 单条充值套餐结构体
 }
 
 void LoadAppLanguage()

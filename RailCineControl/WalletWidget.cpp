@@ -6,15 +6,17 @@
 #include "CinemaTableWidget.h"
 #include "CinemaPayDialog.h"
 #include "CinemaMessageBox.h"
-#include "ThreadPool.h"    
-#include "server_msg.pb.h"
+#include "ThreadPool.h"   
 
 
 WalletWidget::WalletWidget(QWidget* parent)
     : QWidget(parent)
 {
     BuildUI();
-    InitMockData(); // 注入假数据看 UI 效果
+
+    // 绑定用户钱包信息和套餐以及支付记录
+    connect(ThreadPool::Instance()->GetTCPMgr(), &TCPMgr::SigWalletReceived, this, &WalletWidget::OnWalletReceived);
+    connect(ThreadPool::Instance()->GetTCPMgr(), &TCPMgr::SigGoodsListReceived, this, &WalletWidget::OnGoodsListReceived);
 
     // 绑定支付信号
     TCPMgr* tcp = ThreadPool::Instance()->GetTCPMgr();
@@ -23,6 +25,19 @@ WalletWidget::WalletWidget(QWidget* parent)
 }
 
 WalletWidget::~WalletWidget() {}
+
+void WalletWidget::showEvent(QShowEvent* event)
+{
+    QWidget::showEvent(event);
+
+    // 1. 请求钱包余额
+    ServerApi::GetWalletReq wReq;
+    ThreadPool::Instance()->GetTCPMgr()->SendProtoMsg(ServerApi::MsgId::ID_GET_WALLET_REQ, wReq);
+
+    // 2. 请求商品列表
+    ServerApi::GetGoodsReq gReq;
+    ThreadPool::Instance()->GetTCPMgr()->SendProtoMsg(ServerApi::MsgId::ID_GET_GOODS_REQ, gReq);
+}
 
 void WalletWidget::BuildUI()
 {
@@ -83,83 +98,73 @@ void WalletWidget::BuildUI()
     mainLayout->addWidget(m_tabWidget);
 }
 
-void WalletWidget::InitMockData()
+// =========================================================================================
+// 👑 核心异步网络回调处理
+// =========================================================================================
+
+// 收到服务器响应：用户积分余额
+void WalletWidget::OnWalletReceived(const ServerApi::GetWalletRsp& rsp)
 {
-    // 1. 模拟资产
-    m_lblPoints->setText("1,250");
+    // 格式化数字，例如 1250 -> "1,250"
+    m_lblPoints->setText(QLocale(QLocale::English).toString((long long)rsp.current_points()));
+}
 
-    // 2. 模拟商品卡片填充
-    QList<uint64_t> goodsIds = { 1001, 1002, 1003, 1004 };
-    QStringList goodsNames = { "10元", "首充 50元", "尊享 100元", "超级 500元" };
-    QStringList goodsPoints = { "100 积分", "600 积分", "1500 积分", "8000 积分" };
-    QStringList prices = { "￥10.00", "￥50.00", "￥100.00", "￥500.00" }; // 增加对应的真实人民币价格
+// 收到服务器响应：商品列表
+void WalletWidget::OnGoodsListReceived(const ServerApi::GetGoodsRsp& rsp)
+{
+    // 1. 先清空旧的布局控件（如果有的话）
+    QLayoutItem* child;
+    while ((child = m_goodsLayout->takeAt(0)) != nullptr) {
+        if (child->widget()) child->widget()->deleteLater();
+        delete child;
+    }
 
-    for (int i = 0; i < 4; ++i) 
+    // 2. 循环创建动态商品卡片
+    for (int i = 0; i < rsp.goods_list_size(); ++i)
     {
+        const auto& info = rsp.goods_list(i);
+
         QPushButton* goodsBtn = new QPushButton();
         goodsBtn->setObjectName("GoodsCardBtn");
         goodsBtn->setFixedSize(160, 100);
 
         QVBoxLayout* btnLayout = new QVBoxLayout(goodsBtn);
-        QLabel* pLbl = new QLabel(goodsPoints[i], goodsBtn);
-        pLbl->setObjectName("GoodsPointsLabel");
-        pLbl->setAlignment(Qt::AlignCenter);
 
-        QLabel* nLbl = new QLabel(goodsNames[i], goodsBtn);
+        // 积分标签 (如: "100 积分")
+        QLabel* pLbl = new QLabel(QString::number(info.points_reward()) + u8" 积分", goodsBtn);
+        pLbl->setObjectName("GoodsPointsLabel");
+
+        // 名字标签 (如: "10元套餐")
+        QLabel* nLbl = new QLabel(QString::fromStdString(info.goods_name()), goodsBtn);
         nLbl->setObjectName("GoodsNameLabel");
         nLbl->setAlignment(Qt::AlignCenter);
+        nLbl->setWordWrap(true);
 
         btnLayout->addWidget(pLbl);
         btnLayout->addWidget(nLbl);
         btnLayout->setAlignment(Qt::AlignCenter);
 
-        // 让标签对鼠标透明，防止阻挡按钮点击
         pLbl->setAttribute(Qt::WA_TransparentForMouseEvents, true);
         nLbl->setAttribute(Qt::WA_TransparentForMouseEvents, true);
 
         m_goodsLayout->addWidget(goodsBtn, i / 4, i % 4);
 
-        // 提取要用到的变量，由于 Lambda 的特性，必须按值捕获
-        uint64_t gId = goodsIds[i];
-        QString name = goodsNames[i] + " (" + goodsPoints[i] + ")";
-        QString price = prices[i];
+        // 绑定点击支付逻辑
+        uint64_t gId = info.goods_id();
+        QString displayName = QString::fromStdString(info.goods_name());
+        QString priceStr = QString("￥%1").arg(info.price_cents() / 100.0, 0, 'f', 2);
 
-        // 👑 真实网络请求流：点击 -> 封包 -> 发送
-        connect(goodsBtn, &QPushButton::clicked, this, [this, gId, name, price]() {
-            // 先把当前点击的商品名称和价格暂存起来，等服务端返回二维码后再用
-            m_currentPayName = name;
-            m_currentPayPrice = price;
+        connect(goodsBtn, &QPushButton::clicked, this, [this, gId, displayName, priceStr]() {
+            m_currentPayName = displayName;
+            m_currentPayPrice = priceStr;
 
-            // 组装 Protobuf 请求
             ServerApi::CreateOrderReq req;
             req.set_goods_id(gId);
-            req.set_pay_method("WECHAT"); // 假定默认走微信
-
-            // 通过 TCPMgr 发送给服务器
+            req.set_pay_method("WECHAT");
             ThreadPool::Instance()->GetTCPMgr()->SendProtoMsg(ServerApi::MsgId::ID_CREATE_ORDER_REQ, req);
-
-            // 可选：此时可以将主界面加个转圈圈动画，防止网络卡顿时用户狂点
             });
     }
-
-    // 3. 模拟流水数据
-    m_flowTable->setRowCount(2);
-    m_flowTable->setItem(0, 0, new QTableWidgetItem("2026-05-15 14:00"));
-    m_flowTable->setItem(0, 1, new QTableWidgetItem("充值"));
-    m_flowTable->setItem(0, 2, new QTableWidgetItem("+600"));
-    m_flowTable->setItem(0, 3, new QTableWidgetItem("1250"));
-    m_flowTable->setItem(0, 4, new QTableWidgetItem("PAY20260515_001"));
-
-    m_flowTable->setItem(1, 0, new QTableWidgetItem("2026-05-15 14:30"));
-    m_flowTable->setItem(1, 1, new QTableWidgetItem("看电影"));
-    m_flowTable->setItem(1, 2, new QTableWidgetItem("-50"));
-    m_flowTable->setItem(1, 3, new QTableWidgetItem("1200"));
-    m_flowTable->setItem(1, 4, new QTableWidgetItem("MOVIE_9921"));
 }
-
-// =========================================================================================
-// 👑 核心异步网络回调处理
-// =========================================================================================
 
 // 收到服务器响应：订单创建成功，下发了二维码 URL
 void WalletWidget::OnOrderCreated(const QString& orderId, const QString& qrUrl, int expireTime)

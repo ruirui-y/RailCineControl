@@ -197,8 +197,9 @@
   <ItemGroup>
     <None Include="build_proto.bat" />
     <None Include="common.proto" />
-    <None Include="RailCineControl.sql" />
     <None Include="server_msg.proto" />
+    <None Include="Sql\PayData.sql" />
+    <None Include="Sql\RailCineControl.sql" />
     <None Include="StyleSheet\stylesheet.qss" />
   </ItemGroup>
   <ItemGroup>

@@ -1148,7 +1148,8 @@ WalletWidget {
 }
 
 #GoodsNameLabel {
-    color: #8A95A5;                                                                 /* 套餐描述辅助色降低抢眼度 */
-    font-size: 14px;                                                                /* 常规说明字号 */
-    font-weight: bold;                                                              /* 基础强迫加粗 */
+    color: #8A95A5;
+    font-size: 12px;                                                                /* 👑 从 14px 降到 11px 或 12px */
+    font-weight: normal;                                                            /* 👑 取消加粗，更省空间 */
+    padding: 0px 5px;                                                               /* 留出少量左右内边距 */
 }
