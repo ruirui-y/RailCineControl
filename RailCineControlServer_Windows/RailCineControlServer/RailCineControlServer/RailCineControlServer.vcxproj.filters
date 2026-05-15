@@ -63,6 +63,15 @@
     <Filter Include="Source Files\HttpServer">
       <UniqueIdentifier>{5cc19d05-3d0d-47fc-87b5-d36150b56db6}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Tools">
+      <UniqueIdentifier>{0f5914bc-c332-41be-874a-c1b31fcd7f4b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Tools">
+      <UniqueIdentifier>{ef76ff18-e816-4db2-a06e-33b7051b8469}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Global">
+      <UniqueIdentifier>{ac38e852-8333-4663-a792-5001dbb0e4c9}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <QtRcc Include="ControlHubServer.qrc">
@@ -121,6 +130,18 @@
     <ClCompile Include="HttpServerMgr.cpp">
       <Filter>Source Files\HttpServer</Filter>
     </ClCompile>
+    <ClCompile Include="WechatPayCrypto.cpp">
+      <Filter>Source Files\Tools</Filter>
+    </ClCompile>
+    <ClCompile Include="WechatPayCrypto.cpp">
+      <Filter>Source Files\Tools</Filter>
+    </ClCompile>
+    <ClCompile Include="JsonTool.cpp">
+      <Filter>Source Files\Tools</Filter>
+    </ClCompile>
+    <ClCompile Include="Global.cpp">
+      <Filter>Source Files\Global</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="WorkerThread.h">
@@ -147,6 +168,9 @@
     <QtMoc Include="HttpServerMgr.h">
       <Filter>Header Files\HttpServer</Filter>
     </QtMoc>
+    <QtMoc Include="JsonTool.h">
+      <Filter>Header Files\Tools</Filter>
+    </QtMoc>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Global.h">
@@ -163,6 +187,9 @@
     </ClInclude>
     <ClInclude Include="httplib.h">
       <Filter>Header Files\HttpServer</Filter>
+    </ClInclude>
+    <ClInclude Include="WechatPayCrypto.h">
+      <Filter>Header Files\Tools</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

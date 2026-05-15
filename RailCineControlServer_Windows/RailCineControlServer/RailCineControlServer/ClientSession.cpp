@@ -6,7 +6,11 @@
 #include <QTimer>
 #include <QDir>
 #include <QFile>
+#include <QJsonObject>
+#include <QJsonDocument>
 #include "ThreadPool.h"
+#include "httplib.h"
+#include "WechatPayCrypto.h"
 
 #define CHECK_TIMEOUT                                                           10000
 #define CONN_TIME_OUT                                                           30000
@@ -966,28 +970,79 @@ void ClientSession::InitHandlers()
                 QList<QVariant> paramsOrder;
                 paramsOrder << orderId << strongSelf->m_accountId << goods_id << priceCents;
 
-                ThreadPool::Instance()->PostUpdateTask(sqlOrder, [weakSelf, seq_id, orderId](bool success) {
+                // 注意：Lambda 捕获列表增加了 priceCents 用于后续请求微信
+                ThreadPool::Instance()->PostUpdateTask(sqlOrder, [weakSelf, seq_id, orderId, priceCents](bool success) {
                     auto innerSelf = weakSelf.lock();
                     if (!innerSelf) return;
 
-                    if (success) {
-                        qDebug() << u8"[ClientSession] 本地支付订单创建成功，订单号:" << orderId;
+                    if (success)
+                    {
+                        // =========================================================================
+                        // 👑 Step 3：请求微信支付 V3 统一下单接口获取真实 code_url
+                        // =========================================================================
 
-                        // 3. 组装返回数据给客户端弹窗
-                        ServerApi::CreateOrderRsp rsp;
-                        rsp.set_order_id(orderId.toStdString());
-                        rsp.set_expire_time(300); // 二维码有效期 5 分钟
+                        // 1. 准备请求微信的 JSON (动态读取全局配置)
+                        QJsonObject wx_req;
+                        wx_req["mchid"] = GlobalConfig::Instance()->GetWxMchId();
+                        wx_req["out_trade_no"] = orderId;
+                        wx_req["appid"] = GlobalConfig::Instance()->GetWxAppId();
+                        wx_req["description"] = "充值积分";
+                        wx_req["notify_url"] = GlobalConfig::Instance()->GetWxNotifyUrl(); // 例如 "https://api.yourdomain.com/api/wechat/pay_notify"
 
-                        // 💡 注意：这里先给一个 mock (测试) 的二维码 URL 数据！
-                        // TODO: 等你接入真实的微信支付 V3 API 时，在插入订单前调用微信接口获取真实 CodeUrl 填在这里
-                        QString mockQrUrl = "weixin://wxpay/bizpayurl?pr=TEST_MOCK_PAY_" + orderId;
-                        rsp.set_qr_code_url(mockQrUrl.toStdString());
+                        QJsonObject amountObj;
+                        amountObj["total"] = priceCents; // 单位：分
+                        amountObj["currency"] = "CNY";
+                        wx_req["amount"] = amountObj;
 
-                        innerSelf->SendProtoMsg(ServerApi::ID_CREATE_ORDER_RSP, rsp, seq_id);
+                        // 转化为紧凑的 JSON 字节流
+                        QByteArray postData = QJsonDocument(wx_req).toJson(QJsonDocument::Compact);
+
+                        // 2. 构造签名 (调用神级解密类，参数全部走配置)
+                        QString authorization = WechatPayCrypto::BuildV3Header(
+                            GlobalConfig::Instance()->GetWxMchId(),
+                            GlobalConfig::Instance()->GetWxSerialNo(),
+                            GlobalConfig::Instance()->GetWxPrivateKey(),
+                            "POST",
+                            "/v3/pay/transactions/native",
+                            postData
+                        );
+
+                        // 3. 发起请求
+                        httplib::Client cli("https://api.mch.weixin.qq.com");
+                        httplib::Headers headers = {
+                            {"Authorization", authorization.toStdString()},
+                            {"Content-Type", "application/json"},
+                            {"Accept", "application/json"}
+                        };
+
+                        auto res = cli.Post("/v3/pay/transactions/native", headers, postData.toStdString(), "application/json");
+
+                        if (res && res->status == 200) {
+                            // 4. 解析微信返回的 JSON
+                            QJsonDocument resDoc = QJsonDocument::fromJson(QByteArray::fromStdString(res->body));
+                            QString realCodeUrl = resDoc.object()["code_url"].toString();
+
+                            qDebug() << u8"[ClientSession] 成功获取微信支付链接:" << realCodeUrl;
+
+                            ServerApi::CreateOrderRsp rsp;
+                            rsp.set_order_id(orderId.toStdString());
+                            rsp.set_qr_code_url(realCodeUrl.toStdString());
+                            rsp.set_expire_time(300); // 默认二维码 5 分钟有效期
+
+                            innerSelf->SendProtoMsg(ServerApi::ID_CREATE_ORDER_RSP, rsp, seq_id);
+                        }
+                        else {
+                            // 打印出微信返回的具体报错信息，极度有助于前期联调排错！
+                            QString errMsg = res ? QString::fromStdString(res->body) : "Http connection failed";
+                            qDebug() << u8"[ClientSession] 微信下单失败，Http Code:" << (res ? res->status : -1) << " 详情:" << errMsg;
+
+                            innerSelf->SendProtoMsg(ServerApi::ID_CREATE_ORDER_RSP, ServerApi::CreateOrderRsp(), seq_id,
+                                ServerApi::ERR_SERVER_INTERNAL, u8"通讯异常：向微信拉取支付二维码失败");
+                        }
                     }
                     else {
                         innerSelf->SendProtoMsg(ServerApi::ID_CREATE_ORDER_RSP, ServerApi::CreateOrderRsp(), seq_id,
-                            ServerApi::ERR_SERVER_INTERNAL, u8"系统繁忙，创建订单失败");
+                            ServerApi::ERR_SERVER_INTERNAL, u8"系统繁忙，创建本地订单失败");
                     }
                     }, true, paramsOrder); // 结束 Step 2
 

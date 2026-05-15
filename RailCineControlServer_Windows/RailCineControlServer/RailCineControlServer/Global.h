@@ -80,6 +80,8 @@ public:
     int GetHttpPort() const { return m_httpPort; }
 
     QString GetWxMchId() const { return m_wxMchId; }
+    QString GetWxAppId() const { return m_wxAppId; }                                            // 获取 AppID
+    QString GetWxNotifyUrl() const { return m_wxNotifyUrl; }                                    // 获取回调地址
     QString GetWxSerialNo() const { return m_wxSerialNo; }
     QString GetWxPrivateKey() const { return m_wxPrivateKey; }
 
@@ -96,6 +98,8 @@ private:
 
     // 微信支付配置缓存
     QString m_wxMchId;
+    QString m_wxAppId;     
+    QString m_wxNotifyUrl; 
     QString m_wxSerialNo;
     QString m_wxPrivateKey;
 };

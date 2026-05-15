@@ -5,7 +5,9 @@
     },
     "WechatPay": {
         "MchId": "1688888888",
+        "AppId": "wx1234567890abcdef",
+        "NotifyUrl": "https://yourdomain.com/api/wechat/pay_notify",
         "SerialNo": "1234567890ABCDEF",
-        "PrivateKey": "-----BEGIN PRIVATE KEY-----\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQDAabc...\n...\n-----END PRIVATE KEY-----"
+        "PrivateKey": "-----BEGIN PRIVATE KEY-----\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQDAabc...\n-----END PRIVATE KEY-----"
     }
 }

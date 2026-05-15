@@ -95,12 +95,15 @@
   <ItemGroup>
     <ClCompile Include="ClientSession.cpp" />
     <ClCompile Include="common.pb.cc" />
+    <ClCompile Include="Global.cpp" />
     <ClCompile Include="HttpServerMgr.cpp" />
+    <ClCompile Include="JsonTool.cpp" />
     <ClCompile Include="LogRecord.cpp" />
     <ClCompile Include="server_msg.pb.cc" />
     <ClCompile Include="SqlExec.cpp" />
     <ClCompile Include="TcpServer.cpp" />
     <ClCompile Include="ThreadPool.cpp" />
+    <ClCompile Include="WechatPayCrypto.cpp" />
     <ClCompile Include="WorkerThread.cpp" />
     <QtRcc Include="ControlHubServer.qrc" />
     <QtUic Include="MainWindow.ui" />
@@ -122,6 +125,8 @@
     <QtMoc Include="WorkerThread.h" />
   </ItemGroup>
   <ItemGroup>
+    <QtMoc Include="JsonTool.h" />
+    <ClInclude Include="WechatPayCrypto.h" />
     <QtMoc Include="LogRecord.h" />
     <QtMoc Include="TcpServer.h" />
     <QtMoc Include="ClientSession.h" />
