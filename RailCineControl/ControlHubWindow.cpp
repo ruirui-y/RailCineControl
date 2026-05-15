@@ -10,6 +10,7 @@
 #include "GameItem.h"
 #include "MovieWidget.h"
 #include "GameWidget.h"
+#include "WalletWidget.h"
 #include "SettingWidget.h"
 #include "UserMgr.h"
 
@@ -54,6 +55,7 @@ ControlHubWindow::ControlHubWindow(QWidget* parent) : QWidget(parent)
     // 配置名称与图标的映射 (图标路径保留你原来的)
     m_gameItems.insert(tr("宣传视频"), ":/MiNi/Images/MiNiWorld/GameCenter.png");
     m_gameItems.insert(tr("对战控制"), ":/MiNi/Images/MiNiWorld/Icon.png");
+    m_gameItems.insert(tr("充值中心"), ":/MiNi/Images/MiNiWorld/Icon.png");
     m_gameItems.insert(tr("系统设置"), ":/MiNi/Images/MiNiWorld/Setting.png");
 
     m_leftList_c = new QListWidget(center);
@@ -70,6 +72,8 @@ ControlHubWindow::ControlHubWindow(QWidget* parent) : QWidget(parent)
     // 添加核心控制模块
     AddGameItem(tr("宣传视频"));
     AddGameItem(tr("对战控制"));
+
+    AddGameItem(tr("充值中心"));
 
     // 添加弹簧把上面两个标签顶上去
     listLayout->addStretch(1);
@@ -97,7 +101,11 @@ ControlHubWindow::ControlHubWindow(QWidget* parent) : QWidget(parent)
     GameWidget* game_widget = new GameWidget(center);
     m_stack->addWidget(game_widget);
 
-    // Index 2: 系统设置
+    // 充值窗口
+    WalletWidget* wallet_widget = new WalletWidget(center);
+    m_stack->addWidget(wallet_widget);
+
+    // Index 3: 系统设置
     SettingWidget* setting = new SettingWidget(center);
     m_stack->addWidget(setting);
 
@@ -111,13 +119,9 @@ ControlHubWindow::ControlHubWindow(QWidget* parent) : QWidget(parent)
 
 void ControlHubWindow::AddGameItem(QString name)
 {
-    if (m_leftList_btns->buttons().count() < 3)
-    {
-        // 这里的 GameItem 类大概率是你自己封装的侧边栏按钮类，不用改它的底层
-        GameItem* item = new GameItem(name, m_gameItems.value(name), m_leftList_c);
-        item->setCheckable(true);
-        item->setChecked(true);
-        m_leftList_btns->addButton(item, m_leftList_btns->buttons().count());
-        m_leftList_c->layout()->addWidget(item);
-    }
+    GameItem* item = new GameItem(name, m_gameItems.value(name), m_leftList_c);
+    item->setCheckable(true);
+    item->setChecked(true);
+    m_leftList_btns->addButton(item, m_leftList_btns->buttons().count());
+    m_leftList_c->layout()->addWidget(item);
 }

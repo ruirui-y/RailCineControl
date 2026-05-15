@@ -133,6 +133,7 @@
     <ClCompile Include="UdpManager.cpp" />
     <ClCompile Include="UploadPage.cpp" />
     <ClCompile Include="UserMgr.cpp" />
+    <ClCompile Include="WalletWidget.cpp" />
     <ClCompile Include="WorkerThread.cpp" />
     <QtUic Include="HeroZoneWindow.ui" />
     <QtUic Include="LoginWidget.ui" />
@@ -145,11 +146,14 @@
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <QtMoc Include="WalletWidget.h" />
     <QtMoc Include="LocalStreamServer.h" />
     <QtMoc Include="CinemaDialogBase.h" />
     <QtMoc Include="CinemaMessageBox.h" />
     <QtMoc Include="GameLauncherPage.h" />
     <QtMoc Include="GameUploadPage.h" />
+    <QtMoc Include="CinemaTableWidget.h" />
+    <QtMoc Include="CinemaPayDialog.h" />
     <ClInclude Include="VideoSecurityTool.h" />
     <QtMoc Include="UploadPage.h" />
     <QtMoc Include="UdpManager.h" />
@@ -193,6 +197,7 @@
   <ItemGroup>
     <None Include="build_proto.bat" />
     <None Include="common.proto" />
+    <None Include="RailCineControl.sql" />
     <None Include="server_msg.proto" />
     <None Include="StyleSheet\stylesheet.qss" />
   </ItemGroup>

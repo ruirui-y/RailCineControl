@@ -11,6 +11,7 @@
 #include <QCalendarWidget>
 #include "ThreadPool.h"
 #include "CinemaMessageBox.h"
+#include "CinemaTableWidget.h"
 
 
 RecordPage::RecordPage(QWidget* parent) : QWidget(parent)
@@ -73,23 +74,15 @@ void RecordPage::BuildUI()
     filterLayout->addWidget(btnExport);
 
     // ================= 2. 数据表格 =================
-    m_recordTable = new QTableWidget(0, 6, this);
-    m_recordTable->setObjectName("recordTable");
-    m_recordTable->setHorizontalHeaderLabels({
-        tr("播放日期"),
-        tr("影片名称"),
-        tr("开始时间"),
-        tr("结束时间"),
-        tr("操作员"),
-        tr("结束类型")
+    m_recordTable = new CinemaTableWidget(this);
+    m_recordTable->setHeaders({
+            tr("播放日期"),
+            tr("影片名称"),
+            tr("开始时间"),
+            tr("结束时间"),
+            tr("操作员"),
+            tr("结束类型")
         });
-
-    m_recordTable->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
-    m_recordTable->setAlternatingRowColors(true);
-    m_recordTable->setEditTriggers(QAbstractItemView::NoEditTriggers);
-    m_recordTable->setSelectionBehavior(QAbstractItemView::SelectRows);
-    m_recordTable->verticalHeader()->setVisible(false);
-    m_recordTable->setFocusPolicy(Qt::NoFocus);                             // 消除焦点虚线框
 
     layout->addLayout(filterLayout);
     layout->addWidget(m_recordTable, 1);

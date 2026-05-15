@@ -114,6 +114,12 @@
     <Filter Include="Source Files\CustomUI">
       <UniqueIdentifier>{759726af-1b2b-4f98-aa72-1fec16a9a2be}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\SELF_UI\StackPage\WalletWidget">
+      <UniqueIdentifier>{b397c578-5a6a-4766-abbe-a3f180e08a84}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\SELF_UI\StackPage\WalletWidget">
+      <UniqueIdentifier>{7845058a-6534-4f9c-a62b-32e1ce2d5d0f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <QtUic Include="mainWindow.ui">
@@ -265,6 +271,18 @@
     <ClCompile Include="GameUploadPage.cpp">
       <Filter>Source Files\SELF_UI\StackPage\GameWidget</Filter>
     </ClCompile>
+    <ClCompile Include="WalletWidget.cpp">
+      <Filter>Source Files\SELF_UI\StackPage\WalletWidget</Filter>
+    </ClCompile>
+    <ClCompile Include="WalletWidget.cpp">
+      <Filter>Source Files\SELF_UI\StackPage\WalletWidget</Filter>
+    </ClCompile>
+    <ClCompile Include="CinemaTableWidget.cpp">
+      <Filter>Header Files\CustomUI</Filter>
+    </ClCompile>
+    <ClCompile Include="CinemaPayDialog.cpp">
+      <Filter>Header Files\CustomUI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Enum.h">
@@ -398,6 +416,15 @@
     <QtMoc Include="GameUploadPage.h">
       <Filter>Header Files\SELF_UI\StackPage\GameWidget</Filter>
     </QtMoc>
+    <QtMoc Include="WalletWidget.h">
+      <Filter>Header Files\SELF_UI\StackPage\WalletWidget</Filter>
+    </QtMoc>
+    <QtMoc Include="CinemaTableWidget.h">
+      <Filter>Header Files\CustomUI</Filter>
+    </QtMoc>
+    <QtMoc Include="CinemaPayDialog.h">
+      <Filter>Header Files\CustomUI</Filter>
+    </QtMoc>
   </ItemGroup>
   <ItemGroup>
     <QtRcc Include="demand.qrc">
@@ -415,6 +442,7 @@
     <None Include="build_proto.bat">
       <Filter>Source Files</Filter>
     </None>
+    <None Include="RailCineControl.sql" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="demand.rc">

@@ -178,6 +178,41 @@ TitleBar QPushButton#TitleCloseBtn:pressed {
 
 
 /* ============================================================================== */
+/* 全局数据表格主体 (CinemaTableWidget 核心抽象组件)                              */
+/* ============================================================================== */
+
+CinemaTableWidget {                                                     /* 👑 类名直接打靶，全局生效 */
+    background: transparent;                                            /* 彻底透明漏出主底色 */
+    alternate-background-color: rgba(255, 255, 255, 0.10);              /* 交替行的斑马纹微白底 */
+    border: 1px solid rgba(255, 255, 255, 0.05);                        /* 极其微弱的全局外边框 */
+    gridline-color: rgba(255, 255, 255, 0.03);                          /* 暗淡的内部网格线 */
+    color: #E0E6ED;                                                     /* 数据行文字颜色 */
+    font-size: 13px;                                                    /* 数据字号 */
+    outline: none;                                                      /* 移除点击虚线框 */
+}
+
+CinemaTableWidget::item {                                               /* 数据单元格 */
+    padding: 4px 8px;                                                   /* 增加内容呼吸感 */
+    border-bottom: 1px solid rgba(255, 255, 255, 0.02);                 /* 极微弱的底部行分割线 */
+}
+
+CinemaTableWidget::item:selected {                                      /* 选中整行时的状态 */
+    background-color: rgba(0, 195, 255, 0.1);                           /* 浅色科技蓝底板拉满 */
+    color: #00C3FF;                                                     /* 科技蓝高亮纯色文字 */
+}
+
+CinemaTableWidget QHeaderView::section {                                /* 顶部表头单元格 */
+    background-color: #12161E;                                          /* 深色表头区别于数据区 */
+    color: #8A95A5;                                                     /* 表头字体偏灰蓝不抢主次 */
+    border: none;                                                       /* 移除 Windows 默认立体感 */
+    border-right: 1px solid rgba(255, 255, 255, 0.02);                  /* 表头右侧微弱列分割线 */
+    border-bottom: 2px solid rgba(0, 0, 0, 0.5);                        /* 表头底部重阴影压住数据区 */
+    padding: 10px;                                                      /* 👑 修正了你的 1-px 笔误 */
+    font-weight: bold;                                                  /* 表头强行加粗 */
+    font-size: 14px;                                                    /* 表头字号略大显庄重 */
+}
+
+/* ============================================================================== */
 /* 账号管理弹窗 (AccountWidget) 专属样式                                    */
 /* ============================================================================== */
 
@@ -419,29 +454,34 @@ PlaybackPage QWidget#scrollAreaWidgetContents {                     /* 滚动区
 }
 
 /* ==========================================================
-   [2.1.1.1] 科幻风垂直滚动条 (干掉原生丑陋白边)
+   [2.1.1.1] 现代沉浸式垂直滚动条 (完美融入深色背景)
    ========================================================== */
 /* 1. 滚动条整体轨道 */
 QScrollBar:vertical {
-    background: rgba(10, 25, 45, 100);  /* 轨道背景：极暗的透明深蓝色 */
-    width: 8px;                         /* 滚动条整体宽度，瘦身变得更精致 */
+    background: rgba(0, 0, 0, 0.1);     /* 轨道背景：极其微弱的暗色凹陷槽 */
+    width: 8px;                         /* 保持 8px 精致宽度 */
     border-radius: 4px;                 /* 轨道圆角 */
-    margin: 0px 0px 0px 0px;            /* 消除原生的外边距 */
+    margin: 0px;                        /* 消除原生的外边距 */
 }
 
-/* 2. 滚动条的滑块 (可拖拽的那部分) */
+/* 2. 滚动条的滑块 (默认态：低调的半透明磨砂质感) */
 QScrollBar::handle:vertical {
-    background: rgba(0, 229, 255, 120); /* 默认状态：半透明的科幻青色 */
+    background: rgba(255, 255, 255, 0.12); /* 默认隐身：极淡的半透明白 */
     border-radius: 4px;                 /* 胶囊圆角 */
-    min-height: 30px;                   /* 滑块最小高度，防止内容太多时滑块变成一条线连点都点不到 */
+    min-height: 30px;                   /* 滑块最小高度 */
 }
 
-/* 3. 鼠标悬浮在滑块上的发光态 */
+/* 3. 鼠标悬浮在滑块上 (交互态：微微提亮，柔和不刺眼) */
 QScrollBar::handle:vertical:hover {
-    background: rgba(0, 229, 255, 255); /* 鼠标悬浮时：全亮的青色荧光 */
+    background: rgba(255, 255, 255, 0.25); /* 悬浮时：磨砂白加深，清晰可见 */
 }
 
-/* 4. 隐藏顶部和底部的上下箭头按钮 (现代 UI 标配操作) */
+/* 4. 鼠标按住拖拽时 (激活态：融入微弱的科技蓝) */
+QScrollBar::handle:vertical:pressed {
+    background: rgba(0, 195, 255, 0.4); /* 拖拽时给予微弱的主题色反馈 */
+}
+
+/* 5. 隐藏顶部和底部的上下箭头按钮 */
 QScrollBar::add-line:vertical,
 QScrollBar::sub-line:vertical {
     height: 0px;                        /* 高度设为0直接抹杀 */
@@ -449,7 +489,7 @@ QScrollBar::sub-line:vertical {
     border: none;
 }
 
-/* 5. 点击轨道空白处时，消除原生的丑陋灰色背景 */
+/* 6. 点击轨道空白处时，消除原生的灰色背景 */
 QScrollBar::add-page:vertical,
 QScrollBar::sub-page:vertical {
     background: none;
@@ -714,42 +754,6 @@ RecordPage {                                                        /* 播放记
 #btnDeleteDanger:pressed {                                          /* 删除按钮按下态 */
     background-color: #B00A1A;                                      /* 颜色加深反馈 */
     border: 1px solid #B00A1A;                                      /* 边框同步加深 */
-}
-
-
-/* ============================================================================== */
-/* [2.1.2.5] 播放记录页 - 数据表格主体 (#recordTable) 大荧幕监控台风格               */
-/* ============================================================================== */
-
-#recordTable {                                                      /* 表格主体 */
-    background: transparent;                                        /* 彻底透明漏出主底色 */
-    alternate-background-color: rgba(255, 255, 255, 0.02);          /* 交替行的斑马纹微白底 */
-    border: 1px solid rgba(255, 255, 255, 0.05);                    /* 极其微弱的全局外边框 */
-    gridline-color: rgba(255, 255, 255, 0.03);                      /* 暗淡的内部网格线 */
-    color: #E0E6ED;                                                 /* 数据行文字颜色 */
-    font-size: 13px;                                                /* 数据字号 */
-    outline: none;                                                  /* 移除点击虚线框 */
-}
-
-#recordTable::item {                                                /* 数据单元格 */
-    padding: 4px 8px;                                               /* 增加内容呼吸感 */
-    border-bottom: 1px solid rgba(255, 255, 255, 0.02);             /* 极微弱的底部行分割线 */
-}
-
-#recordTable::item:selected {                                       /* 选中整行时的状态 */
-    background-color: rgba(0, 195, 255, 0.1);                       /* 浅色科技蓝底板拉满 */
-    color: #00C3FF;                                                 /* 科技蓝高亮纯色文字 */
-}
-
-#recordTable QHeaderView::section {                                 /* 顶部表头单元格 */
-    background-color: #12161E;                                      /* 深色表头区别于数据区 */
-    color: #8A95A5;                                                 /* 表头字体偏灰蓝不抢主次 */
-    border: none;                                                   /* 移除 Windows 默认立体感 */
-    border-right: 1px solid rgba(255, 255, 255, 0.02);              /* 表头右侧微弱列分割线 */
-    border-bottom: 2px solid rgba(0, 0, 0, 0.5);                    /* 表头底部重阴影压住数据区 */
-    padding: 8px;                                                   /* 表头宽大内边距 */
-    font-weight: bold;                                              /* 表头强行加粗 */
-    font-size: 14px;                                                /* 表头字号略大显庄重 */
 }
 
 /* ============================================================================== */
@@ -1050,4 +1054,101 @@ UploadPage {                                                        /* 资源上
     selection-background-color: rgba(0, 195, 255, 0.15);        /* 鼠标划过选项时的背景色 */
     selection-color: #00C3FF;                                   /* 鼠标划过选项时的文字颜色 */
     outline: none;                                              /* 去除点击选项时该死的系统虚线框 */
+}
+
+/* ============================================================================== */
+/* [2.4] 充值中心页 (WalletWidget) 专属样式                                         */
+/* ============================================================================== */
+WalletWidget {
+    background: transparent;                                                        /* 彻底透明漏出主窗体深灰蓝底色 */
+}
+
+/* ============================================================================== */
+/* [2.4.1] 充值中心 - 顶部资产卡片 (#WalletTopCard)                                */
+/* ============================================================================== */
+#WalletTopCard {
+    background-color: #242A38;                                                      /* 👑 沿用设置页的卡片浮雕层级感 */
+    border: 1px solid rgba(255, 255, 255, 0.05);                                    /* 极其微弱的发光边界 */
+    border-radius: 12px;                                                            /* 现代大圆角设计 */
+}
+
+#WalletUsername {
+    color: #8A95A5;                                                                 /* 暗灰蓝色，降低次要信息层级 */
+    font-size: 16px;                                                                /* 用户名常规字号 */
+    font-weight: bold;                                                              /* 基础加粗 */
+}
+
+#WalletPointsTitle {
+    color: #E0E6ED;                                                                 /* 亮白标准字体 */
+    font-size: 14px;                                                                /* 辅助说明字号 */
+    margin-top: 8px;                                                                /* 拉开与用户名的呼吸间距 */
+}
+
+#WalletPointsValue {
+    color: #FFB300;                                                                 /* 👑 呼应之前的影院金，代表金钱资产 */
+    font-size: 48px;                                                                /* 硕大的数字震撼感 */
+    font-weight: 900;                                                               /* 极限加粗凸显核心资产 */
+    font-family: "Consolas", "Microsoft YaHei", sans-serif;                         /* 等宽字体防止跳动，带现代感 */
+}
+
+/* ============================================================================== */
+/* [2.4.2] 充值中心 - 标签页容器 (#WalletTab)                                      */
+/* ============================================================================== */
+#WalletTab::pane {
+    border: 1px solid rgba(255, 255, 255, 0.05);                                    /* 极其微弱的边界框 */
+    background-color: #1A1F29;                                                      /* 完美融入主界面底色 */
+    border-radius: 8px;                                                             /* 底部面板圆角包裹 */
+}
+
+#WalletTab QTabBar::tab {
+    background: transparent;                                                        /* 标签默认背景透明 */
+    color: #8A95A5;                                                                 /* 未选中态为暗蓝灰 */
+    font-size: 16px;                                                                /* 适中导航字号 */
+    font-weight: bold;                                                              /* 字体全局加粗 */
+    min-width: 130px;                                                               /* 👑 强行撑开最小宽度，彻底解决 Emoji 宽度计算 Bug */
+    padding: 10px 15px;                                                             /* 宽大的拇指点击热区 */
+    border-bottom: 3px solid transparent;                                           /* 预留底部选中科技蓝指示线 */
+    margin-right: 2px;                                                              /* 标签之间留出间隙防粘连 */
+}
+
+#WalletTab QTabBar::tab:hover {
+    color: #FFFFFF;                                                                 /* 悬浮瞬间提亮文字为纯白 */
+    background-color: rgba(255, 255, 255, 0.03);                                    /* 微弱的底色交互反馈 */
+}
+
+#WalletTab QTabBar::tab:selected {
+    color: #00C3FF;                                                                 /* 👑 选中态科技蓝高亮 */
+    border-bottom: 3px solid #00C3FF;                                               /* 底部亮起科技蓝下划线 */
+}
+
+/* ============================================================================== */
+/* [2.4.3] 充值中心 - 充值特惠商品卡片 (#GoodsCardBtn)                             */
+/* ============================================================================== */
+#GoodsCardBtn {
+    background-color: rgba(255, 255, 255, 0.03);                                    /* 极微弱的半透明玻璃底板 */
+    border: 2px solid rgba(255, 255, 255, 0.05);                                    /* 暗淡的静态包裹边框 */
+    border-radius: 12px;                                                            /* 现代大型圆角设计 */
+}
+
+#GoodsCardBtn:hover {
+    background-color: rgba(0, 195, 255, 0.05);                                      /* 鼠标悬浮泛起科技蓝微光 */
+    border: 2px solid rgba(0, 195, 255, 0.4);                                       /* 边框亮起半透科技蓝 */
+}
+
+#GoodsCardBtn:pressed {
+    background-color: rgba(0, 195, 255, 0.1);                                       /* 按压时蓝色光晕加深 */
+    border: 2px solid #00C3FF;                                                      /* 边框锁定为高亮实线科技蓝 */
+    padding-top: 2px;                                                               /* 产生向下的物理下陷错觉 */
+}
+
+#GoodsPointsLabel {
+    color: #FFFFFF;                                                                 /* 充值积分数量纯白极高对比度 */
+    font-size: 24px;                                                                /* 硕大的展示字号 */
+    font-weight: 900;                                                               /* 极限加粗刺激购买欲 */
+}
+
+#GoodsNameLabel {
+    color: #8A95A5;                                                                 /* 套餐描述辅助色降低抢眼度 */
+    font-size: 14px;                                                                /* 常规说明字号 */
+    font-weight: bold;                                                              /* 基础强迫加粗 */
 }

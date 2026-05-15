@@ -7,6 +7,8 @@
 #include "common.pb.h"          
 #include "server_msg.pb.h"      
 
+class CinemaTableWidget;
+
 class RecordPage : public QWidget
 {
     Q_OBJECT
@@ -45,7 +47,7 @@ private:
 
 private:
     QDateEdit* m_dateEdit;                                                          // 日期筛选器
-    QTableWidget* m_recordTable;                                                    // 记录表格控件
+    CinemaTableWidget* m_recordTable;                                               // 记录表格控件
 };
 
 #endif // RECORDPAGE_H
