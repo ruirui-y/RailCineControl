@@ -1,6 +1,5 @@
-#include "MainWindow.h"
-
-#define LISTEN_PORT                                 5486
+﻿#include "MainWindow.h"
+#include "Global.h"
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent),
@@ -8,7 +7,7 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui.setupUi(this);
     setWindowTitle("RailCineControlServer");
-    server->StartServer(LISTEN_PORT);
+    server->StartServer(GlobalConfig::Instance()->GetTcpPort());
 }
 
 MainWindow::~MainWindow()

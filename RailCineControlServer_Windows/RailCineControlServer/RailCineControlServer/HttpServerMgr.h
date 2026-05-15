@@ -25,6 +25,5 @@ signals:
 
 private:
     std::unique_ptr<httplib::Server> m_server;
-    std::thread m_listenThread;
     std::atomic<bool> m_isRunning;
 };
