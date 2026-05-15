@@ -201,9 +201,9 @@ void WalletWidget::OnFlowRecordsReceived(const ServerApi::GetFlowRsp& rsp)
         m_flowTable->setItem(i, 1, new QTableWidgetItem(flowTypeStr));
 
         auto* changeItem = new QTableWidgetItem(pointsChangeStr);
-        // 如果想骚一点，这里可以直接改变颜色的警示度，增加就变绿，扣除就变红
-        // if(rec.points_change() < 0) changeItem->setForeground(QColor("#E81123"));
-        // else changeItem->setForeground(QColor("#00E676"));
+        // 增加变绿，扣除变红
+        if(rec.points_change() < 0) changeItem->setForeground(QColor("#E81123"));
+        else changeItem->setForeground(QColor("#00E676"));
         m_flowTable->setItem(i, 2, changeItem);
 
         m_flowTable->setItem(i, 3, new QTableWidgetItem(QString::number(rec.balance_after())));
