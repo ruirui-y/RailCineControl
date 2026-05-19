@@ -166,10 +166,23 @@ void WalletWidget::OnGoodsListReceived(const ServerApi::GetGoodsRsp& rsp)
             m_currentPayName = displayName;
             m_currentPayPrice = priceStr;
 
+            // 1. 如果之前有残留的弹窗，先清理掉
+            if (m_payDialog) {
+                m_payDialog->deleteLater();
+                m_payDialog = nullptr;
+            }
+
+            // 2. 👑 立即创建并弹出窗口！此时内部的 Label 会显示 "二维码生成中..."
+            m_payDialog = new CinemaPayDialog(this, m_currentPayName, m_currentPayPrice);
+
+            // 3. 发送网络请求获取二维码
             ServerApi::CreateOrderReq req;
             req.set_goods_id(gId);
             req.set_pay_method("WECHAT");
             ThreadPool::Instance()->GetTCPMgr()->SendProtoMsg(ServerApi::MsgId::ID_CREATE_ORDER_REQ, req);
+
+            // 4. 阻塞显示弹窗 (此时界面已展示，等待底层发来更新信号)
+            m_payDialog->exec();
             });
     }
 }
@@ -221,6 +234,12 @@ void WalletWidget::OnFlowRecordsReceived(const ServerApi::GetFlowRsp& rsp)
 
 void WalletWidget::OnOrderFailed(int errorCode, const QString& errorMsg)
 {
+    // 👑 如果弹窗正在显示“生成中...”，遇到网络错误必须立刻关闭它！
+    if (m_payDialog) {
+        m_payDialog->reject(); // 关闭支付弹窗
+        m_payDialog = nullptr;
+    }
+
     QString title = tr("充值提示");
     QString displayMsg = errorMsg; // 默认使用服务端传来的兜底消息
 
@@ -231,14 +250,12 @@ void WalletWidget::OnOrderFailed(int errorCode, const QString& errorMsg)
         displayMsg = tr("该充值套餐已下架或价格发生变动，请刷新页面后重试。");
         break;
 
-    case ServerApi::ERR_GENERATE_TOKEN_FAILED:
-        displayMsg = errorMsg;
-        break;
     case ServerApi::ERR_PAY_API_FAILED:
         // 中台通讯失败，不给用户看底层报错，只提示网络拥挤
         displayMsg = tr("支付通道拥挤，拉取微信二维码失败，请稍后再试。");
         break;
 
+    case ServerApi::ERR_GENERATE_TOKEN_FAILED:
     case ServerApi::ERR_CREATE_ORDER_FAILED:
     case ServerApi::ERR_SERVER_INTERNAL:
         displayMsg = tr("系统繁忙，创建订单失败，请联系网管或管理员。");
@@ -259,21 +276,11 @@ void WalletWidget::OnOrderFailed(int errorCode, const QString& errorMsg)
 // 收到服务器响应：订单创建成功，下发了二维码 URL
 void WalletWidget::OnOrderCreated(const QString& orderId, const QString& qrUrl, int expireTime)
 {
-    // 如果之前有残留的弹窗，先干掉
+    // 👑 此时 m_payDialog 已经存在并且正在屏幕上显示着
     if (m_payDialog) {
-        m_payDialog->deleteLater();
-        m_payDialog = nullptr;
+        // 直接调用我们写好的更新函数，瞬间把 "生成中..." 替换成真实的黑白二维码，并启动倒计时！
+        m_payDialog->UpdateQRCode(orderId, qrUrl, expireTime);
     }
-
-    // 1. 此时才安全地弹出带有刚才保存名字的支付窗口！
-    m_payDialog = new CinemaPayDialog(this, m_currentPayName, m_currentPayPrice);
-
-    // 2. 👑 把核心的二维码链接、订单号和过期时间传给弹窗去渲染
-    // (需要你在 CinemaPayDialog 类里新增这个函数)
-    m_payDialog->UpdateQRCode(orderId, qrUrl, expireTime);
-
-    // 3. 阻塞弹窗，等待用户扫码
-    m_payDialog->exec();
 }
 
 // 收到服务器异步推送：客户付款成功！（可能是几秒、几分钟后）

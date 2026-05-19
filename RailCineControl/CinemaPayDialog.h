@@ -8,6 +8,7 @@
 #include <QPixmap>
 #include <QTimer>     
 #include <qrencode.h>
+#include <QDebug>
 
 class CinemaPayDialog : public CinemaDialogBase
 {
@@ -91,6 +92,7 @@ public:
                 }
             }
             });
+        qDebug() << "支付窗口创建";
     }
 
     // 供外部调用的更新二维码函数
@@ -114,6 +116,7 @@ public:
 
             m_timer->start(1000); // 每 1000 毫秒（1秒）触发一次 timeout
         }
+        qDebug() << "二维码数据渲染成功";
     }
 
 private:
