@@ -30,6 +30,6 @@ bool CMDTools::RunBlocking(const QStringList & args, QString & outAll, int timeo
         return false;
     }
 
-    outAll = QString::fromLocal8Bit(p.readAll());
+    outAll = QString(p.readAll());
     return (p.exitStatus() == QProcess::NormalExit && p.exitCode() == 0);
 }

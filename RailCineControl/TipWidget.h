@@ -15,8 +15,8 @@ public:
 
     static bool confirm(QWidget* parent,
         const QString& text,
-        const QString& okText = QString::fromLocal8Bit("确定"),
-        const QString& cancelText = QString::fromLocal8Bit("取消"));
+        const QString& okText = QString("确定"),
+        const QString& cancelText = QString("取消"));
 
 private:
     explicit TipWidget(QWidget* parent);

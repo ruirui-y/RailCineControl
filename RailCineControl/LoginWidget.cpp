@@ -210,7 +210,7 @@ bool LoginWidget::CheckUserValid()
 {
 	if (m_userEdit->text().isEmpty())
 	{
-		qDebug() << QString::fromLocal8Bit("用户名不能为空");
+		qDebug() << QString("用户名不能为空");
 		return false;
 	}
 
@@ -223,7 +223,7 @@ bool LoginWidget::CheckPasswordValid()
 	QString passText = m_passEdit->text();
 	if (passText.length() < 6 || passText.length() > 15)
 	{
-		qDebug() << QString::fromLocal8Bit("密码长度必须在6-15位之间");
+		qDebug() << QString("密码长度必须在6-15位之间");
 		// CinemaMessageBox::ShowWarning(this, u8"密码校验", u8"密码长度必须在6-15位之间");
 		return false;
 	}
@@ -233,7 +233,7 @@ bool LoginWidget::CheckPasswordValid()
 	bool match = regExp.match(passText).hasMatch();
 	if (!match)
 	{
-		qDebug() << QString::fromLocal8Bit("密码只能包含字母、数字、!@#$%^&*");
+		qDebug() << QString("密码只能包含字母、数字、!@#$%^&*");
 		return false;
 	}
 
@@ -282,13 +282,13 @@ void LoginWidget::slot_tcp_con_finished(bool success)
 {
 	if (success)
 	{
-		qDebug() << QString::fromLocal8Bit("网络正常,可以登录");
+		qDebug() << QString("网络正常,可以登录");
 		// 自动登录
 		AutoLogin();
 	}
 	else
 	{
-		qDebug() << QString::fromLocal8Bit("网络异常,连接服务器失败，无法登录");
+		qDebug() << QString("网络异常,连接服务器失败，无法登录");
 		EnableBtn(true);
 		_Parent->show();
 	}
@@ -303,20 +303,20 @@ void LoginWidget::slot_login_failed(int errCode)
 	switch (errCode)
 	{
 	case ErrorCode::ERR_SERVER_INTERNAL:
-		result = QString::fromLocal8Bit("服务器内部错误，请稍后再试");
+		result = QString("服务器内部错误，请稍后再试");
 		break;
 	case ErrorCode::ERR_WRONG_PWD:
-		result = QString::fromLocal8Bit("账号不存在或密码错误");
+		result = QString("账号不存在或密码错误");
 		break;
 	case ErrorCode::ERR_ACCOUNT_IN_USE:
-		result = QString::fromLocal8Bit("账号已在其他设备登录，请勿重复登录");
+		result = QString("账号已在其他设备登录，请勿重复登录");
 		break;
 	case ErrorCode::ERR_ACCOUNT_EXPIRED:
-		result = QString::fromLocal8Bit("账号授权已过期，请联系管理员续期");
+		result = QString("账号授权已过期，请联系管理员续期");
 		break;
 	default:
 		// 兜底逻辑：如果出现其他未知的错误码（比如网络层的断层）
-		result = QString::fromLocal8Bit("登录异常，未知错误码: ") + QString::number(errCode);
+		result = QString("登录异常，未知错误码: ") + QString::number(errCode);
 		break;
 	}
 
@@ -324,7 +324,7 @@ void LoginWidget::slot_login_failed(int errCode)
 
 	_Parent->show();
 
-	qDebug() << QString::fromLocal8Bit("[LoginWidget] 登录失败, 错误码:") << errCode << u8" 描述:" << result;
+	qDebug() << QString("[LoginWidget] 登录失败, 错误码:") << errCode << u8" 描述:" << result;
 
 	// 恢复登录按钮状态
 	EnableBtn(true);

@@ -30,6 +30,6 @@ void CustomizeEdit::LimitTextLength(QString text)
 	if (byteArray.size() > _maxLen)
 	{
 		byteArray = byteArray.left(_maxLen);
-		setText(QString::fromLocal8Bit(byteArray));
+		setText(QString(byteArray));
 	}
 }
