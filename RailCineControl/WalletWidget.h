@@ -30,6 +30,8 @@ private slots:
     void OnGoodsListReceived(const ServerApi::GetGoodsRsp& rsp);                                            // 当充值套餐获取成功
     void OnFlowRecordsReceived(const ServerApi::GetFlowRsp& rsp);                                           // 接收流水的槽
 
+    void OnOrderFailed(int errorCode, const QString& errorMsg);                                             // 订单失败槽函数
+
     // 接收服务器返回的“订单创建成功” (准备展示二维码)
     void OnOrderCreated(const QString& orderId, const QString& qrUrl, int expireTime);
 

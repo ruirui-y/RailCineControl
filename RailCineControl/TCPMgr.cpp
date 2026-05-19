@@ -473,8 +473,9 @@ void TCPMgr::InitHandlers()
     // ------------------------------------------------------------------
     m_router[ServerApi::ID_CREATE_ORDER_RSP] = [this](const ServerApi::PacketHeader& header, const QByteArray& bodyData) {
         if (header.error_code() != ServerApi::ErrorCode::ERR_SUCCESS) {
+            QString errMsg = QString::fromStdString(header.error_msg());
             qDebug() << u8"[TCPMgr] 订单创建失败:" << header.error_msg().c_str();
-            // 这里可以加一个 SigOrderFailed 信号给前端弹错误框
+            emit SigOrderFailed(header.error_code(), errMsg);
             return;
         }
 

@@ -8,8 +8,12 @@
 #include <QFile>
 #include <QJsonObject>
 #include <QJsonDocument>
+#include <QNetworkAccessManager>
+#include <QNetworkRequest>
+#include <QNetworkReply>
+#include <QEventLoop>
+#include <QUrl>
 #include "ThreadPool.h"
-#include "httplib.h"
 #include "WechatPayCrypto.h"
 
 #define CHECK_TIMEOUT                                                           10000
@@ -947,10 +951,10 @@ void ClientSession::InitHandlers()
                 auto strongSelf = weakSelf.lock();
                 if (!strongSelf) return;
 
-                // 1. 商品不存在或已下架
+                // 1. 商品不存在或已下架 -> 精准返回 ERR_GOODS_OFFLINE
                 if (results.isEmpty()) {
                     strongSelf->SendProtoMsg(ServerApi::ID_CREATE_ORDER_RSP, ServerApi::CreateOrderRsp(), seq_id,
-                        ServerApi::ERR_SERVER_INTERNAL, u8"商品不存在或已下架");
+                        ServerApi::ERR_GOODS_OFFLINE, u8"商品不存在或已下架");
                     return;
                 }
 
@@ -970,7 +974,6 @@ void ClientSession::InitHandlers()
                 QList<QVariant> paramsOrder;
                 paramsOrder << orderId << strongSelf->m_accountId << goods_id << priceCents;
 
-                // 注意：Lambda 捕获列表增加了 priceCents 用于后续请求微信
                 ThreadPool::Instance()->PostUpdateTask(sqlOrder, [weakSelf, seq_id, orderId, priceCents](bool success) {
                     auto innerSelf = weakSelf.lock();
                     if (!innerSelf) return;
@@ -978,71 +981,90 @@ void ClientSession::InitHandlers()
                     if (success)
                     {
                         // =========================================================================
-                        // 👑 Step 3：请求微信支付 V3 统一下单接口获取真实 code_url
+                        // 👑 Step 3-A：先去获取中台的 Access Token
                         // =========================================================================
+                        QString accessToken = innerSelf->GetAccessToken();
+                        if (accessToken.isEmpty()) {
+                            qDebug() << u8"[ClientSession] ❌ 错误：获取中台 Token 失败，中断下单流程。";
+                            innerSelf->SendProtoMsg(ServerApi::ID_CREATE_ORDER_RSP, ServerApi::CreateOrderRsp(), seq_id,
+                                ServerApi::ERR_GENERATE_TOKEN_FAILED, u8"通讯异常：无法拉取中台访问令牌");
+                            return;
+                        }
 
-                        // 1. 准备请求微信的 JSON (动态读取全局配置)
-                        QJsonObject wx_req;
-                        wx_req["mchid"] = GlobalConfig::Instance()->GetWxMchId();
-                        wx_req["out_trade_no"] = orderId;
-                        wx_req["appid"] = GlobalConfig::Instance()->GetWxAppId();
-                        wx_req["description"] = "充值积分";
-                        wx_req["notify_url"] = GlobalConfig::Instance()->GetWxNotifyUrl(); // 例如 "https://api.yourdomain.com/api/wechat/pay_notify"
+                        // =========================================================================
+                        // 👑 Step 3-B：准备请求中台的 JSON Body
+                        // =========================================================================
+                        QJsonObject reqObj;
+                        reqObj["outTradeNo"] = orderId;                                         // 咱们生成的唯一订单号
+                        reqObj["amount"] = 0.01;                                                // 👑 测试要求：强行固定为 0.01 元
+                        reqObj["subject"] = "充值积分";
+                        reqObj["paymentMethod"] = 2;                                            // 2代表扫码支付
+                        reqObj["merchantId"] = "1725620235";                                    // 文档里的商户号
+                        reqObj["appId"] = "wxc8d0411c217a8b4c";                                 // 文档里的AppID
 
-                        QJsonObject amountObj;
-                        amountObj["total"] = priceCents; // 单位：分
-                        amountObj["currency"] = "CNY";
-                        wx_req["amount"] = amountObj;
+                        // 你的 C++ 服务器公网接收地址
+                        reqObj["callbackUrl"] = "http://175.178.36.122:8001/api/wechat/pay_notify";
 
-                        // 转化为紧凑的 JSON 字节流
-                        QByteArray postData = QJsonDocument(wx_req).toJson(QJsonDocument::Compact);
+                        // 过期时间：当前时间 + 5分钟，格式化为带时区的 ISO8601
+                        QString expireStr = QDateTime::currentDateTime().addSecs(300).toString(Qt::ISODate) + "+08:00";
+                        reqObj["expirationTime"] = expireStr;
 
-                        // 2. 构造签名 (调用神级解密类，参数全部走配置)
-                        QString authorization = WechatPayCrypto::BuildV3Header(
-                            GlobalConfig::Instance()->GetWxMchId(),
-                            GlobalConfig::Instance()->GetWxSerialNo(),
-                            GlobalConfig::Instance()->GetWxPrivateKey(),
-                            "POST",
-                            "/v3/pay/transactions/native",
-                            postData
-                        );
+                        QByteArray postData = QJsonDocument(reqObj).toJson(QJsonDocument::Compact);
 
-                        // 3. 发起请求
-                        httplib::Client cli("https://api.mch.weixin.qq.com");
-                        httplib::Headers headers = {
-                            {"Authorization", authorization.toStdString()},
-                            {"Content-Type", "application/json"},
-                            {"Accept", "application/json"}
-                        };
+                        // =========================================================================
+                        // 👑 Step 3-C：发起真正的下单 HTTP 请求 (使用 Qt 原生网络库避免 DLL 冲突)
+                        // =========================================================================
+                        QNetworkAccessManager manager;
+                        QNetworkRequest orderReq(QUrl("https://api.stg.playlink.games/open/transactions"));
 
-                        auto res = cli.Post("/v3/pay/transactions/native", headers, postData.toStdString(), "application/json");
+                        orderReq.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
+                        orderReq.setRawHeader("Accept", "application/json");
+                        // 注入灵魂鉴权头 (Bearer + 空格 + token)
+                        orderReq.setRawHeader("Authorization", ("Bearer " + accessToken).toUtf8());
 
-                        if (res && res->status == 200) {
-                            // 4. 解析微信返回的 JSON
-                            QJsonDocument resDoc = QJsonDocument::fromJson(QByteArray::fromStdString(res->body));
-                            QString realCodeUrl = resDoc.object()["code_url"].toString();
+                        QNetworkReply* reply = manager.post(orderReq, postData);
 
-                            qDebug() << u8"[ClientSession] 成功获取微信支付链接:" << realCodeUrl;
+                        // 阻塞等待中台响应
+                        QEventLoop loop;
+                        QObject::connect(reply, &QNetworkReply::finished, &loop, &QEventLoop::quit);
+                        loop.exec();
+
+                        if (reply->error() == QNetworkReply::NoError) {
+                            QJsonDocument resDoc = QJsonDocument::fromJson(reply->readAll());
+                            QJsonObject resObj = resDoc.object();
+
+                            // 根据真实的 JSON 结构提取二维码
+                            QString realCodeUrl = resObj["paymentParams"].toObject()["QrcodeUrl"].toString();
+
+                            // 加个兜底，万一以后他改了字段名
+                            if (realCodeUrl.isEmpty()) {
+                                realCodeUrl = resObj["QrcodeUrl"].toString();
+                            }
+
+                            qDebug() << u8"[ClientSession] ✅ 完美闭环！成功获取真实微信二维码链接:" << realCodeUrl;
 
                             ServerApi::CreateOrderRsp rsp;
                             rsp.set_order_id(orderId.toStdString());
                             rsp.set_qr_code_url(realCodeUrl.toStdString());
-                            rsp.set_expire_time(300); // 默认二维码 5 分钟有效期
+                            rsp.set_expire_time(300);
 
                             innerSelf->SendProtoMsg(ServerApi::ID_CREATE_ORDER_RSP, rsp, seq_id);
                         }
                         else {
-                            // 打印出微信返回的具体报错信息，极度有助于前期联调排错！
-                            QString errMsg = res ? QString::fromStdString(res->body) : "Http connection failed";
-                            qDebug() << u8"[ClientSession] 微信下单失败，Http Code:" << (res ? res->status : -1) << " 详情:" << errMsg;
+                            // 打印中台返回的具体报错
+                            qDebug() << u8"[ClientSession] ❌ 中台下单失败，Http Code:" << reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt()
+                                << " 详情:" << reply->errorString() << " 返回内容:" << QString::fromUtf8(reply->readAll());
 
                             innerSelf->SendProtoMsg(ServerApi::ID_CREATE_ORDER_RSP, ServerApi::CreateOrderRsp(), seq_id,
-                                ServerApi::ERR_SERVER_INTERNAL, u8"通讯异常：向微信拉取支付二维码失败");
+                                ServerApi::ERR_PAY_API_FAILED, u8"通讯异常：向中台拉取支付二维码失败");
                         }
+
+                        reply->deleteLater();
                     }
                     else {
+                        // 本地数据库 INSERT 失败 -> 精准返回 ERR_CREATE_ORDER_FAILED
                         innerSelf->SendProtoMsg(ServerApi::ID_CREATE_ORDER_RSP, ServerApi::CreateOrderRsp(), seq_id,
-                            ServerApi::ERR_SERVER_INTERNAL, u8"系统繁忙，创建本地订单失败");
+                            ServerApi::ERR_CREATE_ORDER_FAILED, u8"系统繁忙，创建本地订单失败");
                     }
                     }, true, paramsOrder); // 结束 Step 2
 
@@ -1171,6 +1193,47 @@ void ClientSession::InitHandlers()
 
                 }, true, countParams); // 结束 Step 1
         };
+}
+
+// =========================================================================
+// 👑 获取中台 Access Token
+// =========================================================================
+QString ClientSession::GetAccessToken()
+{
+    QNetworkAccessManager manager;
+    QNetworkRequest request(QUrl("https://api.stg.playlink.games/connect/token"));
+
+    // 严格对齐文档的 Header
+    request.setHeader(QNetworkRequest::ContentTypeHeader, "application/x-www-form-urlencoded");
+    request.setRawHeader("Accept", "application/json");
+    request.setRawHeader("Accept-Language", "zh-Hans");
+
+    // urlencoded 格式的 Body
+    QByteArray body = "grant_type=client_credentials&scope=OpenApi"
+        "&client_id=3a214bed97c0b7222f62e6df4d2f7993"
+        "&client_secret=3a214bed97bec75bfe8bbc46e4262b60";
+
+    // 发起 POST 请求
+    QNetworkReply* reply = manager.post(request, body);
+
+    // 👑 局部事件循环：把 Qt 的异步请求变成完美的同步阻塞，契合你的架构
+    QEventLoop loop;
+    QObject::connect(reply, &QNetworkReply::finished, &loop, &QEventLoop::quit);
+    loop.exec();
+
+    QString token;
+    if (reply->error() == QNetworkReply::NoError) {
+        QJsonDocument resDoc = QJsonDocument::fromJson(reply->readAll());
+        token = resDoc.object()["access_token"].toString();
+        qDebug() << u8"✅ [QtNetwork] 获取 Token 成功！Token 长度:" << token.length();
+    }
+    else {
+        qDebug() << u8"❌ [QtNetwork] 获取 Token 失败！ HTTP Code:" << reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt()
+            << u8"详情:" << reply->errorString();
+    }
+
+    reply->deleteLater();
+    return token;
 }
 
 // =========================================================================================
