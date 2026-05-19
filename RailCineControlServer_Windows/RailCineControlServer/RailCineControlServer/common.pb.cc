@@ -112,22 +112,24 @@ const char descriptor_table_protodef_common_2eproto[] ABSL_ATTRIBUTE_SECTION_VAR
     "\n\024ID_ORDER_NOTIFY_PUSH\020\217\'\022\032\n\025ID_CONSUME_"
     "POINTS_REQ\020\220\'\022\032\n\025ID_CONSUME_POINTS_RSP\020\221"
     "\'\022\024\n\017ID_GET_FLOW_REQ\020\222\'\022\024\n\017ID_GET_FLOW_R"
-    "SP\020\223\'*\264\002\n\tErrorCode\022\017\n\013ERR_SUCCESS\020\000\022\027\n\023"
+    "SP\020\223\'*\210\003\n\tErrorCode\022\017\n\013ERR_SUCCESS\020\000\022\027\n\023"
     "ERR_SERVER_INTERNAL\020\001\022\021\n\rERR_WRONG_PWD\020\002"
     "\022\026\n\022ERR_ACCOUNT_IN_USE\020\003\022\027\n\023ERR_ACCOUNT_"
     "EXPIRED\020\004\022\024\n\020ERR_MOVIE_EXISTS\020\005\022\026\n\022ERR_F"
     "ILE_IO_FAILED\020\006\022\024\n\020ERR_MD5_MISMATCH\020\007\022\023\n"
     "\017ERR_GAME_EXISTS\020\010\022\033\n\027ERR_INSUFFICIENT_P"
     "OINTS\020\t\022\026\n\022ERR_ORDER_NOT_PAID\020\n\022\024\n\020ERR_O"
-    "RDER_CLOSED\020\013\022\025\n\021ERR_GOODS_OFFLINE\020\014*;\n\010"
-    "FileType\022\020\n\014FILE_UNKNOWN\020\000\022\016\n\nFILE_MOVIE"
-    "\020\001\022\r\n\tFILE_GAME\020\002b\006proto3"
+    "RDER_CLOSED\020\013\022\025\n\021ERR_GOODS_OFFLINE\020\014\022\035\n\031"
+    "ERR_GENERATE_TOKEN_FAILED\020\r\022\033\n\027ERR_CREAT"
+    "E_ORDER_FAILED\020\016\022\026\n\022ERR_PAY_API_FAILED\020\017"
+    "*;\n\010FileType\022\020\n\014FILE_UNKNOWN\020\000\022\016\n\nFILE_M"
+    "OVIE\020\001\022\r\n\tFILE_GAME\020\002b\006proto3"
 };
 static ::absl::once_flag descriptor_table_common_2eproto_once;
 PROTOBUF_CONSTINIT const ::_pbi::DescriptorTable descriptor_table_common_2eproto = {
     false,
     false,
-    1465,
+    1549,
     descriptor_table_protodef_common_2eproto,
     "common.proto",
     &descriptor_table_common_2eproto_once,
@@ -155,9 +157,9 @@ const ::google::protobuf::EnumDescriptor* ErrorCode_descriptor() {
   return file_level_enum_descriptors_common_2eproto[1];
 }
 PROTOBUF_CONSTINIT const uint32_t ErrorCode_internal_data_[] = {
-    851968u, 0u, };
+    1048576u, 0u, };
 bool ErrorCode_IsValid(int value) {
-  return 0 <= value && value <= 12;
+  return 0 <= value && value <= 15;
 }
 const ::google::protobuf::EnumDescriptor* FileType_descriptor() {
   ::google::protobuf::internal::AssignDescriptors(&descriptor_table_common_2eproto);

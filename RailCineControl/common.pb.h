@@ -139,6 +139,9 @@ enum ErrorCode : int {
   ERR_ORDER_NOT_PAID = 10,
   ERR_ORDER_CLOSED = 11,
   ERR_GOODS_OFFLINE = 12,
+  ERR_GENERATE_TOKEN_FAILED = 13,
+  ERR_CREATE_ORDER_FAILED = 14,
+  ERR_PAY_API_FAILED = 15,
   ErrorCode_INT_MIN_SENTINEL_DO_NOT_USE_ =
       std::numeric_limits<::int32_t>::min(),
   ErrorCode_INT_MAX_SENTINEL_DO_NOT_USE_ =
@@ -148,8 +151,8 @@ enum ErrorCode : int {
 bool ErrorCode_IsValid(int value);
 extern const uint32_t ErrorCode_internal_data_[];
 constexpr ErrorCode ErrorCode_MIN = static_cast<ErrorCode>(0);
-constexpr ErrorCode ErrorCode_MAX = static_cast<ErrorCode>(12);
-constexpr int ErrorCode_ARRAYSIZE = 12 + 1;
+constexpr ErrorCode ErrorCode_MAX = static_cast<ErrorCode>(15);
+constexpr int ErrorCode_ARRAYSIZE = 15 + 1;
 const ::google::protobuf::EnumDescriptor*
 ErrorCode_descriptor();
 template <typename T>
@@ -162,7 +165,7 @@ const std::string& ErrorCode_Name(T value) {
 template <>
 inline const std::string& ErrorCode_Name(ErrorCode value) {
   return ::google::protobuf::internal::NameOfDenseEnum<ErrorCode_descriptor,
-                                                 0, 12>(
+                                                 0, 15>(
       static_cast<int>(value));
 }
 inline bool ErrorCode_Parse(absl::string_view name, ErrorCode* value) {

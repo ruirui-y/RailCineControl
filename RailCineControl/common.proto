@@ -72,27 +72,29 @@ enum MsgId {
 // 2. 全局状态错误码 (ErrorCode)
 // =========================================================================================
 enum ErrorCode {
-    ERR_SUCCESS         = 0;                                                    // 成功
+    ERR_SUCCESS                 = 0;                                            // 成功
     
     // ---------------- 登录与鉴权错误 ----------------
-    ERR_SERVER_INTERNAL = 1;                                                    // 服务器内部错误
-    ERR_WRONG_PWD       = 2;                                                    // 账号不存在或密码错误
-    ERR_ACCOUNT_IN_USE  = 3;                                                    // 账号已在其他机器登录 (防多开)
-    ERR_ACCOUNT_EXPIRED = 4;                                                    // 账号授权已过期
+    ERR_SERVER_INTERNAL         = 1;                                            // 服务器内部错误
+    ERR_WRONG_PWD               = 2;                                            // 账号不存在或密码错误
+    ERR_ACCOUNT_IN_USE          = 3;                                            // 账号已在其他机器登录 (防多开)
+    ERR_ACCOUNT_EXPIRED         = 4;                                            // 账号授权已过期
     
     // ---------------- 影片与文件错误 ----------------
-    ERR_MOVIE_EXISTS    = 5;                                                    // 影片已存在 (防重)
-    ERR_FILE_IO_FAILED  = 6;                                                    // 服务器本地磁盘读写失败 (分片写入失败时返回)
-    ERR_MD5_MISMATCH    = 7;                                                    // 文件损坏或分片MD5校验不一致
-    ERR_GAME_EXISTS     = 8;                                                    // 🎮 游戏(或该版本)已存在
+    ERR_MOVIE_EXISTS            = 5;                                            // 影片已存在 (防重)
+    ERR_FILE_IO_FAILED          = 6;                                            // 服务器本地磁盘读写失败 (分片写入失败时返回)
+    ERR_MD5_MISMATCH            = 7;                                            // 文件损坏或分片MD5校验不一致
+    ERR_GAME_EXISTS             = 8;                                            // 🎮 游戏(或该版本)已存在
 
     // ---------------- 支付与积分错误 ----------------
-    ERR_INSUFFICIENT_POINTS = 9;                                                // 余额/积分不足
-    ERR_ORDER_NOT_PAID      = 10;                                               // 订单未支付
-    ERR_ORDER_CLOSED        = 11;                                               // 订单已关闭或超时
-    ERR_GOODS_OFFLINE       = 12;                                               // 充值商品已下架
+    ERR_INSUFFICIENT_POINTS     = 9;                                            // 余额/积分不足
+    ERR_ORDER_NOT_PAID          = 10;                                           // 订单未支付
+    ERR_ORDER_CLOSED            = 11;                                           // 订单已关闭或超时
+    ERR_GOODS_OFFLINE           = 12;                                           // 充值商品已下架
+    ERR_GENERATE_TOKEN_FAILED   = 13;                                           // 获取中台AccessToken失败
+    ERR_CREATE_ORDER_FAILED     = 14;                                           // 创建本地数据库订单失败
+    ERR_PAY_API_FAILED          = 15;                                           // 向中台请求支付二维码失败
 }
-
 // =========================================================================================
 // 3. 核心通信包头
 // =========================================================================================
