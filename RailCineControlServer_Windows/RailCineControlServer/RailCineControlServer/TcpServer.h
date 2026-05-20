@@ -3,6 +3,7 @@
 #include <QThread>
 #include <QMap>
 #include <memory>
+#include <QTimer>
 #include "ClientSession.h"
 
 class TcpServer : public QTcpServer
@@ -27,9 +28,11 @@ private slots:
 
 private:
     int GetOnlineCount() const;
+    void StartCleanupUnpaidTask();                                                                  // 启动清理未支付订单的定时任务
 
 private:
     // 用智能指针管理所有存活的客户端！
     // Key 可以是句柄，也可以是你自定义的会话 ID
     QMap<qintptr, std::shared_ptr<ClientSession>> m_sessions;
+    QTimer* m_cleanupUnpaidTaskTimer;                                                               // 清理未支付订单的定时任务
 };

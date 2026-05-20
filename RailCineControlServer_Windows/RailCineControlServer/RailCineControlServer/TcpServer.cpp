@@ -19,6 +19,12 @@ TcpServer::~TcpServer()
     // 配合我们之前写的 safeDeleter，它们会在各自的 Worker 线程中优雅死亡
     m_sessions.clear();
 
+    // 3. 关闭清理未支付任务定时器
+    if (m_cleanupUnpaidTaskTimer)
+    {
+        m_cleanupUnpaidTaskTimer->stop();
+    }
+
     qDebug() << u8"[TcpServer] 服务器已关闭，所有资源已释放";
 }
 
@@ -38,6 +44,9 @@ bool TcpServer::StartServer(quint16 port)
     else {
         qDebug() << u8"[TcpServer] 启动失败，端口可能被占用:" << this->errorString();
     }
+
+    // 定时清理未支付订单
+    StartCleanupUnpaidTask();
 
     return bSuccess;
 }
@@ -151,6 +160,35 @@ int TcpServer::GetOnlineCount() const
         }
     }
     return validUserCount;
+}
+
+void TcpServer::StartCleanupUnpaidTask()
+{
+    m_cleanupUnpaidTaskTimer = new QTimer(this);
+
+    connect(m_cleanupUnpaidTaskTimer, &QTimer::timeout, this, [this]() {
+        // 第一步：把 5 分钟未支付的订单逻辑关闭 (status = -1)
+        QString sqlUpdate = "UPDATE t_pay_order SET status = -1 "
+            "WHERE status = 0 AND create_time <= DATE_SUB(NOW(), INTERVAL 5 MINUTE);";
+
+        ThreadPool::Instance()->PostUpdateTask(sqlUpdate, [](int affectedRows) {
+            if (affectedRows > 0) {
+                qDebug() << u8"[清理守护] 逻辑关闭了 " << affectedRows << u8" 个超时订单。";
+            }
+            }, true);
+
+        // 第二步：把关闭超过 3 天的陈年死单彻底从硬盘物理删除，释放空间
+        QString sqlDelete = "DELETE FROM t_pay_order "
+            "WHERE status = -1 AND create_time <= DATE_SUB(NOW(), INTERVAL 3 DAY);";
+
+        ThreadPool::Instance()->PostUpdateTask(sqlDelete, [](int deletedRows) {
+            if (deletedRows > 0) {
+                qDebug() << u8"[清理守护] 物理销毁了 " << deletedRows << u8" 个历史僵尸订单。";
+            }
+            }, true);
+        });
+
+    m_cleanupUnpaidTaskTimer->start(60 * 1000); // 依然是每分钟巡检一次
 }
 
 void TcpServer::onSessionClosed(ClientSession* session)
