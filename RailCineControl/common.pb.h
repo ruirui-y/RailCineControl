@@ -101,6 +101,8 @@ enum MsgId : int {
   ID_CONSUME_POINTS_RSP = 5009,
   ID_GET_FLOW_REQ = 5010,
   ID_GET_FLOW_RSP = 5011,
+  ID_CHECK_ORDER_REQ = 5012,
+  ID_CHECK_ORDER_RSP = 5013,
   MsgId_INT_MIN_SENTINEL_DO_NOT_USE_ =
       std::numeric_limits<::int32_t>::min(),
   MsgId_INT_MAX_SENTINEL_DO_NOT_USE_ =
@@ -110,8 +112,8 @@ enum MsgId : int {
 bool MsgId_IsValid(int value);
 extern const uint32_t MsgId_internal_data_[];
 constexpr MsgId MsgId_MIN = static_cast<MsgId>(0);
-constexpr MsgId MsgId_MAX = static_cast<MsgId>(5011);
-constexpr int MsgId_ARRAYSIZE = 5011 + 1;
+constexpr MsgId MsgId_MAX = static_cast<MsgId>(5013);
+constexpr int MsgId_ARRAYSIZE = 5013 + 1;
 const ::google::protobuf::EnumDescriptor*
 MsgId_descriptor();
 template <typename T>
@@ -142,6 +144,7 @@ enum ErrorCode : int {
   ERR_GENERATE_TOKEN_FAILED = 13,
   ERR_CREATE_ORDER_FAILED = 14,
   ERR_PAY_API_FAILED = 15,
+  ERR_ORDER_PENDING = 16,
   ErrorCode_INT_MIN_SENTINEL_DO_NOT_USE_ =
       std::numeric_limits<::int32_t>::min(),
   ErrorCode_INT_MAX_SENTINEL_DO_NOT_USE_ =
@@ -151,8 +154,8 @@ enum ErrorCode : int {
 bool ErrorCode_IsValid(int value);
 extern const uint32_t ErrorCode_internal_data_[];
 constexpr ErrorCode ErrorCode_MIN = static_cast<ErrorCode>(0);
-constexpr ErrorCode ErrorCode_MAX = static_cast<ErrorCode>(15);
-constexpr int ErrorCode_ARRAYSIZE = 15 + 1;
+constexpr ErrorCode ErrorCode_MAX = static_cast<ErrorCode>(16);
+constexpr int ErrorCode_ARRAYSIZE = 16 + 1;
 const ::google::protobuf::EnumDescriptor*
 ErrorCode_descriptor();
 template <typename T>
@@ -165,7 +168,7 @@ const std::string& ErrorCode_Name(T value) {
 template <>
 inline const std::string& ErrorCode_Name(ErrorCode value) {
   return ::google::protobuf::internal::NameOfDenseEnum<ErrorCode_descriptor,
-                                                 0, 15>(
+                                                 0, 16>(
       static_cast<int>(value));
 }
 inline bool ErrorCode_Parse(absl::string_view name, ErrorCode* value) {

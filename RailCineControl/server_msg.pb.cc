@@ -1034,6 +1034,62 @@ struct ConsumePointsReqDefaultTypeInternal {
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
     PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 ConsumePointsReqDefaultTypeInternal _ConsumePointsReq_default_instance_;
 
+inline constexpr CheckOrderRsp::Impl_::Impl_(
+    ::_pbi::ConstantInitialized) noexcept
+      : order_id_(
+            &::google::protobuf::internal::fixed_address_empty_string,
+            ::_pbi::ConstantInitialized()),
+        current_points_{::int64_t{0}},
+        status_{0},
+        _cached_size_{0} {}
+
+template <typename>
+PROTOBUF_CONSTEXPR CheckOrderRsp::CheckOrderRsp(::_pbi::ConstantInitialized)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(_class_data_.base()),
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(),
+#endif  // PROTOBUF_CUSTOM_VTABLE
+      _impl_(::_pbi::ConstantInitialized()) {
+}
+struct CheckOrderRspDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR CheckOrderRspDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~CheckOrderRspDefaultTypeInternal() {}
+  union {
+    CheckOrderRsp _instance;
+  };
+};
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 CheckOrderRspDefaultTypeInternal _CheckOrderRsp_default_instance_;
+
+inline constexpr CheckOrderReq::Impl_::Impl_(
+    ::_pbi::ConstantInitialized) noexcept
+      : order_id_(
+            &::google::protobuf::internal::fixed_address_empty_string,
+            ::_pbi::ConstantInitialized()),
+        _cached_size_{0} {}
+
+template <typename>
+PROTOBUF_CONSTEXPR CheckOrderReq::CheckOrderReq(::_pbi::ConstantInitialized)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(_class_data_.base()),
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(),
+#endif  // PROTOBUF_CUSTOM_VTABLE
+      _impl_(::_pbi::ConstantInitialized()) {
+}
+struct CheckOrderReqDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR CheckOrderReqDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~CheckOrderReqDefaultTypeInternal() {}
+  union {
+    CheckOrderReq _instance;
+  };
+};
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 CheckOrderReqDefaultTypeInternal _CheckOrderReq_default_instance_;
+
 inline constexpr AddRecordRsp::Impl_::Impl_(
     ::_pbi::ConstantInitialized) noexcept
       : new_record_id_{::uint64_t{0u}},
@@ -1610,6 +1666,26 @@ const ::uint32_t
         PROTOBUF_FIELD_OFFSET(::ServerApi::OrderNotifyPush, _impl_.is_success_),
         PROTOBUF_FIELD_OFFSET(::ServerApi::OrderNotifyPush, _impl_.current_points_),
         ~0u,  // no _has_bits_
+        PROTOBUF_FIELD_OFFSET(::ServerApi::CheckOrderReq, _internal_metadata_),
+        ~0u,  // no _extensions_
+        ~0u,  // no _oneof_case_
+        ~0u,  // no _weak_field_map_
+        ~0u,  // no _inlined_string_donated_
+        ~0u,  // no _split_
+        ~0u,  // no sizeof(Split)
+        PROTOBUF_FIELD_OFFSET(::ServerApi::CheckOrderReq, _impl_.order_id_),
+        ~0u,  // no _has_bits_
+        PROTOBUF_FIELD_OFFSET(::ServerApi::CheckOrderRsp, _internal_metadata_),
+        ~0u,  // no _extensions_
+        ~0u,  // no _oneof_case_
+        ~0u,  // no _weak_field_map_
+        ~0u,  // no _inlined_string_donated_
+        ~0u,  // no _split_
+        ~0u,  // no sizeof(Split)
+        PROTOBUF_FIELD_OFFSET(::ServerApi::CheckOrderRsp, _impl_.order_id_),
+        PROTOBUF_FIELD_OFFSET(::ServerApi::CheckOrderRsp, _impl_.status_),
+        PROTOBUF_FIELD_OFFSET(::ServerApi::CheckOrderRsp, _impl_.current_points_),
+        ~0u,  // no _has_bits_
         PROTOBUF_FIELD_OFFSET(::ServerApi::ConsumePointsReq, _internal_metadata_),
         ~0u,  // no _extensions_
         ~0u,  // no _oneof_case_
@@ -1702,11 +1778,13 @@ static const ::_pbi::MigrationSchema
         {358, -1, -1, sizeof(::ServerApi::CreateOrderReq)},
         {368, -1, -1, sizeof(::ServerApi::CreateOrderRsp)},
         {379, -1, -1, sizeof(::ServerApi::OrderNotifyPush)},
-        {390, -1, -1, sizeof(::ServerApi::ConsumePointsReq)},
-        {400, -1, -1, sizeof(::ServerApi::ConsumePointsRsp)},
-        {410, -1, -1, sizeof(::ServerApi::PointFlowRecord)},
-        {423, -1, -1, sizeof(::ServerApi::GetFlowReq)},
-        {433, -1, -1, sizeof(::ServerApi::GetFlowRsp)},
+        {390, -1, -1, sizeof(::ServerApi::CheckOrderReq)},
+        {399, -1, -1, sizeof(::ServerApi::CheckOrderRsp)},
+        {410, -1, -1, sizeof(::ServerApi::ConsumePointsReq)},
+        {420, -1, -1, sizeof(::ServerApi::ConsumePointsRsp)},
+        {430, -1, -1, sizeof(::ServerApi::PointFlowRecord)},
+        {443, -1, -1, sizeof(::ServerApi::GetFlowReq)},
+        {453, -1, -1, sizeof(::ServerApi::GetFlowRsp)},
 };
 static const ::_pb::Message* const file_default_instances[] = {
     &::ServerApi::_LoginReq_default_instance_._instance,
@@ -1745,6 +1823,8 @@ static const ::_pb::Message* const file_default_instances[] = {
     &::ServerApi::_CreateOrderReq_default_instance_._instance,
     &::ServerApi::_CreateOrderRsp_default_instance_._instance,
     &::ServerApi::_OrderNotifyPush_default_instance_._instance,
+    &::ServerApi::_CheckOrderReq_default_instance_._instance,
+    &::ServerApi::_CheckOrderRsp_default_instance_._instance,
     &::ServerApi::_ConsumePointsReq_default_instance_._instance,
     &::ServerApi::_ConsumePointsRsp_default_instance_._instance,
     &::ServerApi::_PointFlowRecord_default_instance_._instance,
@@ -1824,18 +1904,20 @@ const char descriptor_table_protodef_server_5fmsg_2eproto[] ABSL_ATTRIBUTE_SECTI
     "ateOrderRsp\022\020\n\010order_id\030\001 \001(\t\022\023\n\013qr_code"
     "_url\030\002 \001(\t\022\023\n\013expire_time\030\003 \001(\r\"O\n\017Order"
     "NotifyPush\022\020\n\010order_id\030\001 \001(\t\022\022\n\nis_succe"
-    "ss\030\002 \001(\010\022\026\n\016current_points\030\003 \001(\003\"N\n\020Cons"
-    "umePointsReq\022\021\n\ttarget_id\030\001 \001(\004\022\'\n\nmatch"
-    "_type\030\002 \001(\0162\023.ServerApi.FileType\"\?\n\020Cons"
-    "umePointsRsp\022\023\n\013points_cost\030\001 \001(\003\022\026\n\016cur"
-    "rent_points\030\002 \001(\003\"~\n\017PointFlowRecord\022\023\n\013"
-    "create_time\030\001 \001(\t\022\021\n\tflow_type\030\002 \001(\005\022\025\n\r"
-    "points_change\030\003 \001(\005\022\025\n\rbalance_after\030\004 \001"
-    "(\003\022\025\n\rassociated_id\030\005 \001(\t\"3\n\nGetFlowReq\022"
-    "\022\n\npage_index\030\001 \001(\r\022\021\n\tpage_size\030\002 \001(\r\"N"
-    "\n\nGetFlowRsp\022+\n\007records\030\001 \003(\0132\032.ServerAp"
-    "i.PointFlowRecord\022\023\n\013total_count\030\002 \001(\rb\006"
-    "proto3"
+    "ss\030\002 \001(\010\022\026\n\016current_points\030\003 \001(\003\"!\n\rChec"
+    "kOrderReq\022\020\n\010order_id\030\001 \001(\t\"I\n\rCheckOrde"
+    "rRsp\022\020\n\010order_id\030\001 \001(\t\022\016\n\006status\030\002 \001(\005\022\026"
+    "\n\016current_points\030\003 \001(\003\"N\n\020ConsumePointsR"
+    "eq\022\021\n\ttarget_id\030\001 \001(\004\022\'\n\nmatch_type\030\002 \001("
+    "\0162\023.ServerApi.FileType\"\?\n\020ConsumePointsR"
+    "sp\022\023\n\013points_cost\030\001 \001(\003\022\026\n\016current_point"
+    "s\030\002 \001(\003\"~\n\017PointFlowRecord\022\023\n\013create_tim"
+    "e\030\001 \001(\t\022\021\n\tflow_type\030\002 \001(\005\022\025\n\rpoints_cha"
+    "nge\030\003 \001(\005\022\025\n\rbalance_after\030\004 \001(\003\022\025\n\rasso"
+    "ciated_id\030\005 \001(\t\"3\n\nGetFlowReq\022\022\n\npage_in"
+    "dex\030\001 \001(\r\022\021\n\tpage_size\030\002 \001(\r\"N\n\nGetFlowR"
+    "sp\022+\n\007records\030\001 \003(\0132\032.ServerApi.PointFlo"
+    "wRecord\022\023\n\013total_count\030\002 \001(\rb\006proto3"
 };
 static const ::_pbi::DescriptorTable* const descriptor_table_server_5fmsg_2eproto_deps[1] =
     {
@@ -1845,13 +1927,13 @@ static ::absl::once_flag descriptor_table_server_5fmsg_2eproto_once;
 PROTOBUF_CONSTINIT const ::_pbi::DescriptorTable descriptor_table_server_5fmsg_2eproto = {
     false,
     false,
-    3286,
+    3396,
     descriptor_table_protodef_server_5fmsg_2eproto,
     "server_msg.proto",
     &descriptor_table_server_5fmsg_2eproto_once,
     descriptor_table_server_5fmsg_2eproto_deps,
     1,
-    41,
+    43,
     schemas,
     file_default_instances,
     TableStruct_server_5fmsg_2eproto::offsets,
@@ -11641,6 +11723,534 @@ void OrderNotifyPush::InternalSwap(OrderNotifyPush* PROTOBUF_RESTRICT other) {
 }
 
 ::google::protobuf::Metadata OrderNotifyPush::GetMetadata() const {
+  return ::google::protobuf::Message::GetMetadataImpl(GetClassData()->full());
+}
+// ===================================================================
+
+class CheckOrderReq::_Internal {
+ public:
+};
+
+CheckOrderReq::CheckOrderReq(::google::protobuf::Arena* arena)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(arena, _class_data_.base()) {
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  SharedCtor(arena);
+  // @@protoc_insertion_point(arena_constructor:ServerApi.CheckOrderReq)
+}
+inline PROTOBUF_NDEBUG_INLINE CheckOrderReq::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility, ::google::protobuf::Arena* arena,
+    const Impl_& from, const ::ServerApi::CheckOrderReq& from_msg)
+      : order_id_(arena, from.order_id_),
+        _cached_size_{0} {}
+
+CheckOrderReq::CheckOrderReq(
+    ::google::protobuf::Arena* arena,
+    const CheckOrderReq& from)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(arena, _class_data_.base()) {
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  CheckOrderReq* const _this = this;
+  (void)_this;
+  _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
+      from._internal_metadata_);
+  new (&_impl_) Impl_(internal_visibility(), arena, from._impl_, from);
+
+  // @@protoc_insertion_point(copy_constructor:ServerApi.CheckOrderReq)
+}
+inline PROTOBUF_NDEBUG_INLINE CheckOrderReq::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility,
+    ::google::protobuf::Arena* arena)
+      : order_id_(arena),
+        _cached_size_{0} {}
+
+inline void CheckOrderReq::SharedCtor(::_pb::Arena* arena) {
+  new (&_impl_) Impl_(internal_visibility(), arena);
+}
+CheckOrderReq::~CheckOrderReq() {
+  // @@protoc_insertion_point(destructor:ServerApi.CheckOrderReq)
+  SharedDtor(*this);
+}
+inline void CheckOrderReq::SharedDtor(MessageLite& self) {
+  CheckOrderReq& this_ = static_cast<CheckOrderReq&>(self);
+  this_._internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
+  ABSL_DCHECK(this_.GetArena() == nullptr);
+  this_._impl_.order_id_.Destroy();
+  this_._impl_.~Impl_();
+}
+
+inline void* CheckOrderReq::PlacementNew_(const void*, void* mem,
+                                        ::google::protobuf::Arena* arena) {
+  return ::new (mem) CheckOrderReq(arena);
+}
+constexpr auto CheckOrderReq::InternalNewImpl_() {
+  return ::google::protobuf::internal::MessageCreator::CopyInit(sizeof(CheckOrderReq),
+                                            alignof(CheckOrderReq));
+}
+PROTOBUF_CONSTINIT
+PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::google::protobuf::internal::ClassDataFull CheckOrderReq::_class_data_ = {
+    ::google::protobuf::internal::ClassData{
+        &_CheckOrderReq_default_instance_._instance,
+        &_table_.header,
+        nullptr,  // OnDemandRegisterArenaDtor
+        nullptr,  // IsInitialized
+        &CheckOrderReq::MergeImpl,
+        ::google::protobuf::Message::GetNewImpl<CheckOrderReq>(),
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+        &CheckOrderReq::SharedDtor,
+        ::google::protobuf::Message::GetClearImpl<CheckOrderReq>(), &CheckOrderReq::ByteSizeLong,
+            &CheckOrderReq::_InternalSerialize,
+#endif  // PROTOBUF_CUSTOM_VTABLE
+        PROTOBUF_FIELD_OFFSET(CheckOrderReq, _impl_._cached_size_),
+        false,
+    },
+    &CheckOrderReq::kDescriptorMethods,
+    &descriptor_table_server_5fmsg_2eproto,
+    nullptr,  // tracker
+};
+const ::google::protobuf::internal::ClassData* CheckOrderReq::GetClassData() const {
+  ::google::protobuf::internal::PrefetchToLocalCache(&_class_data_);
+  ::google::protobuf::internal::PrefetchToLocalCache(_class_data_.tc_table);
+  return _class_data_.base();
+}
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::_pbi::TcParseTable<0, 1, 0, 40, 2> CheckOrderReq::_table_ = {
+  {
+    0,  // no _has_bits_
+    0, // no _extensions_
+    1, 0,  // max_field_number, fast_idx_mask
+    offsetof(decltype(_table_), field_lookup_table),
+    4294967294,  // skipmap
+    offsetof(decltype(_table_), field_entries),
+    1,  // num_field_entries
+    0,  // num_aux_entries
+    offsetof(decltype(_table_), field_names),  // no aux_entries
+    _class_data_.base(),
+    nullptr,  // post_loop_handler
+    ::_pbi::TcParser::GenericFallback,  // fallback
+    #ifdef PROTOBUF_PREFETCH_PARSE_TABLE
+    ::_pbi::TcParser::GetTable<::ServerApi::CheckOrderReq>(),  // to_prefetch
+    #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
+  }, {{
+    // string order_id = 1;
+    {::_pbi::TcParser::FastUS1,
+     {10, 63, 0, PROTOBUF_FIELD_OFFSET(CheckOrderReq, _impl_.order_id_)}},
+  }}, {{
+    65535, 65535
+  }}, {{
+    // string order_id = 1;
+    {PROTOBUF_FIELD_OFFSET(CheckOrderReq, _impl_.order_id_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
+  }},
+  // no aux_entries
+  {{
+    "\27\10\0\0\0\0\0\0"
+    "ServerApi.CheckOrderReq"
+    "order_id"
+  }},
+};
+
+PROTOBUF_NOINLINE void CheckOrderReq::Clear() {
+// @@protoc_insertion_point(message_clear_start:ServerApi.CheckOrderReq)
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  ::uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  _impl_.order_id_.ClearToEmpty();
+  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
+}
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+        ::uint8_t* CheckOrderReq::_InternalSerialize(
+            const MessageLite& base, ::uint8_t* target,
+            ::google::protobuf::io::EpsCopyOutputStream* stream) {
+          const CheckOrderReq& this_ = static_cast<const CheckOrderReq&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+        ::uint8_t* CheckOrderReq::_InternalSerialize(
+            ::uint8_t* target,
+            ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+          const CheckOrderReq& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+          // @@protoc_insertion_point(serialize_to_array_start:ServerApi.CheckOrderReq)
+          ::uint32_t cached_has_bits = 0;
+          (void)cached_has_bits;
+
+          // string order_id = 1;
+          if (!this_._internal_order_id().empty()) {
+            const std::string& _s = this_._internal_order_id();
+            ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+                _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "ServerApi.CheckOrderReq.order_id");
+            target = stream->WriteStringMaybeAliased(1, _s, target);
+          }
+
+          if (PROTOBUF_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
+            target =
+                ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+                    this_._internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
+          }
+          // @@protoc_insertion_point(serialize_to_array_end:ServerApi.CheckOrderReq)
+          return target;
+        }
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+        ::size_t CheckOrderReq::ByteSizeLong(const MessageLite& base) {
+          const CheckOrderReq& this_ = static_cast<const CheckOrderReq&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+        ::size_t CheckOrderReq::ByteSizeLong() const {
+          const CheckOrderReq& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+          // @@protoc_insertion_point(message_byte_size_start:ServerApi.CheckOrderReq)
+          ::size_t total_size = 0;
+
+          ::uint32_t cached_has_bits = 0;
+          // Prevent compiler warnings about cached_has_bits being unused
+          (void)cached_has_bits;
+
+           {
+            // string order_id = 1;
+            if (!this_._internal_order_id().empty()) {
+              total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
+                                              this_._internal_order_id());
+            }
+          }
+          return this_.MaybeComputeUnknownFieldsSize(total_size,
+                                                     &this_._impl_._cached_size_);
+        }
+
+void CheckOrderReq::MergeImpl(::google::protobuf::MessageLite& to_msg, const ::google::protobuf::MessageLite& from_msg) {
+  auto* const _this = static_cast<CheckOrderReq*>(&to_msg);
+  auto& from = static_cast<const CheckOrderReq&>(from_msg);
+  // @@protoc_insertion_point(class_specific_merge_from_start:ServerApi.CheckOrderReq)
+  ABSL_DCHECK_NE(&from, _this);
+  ::uint32_t cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  if (!from._internal_order_id().empty()) {
+    _this->_internal_set_order_id(from._internal_order_id());
+  }
+  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
+}
+
+void CheckOrderReq::CopyFrom(const CheckOrderReq& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:ServerApi.CheckOrderReq)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+
+void CheckOrderReq::InternalSwap(CheckOrderReq* PROTOBUF_RESTRICT other) {
+  using std::swap;
+  auto* arena = GetArena();
+  ABSL_DCHECK_EQ(arena, other->GetArena());
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
+  ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.order_id_, &other->_impl_.order_id_, arena);
+}
+
+::google::protobuf::Metadata CheckOrderReq::GetMetadata() const {
+  return ::google::protobuf::Message::GetMetadataImpl(GetClassData()->full());
+}
+// ===================================================================
+
+class CheckOrderRsp::_Internal {
+ public:
+};
+
+CheckOrderRsp::CheckOrderRsp(::google::protobuf::Arena* arena)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(arena, _class_data_.base()) {
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  SharedCtor(arena);
+  // @@protoc_insertion_point(arena_constructor:ServerApi.CheckOrderRsp)
+}
+inline PROTOBUF_NDEBUG_INLINE CheckOrderRsp::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility, ::google::protobuf::Arena* arena,
+    const Impl_& from, const ::ServerApi::CheckOrderRsp& from_msg)
+      : order_id_(arena, from.order_id_),
+        _cached_size_{0} {}
+
+CheckOrderRsp::CheckOrderRsp(
+    ::google::protobuf::Arena* arena,
+    const CheckOrderRsp& from)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(arena, _class_data_.base()) {
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  CheckOrderRsp* const _this = this;
+  (void)_this;
+  _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
+      from._internal_metadata_);
+  new (&_impl_) Impl_(internal_visibility(), arena, from._impl_, from);
+  ::memcpy(reinterpret_cast<char *>(&_impl_) +
+               offsetof(Impl_, current_points_),
+           reinterpret_cast<const char *>(&from._impl_) +
+               offsetof(Impl_, current_points_),
+           offsetof(Impl_, status_) -
+               offsetof(Impl_, current_points_) +
+               sizeof(Impl_::status_));
+
+  // @@protoc_insertion_point(copy_constructor:ServerApi.CheckOrderRsp)
+}
+inline PROTOBUF_NDEBUG_INLINE CheckOrderRsp::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility,
+    ::google::protobuf::Arena* arena)
+      : order_id_(arena),
+        _cached_size_{0} {}
+
+inline void CheckOrderRsp::SharedCtor(::_pb::Arena* arena) {
+  new (&_impl_) Impl_(internal_visibility(), arena);
+  ::memset(reinterpret_cast<char *>(&_impl_) +
+               offsetof(Impl_, current_points_),
+           0,
+           offsetof(Impl_, status_) -
+               offsetof(Impl_, current_points_) +
+               sizeof(Impl_::status_));
+}
+CheckOrderRsp::~CheckOrderRsp() {
+  // @@protoc_insertion_point(destructor:ServerApi.CheckOrderRsp)
+  SharedDtor(*this);
+}
+inline void CheckOrderRsp::SharedDtor(MessageLite& self) {
+  CheckOrderRsp& this_ = static_cast<CheckOrderRsp&>(self);
+  this_._internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
+  ABSL_DCHECK(this_.GetArena() == nullptr);
+  this_._impl_.order_id_.Destroy();
+  this_._impl_.~Impl_();
+}
+
+inline void* CheckOrderRsp::PlacementNew_(const void*, void* mem,
+                                        ::google::protobuf::Arena* arena) {
+  return ::new (mem) CheckOrderRsp(arena);
+}
+constexpr auto CheckOrderRsp::InternalNewImpl_() {
+  return ::google::protobuf::internal::MessageCreator::CopyInit(sizeof(CheckOrderRsp),
+                                            alignof(CheckOrderRsp));
+}
+PROTOBUF_CONSTINIT
+PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::google::protobuf::internal::ClassDataFull CheckOrderRsp::_class_data_ = {
+    ::google::protobuf::internal::ClassData{
+        &_CheckOrderRsp_default_instance_._instance,
+        &_table_.header,
+        nullptr,  // OnDemandRegisterArenaDtor
+        nullptr,  // IsInitialized
+        &CheckOrderRsp::MergeImpl,
+        ::google::protobuf::Message::GetNewImpl<CheckOrderRsp>(),
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+        &CheckOrderRsp::SharedDtor,
+        ::google::protobuf::Message::GetClearImpl<CheckOrderRsp>(), &CheckOrderRsp::ByteSizeLong,
+            &CheckOrderRsp::_InternalSerialize,
+#endif  // PROTOBUF_CUSTOM_VTABLE
+        PROTOBUF_FIELD_OFFSET(CheckOrderRsp, _impl_._cached_size_),
+        false,
+    },
+    &CheckOrderRsp::kDescriptorMethods,
+    &descriptor_table_server_5fmsg_2eproto,
+    nullptr,  // tracker
+};
+const ::google::protobuf::internal::ClassData* CheckOrderRsp::GetClassData() const {
+  ::google::protobuf::internal::PrefetchToLocalCache(&_class_data_);
+  ::google::protobuf::internal::PrefetchToLocalCache(_class_data_.tc_table);
+  return _class_data_.base();
+}
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::_pbi::TcParseTable<2, 3, 0, 40, 2> CheckOrderRsp::_table_ = {
+  {
+    0,  // no _has_bits_
+    0, // no _extensions_
+    3, 24,  // max_field_number, fast_idx_mask
+    offsetof(decltype(_table_), field_lookup_table),
+    4294967288,  // skipmap
+    offsetof(decltype(_table_), field_entries),
+    3,  // num_field_entries
+    0,  // num_aux_entries
+    offsetof(decltype(_table_), field_names),  // no aux_entries
+    _class_data_.base(),
+    nullptr,  // post_loop_handler
+    ::_pbi::TcParser::GenericFallback,  // fallback
+    #ifdef PROTOBUF_PREFETCH_PARSE_TABLE
+    ::_pbi::TcParser::GetTable<::ServerApi::CheckOrderRsp>(),  // to_prefetch
+    #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
+  }, {{
+    {::_pbi::TcParser::MiniParse, {}},
+    // string order_id = 1;
+    {::_pbi::TcParser::FastUS1,
+     {10, 63, 0, PROTOBUF_FIELD_OFFSET(CheckOrderRsp, _impl_.order_id_)}},
+    // int32 status = 2;
+    {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(CheckOrderRsp, _impl_.status_), 63>(),
+     {16, 63, 0, PROTOBUF_FIELD_OFFSET(CheckOrderRsp, _impl_.status_)}},
+    // int64 current_points = 3;
+    {::_pbi::TcParser::SingularVarintNoZag1<::uint64_t, offsetof(CheckOrderRsp, _impl_.current_points_), 63>(),
+     {24, 63, 0, PROTOBUF_FIELD_OFFSET(CheckOrderRsp, _impl_.current_points_)}},
+  }}, {{
+    65535, 65535
+  }}, {{
+    // string order_id = 1;
+    {PROTOBUF_FIELD_OFFSET(CheckOrderRsp, _impl_.order_id_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
+    // int32 status = 2;
+    {PROTOBUF_FIELD_OFFSET(CheckOrderRsp, _impl_.status_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kInt32)},
+    // int64 current_points = 3;
+    {PROTOBUF_FIELD_OFFSET(CheckOrderRsp, _impl_.current_points_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kInt64)},
+  }},
+  // no aux_entries
+  {{
+    "\27\10\0\0\0\0\0\0"
+    "ServerApi.CheckOrderRsp"
+    "order_id"
+  }},
+};
+
+PROTOBUF_NOINLINE void CheckOrderRsp::Clear() {
+// @@protoc_insertion_point(message_clear_start:ServerApi.CheckOrderRsp)
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  ::uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  _impl_.order_id_.ClearToEmpty();
+  ::memset(&_impl_.current_points_, 0, static_cast<::size_t>(
+      reinterpret_cast<char*>(&_impl_.status_) -
+      reinterpret_cast<char*>(&_impl_.current_points_)) + sizeof(_impl_.status_));
+  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
+}
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+        ::uint8_t* CheckOrderRsp::_InternalSerialize(
+            const MessageLite& base, ::uint8_t* target,
+            ::google::protobuf::io::EpsCopyOutputStream* stream) {
+          const CheckOrderRsp& this_ = static_cast<const CheckOrderRsp&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+        ::uint8_t* CheckOrderRsp::_InternalSerialize(
+            ::uint8_t* target,
+            ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+          const CheckOrderRsp& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+          // @@protoc_insertion_point(serialize_to_array_start:ServerApi.CheckOrderRsp)
+          ::uint32_t cached_has_bits = 0;
+          (void)cached_has_bits;
+
+          // string order_id = 1;
+          if (!this_._internal_order_id().empty()) {
+            const std::string& _s = this_._internal_order_id();
+            ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+                _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "ServerApi.CheckOrderRsp.order_id");
+            target = stream->WriteStringMaybeAliased(1, _s, target);
+          }
+
+          // int32 status = 2;
+          if (this_._internal_status() != 0) {
+            target = ::google::protobuf::internal::WireFormatLite::
+                WriteInt32ToArrayWithField<2>(
+                    stream, this_._internal_status(), target);
+          }
+
+          // int64 current_points = 3;
+          if (this_._internal_current_points() != 0) {
+            target = ::google::protobuf::internal::WireFormatLite::
+                WriteInt64ToArrayWithField<3>(
+                    stream, this_._internal_current_points(), target);
+          }
+
+          if (PROTOBUF_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
+            target =
+                ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+                    this_._internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
+          }
+          // @@protoc_insertion_point(serialize_to_array_end:ServerApi.CheckOrderRsp)
+          return target;
+        }
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+        ::size_t CheckOrderRsp::ByteSizeLong(const MessageLite& base) {
+          const CheckOrderRsp& this_ = static_cast<const CheckOrderRsp&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+        ::size_t CheckOrderRsp::ByteSizeLong() const {
+          const CheckOrderRsp& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+          // @@protoc_insertion_point(message_byte_size_start:ServerApi.CheckOrderRsp)
+          ::size_t total_size = 0;
+
+          ::uint32_t cached_has_bits = 0;
+          // Prevent compiler warnings about cached_has_bits being unused
+          (void)cached_has_bits;
+
+          ::_pbi::Prefetch5LinesFrom7Lines(&this_);
+           {
+            // string order_id = 1;
+            if (!this_._internal_order_id().empty()) {
+              total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
+                                              this_._internal_order_id());
+            }
+            // int64 current_points = 3;
+            if (this_._internal_current_points() != 0) {
+              total_size += ::_pbi::WireFormatLite::Int64SizePlusOne(
+                  this_._internal_current_points());
+            }
+            // int32 status = 2;
+            if (this_._internal_status() != 0) {
+              total_size += ::_pbi::WireFormatLite::Int32SizePlusOne(
+                  this_._internal_status());
+            }
+          }
+          return this_.MaybeComputeUnknownFieldsSize(total_size,
+                                                     &this_._impl_._cached_size_);
+        }
+
+void CheckOrderRsp::MergeImpl(::google::protobuf::MessageLite& to_msg, const ::google::protobuf::MessageLite& from_msg) {
+  auto* const _this = static_cast<CheckOrderRsp*>(&to_msg);
+  auto& from = static_cast<const CheckOrderRsp&>(from_msg);
+  // @@protoc_insertion_point(class_specific_merge_from_start:ServerApi.CheckOrderRsp)
+  ABSL_DCHECK_NE(&from, _this);
+  ::uint32_t cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  if (!from._internal_order_id().empty()) {
+    _this->_internal_set_order_id(from._internal_order_id());
+  }
+  if (from._internal_current_points() != 0) {
+    _this->_impl_.current_points_ = from._impl_.current_points_;
+  }
+  if (from._internal_status() != 0) {
+    _this->_impl_.status_ = from._impl_.status_;
+  }
+  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
+}
+
+void CheckOrderRsp::CopyFrom(const CheckOrderRsp& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:ServerApi.CheckOrderRsp)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+
+void CheckOrderRsp::InternalSwap(CheckOrderRsp* PROTOBUF_RESTRICT other) {
+  using std::swap;
+  auto* arena = GetArena();
+  ABSL_DCHECK_EQ(arena, other->GetArena());
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
+  ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.order_id_, &other->_impl_.order_id_, arena);
+  ::google::protobuf::internal::memswap<
+      PROTOBUF_FIELD_OFFSET(CheckOrderRsp, _impl_.status_)
+      + sizeof(CheckOrderRsp::_impl_.status_)
+      - PROTOBUF_FIELD_OFFSET(CheckOrderRsp, _impl_.current_points_)>(
+          reinterpret_cast<char*>(&_impl_.current_points_),
+          reinterpret_cast<char*>(&other->_impl_.current_points_));
+}
+
+::google::protobuf::Metadata CheckOrderRsp::GetMetadata() const {
   return ::google::protobuf::Message::GetMetadataImpl(GetClassData()->full());
 }
 // ===================================================================

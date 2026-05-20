@@ -88,7 +88,7 @@ const char descriptor_table_protodef_common_2eproto[] ABSL_ATTRIBUTE_SECTION_VAR
     "\n\014common.proto\022\tServerApi\"}\n\014PacketHeade"
     "r\022 \n\006msg_id\030\001 \001(\0162\020.ServerApi.MsgId\022\016\n\006s"
     "eq_id\030\002 \001(\004\022(\n\nerror_code\030\003 \001(\0162\024.Server"
-    "Api.ErrorCode\022\021\n\terror_msg\030\004 \001(\t*\242\007\n\005Msg"
+    "Api.ErrorCode\022\021\n\terror_msg\030\004 \001(\t*\324\007\n\005Msg"
     "Id\022\016\n\nID_UNKNOWN\020\000\022\020\n\014ID_HEARTBEAT\020\001\022\021\n\014"
     "ID_LOGIN_REQ\020\351\007\022\021\n\014ID_LOGIN_RSP\020\352\007\022\030\n\023ID"
     "_UPLOAD_MOVIE_REQ\020\321\017\022\030\n\023ID_UPLOAD_MOVIE_"
@@ -112,24 +112,26 @@ const char descriptor_table_protodef_common_2eproto[] ABSL_ATTRIBUTE_SECTION_VAR
     "\n\024ID_ORDER_NOTIFY_PUSH\020\217\'\022\032\n\025ID_CONSUME_"
     "POINTS_REQ\020\220\'\022\032\n\025ID_CONSUME_POINTS_RSP\020\221"
     "\'\022\024\n\017ID_GET_FLOW_REQ\020\222\'\022\024\n\017ID_GET_FLOW_R"
-    "SP\020\223\'*\210\003\n\tErrorCode\022\017\n\013ERR_SUCCESS\020\000\022\027\n\023"
-    "ERR_SERVER_INTERNAL\020\001\022\021\n\rERR_WRONG_PWD\020\002"
-    "\022\026\n\022ERR_ACCOUNT_IN_USE\020\003\022\027\n\023ERR_ACCOUNT_"
-    "EXPIRED\020\004\022\024\n\020ERR_MOVIE_EXISTS\020\005\022\026\n\022ERR_F"
-    "ILE_IO_FAILED\020\006\022\024\n\020ERR_MD5_MISMATCH\020\007\022\023\n"
-    "\017ERR_GAME_EXISTS\020\010\022\033\n\027ERR_INSUFFICIENT_P"
-    "OINTS\020\t\022\026\n\022ERR_ORDER_NOT_PAID\020\n\022\024\n\020ERR_O"
-    "RDER_CLOSED\020\013\022\025\n\021ERR_GOODS_OFFLINE\020\014\022\035\n\031"
-    "ERR_GENERATE_TOKEN_FAILED\020\r\022\033\n\027ERR_CREAT"
-    "E_ORDER_FAILED\020\016\022\026\n\022ERR_PAY_API_FAILED\020\017"
-    "*;\n\010FileType\022\020\n\014FILE_UNKNOWN\020\000\022\016\n\nFILE_M"
-    "OVIE\020\001\022\r\n\tFILE_GAME\020\002b\006proto3"
+    "SP\020\223\'\022\027\n\022ID_CHECK_ORDER_REQ\020\224\'\022\027\n\022ID_CHE"
+    "CK_ORDER_RSP\020\225\'*\237\003\n\tErrorCode\022\017\n\013ERR_SUC"
+    "CESS\020\000\022\027\n\023ERR_SERVER_INTERNAL\020\001\022\021\n\rERR_W"
+    "RONG_PWD\020\002\022\026\n\022ERR_ACCOUNT_IN_USE\020\003\022\027\n\023ER"
+    "R_ACCOUNT_EXPIRED\020\004\022\024\n\020ERR_MOVIE_EXISTS\020"
+    "\005\022\026\n\022ERR_FILE_IO_FAILED\020\006\022\024\n\020ERR_MD5_MIS"
+    "MATCH\020\007\022\023\n\017ERR_GAME_EXISTS\020\010\022\033\n\027ERR_INSU"
+    "FFICIENT_POINTS\020\t\022\026\n\022ERR_ORDER_NOT_PAID\020"
+    "\n\022\024\n\020ERR_ORDER_CLOSED\020\013\022\025\n\021ERR_GOODS_OFF"
+    "LINE\020\014\022\035\n\031ERR_GENERATE_TOKEN_FAILED\020\r\022\033\n"
+    "\027ERR_CREATE_ORDER_FAILED\020\016\022\026\n\022ERR_PAY_AP"
+    "I_FAILED\020\017\022\025\n\021ERR_ORDER_PENDING\020\020*;\n\010Fil"
+    "eType\022\020\n\014FILE_UNKNOWN\020\000\022\016\n\nFILE_MOVIE\020\001\022"
+    "\r\n\tFILE_GAME\020\002b\006proto3"
 };
 static ::absl::once_flag descriptor_table_common_2eproto_once;
 PROTOBUF_CONSTINIT const ::_pbi::DescriptorTable descriptor_table_common_2eproto = {
     false,
     false,
-    1549,
+    1622,
     descriptor_table_protodef_common_2eproto,
     "common.proto",
     &descriptor_table_common_2eproto_once,
@@ -148,7 +150,7 @@ const ::google::protobuf::EnumDescriptor* MsgId_descriptor() {
   return file_level_enum_descriptors_common_2eproto[0];
 }
 PROTOBUF_CONSTINIT const uint32_t MsgId_internal_data_[] = {
-    131072u, 2293760u, 4002u, 2202u, 5004u, 2102u, 3004u, 4006u, 5008u, 2002u, 2104u, 3002u, 3006u, 4004u, 5002u, 5006u, 5010u, 1002u, 2004u, 2103u, 2201u, 3001u, 3003u, 3005u, 4001u, 4003u, 4005u, 5001u, 5003u, 5005u, 5007u, 5009u, 5011u, 1001u, 2001u, 2003u, 2101u, };
+    131072u, 2424832u, 4004u, 3002u, 5006u, 2102u, 3006u, 5002u, 5010u, 2002u, 2202u, 3004u, 4002u, 4006u, 5004u, 5008u, 5012u, 1002u, 2004u, 2104u, 3001u, 3003u, 3005u, 4001u, 4003u, 4005u, 5001u, 5003u, 5005u, 5007u, 5009u, 5011u, 5013u, 1001u, 2001u, 2003u, 2101u, 2103u, 2201u, };
 bool MsgId_IsValid(int value) {
   return ::_pbi::ValidateEnum(value, MsgId_internal_data_);
 }
@@ -157,9 +159,9 @@ const ::google::protobuf::EnumDescriptor* ErrorCode_descriptor() {
   return file_level_enum_descriptors_common_2eproto[1];
 }
 PROTOBUF_CONSTINIT const uint32_t ErrorCode_internal_data_[] = {
-    1048576u, 0u, };
+    1114112u, 0u, };
 bool ErrorCode_IsValid(int value) {
-  return 0 <= value && value <= 15;
+  return 0 <= value && value <= 16;
 }
 const ::google::protobuf::EnumDescriptor* FileType_descriptor() {
   ::google::protobuf::internal::AssignDescriptors(&descriptor_table_common_2eproto);
