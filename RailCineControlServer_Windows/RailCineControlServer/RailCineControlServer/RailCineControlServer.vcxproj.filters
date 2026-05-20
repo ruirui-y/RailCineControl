@@ -72,6 +72,12 @@
     <Filter Include="Source Files\Global">
       <UniqueIdentifier>{ac38e852-8333-4663-a792-5001dbb0e4c9}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\MidPlatform">
+      <UniqueIdentifier>{f24fb8da-1d45-468a-ae7d-11174677e398}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\MidPlatform">
+      <UniqueIdentifier>{26e8e140-3b7a-43b5-aeb2-dd922b41455c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <QtRcc Include="ControlHubServer.qrc">
@@ -142,6 +148,12 @@
     <ClCompile Include="Global.cpp">
       <Filter>Source Files\Global</Filter>
     </ClCompile>
+    <ClCompile Include="MidPlatformManager.cpp">
+      <Filter>Source Files\MidPlatform</Filter>
+    </ClCompile>
+    <ClCompile Include="MidPlatformManager.cpp">
+      <Filter>Source Files\MidPlatform</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="WorkerThread.h">
@@ -170,6 +182,9 @@
     </QtMoc>
     <QtMoc Include="JsonTool.h">
       <Filter>Header Files\Tools</Filter>
+    </QtMoc>
+    <QtMoc Include="MidPlatformManager.h">
+      <Filter>Header Files\MidPlatform</Filter>
     </QtMoc>
   </ItemGroup>
   <ItemGroup>

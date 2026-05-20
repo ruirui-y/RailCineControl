@@ -39,7 +39,6 @@ private slots:
 
 private:
     void InitHandlers();                                                        // 注册服务端各种请求的路由处理逻辑
-    QString GetAccessToken();                                                   // 获取用于请求微信支付的AccessToken
 
 private:
     qintptr m_socketDescriptor;                                                 // 操作系统底层的网络句柄

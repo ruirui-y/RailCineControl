@@ -15,6 +15,7 @@
 #include <QUrl>
 #include "ThreadPool.h"
 #include "WechatPayCrypto.h"
+#include "MidPlatformManager.h"
 
 #define CHECK_TIMEOUT                                                           10000
 #define CONN_TIME_OUT                                                           30000
@@ -983,7 +984,7 @@ void ClientSession::InitHandlers()
                         // =========================================================================
                         // 👑 Step 3-A：先去获取中台的 Access Token
                         // =========================================================================
-                        QString accessToken = innerSelf->GetAccessToken();
+                        QString accessToken = MidPlatformManager::Instance()->GetAccessToken();
                         if (accessToken.isEmpty()) {
                             qDebug() << u8"[ClientSession] ❌ 错误：获取中台 Token 失败，中断下单流程。";
                             innerSelf->SendProtoMsg(ServerApi::ID_CREATE_ORDER_RSP, ServerApi::CreateOrderRsp(), seq_id,
@@ -997,7 +998,7 @@ void ClientSession::InitHandlers()
                         QJsonObject reqObj;
                         reqObj["outTradeNo"] = orderId;                                         // 咱们生成的唯一订单号
                         reqObj["amount"] = 0.01;                                                // 👑 测试要求：强行固定为 0.01 元
-                        reqObj["subject"] = "充值积分";
+                        reqObj["subject"] = u8"充值积分";
                         reqObj["paymentMethod"] = 2;                                            // 2代表扫码支付
                         reqObj["merchantId"] = "1725620235";                                    // 文档里的商户号
                         reqObj["appId"] = "wxc8d0411c217a8b4c";                                 // 文档里的AppID
@@ -1193,47 +1194,6 @@ void ClientSession::InitHandlers()
 
                 }, true, countParams); // 结束 Step 1
         };
-}
-
-// =========================================================================
-// 👑 获取中台 Access Token
-// =========================================================================
-QString ClientSession::GetAccessToken()
-{
-    QNetworkAccessManager manager;
-    QNetworkRequest request(QUrl("https://api.stg.playlink.games/connect/token"));
-
-    // 严格对齐文档的 Header
-    request.setHeader(QNetworkRequest::ContentTypeHeader, "application/x-www-form-urlencoded");
-    request.setRawHeader("Accept", "application/json");
-    request.setRawHeader("Accept-Language", "zh-Hans");
-
-    // urlencoded 格式的 Body
-    QByteArray body = "grant_type=client_credentials&scope=OpenApi"
-        "&client_id=3a214bed97c0b7222f62e6df4d2f7993"
-        "&client_secret=3a214bed97bec75bfe8bbc46e4262b60";
-
-    // 发起 POST 请求
-    QNetworkReply* reply = manager.post(request, body);
-
-    // 👑 局部事件循环：把 Qt 的异步请求变成完美的同步阻塞，契合你的架构
-    QEventLoop loop;
-    QObject::connect(reply, &QNetworkReply::finished, &loop, &QEventLoop::quit);
-    loop.exec();
-
-    QString token;
-    if (reply->error() == QNetworkReply::NoError) {
-        QJsonDocument resDoc = QJsonDocument::fromJson(reply->readAll());
-        token = resDoc.object()["access_token"].toString();
-        qDebug() << u8"✅ [QtNetwork] 获取 Token 成功！Token 长度:" << token.length();
-    }
-    else {
-        qDebug() << u8"❌ [QtNetwork] 获取 Token 失败！ HTTP Code:" << reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt()
-            << u8"详情:" << reply->errorString();
-    }
-
-    reply->deleteLater();
-    return token;
 }
 
 // =========================================================================================

@@ -105,6 +105,7 @@
     <ClCompile Include="HttpServerMgr.cpp" />
     <ClCompile Include="JsonTool.cpp" />
     <ClCompile Include="LogRecord.cpp" />
+    <ClCompile Include="MidPlatformManager.cpp" />
     <ClCompile Include="server_msg.pb.cc" />
     <ClCompile Include="SqlExec.cpp" />
     <ClCompile Include="TcpServer.cpp" />
@@ -133,6 +134,7 @@
   <ItemGroup>
     <QtMoc Include="JsonTool.h" />
     <ClInclude Include="httplib.h" />
+    <QtMoc Include="MidPlatformManager.h" />
     <ClInclude Include="WechatPayCrypto.h" />
     <QtMoc Include="LogRecord.h" />
     <QtMoc Include="TcpServer.h" />
