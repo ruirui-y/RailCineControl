@@ -66,7 +66,7 @@ QString GetLanguageFilePath(const QString& lang_code)
 void InitGlobalPaths()
 {
     // 获取当前工作路径和可执行文件 (.exe) 所在的绝对路径
-    QString currentDir = QDir::currentPath();
+    QString currentDir = QDir::currentPath();                                                       // 当前vs所在的code工作路径，也就是在文件夹中打开弹出的文件夹路径
     QString appDir = QCoreApplication::applicationDirPath();
 
     // --------------------------------------------------------
@@ -78,29 +78,29 @@ void InitGlobalPaths()
     // --------------------------------------------------------
     // [JSON 系统配置模块] (位于 ClientInstall/Configs)
     // --------------------------------------------------------
-    ClientConfigPath    = QDir(appDir).filePath("ClientInstall/Configs/config.json");           // 硬件与服务器寻址配置
-    LoginConfigPath     = QDir(appDir).filePath("ClientInstall/Configs/login.json");            // 登录令牌与记住密码
-    AppConfigPath       = QDir(appDir).filePath("ClientInstall/Configs/app_settings.json");     // 软件 UI 偏好设置
+    ClientConfigPath    = QDir(currentDir).filePath("ClientInstall/Configs/config.json");           // 硬件与服务器寻址配置
+    LoginConfigPath     = QDir(currentDir).filePath("ClientInstall/Configs/login.json");            // 登录令牌与记住密码
+    AppConfigPath       = QDir(currentDir).filePath("ClientInstall/Configs/app_settings.json");     // 软件 UI 偏好设置
 
     // --------------------------------------------------------
     // [多语言翻译模块]
     // --------------------------------------------------------
-    TranslationsPath    = QDir(appDir).filePath("ClientInstall/Translations");                  // 存放 .qm 文件的目录
+    TranslationsPath    = QDir(currentDir).filePath("ClientInstall/Translations");                  // 存放 .qm 文件的目录
 
     // --------------------------------------------------------
     // [影片流媒体模块]
     // --------------------------------------------------------
-    MovieConfigPath     = QDir(appDir).filePath("Config/movies.json");                          // 影片库清单缓存
-    MovieCoverPath      = QDir(appDir).filePath("Movie/Cover");                                 // 影片海报物理目录
-    MovieVideoPath      = QDir(appDir).filePath("Movie/Video");                                 // 影片实体播放文件物理目录
-    MovieRecordPath     = QDir(appDir).filePath("Config/movieRecord.json");                     // 影片播放流水日志缓存
+    MovieConfigPath     = QDir(currentDir).filePath("Config/movies.json");                          // 影片库清单缓存
+    MovieCoverPath      = QDir(currentDir).filePath("Movie/Cover");                                 // 影片海报物理目录
+    MovieVideoPath      = QDir(currentDir).filePath("Movie/Video");                                 // 影片实体播放文件物理目录
+    MovieRecordPath     = QDir(currentDir).filePath("Config/movieRecord.json");                     // 影片播放流水日志缓存
 
     // --------------------------------------------------------
     // [游戏启动器模块]
     // --------------------------------------------------------
-    GameCoverPath       = QDir(appDir).filePath("Game/Cover");                                  // 游戏库海报物理目录
-    GameTarPath         = QDir(appDir).filePath("Game/Packages");                               // 下载引擎合并分片的临时暂存区
-    GameInstallPath     = QDir(appDir).filePath("Game/Installed");                              // UE 游戏解压拔除后的执行根目录
+    GameCoverPath       = QDir(currentDir).filePath("Game/Cover");                                  // 游戏库海报物理目录
+    GameTarPath         = QDir(currentDir).filePath("Game/Packages");                               // 下载引擎合并分片的临时暂存区
+    GameInstallPath     = QDir(currentDir).filePath("Game/Installed");                              // UE 游戏解压拔除后的执行根目录
 
     qDebug() << u8"[Global] 🌍 全局环境与路径字典初始化完毕！引擎挂载点:" << appDir;
 }
