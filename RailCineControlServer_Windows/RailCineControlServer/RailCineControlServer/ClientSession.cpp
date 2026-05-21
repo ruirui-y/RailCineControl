@@ -966,9 +966,9 @@ void ClientSession::InitHandlers()
 
                 int priceCents = results.first()["price_cents"].toInt();
 
-                // 2. 生成本地系统订单号 (格式: PAY + 年月日时分秒 + 账号ID)
-                QString orderId = QString("PAY%1_%2")
-                    .arg(QDateTime::currentDateTime().toString("yyyyMMddHHmmss"))
+                // 2. 生成本地系统订单号 (格式: PAY + 年_月_日_时_分_秒 + 账号ID)
+                QString orderId = QString("PAY_%1_%2")
+                    .arg(QDateTime::currentDateTime().toString("yyyy_MMdd_HH_mm_ss"))
                     .arg(strongSelf->m_accountId);
 
                 // =========================================================================
@@ -1047,7 +1047,7 @@ void ClientSession::InitHandlers()
                                 realCodeUrl = resObj["QrcodeUrl"].toString();
                             }
 
-                            qDebug() << u8"[ClientSession] ✅ 完美闭环！成功获取真实微信二维码链接:" << realCodeUrl;
+                            qDebug() << u8"[ClientSession] ✅ 成功获取真实微信二维码链接:" << realCodeUrl << u8" 订单号:" << orderId;
 
                             ServerApi::CreateOrderRsp rsp;
                             rsp.set_order_id(orderId.toStdString());

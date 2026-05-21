@@ -111,3 +111,47 @@ int MidPlatformManager::CheckOrderFromMidPlatform(const QString& orderId)
     // 依然把状态 return 出去，这对清理任务有大用！
     return resultStatus;
 }
+
+// 获取流水号
+QString MidPlatformManager::FetchTransactionId(const QString& orderId)
+{
+    QString accessToken = GetAccessToken();
+    if (accessToken.isEmpty()) {
+        qDebug() << u8"❌ [中台API] 获取流水号失败：无法获取 AccessToken";
+        return QString(); // 返回空字符串
+    }
+
+    QNetworkAccessManager manager;
+    QString urlStr = QString("https://api.stg.playlink.games/open/transactions/%1").arg(orderId);
+    QNetworkRequest request((QUrl(urlStr)));
+    request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
+    request.setRawHeader("Accept", "application/json");
+    request.setRawHeader("Authorization", ("Bearer " + accessToken).toUtf8());
+
+    QNetworkReply* reply = manager.get(request);
+    QEventLoop loop;
+    QObject::connect(reply, &QNetworkReply::finished, &loop, &QEventLoop::quit);
+    loop.exec();
+
+    QString transactionId;
+
+    if (reply->error() == QNetworkReply::NoError) {
+        QJsonDocument resDoc = QJsonDocument::fromJson(reply->readAll());
+        QJsonObject resObj = resDoc.object();
+
+        // 提取流水号
+        transactionId = resObj["transactionNo"].toString();
+
+        if (!transactionId.isEmpty()) {
+            qDebug() << u8"✅ [中台API] 成功补救拉取到流水号:" << transactionId;
+        }
+    }
+    else {
+        qDebug() << u8"❌ [中台API] 补救拉取流水号网络报错，HTTP Code:"
+            << reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt()
+            << u8"详情:" << reply->errorString();
+    }
+
+    reply->deleteLater();
+    return transactionId;
+}
