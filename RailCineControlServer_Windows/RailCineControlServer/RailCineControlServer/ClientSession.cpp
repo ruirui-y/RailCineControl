@@ -100,7 +100,7 @@ void ClientSession::onDisconnected()
         m_isLogined = false;                                                    // 状态清空
     }
 
-    emit SigSessionClosed(this);                                                // 触发主服务器的回收机制
+    emit SigSessionClosed(m_socketDescriptor);                                  // 触发主服务器的回收机制
 }
 
 // =========================================================================================
@@ -189,9 +189,14 @@ void ClientSession::InitHandlers()
             // ---------------------------------------------------------
             // 3. 验证全部通过，开始走成功逻辑！
             // ---------------------------------------------------------
+            // 标记登录状态
             strongSelf->m_isLogined = true;
             strongSelf->m_username = loginUser;
 
+            // 通知server登录成功
+            emit strongSelf->SigSessionLoginSuccess(strongSelf->m_socketDescriptor, strongSelf->m_accountId);
+
+            // 转发客户端登录响应
             ServerApi::LoginRsp successRsp;
             successRsp.set_server_time(QDateTime::currentMSecsSinceEpoch());
             successRsp.set_shop_name(shopName.toStdString());

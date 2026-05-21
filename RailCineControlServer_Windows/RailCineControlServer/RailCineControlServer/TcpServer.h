@@ -21,18 +21,25 @@ protected:
 
 private slots:
     // 清理断开连接的客户端
-    void onSessionClosed(ClientSession* session);
+    void onSessionClosed(qintptr fd);
+
+    // 当用户登录成功
+    void OnUserLoginSuccess(qintptr fd, uint64_t userId);
 
     // 处理微信支付结果
     void OnPaymentResult(const QString& out_trade_no, const QString& transaction_id, int payment_status);
 
 private:
-    int GetOnlineCount() const;
     void StartCleanupUnpaidTask();                                                                  // 启动清理未支付订单的定时任务
 
 private:
-    // 用智能指针管理所有存活的客户端！
-    // Key 可以是句柄，也可以是你自定义的会话 ID
-    QMap<qintptr, std::shared_ptr<ClientSession>> m_sessions;
+    // 1. 物理层 Map (句柄 -> 会话) 
+    // 作用：负责底层网络事件、断线清理、防恶意连接
+    QMap<qintptr, std::shared_ptr<ClientSession>> m_fdSessions;
+
+    // 2. 业务层 Map (用户ID -> 会话) 
+    // 作用：负责业务推送、支付成功通知、顶号踢人机制
+    QMap<uint64_t, std::shared_ptr<ClientSession>> m_userSessions;
+
     QTimer* m_cleanupUnpaidTaskTimer;                                                               // 清理未支付订单的定时任务
 };

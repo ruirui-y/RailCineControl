@@ -28,9 +28,11 @@ public:
 
 public:
     bool IsLogined() const { return m_isLogined; }                              // 是否登录
+    int GetUserId() const { return m_accountId; }                               // 获取用户 ID
 
 signals:
-    void SigSessionClosed(ClientSession* session);                              // 告诉主服务器：我断开了，请把我从 Map 中移除并销毁
+    void SigSessionLoginSuccess(qintptr fd, uint64_t userId);                   // 告诉主服务器用户登录成功
+    void SigSessionClosed(qintptr fd);                                          // 告诉主服务器：我断开了，请把我从 Map 中移除并销毁
 
 private slots:
     void onReadyRead();                                                         // 核心：粘包/半包拆解逻辑

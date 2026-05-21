@@ -32,7 +32,7 @@ TcpServer::~TcpServer()
 
     // 2. 清空 Map。这会瞬间触发所有 ClientSession 智能指针的析构！
     // 配合我们之前写的 safeDeleter，它们会在各自的 Worker 线程中优雅死亡
-    m_sessions.clear();
+    m_fdSessions.clear();
 
     // 3. 关闭清理未支付任务定时器
     if (m_cleanupUnpaidTaskTimer)
@@ -76,11 +76,24 @@ void TcpServer::incomingConnection(qintptr socketDescriptor)
     // 2. 绑定清理信号
     // 因为 TcpServer 在主线程，Session 在子线程，Qt 会自动使用 QueuedConnection 安全跨线程投递
     connect(session.get(), &ClientSession::SigSessionClosed, this, &TcpServer::onSessionClosed);
+    connect(session.get(), &ClientSession::SigSessionLoginSuccess, this, &TcpServer::OnUserLoginSuccess);
 
     // 3. 保存到 Map 里维持生命周期
-    m_sessions.insert(socketDescriptor, session);
+    m_fdSessions.insert(socketDescriptor, session);
+}
 
-    qDebug() << u8"[TcpServer] 客户端接入完毕，当前在线人数:" << GetOnlineCount();
+void TcpServer::OnUserLoginSuccess(qintptr fd, uint64_t userId)
+{
+    auto it = m_fdSessions.find(fd);
+    if (it != m_fdSessions.end()) {
+        auto session = it.value();
+
+        // 🌟 2. 核心操作：保存到业务 Map！
+        // 如果这里发现 m_userSessions 里面已经有这个 userId 了，说明异地登录，可以触发顶号踢人逻辑！
+        m_userSessions.insert(userId, session);
+
+        qDebug() << u8"[TcpServer] 用户登录成功注册进业务表，UserID:" << userId << u8"[TcpServer] 客户端接入完毕，当前在线人数:" << m_userSessions.size();
+    }
 }
 
 void TcpServer::OnPaymentResult(const QString& out_trade_no, const QString& transaction_id, int payment_status)
@@ -115,8 +128,8 @@ void TcpServer::OnPaymentResult(const QString& out_trade_no, const QString& tran
                     qDebug() << u8"🗑️ [TcpServer] 收到中台关闭/退款回调，已将订单逻辑作废:" << out_trade_no;
 
                     // 3. 👑 补上主动推送！通知客户端关闭二维码弹窗
-                    auto it = m_sessions.find(userId);
-                    if (it != m_sessions.end()) {
+                    auto it = m_userSessions.find(userId);
+                    if (it != m_userSessions.end()) {
                         ServerApi::OrderNotifyPush push;
                         push.set_order_id(out_trade_no.toStdString());
                         push.set_is_success(false);                                                                     // 明确告知客户端：支付失败/已取消
@@ -187,8 +200,8 @@ void TcpServer::OnPaymentResult(const QString& out_trade_no, const QString& tran
                         }
 
                         // 3. 异步主动推送：通知在线客户端刷新 UI
-                        auto it = m_sessions.find(userId);
-                        if (it != m_sessions.end()) {
+                        auto it = m_userSessions.find(userId);
+                        if (it != m_userSessions.end()) {
                             auto session = it.value();
 
                             // 查询该用户最新余额
@@ -216,18 +229,6 @@ void TcpServer::OnPaymentResult(const QString& out_trade_no, const QString& tran
                 }, true, allParams); // 结束事务
             },true, params);
     }
-}
-
-int TcpServer::GetOnlineCount() const
-{
-    int validUserCount = 0;
-    for (auto it = m_sessions.begin(); it != m_sessions.end(); ++it) {
-        if (it.value()->IsLogined()) 
-        { // 假设你给 m_isLogined 写了个 Get 方法
-            validUserCount++;
-        }
-    }
-    return validUserCount;
 }
 
 void TcpServer::StartCleanupUnpaidTask()
@@ -306,21 +307,21 @@ void TcpServer::StartCleanupUnpaidTask()
     m_cleanupUnpaidTaskTimer->start(10 * 1000); // 10秒巡检一次
 }
 
-void TcpServer::onSessionClosed(ClientSession* session)
+void TcpServer::onSessionClosed(qintptr fd)
 {
-    // 找出是谁断开了
-    qintptr handle = 0;
-    for (auto it = m_sessions.begin(); it != m_sessions.end(); ++it) {
-        if (it.value().get() == session) {
-            handle = it.key();
-            break;
-        }
-    }
+    auto it = m_fdSessions.find(fd);
+    if (it != m_fdSessions.end()) {
+        auto session = it.value();
+        uint64_t userId = session->GetUserId();                                         // 获取该会话绑定的 userId
 
-    if (handle != 0)
-    {
-        // 从 Map 中移除，智能指针引用计数归零，ClientSession 自动触发析构销毁！
-        m_sessions.remove(handle);
-        qDebug() << u8"[TcpServer] 客户端已清理，当前在线人数:" << GetOnlineCount();
+        // 🌟 1. 如果他结过绑(登录过)，从业务 Map 移除
+        if (userId != 0) {
+            m_userSessions.remove(userId);
+            qDebug() << u8"[TcpServer] 用户已下线，从业务表移除 UserID:" << userId << ", 当前剩余在线用户数:" << m_userSessions.size();
+        }
+
+        // 🌟 2. 从物理 Map 彻底销毁
+        m_fdSessions.remove(fd);
+        qDebug() << u8"[TcpServer] 连接已清理，当前剩余连接数:" << m_fdSessions.size();
     }
 }
