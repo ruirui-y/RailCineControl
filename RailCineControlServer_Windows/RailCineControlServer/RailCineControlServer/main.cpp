@@ -13,6 +13,7 @@ void RegisterMetaTypes()
     qRegisterMetaType<QueryCallback>("QueryCallback");
     qRegisterMetaType<UpdateCallback>("UpdateCallback");
     qRegisterMetaType<TransactionCallback>("TransactionCallback");
+    qRegisterMetaType<qintptr>("qintptr");
 }
 
 int main(int argc, char* argv[])
