@@ -3,6 +3,13 @@
         "TcpPort": 5486,
         "HttpPort": 8182
     },
+    "Database": {
+        "Host": "localhost",
+        "Port": 3306,
+        "User": "root",
+        "Password": "123456",
+        "DbName": "ControlHub"
+    },
     "WechatPay": {
         "NotifyUrl": "http://175.178.36.122:8182/api/wechat/pay_notify"
     }

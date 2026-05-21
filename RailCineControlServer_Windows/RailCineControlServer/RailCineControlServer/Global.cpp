@@ -25,10 +25,20 @@ bool GlobalConfig::Init(const QString& appDirPath)
         m_httpPort = serverObj["HttpPort"].toInt(8182);
     }
 
+    // 👑 解析 Database 节点
+    if (root.contains("Database")) {
+        QJsonObject dbObj = root["Database"].toObject();
+        m_dbHost = dbObj["Host"].toString("localhost");
+        m_dbPort = dbObj["Port"].toInt(3306);
+        m_dbUser = dbObj["User"].toString("root");
+        m_dbPwd = dbObj["Password"].toString("123456");
+        m_dbName = dbObj["DbName"].toString("ControlHub");
+    }
+
     // 解析 WechatPay 节点
     if (root.contains("WechatPay")) {
         QJsonObject wxObj = root["WechatPay"].toObject();
-        m_wxNotifyUrl = wxObj["NotifyUrl"].toString();                                      // NotifyUrl
+        m_wxNotifyUrl = wxObj["NotifyUrl"].toString();
     }
 
     return true;

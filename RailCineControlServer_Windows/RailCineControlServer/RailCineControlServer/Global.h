@@ -79,7 +79,17 @@ public:
     int GetTcpPort() const { return m_tcpPort; }
     int GetHttpPort() const { return m_httpPort; }
 
-    QString GetWxNotifyUrl() const { return m_wxNotifyUrl; }                                    // 获取回调地址
+    QString GetWxNotifyUrl() const { return m_wxNotifyUrl; }
+
+    // ================= 👑 数据库读取接口 =================
+    QString GetDbHost() const { return m_dbHost; }
+    int     GetDbPort() const { return m_dbPort; }
+    QString GetDbUser() const { return m_dbUser; }
+    QString GetDbPwd() const { return m_dbPwd; }
+    QString GetDbName() const { return m_dbName; }
+
+    // 自动拼接形如 "tcp://localhost:3306" 的连接字符串
+    QString GetDbUrl() const { return QString("tcp://%1:%2").arg(m_dbHost).arg(m_dbPort); }
 
     QString GetConfigPath() const { return m_configPath; }
 
@@ -88,12 +98,19 @@ private:
 
     QString m_configPath;
 
-    // 服务器配置缓存 (给个兜底默认值)
+    // 服务器配置缓存
     int m_tcpPort = 5486;
     int m_httpPort = 8182;
 
     // 微信支付配置缓存
-    QString m_wxNotifyUrl; 
+    QString m_wxNotifyUrl;
+
+    // 数据库配置缓存 (带兜底默认值)
+    QString m_dbHost = "localhost";
+    int     m_dbPort = 3306;
+    QString m_dbUser = "root";
+    QString m_dbPwd = "123456";
+    QString m_dbName = "ControlHub";
 };
 
 #endif // GLOBAL_H
