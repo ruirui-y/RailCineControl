@@ -14,6 +14,7 @@ void RegisterMetaTypes()
     qRegisterMetaType<UpdateCallback>("UpdateCallback");
     qRegisterMetaType<TransactionCallback>("TransactionCallback");
     qRegisterMetaType<qintptr>("qintptr");
+    qRegisterMetaType<qint64>("uint64_t");
 }
 
 int main(int argc, char* argv[])
