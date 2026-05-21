@@ -81,7 +81,7 @@ signals:
     // 支付与商业化业务信号
     void SigOrderCreated(const QString& orderId, const QString& qrUrl, int expireTime);             // 服务端返回订单与二维码
     void SigOrderFailed(int errorCode, const QString& errorMsg);                                    // 订单创建失败信号 (携带具体的错误码和来自服务端的错误消息)
-    void SigOrderPaid(const QString& orderId, qint64 newPoints);                                    // 微信异步回调：支付成功！
+    void SigOrderNotifyReceived(const QString& orderId, bool isSuccess, qint64 currentPoints);      // 服务端异步推送的订单最终结算结果！(成功/取消/关闭)
     void SigFlowRecordsReceived(const ServerApi::GetFlowRsp& rsp);                                  // 资金流水数据到账
 
 private:

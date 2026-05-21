@@ -36,7 +36,7 @@ private slots:
     void OnOrderCreated(const QString& orderId, const QString& qrUrl, int expireTime);
 
     // 接收服务器异步推送的“支付成功” (关闭弹窗，刷新余额)
-    void OnOrderPaid(const QString& orderId, qint64 newPoints);
+    void OnOrderNotifyReceived(const QString& orderId, bool isSuccess, qint64 currentPoints);
 
 private:
     // 顶部资产区

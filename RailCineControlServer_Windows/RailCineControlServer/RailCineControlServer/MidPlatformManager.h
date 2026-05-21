@@ -22,4 +22,8 @@ public:
     // 2. 向中台查询订单真实支付状态 (阻塞式)
     // 返回值: 1 (支付成功), 0 (等待支付), -1 (失败/关闭/异常)
     int CheckOrderFromMidPlatform(const QString& orderId);
+
+signals:
+    // 转发查单结果的信号
+    void SigPaymentResult(const QString& out_trade_no, const QString& transaction_id, int payment_status);
 };

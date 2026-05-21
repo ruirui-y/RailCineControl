@@ -28,11 +28,7 @@ bool GlobalConfig::Init(const QString& appDirPath)
     // 解析 WechatPay 节点
     if (root.contains("WechatPay")) {
         QJsonObject wxObj = root["WechatPay"].toObject();
-        m_wxMchId = wxObj["MchId"].toString();
-        m_wxAppId = wxObj["AppId"].toString();                                              // AppID
         m_wxNotifyUrl = wxObj["NotifyUrl"].toString();                                      // NotifyUrl
-        m_wxSerialNo = wxObj["SerialNo"].toString();
-        m_wxPrivateKey = wxObj["PrivateKey"].toString();
     }
 
     return true;

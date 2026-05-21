@@ -4,10 +4,6 @@
         "HttpPort": 8182
     },
     "WechatPay": {
-        "MchId": "1688888888",
-        "AppId": "wx1234567890abcdef",
-        "NotifyUrl": "https://yourdomain.com/api/wechat/pay_notify",
-        "SerialNo": "1234567890ABCDEF",
-        "PrivateKey": "-----BEGIN PRIVATE KEY-----\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQDAabc...\n-----END PRIVATE KEY-----"
+        "NotifyUrl": "http://175.178.36.122:8182/api/wechat/pay_notify"
     }
 }

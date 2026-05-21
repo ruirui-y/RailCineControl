@@ -110,7 +110,6 @@
     <ClCompile Include="SqlExec.cpp" />
     <ClCompile Include="TcpServer.cpp" />
     <ClCompile Include="ThreadPool.cpp" />
-    <ClCompile Include="WechatPayCrypto.cpp" />
     <ClCompile Include="WorkerThread.cpp" />
     <QtRcc Include="ControlHubServer.qrc" />
     <QtUic Include="MainWindow.ui" />
@@ -133,9 +132,9 @@
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="JsonTool.h" />
+    <ClInclude Include="Enum.h" />
     <ClInclude Include="httplib.h" />
     <QtMoc Include="MidPlatformManager.h" />
-    <ClInclude Include="WechatPayCrypto.h" />
     <QtMoc Include="LogRecord.h" />
     <QtMoc Include="TcpServer.h" />
     <QtMoc Include="ClientSession.h" />

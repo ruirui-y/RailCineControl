@@ -50,17 +50,16 @@ void HttpServerMgr::Start(int port)
 
         // 提取咱们系统的本地订单号 (同时兼容驼峰和下划线写法)
         QString out_trade_no = rootObj["outTradeNo"].toString();
-        if (out_trade_no.isEmpty()) out_trade_no = rootObj["out_trade_no"].toString();
-
-        // 提取真实的微信流水号 (非必填，主要是存库备查)
-        QString transaction_id = rootObj["transactionId"].toString();
-        if (transaction_id.isEmpty()) transaction_id = rootObj["transaction_id"].toString();
+        QString transaction_id = rootObj["transactionNo"].toString();                                   // 提取真实的微信流水号
+        int payment_status = rootObj["paymentStatus"].toInt();                                          // 提取核心状态！
 
         // 3. 验证并抛出跨线程信号给主业务引擎！
         // 正常来说，中台既然回调了我们，就代表一定是支付成功了。
-        if (!out_trade_no.isEmpty()) {
-            qDebug() << u8"[HttpServer] 确认订单支付成功，派发 TCP 通知！订单号:" << out_trade_no;
-            emit SigWechatPaySuccess(out_trade_no, transaction_id);
+        if (!out_trade_no.isEmpty())
+        {
+            qDebug() << u8"[HttpServer] 收到中台订单状态变更，订单号:" << out_trade_no << u8"状态码:" << payment_status;
+            // 把三个变量全部抛出给 TcpServer
+            emit SigPaymentResult(out_trade_no, transaction_id, payment_status);
         }
         else {
             qDebug() << u8"[HttpServer] 回调中没有解析到订单号，忽略该回调。";

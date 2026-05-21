@@ -23,8 +23,8 @@ private slots:
     // 清理断开连接的客户端
     void onSessionClosed(ClientSession* session);
 
-    // 当微信回调说钱到了，执行订单结转
-    void OnWechatPaySuccess(const QString& out_trade_no, const QString& transaction_id);
+    // 处理微信支付结果
+    void OnPaymentResult(const QString& out_trade_no, const QString& transaction_id, int payment_status);
 
 private:
     int GetOnlineCount() const;

@@ -23,7 +23,7 @@ WalletWidget::WalletWidget(QWidget* parent)
     TCPMgr* tcp = ThreadPool::Instance()->GetTCPMgr();
     connect(tcp, &TCPMgr::SigOrderFailed, this, &WalletWidget::OnOrderFailed);                          // 绑定订单创建失败的信号
     connect(tcp, &TCPMgr::SigOrderCreated, this, &WalletWidget::OnOrderCreated);                        // 绑定订单创建成功的信号
-    connect(tcp, &TCPMgr::SigOrderPaid, this, &WalletWidget::OnOrderPaid);
+    connect(tcp, &TCPMgr::SigOrderNotifyReceived, this, &WalletWidget::OnOrderNotifyReceived);          // 绑定支付结果
 }
 
 WalletWidget::~WalletWidget() {}
@@ -284,20 +284,38 @@ void WalletWidget::OnOrderCreated(const QString& orderId, const QString& qrUrl, 
 }
 
 // 收到服务器异步推送：客户付款成功！（可能是几秒、几分钟后）
-void WalletWidget::OnOrderPaid(const QString& orderId, qint64 newPoints)
+void WalletWidget::OnOrderNotifyReceived(const QString& orderId, bool isSuccess, qint64 currentPoints)
 {
-    // 1. 关闭正在展示的二维码支付弹窗
+    // =========================================================================
+    // 1. 通用操作：无论成功还是失败，只要订单有了最终状态，立刻掐掉二维码弹窗
+    // =========================================================================
     if (m_payDialog) {
-        m_payDialog->accept(); // 模拟用户点击了确定/正常关闭
+        m_payDialog->accept(); // 模拟弹窗正常关闭退出事件循环
         m_payDialog->deleteLater();
         m_payDialog = nullptr;
     }
 
-    // 2. 刷新左上角的积分余额 UI
-    m_lblPoints->setText(QString::number(newPoints));
+    // =========================================================================
+    // 2. 状态分支：根据服务端推送的最终结果渲染 UI
+    // =========================================================================
+    if (isSuccess) {
+        // A. 刷新左上角的积分余额 UI
+        m_lblPoints->setText(QString::number(currentPoints));
 
-    // 3. 弹个极其华丽的成功提示！
-    CinemaMessageBox::ShowInfo(this, tr("支付成功"), tr("感谢您的充值，当前可用积分: %1").arg(newPoints));
+        // B. 弹个极其华丽的成功提示！
+        QString successMsg = tr("您的订单 [%1] 已支付成功！\n感谢您的充值，当前可用影院金: %2")
+            .arg(orderId)
+            .arg(currentPoints);
+        CinemaMessageBox::ShowInfo(this, tr("充值成功"), successMsg);
 
-    // 4. (可选) 重新拉取一次流水列表，更新下方的表格
+        // C. (可选) 重新拉取一次流水列表，刷新下方的表格，让用户立刻看到这笔进账
+        // ServerApi::GetFlowReq req;
+        // ThreadPool::Instance()->GetTCPMgr()->SendProtoMsg(ServerApi::MsgId::ID_GET_FLOW_REQ, req);
+    }
+    else {
+        // 订单被取消、中台超时关闭、或发生退款
+        QString failMsg = tr("订单 [%1] 已失效或被取消。\n如需充值，请重新选择套餐并发起支付。")
+            .arg(orderId);
+        CinemaMessageBox::ShowWarning(this, tr("支付已失效"), failMsg);
+    }
 }

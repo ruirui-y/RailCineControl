@@ -7,6 +7,7 @@
 #include <QEventLoop>
 #include <QUrl>
 #include <QDebug>
+#include "Enum.h"
 
 MidPlatformManager::MidPlatformManager(QObject* parent) : QObject(parent)
 {
@@ -57,60 +58,56 @@ QString MidPlatformManager::GetAccessToken()
 
 int MidPlatformManager::CheckOrderFromMidPlatform(const QString& orderId)
 {
-    // 1. 直接调用本类的 GetAccessToken()
     QString accessToken = GetAccessToken();
-
     if (accessToken.isEmpty()) {
-        qDebug() << u8"❌ [中台API] 查单失败：无法获取 AccessToken，终止查单。";
-        return -1;
+        qDebug() << u8"❌ [中台API] 查单失败：无法获取 AccessToken";
+        return PAY_STATUS_ERROR;
     }
 
-    // 2. 组装 GET 请求
     QNetworkAccessManager manager;
     QString urlStr = QString("https://api.stg.playlink.games/open/transactions/%1").arg(orderId);
     QNetworkRequest request((QUrl(urlStr)));
-
     request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
     request.setRawHeader("Accept", "application/json");
-    // 注入鉴权头
     request.setRawHeader("Authorization", ("Bearer " + accessToken).toUtf8());
 
-    // 3. 发送 GET 请求并阻塞等待
     QNetworkReply* reply = manager.get(request);
-
     QEventLoop loop;
     QObject::connect(reply, &QNetworkReply::finished, &loop, &QEventLoop::quit);
     loop.exec();
 
-    int resultStatus = -1;
+    int resultStatus = PAY_STATUS_UNPAID;                                                                           // 初始化未支付
 
-    // 4. 解析响应
     if (reply->error() == QNetworkReply::NoError) {
         QJsonDocument resDoc = QJsonDocument::fromJson(reply->readAll());
         QJsonObject resObj = resDoc.object();
 
-        QString code = resObj["code"].toString();
-        QString tradeStatus = resObj["data"].toObject()["status"].toString();
-        if (tradeStatus.isEmpty()) tradeStatus = resObj["status"].toString();
+        // 👑 按照您提供的最新 JSON 结构精准提取
+        QString outTradeNo = resObj["outTradeNo"].toString();
+        QString transactionNo = resObj["transactionNo"].toString();
+        resultStatus = resObj["paymentStatus"].toInt();
 
-        if (tradeStatus == "SUCCESS" || tradeStatus == "PAID") {
-            resultStatus = 1;
-        }
-        else if (tradeStatus == "WAITING" || tradeStatus == "PENDING" || tradeStatus == "NOTPAY") {
-            resultStatus = 0;
-        }
-        else {
-            resultStatus = -1;
-        }
+        // 容错兜底：如果中台抽风没返回订单号，用我们查单时传进去的
+        if (outTradeNo.isEmpty()) outTradeNo = orderId;
 
-        qDebug() << u8"🔍 [中台API] 查单完成，订单:" << orderId << " 中台状态:" << tradeStatus;
+        qDebug() << u8"🔍 [中台API] 查单完成，订单:" << outTradeNo << u8" 状态码:" << resultStatus;
+
+        // =========================================================================
+        // 👑 终极精髓：直接把结果当做信号发射出去！让 TcpServer 的 OnPaymentResult 去干活！
+        // =========================================================================
+        emit SigPaymentResult(outTradeNo, transactionNo, resultStatus);
     }
     else {
+        // 这里说明大概率该订单没有支付
+        QByteArray errorBody = reply->readAll();
         qDebug() << u8"❌ [中台API] 查单网络报错，HTTP Code:"
             << reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt()
-            << u8"详情:" << reply->errorString();
+            << u8"详情:" << reply->errorString()
+            << u8"中台返回的详细拒绝原因:" << errorBody; // 盯紧这句话！
     }
 
     reply->deleteLater();
+
+    // 依然把状态 return 出去，这对清理任务有大用！
     return resultStatus;
 }

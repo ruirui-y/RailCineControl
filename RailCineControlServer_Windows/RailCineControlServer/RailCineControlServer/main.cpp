@@ -1,6 +1,7 @@
 ﻿#include <QtWidgets/QApplication>
 #include "WorkerThread.h"
 #include <QDateTime>
+#include <QDir>
 #include <QDebug>
 #include "Global.h"
 #include "MainWindow.h"
@@ -19,8 +20,9 @@ int main(int argc, char* argv[])
     qputenv("QT_LOGGING_RULES", "qt.network.monitor.warning=false");
     QApplication app(argc, argv);
 
+    QString currDir = QDir::currentPath();
     // 初始化全局配置
-    if (!GlobalConfig::Instance()->Init(qApp->applicationDirPath())) {
+    if (!GlobalConfig::Instance()->Init(currDir)){
         qWarning() << u8"严重错误：配置文件加载失败，服务器即将退出！";
         return -1;
     }

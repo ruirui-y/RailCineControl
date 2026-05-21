@@ -14,8 +14,8 @@
 #include <QEventLoop>
 #include <QUrl>
 #include "ThreadPool.h"
-#include "WechatPayCrypto.h"
 #include "MidPlatformManager.h"
+#include "Global.h"
 
 #define CHECK_TIMEOUT                                                           10000
 #define CONN_TIME_OUT                                                           30000
@@ -1004,7 +1004,7 @@ void ClientSession::InitHandlers()
                         reqObj["appId"] = "wxc8d0411c217a8b4c";                                 // 文档里的AppID
 
                         // 你的 C++ 服务器公网接收地址
-                        reqObj["callbackUrl"] = "http://175.178.36.122:8001/api/wechat/pay_notify";
+                        reqObj["callbackUrl"] = GlobalConfig::Instance()->GetWxNotifyUrl();
 
                         // 过期时间：当前时间 + 5分钟，格式化为带时区的 ISO8601
                         QString expireStr = QDateTime::currentDateTime().addSecs(300).toString(Qt::ISODate) + "+08:00";

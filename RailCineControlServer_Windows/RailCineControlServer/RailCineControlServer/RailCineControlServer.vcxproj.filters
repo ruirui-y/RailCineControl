@@ -139,9 +139,6 @@
     <ClCompile Include="WechatPayCrypto.cpp">
       <Filter>Source Files\Tools</Filter>
     </ClCompile>
-    <ClCompile Include="WechatPayCrypto.cpp">
-      <Filter>Source Files\Tools</Filter>
-    </ClCompile>
     <ClCompile Include="JsonTool.cpp">
       <Filter>Source Files\Tools</Filter>
     </ClCompile>
@@ -200,11 +197,11 @@
     <ClInclude Include="server_msg.pb.h">
       <Filter>Header Files\Pb</Filter>
     </ClInclude>
-    <ClInclude Include="WechatPayCrypto.h">
-      <Filter>Header Files\Tools</Filter>
-    </ClInclude>
     <ClInclude Include="httplib.h">
       <Filter>Header Files\HttpServer</Filter>
+    </ClInclude>
+    <ClInclude Include="Enum.h">
+      <Filter>Header Files\Global.h</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

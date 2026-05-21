@@ -491,19 +491,19 @@ void TCPMgr::InitHandlers()
         };
 
     // ------------------------------------------------------------------
-    // 💰 注册 [支付成功异步推送] 的处理逻辑 (微信打钱了！)
-    // 注意：这是服务端主动推给客户端的，不需要请求
+    // 📜 注册 [服务端主动推送支付结算结果] 的处理逻辑
     // ------------------------------------------------------------------
     m_router[ServerApi::ID_ORDER_NOTIFY_PUSH] = [this](const ServerApi::PacketHeader& header, const QByteArray& bodyData) {
+        // 推送包通常不需要校验 error_code，直接无脑解包即可
         ServerApi::OrderNotifyPush push;
         if (push.ParseFromArray(bodyData.data(), bodyData.size())) {
-            if (push.is_success()) {
-                qDebug() << u8"[TCPMgr] 收到服务端推送: 客户已付款! 最新积分:" << push.current_points();
-                emit SigOrderPaid(
-                    QString::fromStdString(push.order_id()),
-                    push.current_points()
-                );
-            }
+            qDebug() << u8"[TCPMgr] 收到服务端订单结算推送，订单号:" << push.order_id().c_str()
+                << u8"是否成功:" << push.is_success();
+
+            // 将 Protobuf 的字段提取出来，通过 Qt 信号跨线程抛给 UI 层
+            emit SigOrderNotifyReceived(QString::fromStdString(push.order_id()),
+                push.is_success(),
+                push.current_points());
         }
         };
 
