@@ -1,5 +1,7 @@
 ﻿#include "Global.h"
 #include <QDir>
+#include <QFileInfo>
+#include <QSettings>
 #include <QCoreApplication>
 #include "Macro.h"
 #include <QDebug>
@@ -66,41 +68,71 @@ QString GetLanguageFilePath(const QString& lang_code)
 void InitGlobalPaths()
 {
     // 获取当前工作路径和可执行文件 (.exe) 所在的绝对路径
-    QString currentDir = QDir::currentPath();                                                       // 当前vs所在的code工作路径，也就是在文件夹中打开弹出的文件夹路径
+    QString currentDir = QDir::currentPath();                                               // 当前vs所在的code工作路径
     QString appDir = QCoreApplication::applicationDirPath();
+
+    // ========================================================
+    // 🛡️ 核心守护：物理目录自动装配工具 (Lambda 闭包)
+    // ========================================================
+    // 1. 确保【文件夹】存在（mkpath 支持递归创建多级目录）
+    auto EnsureDir = [](const QString& dirPath) {
+        QDir dir;
+        if (!dir.exists(dirPath)) {
+            dir.mkpath(dirPath);
+            qDebug() << u8"📁 [自动装配] 物理目录缺失，已自动创建:" << dirPath;
+        }
+    };
+
+    // 2. 确保【文件】所在的父级目录存在（防止 QFile 写入时因找不到文件夹而崩盘）
+    auto EnsureFileDir = [&EnsureDir](const QString& filePath) {
+        EnsureDir(QFileInfo(filePath).absolutePath());
+    };
 
     // --------------------------------------------------------
     // [INI 配置模块]
     // --------------------------------------------------------
-    ConfigPath          = currentDir + "/Config/Config.ini";
+    ConfigPath          = QDir(currentDir).filePath("Config/Config.ini");
+    EnsureFileDir(ConfigPath); // 确保 Config 文件夹存在
     ConfigSettings      = new QSettings(ConfigPath, QSettings::IniFormat);
 
     // --------------------------------------------------------
     // [JSON 系统配置模块] (位于 ClientInstall/Configs)
     // --------------------------------------------------------
-    ClientConfigPath    = QDir(currentDir).filePath("ClientInstall/Configs/config.json");           // 硬件与服务器寻址配置
-    LoginConfigPath     = QDir(currentDir).filePath("ClientInstall/Configs/login.json");            // 登录令牌与记住密码
-    AppConfigPath       = QDir(currentDir).filePath("ClientInstall/Configs/app_settings.json");     // 软件 UI 偏好设置
+    ClientConfigPath    = QDir(currentDir).filePath("ClientInstall/Configs/config.json");               // 硬件与服务器寻址配置
+    LoginConfigPath     = QDir(currentDir).filePath("ClientInstall/Configs/login.json");                // 登录令牌与记住密码
+    AppConfigPath       = QDir(currentDir).filePath("ClientInstall/Configs/app_settings.json");         // 软件 UI 偏好设置
+    
+    EnsureFileDir(ClientConfigPath); // 只需要调一次，就会确保 ClientInstall/Configs 文件夹存在
 
     // --------------------------------------------------------
     // [多语言翻译模块]
     // --------------------------------------------------------
-    TranslationsPath    = QDir(currentDir).filePath("ClientInstall/Translations");                  // 存放 .qm 文件的目录
+    TranslationsPath    = QDir(currentDir).filePath("ClientInstall/Translations");                      // 存放 .qm 文件的目录
+    EnsureDir(TranslationsPath); // 这是文件夹，直接建
 
     // --------------------------------------------------------
     // [影片流媒体模块]
     // --------------------------------------------------------
-    MovieConfigPath     = QDir(currentDir).filePath("Config/movies.json");                          // 影片库清单缓存
-    MovieCoverPath      = QDir(currentDir).filePath("Movie/Cover");                                 // 影片海报物理目录
-    MovieVideoPath      = QDir(currentDir).filePath("Movie/Video");                                 // 影片实体播放文件物理目录
-    MovieRecordPath     = QDir(currentDir).filePath("Config/movieRecord.json");                     // 影片播放流水日志缓存
+    MovieConfigPath     = QDir(currentDir).filePath("Config/movies.json");                              // 影片库清单缓存
+    MovieRecordPath     = QDir(currentDir).filePath("Config/movieRecord.json");                         // 影片播放流水日志缓存
+    
+    MovieCoverPath      = QDir(currentDir).filePath("Movie/Cover");                                     // 影片海报物理目录
+    MovieVideoPath      = QDir(currentDir).filePath("Movie/Video");                                     // 影片实体播放文件物理目录
+    
+    EnsureFileDir(MovieConfigPath);
+    EnsureDir(MovieCoverPath); 
+    EnsureDir(MovieVideoPath);
 
     // --------------------------------------------------------
     // [游戏启动器模块]
     // --------------------------------------------------------
-    GameCoverPath       = QDir(currentDir).filePath("Game/Cover");                                  // 游戏库海报物理目录
-    GameTarPath         = QDir(currentDir).filePath("Game/Packages");                               // 下载引擎合并分片的临时暂存区
-    GameInstallPath     = QDir(currentDir).filePath("Game/Installed");                              // UE 游戏解压拔除后的执行根目录
+    GameCoverPath       = QDir(currentDir).filePath("Game/Cover");                                      // 游戏库海报物理目录
+    GameTarPath         = QDir(currentDir).filePath("Game/Packages");                                   // 下载引擎合并分片的临时暂存区
+    GameInstallPath     = QDir(currentDir).filePath("Game/Installed");                                  // UE 游戏解压拔除后的执行根目录
+    
+    EnsureDir(GameCoverPath);
+    EnsureDir(GameTarPath);
+    EnsureDir(GameInstallPath);
 
-    qDebug() << u8"[Global] 🌍 全局环境与路径字典初始化完毕！引擎挂载点:" << appDir;
+    qDebug() << u8"[Global] 🌍 全局环境与路径字典初始化完毕！底层文件系统已完成装配校验！引擎挂载点:" << appDir;
 }
