@@ -1,4 +1,4 @@
-#ifndef CONNECTIONPOOL_H
+﻿#ifndef CONNECTIONPOOL_H
 #define CONNECTIONPOOL_H
 #include <QObject>
 #include <memory>
