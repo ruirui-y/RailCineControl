@@ -22,6 +22,9 @@ int main(int argc, char* argv[])
     qputenv("QT_LOGGING_RULES", "qt.network.monitor.warning=false");
     QApplication app(argc, argv);
 
+    QThread::currentThread()->setObjectName("Main-Thread");
+    qDebug() << "Main Thread ID:" << QThread::currentThreadId();
+
     QString currDir = QDir::currentPath();
     // 初始化全局配置
     if (!GlobalConfig::Instance()->Init(currDir)){

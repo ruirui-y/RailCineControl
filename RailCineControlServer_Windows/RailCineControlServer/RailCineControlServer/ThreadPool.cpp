@@ -29,7 +29,7 @@ void ThreadPool::Start(size_t threadNum)
 		QObject::connect(thread.get(), &WorkerThread::SigReady, &loop, &QEventLoop::quit, Qt::QueuedConnection);
 
 		thread->start();
-		thread->setObjectName(QString::number(i));
+		thread->setObjectName("Worker-Thread-" + QString::number(i));
 		loop.exec();																									// 等到 worker run() 里 emit Ready()
 
 		{
