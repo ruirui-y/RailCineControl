@@ -78,6 +78,18 @@
     <Filter Include="Source Files\MidPlatform">
       <UniqueIdentifier>{26e8e140-3b7a-43b5-aeb2-dd922b41455c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Server">
+      <UniqueIdentifier>{96f5422c-47bf-4818-96ba-d9aa839d97ca}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Server">
+      <UniqueIdentifier>{3d31492d-c78e-4f7d-bb3c-10263e7c0d57}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\MsgDispatcher">
+      <UniqueIdentifier>{616274cf-7eda-4225-b678-191ee1226e87}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\MsgDispatcher">
+      <UniqueIdentifier>{1e4717d2-5896-4dc5-bdfc-d31bf3ec68c5}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <QtRcc Include="ControlHubServer.qrc">
@@ -136,9 +148,6 @@
     <ClCompile Include="HttpServerMgr.cpp">
       <Filter>Source Files\HttpServer</Filter>
     </ClCompile>
-    <ClCompile Include="WechatPayCrypto.cpp">
-      <Filter>Source Files\Tools</Filter>
-    </ClCompile>
     <ClCompile Include="JsonTool.cpp">
       <Filter>Source Files\Tools</Filter>
     </ClCompile>
@@ -150,6 +159,54 @@
     </ClCompile>
     <ClCompile Include="MidPlatformManager.cpp">
       <Filter>Source Files\MidPlatform</Filter>
+    </ClCompile>
+    <ClCompile Include="AuthService.cpp">
+      <Filter>Source Files\Server</Filter>
+    </ClCompile>
+    <ClCompile Include="FileTransferService.cpp">
+      <Filter>Source Files\Server</Filter>
+    </ClCompile>
+    <ClCompile Include="MovieResourceService.cpp">
+      <Filter>Source Files\Server</Filter>
+    </ClCompile>
+    <ClCompile Include="MoviePlayRecordService.cpp">
+      <Filter>Source Files\Server</Filter>
+    </ClCompile>
+    <ClCompile Include="GameResourceService.cpp">
+      <Filter>Source Files\Server</Filter>
+    </ClCompile>
+    <ClCompile Include="WalletService.cpp">
+      <Filter>Source Files\Server</Filter>
+    </ClCompile>
+    <ClCompile Include="MsgDispatcher.cpp">
+      <Filter>Source Files\MsgDispatcher</Filter>
+    </ClCompile>
+    <ClCompile Include="PaymentService.cpp">
+      <Filter>Source Files\Server</Filter>
+    </ClCompile>
+    <ClCompile Include="OrderManagementService.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="AuthService.cpp">
+      <Filter>Source Files\Server</Filter>
+    </ClCompile>
+    <ClCompile Include="FileTransferService.cpp">
+      <Filter>Source Files\Server</Filter>
+    </ClCompile>
+    <ClCompile Include="GameResourceService.cpp">
+      <Filter>Source Files\Server</Filter>
+    </ClCompile>
+    <ClCompile Include="MoviePlayRecordService.cpp">
+      <Filter>Source Files\Server</Filter>
+    </ClCompile>
+    <ClCompile Include="MovieResourceService.cpp">
+      <Filter>Source Files\Server</Filter>
+    </ClCompile>
+    <ClCompile Include="OrderManagementService.cpp">
+      <Filter>Source Files\Server</Filter>
+    </ClCompile>
+    <ClCompile Include="PaymentService.cpp">
+      <Filter>Source Files\Server</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -183,6 +240,15 @@
     <QtMoc Include="MidPlatformManager.h">
       <Filter>Header Files\MidPlatform</Filter>
     </QtMoc>
+    <QtMoc Include="OrderManagementService.h">
+      <Filter>Header Files\Server</Filter>
+    </QtMoc>
+    <QtMoc Include="MsgDispatcher.h">
+      <Filter>Header Files\MsgDispatcher</Filter>
+    </QtMoc>
+    <QtMoc Include="PaymentService.h">
+      <Filter>Header Files\Server</Filter>
+    </QtMoc>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Global.h">
@@ -202,6 +268,24 @@
     </ClInclude>
     <ClInclude Include="Enum.h">
       <Filter>Header Files\Global.h</Filter>
+    </ClInclude>
+    <ClInclude Include="AuthService.h">
+      <Filter>Header Files\Server</Filter>
+    </ClInclude>
+    <ClInclude Include="FileTransferService.h">
+      <Filter>Header Files\Server</Filter>
+    </ClInclude>
+    <ClInclude Include="MovieResourceService.h">
+      <Filter>Header Files\Server</Filter>
+    </ClInclude>
+    <ClInclude Include="MoviePlayRecordService.h">
+      <Filter>Header Files\Server</Filter>
+    </ClInclude>
+    <ClInclude Include="GameResourceService.h">
+      <Filter>Header Files\Server</Filter>
+    </ClInclude>
+    <ClInclude Include="WalletService.h">
+      <Filter>Header Files\Server</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

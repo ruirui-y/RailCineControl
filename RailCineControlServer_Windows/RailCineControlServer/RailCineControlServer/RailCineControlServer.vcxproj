@@ -99,17 +99,26 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="AuthService.cpp" />
     <ClCompile Include="ClientSession.cpp" />
     <ClCompile Include="common.pb.cc" />
+    <ClCompile Include="FileTransferService.cpp" />
+    <ClCompile Include="GameResourceService.cpp" />
     <ClCompile Include="Global.cpp" />
     <ClCompile Include="HttpServerMgr.cpp" />
     <ClCompile Include="JsonTool.cpp" />
     <ClCompile Include="LogRecord.cpp" />
     <ClCompile Include="MidPlatformManager.cpp" />
+    <ClCompile Include="MoviePlayRecordService.cpp" />
+    <ClCompile Include="MovieResourceService.cpp" />
+    <ClCompile Include="MsgDispatcher.cpp" />
+    <ClCompile Include="OrderManagementService.cpp" />
+    <ClCompile Include="PaymentService.cpp" />
     <ClCompile Include="server_msg.pb.cc" />
     <ClCompile Include="SqlExec.cpp" />
     <ClCompile Include="TcpServer.cpp" />
     <ClCompile Include="ThreadPool.cpp" />
+    <ClCompile Include="WalletService.cpp" />
     <ClCompile Include="WorkerThread.cpp" />
     <QtRcc Include="ControlHubServer.qrc" />
     <QtUic Include="MainWindow.ui" />
@@ -131,8 +140,13 @@
     <QtMoc Include="WorkerThread.h" />
   </ItemGroup>
   <ItemGroup>
+    <QtMoc Include="OrderManagementService.h" />
+    <ClInclude Include="WalletService.h" />
     <QtMoc Include="JsonTool.h" />
+    <ClInclude Include="AuthService.h" />
     <ClInclude Include="Enum.h" />
+    <ClInclude Include="FileTransferService.h" />
+    <ClInclude Include="GameResourceService.h" />
     <ClInclude Include="httplib.h" />
     <QtMoc Include="MidPlatformManager.h" />
     <QtMoc Include="LogRecord.h" />
@@ -141,6 +155,10 @@
     <ClInclude Include="common.pb.h" />
     <ClInclude Include="Global.h" />
     <QtMoc Include="HttpServerMgr.h" />
+    <ClInclude Include="MoviePlayRecordService.h" />
+    <ClInclude Include="MovieResourceService.h" />
+    <QtMoc Include="MsgDispatcher.h" />
+    <QtMoc Include="PaymentService.h" />
     <ClInclude Include="server_msg.pb.h" />
     <ClInclude Include="singletion.h" />
   </ItemGroup>
