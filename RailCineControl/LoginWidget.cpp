@@ -309,7 +309,7 @@ void LoginWidget::slot_login_failed(int errCode)
 		result = QString("账号不存在或密码错误");
 		break;
 	case ErrorCode::ERR_ACCOUNT_IN_USE:
-		result = QString("账号已在其他设备登录，请勿重复登录");
+		result = QString("账号已在其他设备登录，已下线");
 		break;
 	case ErrorCode::ERR_ACCOUNT_EXPIRED:
 		result = QString("账号授权已过期，请联系管理员续期");

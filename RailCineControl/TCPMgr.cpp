@@ -13,7 +13,8 @@
 
 TCPMgr::TCPMgr(QObject* parent) : QObject(parent)
 {
-    m_Host = "175.178.36.122";
+    /*m_Host = "175.178.36.122";*/
+    m_Host = "127.0.0.1";
     m_Port = 5486;
 
     InitTcpSocket();
