@@ -15,6 +15,10 @@ public:
 
     bool StartServer(quint16 port);
 
+public:
+    // 向指定用户推送信息
+    void SendPushToUser(uint64_t userId, ServerApi::MsgId msgId, const google::protobuf::Message& msg);
+
 protected:
     // 核心破局点：重写底层的接入函数
     void incomingConnection(qintptr socketDescriptor) override;
@@ -25,12 +29,6 @@ private slots:
 
     // 当用户登录成功
     void OnUserLoginSuccess(qintptr fd, uint64_t userId);
-
-    // 处理微信支付结果
-    void OnPaymentResult(const QString& out_trade_no, const QString& transaction_id, int payment_status);
-
-private:
-    void StartCleanupUnpaidTask();                                                                  // 启动清理未支付订单的定时任务
 
 private:
     // 1. 物理层 Map (句柄 -> 会话) 
