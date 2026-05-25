@@ -1,108 +1,96 @@
-# 轨道影院 (RailCineControl) 商业级中控系统
+# 🎬 RailCineControl (影院与游戏微控平台)
 
 ## 📖 项目简介
 
-**RailCineControl** 是一套专为轨道影院（移动式沉浸剧场）设计的全链路中控解决方案。本项目基于 **CommonHub 商业级中控基础架构** 开发，采用高性能 C/S 异步通信模型，集成了影片分发、回放控制、设备监控及视频安全防护等核心功能。
+**RailCineControl** 是一个全栈式的影院终端控制与数字资产管理系统。项目包含一个功能丰富的 **Qt 桌面客户端** 以及一个基于 **SOA (面向服务架构)** 的高并发 **C++ 服务端**。 系统支持影片资源下发、局域网游戏串流分发、用户数字钱包管理、微信扫码支付中台对接以及精确的播放行为数据埋点。
 
-系统通过 **Protobuf** 协议确保跨平台、低延迟的指令下发，能够稳定支撑轨道平台与视觉内容的高精度同步联动。
+## 🏗️ 最新系统架构体系
 
-------
+### 🌐 服务端架构 (RailCineControlServer)
 
-## 🏗️ 系统架构
+服务端经历了深度的模块化重构，剥离了沉重的网络回调，实现了极致的“高内聚、低耦合”：
 
-本项目由 **客户端 (Frontend)** 和 **服务端 (Backend)** 两大部分组成，底层共用一套高并发通讯与线程管理组件。
+- **SOA 面向服务拆分**：所有的业务逻辑完全脱离 TCP 底层，被封装进 8 大核心 `Service` 中。
+- **异步事件驱动 (MsgDispatcher)**：利用全局消息路由与自定义 `ThreadPool`，网络 IO 线程只负责数据包的组装与拆解，业务处理全部跨线程投递至 Worker 线程执行。
+- **高可用数据库调度**：内置 `ConnectionPool`（数据库连接池），利用异步事务接口保证跨表更新（如：钱包扣款+流水生成+订单状态更新）的强一致性。
+- **中台与双向通信**：内置轻量级 HTTP 服务 (`HttpServerMgr`) 专门监听第三方中台（如微信支付）回调；通过 `PaymentService` 将支付结果利用 `TcpServer` 的推送接口反向注入至指定用户的长连接。
+- **幽灵守护任务**：引入独立的 `OrderManagementService`，不依赖任何网络请求，利用内部定时器定期巡检清理过期/异常订单。
 
-### 1. 业务功能模块
+### 🖥️ 客户端架构 (RailCineControl)
 
-- **回放管理 (PlaybackPage)**：支持影片的实时预览、进度控制与轨道同步触发。
-- **素材上传 (UploadPage)**：集成了大文件切片上传逻辑，支持视频素材的远程分发。
-- **录制系统 (RecordPage)**：监控影院运行状态，并提供运行日志与画面同步录制功能。
-- **安全防护 (VideoSecurityTool)**：针对商业影片资产，内建了视频加密与鉴权解密工具。
-- **本地流服务 (LocalStreamServer)**：通过本地流协议，实现内网低延迟视频串流。
+客户端基于 Qt 构建，实现了流畅的 UI 交互与多端通信能力：
 
-### 2. 核心底层组件 (Inherited from CommonHub)
+- **多协议网络引擎**：`TCPMgr` 负责长连接与 Protobuf 数据交换；`UdpManager` 负责局域网节点发现与底层广播；`LocalStreamServer` 提供本地流媒体推流支持。
+- **组件化 UI**：高度解耦的 Widget 系统（如 `MovieWidget`, `GameWidget`, `WalletWidget`, `UploadPage`），支持动态换肤与定制化（`CustomizeEdit`）。
+- **进程级管理 (CMDTools)**：封装了底层的进程调用机制，支持外部游戏/程序的无缝拉起与状态监控。
 
-- **TCP 异步引擎**：基于 `O(1)` 复杂度的路由表，实现毫秒级指令响应。
-- **线程池管理**：利用 `WorkerThread` 锚定事件循环，确保 SQL 操作与网络 IO 互不阻塞。
-- **智能单例与 RAII**：全链路采用 `QSharedPointer` 与定制化删除器，彻底杜绝多线程环境下的内存泄漏。
+## 🧩 核心业务模块
 
-------
+### 服务端 (Services)
+
+1. **`AuthService` (认证服务)**：处理登录校验、互斥登录（顶号机制）及心跳保活。
+2. **`FileTransferService` (文件服务)**：支持大文件的分片上传与断点下载。
+3. **`MovieResourceService` (影片服务)**：影片元数据增删改查及海报下发。
+4. **`MoviePlayRecordService` (埋点服务)**：记录并分析用户的播放时长、频次数据。
+5. **`WalletService` (钱包服务)**：处理用户数字资产、套餐查询与积分流水拉取。
+6. **`PaymentService` (支付中枢)**：对接生成付款二维码，消化 HTTP 支付回调并处理跨表资金事务。
+7. **`OrderManagementService` (订单卫士)**：异步巡检数据库，执行未支付订单关闭及对账。
+8. **`GameResourceService` (游戏中心)**：游戏安装包的分发与版本控制。
 
 ## 🛠️ 技术栈
 
-| **维度**    | **技术实现**                                               |
-| ----------- | ---------------------------------------------------------- |
-| **语言**    | C++17 (大量使用 `if constexpr`, `std::function`, `atomic`) |
-| **框架**    | Qt 5.15+ (QObject 深度解耦)                                |
-| **通讯**    | Google Protocol Buffers (v3), QTcpSocket, QUdpSocket       |
-| **数据库**  | MySQL (Connector/C++ 驱动), 异步连接池                     |
-| **UI 设计** | QSS 分模块绘制 + 堆栈式窗口管理 + 无边框自定义标题栏       |
+- **编程语言**: C++ 17
+- **GUI & 核心库**: Qt 5.14+
+- **网络与序列化**: Google Protocol Buffers (proto3), 自定义 TCP 封包/粘包处理机制
+- **数据库**: MySQL (C API), 动态连接池技术
+- **第三方集成**: `httplib` (用于服务端接收 Webhook), 外部支付中台 API
 
-------
+## 📂 核心目录结构
 
-## 🚀 快速开始
+Plaintext
+
+```
+/
+├── RailCineControl/                  # 🖥️ 客户端代码目录 (Qt GUI)
+│   ├── UI/ & Widgets/                # 各类展示面板 (Login, Movie, Wallet...)
+│   ├── TCPMgr/ & UdpManager/         # 客户端网络通信模块
+│   ├── LocalStreamServer/            # 本地流媒体服务
+│   └── Config/                       # 客户端本地配置 (json)
+│
+├── RailCineControlServer_Windows/    # 🌐 服务端代码目录
+│   └── RailCineControlServer/
+│       ├── TcpServer.cpp/h           # 底层网络连接与 Socket 生命周期管理
+│       ├── MsgDispatcher.cpp/h       # 数据包路由分发器
+│       ├── ThreadPool.cpp/h          # 任务调度与数据库查询工作池
+│       ├── ConnectionPool.cpp/h      # MySQL 高并发连接池
+│       ├── *Service.cpp/h            # 8 大核心业务微服务模块
+│       └── HttpServerMgr.cpp/h       # Webhook HTTP 监听层
+│
+├── common.proto & server_msg.proto   # 📝 统一通信协议文件
+├── build_proto.bat                   # Protobuf 一键编译脚本
+└── RailCineControl/Sql/              # 🗄️ 数据库建表与初始化脚本
+```
+
+## 🚀 编译与运行指南
 
 ### 1. 环境准备
 
-- 安装 **Visual Studio 2019+** 或 **Qt Creator**。
-- 配置 **Protobuf v3** 编译器环境。
-- 部署 **MySQL 8.0** 数据库，执行 `sql/sys_account.sql` 初始化用户权限表。
+- 安装 **Visual Studio 2017/2019/2022** (配置 C++ 桌面开发组件)。
+- 安装 **Qt 5.14** 或更高版本，并在 VS 中配置好 Qt 插件 (Qt VS Tools)。
+- 安装配置 **MySQL Server** (推荐 8.0+)。
+- 下载并配置 **Protobuf** 编译环境（需 `protoc.exe`）。
 
-### 2. 协议生成
+### 2. 数据库初始化
 
-在项目根目录运行编译脚本，将 `.proto` 文件转换为 C++ 源码：
+- 登录 MySQL，创建所需数据库。
+- 导入项目中的初始化 SQL 脚本： `source RailCineControlServer_Windows/RailCineControlServer/controlhub_backup.sql;`
 
-Bash
+### 3. 生成 Protobuf 协议
 
-```
-cd RailCineControl
-./build_proto.bat
-```
+- 运行根目录下的 `build_proto.bat`，将 `.proto` 描述文件自动编译为 C++ 类，并替换到 Client 和 Server 工程中。
 
-### 3. 项目编译
+### 4. 编译与启动
 
-1. 打开 `RailCineControl.sln`。
-2. 配置 `Props` 路径（检查 `RailCineControl_Debug.props` 中的库路径是否正确）。
-3. 编译运行服务端 `RailCineControlServer`，随后启动客户端。
-
-------
-
-## 📦 核心协议定义 (Protocol Spec)
-
-系统采用“火车式”封包格式：`[TotalLen(4B)] + [HeaderLen(2B)] + [HeaderData] + [BodyData]`。
-
-Protocol Buffers
-
-```
-// 轨道控制核心协议示例
-message PlaybackCmd {
-    string movie_id = 1;      // 影片唯一ID
-    uint64 timestamp = 2;     // 同步起始时间戳
-    float play_speed = 3;     // 播放倍速
-    bool enable_track = 4;    // 是否启动轨道联动
-}
-```
-
-
-
-------
-
-## 🛡️ 安全性改进建议
-
-基于你目前的商业架构，在未来的版本迭代中建议增加：
-
-1. **传输加密**：将 `QTcpSocket` 升级为 `QSslSocket`，实现全链路 TLS 加密。
-2. **攻击防御**：在 `onReadyRead` 拆包环节增加 `MAX_PACKET_SIZE` 校验，防止内存爆破攻击。
-3. **连接池优化**：针对轨道同步的极高性能要求，可引入时间轮 (Timing Wheel) 算法优化心跳超时的清理效率。
-
-------
-
-## ⚖️ 开源协议
-
-该项目遵循 **MIT License**。
-
-------
-
-**Yu Jingjing (于京京)** *GDUT Master of Engineering*
-
-*C++ Developer*
+- 使用 Visual Studio 打开 `RailCineControl.sln` 和 `RailCineControlServer.sln`。
+- 确认服务端配置文件 `server_config.json` 中的数据库账户、密码、监听端口（如 TCP: 5486, HTTP: 8182）正确无误。
+- 启动 Server 引擎，随后启动 Client 应用程序即可体验。
